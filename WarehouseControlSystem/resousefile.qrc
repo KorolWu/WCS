@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/resouse">
+        <file>Image/battery.png</file>
+        <file>Image/car.png</file>
+        <file>Image/close.png</file>
+        <file>Image/green.png</file>
+        <file>Image/grey.png</file>
+    </qresource>
+</RCC>

@@ -25,9 +25,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    UnitClass/jeson2object.cpp
+    UnitClass/jeson2object.cpp \
+    UnitClass/c_systemlogmng.cpp \
+    From/CarStatusFrom.cpp
 
 HEADERS  += mainwindow.h \
-    UnitClass/jeson2object.h
+    UnitClass/jeson2object.h \
+    UnitClass/myconfig.h \
+    UnitClass/c_systemlogmng.h \
+    datastructure.h \
+    From/CarStatusFrom.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    resousefile.qrc

@@ -17,6 +17,7 @@
 #include <QTableView>
 #include <QHeaderView>
 #include <QScrollBar>
+#include <QLineEdit>
 class CarStatusFrom : public QWidget
 {
     Q_OBJECT
@@ -27,10 +28,8 @@ public slots:
     void fromClose();
 
 private:
-//    const int PAD_X = 640;
-//    const int PAD_Y = 420;
      int PAD_X = 550;
-     int PAD_Y = 600;
+     int PAD_Y = 320;
     QRect desktop;
     QLabel *header_lab;
     QLabel *car_image;
@@ -48,7 +47,13 @@ private:
     QPushButton *down_btn;
     QPushButton *pause_btn;
     QPushButton *continue_btn;
-    //QPushButton *delete_btn;
+
+    QPushButton *add_battery_btn;
+    QPushButton *creat_fix_btn;
+    QPushButton *sleep_btn;
+    QLineEdit *position;
+    QPushButton *move_btn;
+
 
     QPushButton *closeBtn;
     //QTimer* timer;

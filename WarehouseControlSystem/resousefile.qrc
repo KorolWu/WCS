@@ -5,5 +5,9 @@
         <file>Image/close.png</file>
         <file>Image/green.png</file>
         <file>Image/grey.png</file>
+        <file>Image/user.png</file>
+        <file>Image/shutdown.png</file>
+        <file>Image/addDevice.png</file>
+        <file>Image/grey2.png</file>
     </qresource>
 </RCC>

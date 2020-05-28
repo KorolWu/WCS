@@ -27,4 +27,14 @@ typedef struct _Car_status
     //status
     QString status = "---";
 }Car_status;
+typedef struct _AddDeviceStu
+{
+    //小车编号
+    QString deviceNum = "";
+    QString deviceIp = "";
+    int port = 0;
+    QString deviceType = "";
+    QString remarks = "";
+
+}AddDeviceStu;
 #endif // DATASTRUCTURE_H

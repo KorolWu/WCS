@@ -27,14 +27,16 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
-    From/CarStatusFrom.cpp
+    From/CarStatusFrom.cpp \
+    From/adddevice.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
     datastructure.h \
-    From/CarStatusFrom.h
+    From/CarStatusFrom.h \
+    From/adddevice.h
 
 FORMS    += mainwindow.ui
 

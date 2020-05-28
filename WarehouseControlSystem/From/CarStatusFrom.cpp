@@ -9,6 +9,10 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
 
    // this->move(desktop.width()-PAD_X-20,desktop.height()-PAD_Y-20);
     QFont font("宋体",14);
+    QLabel *back_lab = new QLabel(this);
+    back_lab->resize(PAD_X,PAD_Y);
+    back_lab->setStyleSheet("background-color:rgb(198,198,198)");
+
     header_lab = new QLabel(this);
     header_lab->resize(PAD_X,100);
     header_lab->setStyleSheet("background-color:rgb(24, 24, 72)");
@@ -22,7 +26,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     online_lab->setStyleSheet("color:white");
 
     closeBtn = new QPushButton(this);
-    closeBtn->setStyleSheet("border-image:url(:/resouse/Image/close.png)");
+    closeBtn->setStyleSheet("border-image:url(:/resouse/Image/close.png);background-color:rgb(24, 24, 72);");
     closeBtn->move(PAD_X-40,10);
     closeBtn->resize(30,30);
     connect(closeBtn,&QPushButton::clicked,this,&CarStatusFrom::fromClose);
@@ -59,7 +63,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     b->setStyleSheet("color:white");
     b->move(450,line1_y);
 
-    //this->setStyleSheet("#this{color:red}");
+    this->setStyleSheet("QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     table = new QTableWidget(this);
     table->setColumnCount(4);    //设置列数
     table->setRowCount(4);        //设置行数/
@@ -120,9 +124,24 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     pause_btn->move(10+interval*4,242);
     continue_btn = new QPushButton("继续",this);
     continue_btn->move(10+interval*5,242);
+    int interval_y = 280;
+    add_battery_btn = new QPushButton("去充电",this);
+    add_battery_btn->move(10,interval_y);
 
+    creat_fix_btn = new QPushButton("创建维修",this);
+    creat_fix_btn->move(10+interval,interval_y);
+    sleep_btn = new QPushButton("休眠",this);
+    sleep_btn->move(10+interval*2,interval_y);
+    position = new QLineEdit(this);
+    position->move(10+interval*3,interval_y);
+    position->setText("156212,85694");
+    move_btn = new QPushButton("移动",this);
+    move_btn->move(10+interval*5-70,interval_y);
 
     this->resize(600,PAD_Y);
+//    foreach (QPushButton *btn, this) {
+//        btn->setStyleSheet("border:5fix");
+//    }
 
 
 }

@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_QML_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_SQL_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -g -std=gnu++11 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../WarehouseControlSystem -I. -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I. -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../WarehouseControlSystem -I. -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtSql -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I. -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++
 QMAKE         = /opt/Qt5.7.1/5.7/gcc_64/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -36,7 +36,7 @@ DISTNAME      = WarehouseControlSystem1.0.0
 DISTDIR = /root/wcs/WCS/build-WarehouseControlSystem-Desktop_Qt_5_7_1_GCC_64bit-Debug/.tmp/WarehouseControlSystem1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/opt/Qt5.7.1/5.7/gcc_64/lib
-LIBS          = $(SUBLIBS) -L/opt/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/opt/Qt5.7.1/5.7/gcc_64/lib -lQt5Widgets -L/usr/lib64 -lQt5Gui -lQt5Sql -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -53,7 +53,8 @@ SOURCES       = ../WarehouseControlSystem/main.cpp \
 		../WarehouseControlSystem/UnitClass/jeson2object.cpp \
 		../WarehouseControlSystem/UnitClass/c_systemlogmng.cpp \
 		../WarehouseControlSystem/From/CarStatusFrom.cpp \
-		../WarehouseControlSystem/From/adddevice.cpp qrc_resousefile.cpp \
+		../WarehouseControlSystem/From/adddevice.cpp \
+		../WarehouseControlSystem/UnitClass/databaseunit.cpp qrc_resousefile.cpp \
 		moc_mainwindow.cpp \
 		moc_CarStatusFrom.cpp \
 		moc_adddevice.cpp
@@ -63,6 +64,7 @@ OBJECTS       = main.o \
 		c_systemlogmng.o \
 		CarStatusFrom.o \
 		adddevice.o \
+		databaseunit.o \
 		qrc_resousefile.o \
 		moc_mainwindow.o \
 		moc_CarStatusFrom.o \
@@ -229,12 +231,14 @@ DIST          = /opt/Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../WarehouseControlSystem/UnitClass/c_systemlogmng.h \
 		../WarehouseControlSystem/datastructure.h \
 		../WarehouseControlSystem/From/CarStatusFrom.h \
-		../WarehouseControlSystem/From/adddevice.h ../WarehouseControlSystem/main.cpp \
+		../WarehouseControlSystem/From/adddevice.h \
+		../WarehouseControlSystem/UnitClass/databaseunit.h ../WarehouseControlSystem/main.cpp \
 		../WarehouseControlSystem/mainwindow.cpp \
 		../WarehouseControlSystem/UnitClass/jeson2object.cpp \
 		../WarehouseControlSystem/UnitClass/c_systemlogmng.cpp \
 		../WarehouseControlSystem/From/CarStatusFrom.cpp \
-		../WarehouseControlSystem/From/adddevice.cpp
+		../WarehouseControlSystem/From/adddevice.cpp \
+		../WarehouseControlSystem/UnitClass/databaseunit.cpp
 QMAKE_TARGET  = WarehouseControlSystem
 DESTDIR       = 
 TARGET        = WarehouseControlSystem
@@ -406,6 +410,7 @@ Makefile: ../WarehouseControlSystem/WarehouseControlSystem.pro /opt/Qt5.7.1/5.7/
 		../WarehouseControlSystem/resousefile.qrc \
 		/opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Widgets.prl \
 		/opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Gui.prl \
+		/opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Sql.prl \
 		/opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.prl
 	$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug -o Makefile ../WarehouseControlSystem/WarehouseControlSystem.pro
 /opt/Qt5.7.1/5.7/gcc_64/mkspecs/features/spec_pre.prf:
@@ -568,6 +573,7 @@ Makefile: ../WarehouseControlSystem/WarehouseControlSystem.pro /opt/Qt5.7.1/5.7/
 ../WarehouseControlSystem/resousefile.qrc:
 /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Widgets.prl:
 /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Gui.prl:
+/opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Sql.prl:
 /opt/Qt5.7.1/5.7/gcc_64/lib/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -spec linux-g++ CONFIG+=debug CONFIG+=qml_debug -o Makefile ../WarehouseControlSystem/WarehouseControlSystem.pro
@@ -584,8 +590,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../WarehouseControlSystem/resousefile.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../WarehouseControlSystem/mainwindow.h ../WarehouseControlSystem/UnitClass/jeson2object.h ../WarehouseControlSystem/UnitClass/myconfig.h ../WarehouseControlSystem/UnitClass/c_systemlogmng.h ../WarehouseControlSystem/datastructure.h ../WarehouseControlSystem/From/CarStatusFrom.h ../WarehouseControlSystem/From/adddevice.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../WarehouseControlSystem/main.cpp ../WarehouseControlSystem/mainwindow.cpp ../WarehouseControlSystem/UnitClass/jeson2object.cpp ../WarehouseControlSystem/UnitClass/c_systemlogmng.cpp ../WarehouseControlSystem/From/CarStatusFrom.cpp ../WarehouseControlSystem/From/adddevice.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../WarehouseControlSystem/mainwindow.h ../WarehouseControlSystem/UnitClass/jeson2object.h ../WarehouseControlSystem/UnitClass/myconfig.h ../WarehouseControlSystem/UnitClass/c_systemlogmng.h ../WarehouseControlSystem/datastructure.h ../WarehouseControlSystem/From/CarStatusFrom.h ../WarehouseControlSystem/From/adddevice.h ../WarehouseControlSystem/UnitClass/databaseunit.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../WarehouseControlSystem/main.cpp ../WarehouseControlSystem/mainwindow.cpp ../WarehouseControlSystem/UnitClass/jeson2object.cpp ../WarehouseControlSystem/UnitClass/c_systemlogmng.cpp ../WarehouseControlSystem/From/CarStatusFrom.cpp ../WarehouseControlSystem/From/adddevice.cpp ../WarehouseControlSystem/UnitClass/databaseunit.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../WarehouseControlSystem/mainwindow.ui $(DISTDIR)/
 
 
@@ -796,9 +802,22 @@ moc_mainwindow.cpp: /opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QMainWindow \
 		../WarehouseControlSystem/From/adddevice.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		../WarehouseControlSystem/UnitClass/databaseunit.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlError \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlerror.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsql.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlRecord \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlrecord.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlDatabase \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqldatabase.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlQuery \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlquery.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QStringList \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QDebug \
 		../WarehouseControlSystem/mainwindow.h \
 		/opt/Qt5.7.1/5.7/gcc_64/bin/moc
-	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/mainwindow.h -o moc_mainwindow.cpp
+	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtSql -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/mainwindow.h -o moc_mainwindow.cpp
 
 moc_CarStatusFrom.cpp: /opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qwidget.h \
@@ -960,7 +979,7 @@ moc_CarStatusFrom.cpp: /opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtGui/qtextoption.h \
 		../WarehouseControlSystem/From/CarStatusFrom.h \
 		/opt/Qt5.7.1/5.7/gcc_64/bin/moc
-	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/From/CarStatusFrom.h -o moc_CarStatusFrom.cpp
+	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtSql -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/From/CarStatusFrom.h -o moc_CarStatusFrom.cpp
 
 moc_adddevice.cpp: /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobject.h \
@@ -1079,9 +1098,14 @@ moc_adddevice.cpp: /opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
+		../WarehouseControlSystem/datastructure.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QString \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QMap \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVector \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QSize \
 		../WarehouseControlSystem/From/adddevice.h \
 		/opt/Qt5.7.1/5.7/gcc_64/bin/moc
-	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/From/adddevice.h -o moc_adddevice.cpp
+	/opt/Qt5.7.1/5.7/gcc_64/bin/moc $(DEFINES) -I/opt/Qt5.7.1/5.7/gcc_64/mkspecs/linux-g++ -I/root/wcs/WCS/WarehouseControlSystem -I/opt/Qt5.7.1/5.7/gcc_64/include -I/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets -I/opt/Qt5.7.1/5.7/gcc_64/include/QtGui -I/opt/Qt5.7.1/5.7/gcc_64/include/QtSql -I/opt/Qt5.7.1/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../WarehouseControlSystem/From/adddevice.h -o moc_adddevice.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -1269,7 +1293,20 @@ main.o: ../WarehouseControlSystem/main.cpp ../WarehouseControlSystem/mainwindow.
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qtreeview.h \
 		../WarehouseControlSystem/From/adddevice.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QObject \
-		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QHBoxLayout
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
+		../WarehouseControlSystem/UnitClass/databaseunit.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlError \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlerror.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsql.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlRecord \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlrecord.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlDatabase \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqldatabase.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlQuery \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlquery.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QStringList \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../WarehouseControlSystem/main.cpp
 
 mainwindow.o: ../WarehouseControlSystem/mainwindow.cpp ../WarehouseControlSystem/mainwindow.h \
@@ -1440,8 +1477,20 @@ mainwindow.o: ../WarehouseControlSystem/mainwindow.cpp ../WarehouseControlSystem
 		../WarehouseControlSystem/From/adddevice.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QObject \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QHBoxLayout \
-		ui_mainwindow.h \
+		../WarehouseControlSystem/UnitClass/databaseunit.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlError \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlerror.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsql.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlRecord \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlrecord.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlDatabase \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqldatabase.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlQuery \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlquery.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QStringList \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QDebug \
+		ui_mainwindow.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QAction \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qaction.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
@@ -1929,8 +1978,89 @@ adddevice.o: ../WarehouseControlSystem/From/adddevice.cpp ../WarehouseControlSys
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qlayout.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/qgridlayout.h \
-		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QVBoxLayout
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtWidgets/QVBoxLayout \
+		../WarehouseControlSystem/datastructure.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QString \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QMap \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVector \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QSize
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o adddevice.o ../WarehouseControlSystem/From/adddevice.cpp
+
+databaseunit.o: ../WarehouseControlSystem/UnitClass/databaseunit.cpp ../WarehouseControlSystem/UnitClass/databaseunit.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlError \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlerror.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qnumeric.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qversiontagging.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsql.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlRecord \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlrecord.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlDatabase \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqldatabase.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/QSqlQuery \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtSql/qsqlquery.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QStringList \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qhashfunctions.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qbytearraylist.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QVariant \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qpoint.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qset.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qcontiguouscache.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qsharedpointer.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/opt/Qt5.7.1/5.7/gcc_64/include/QtCore/QDebug
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o databaseunit.o ../WarehouseControlSystem/UnitClass/databaseunit.cpp
 
 qrc_resousefile.o: qrc_resousefile.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resousefile.o qrc_resousefile.cpp

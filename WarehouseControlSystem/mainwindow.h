@@ -8,6 +8,7 @@
 #include <QPushButton>
 #include <QTreeView>
 #include <From/adddevice.h>
+#include <UnitClass/databaseunit.h>
 
 namespace Ui {
 class MainWindow;

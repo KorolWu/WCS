@@ -58,6 +58,7 @@ AddDevice::AddDevice(QWidget *parent) : QWidget(parent)
     vbox->addItem(hbox);
 
     yesBtn = new QPushButton("确认");
+    connect(yesBtn,&QPushButton::clicked,this,&AddDevice::addDevices);
     calenBtn = new QPushButton("取消");
     yesBtn->setStyleSheet("border-image:url();color:black");
     calenBtn->setStyleSheet("border-image:url();color:black");
@@ -79,5 +80,9 @@ void AddDevice::addDevices()
     deviceStruct.port = port->text().toInt();
     deviceStruct.deviceType = deviceType->text();
     deviceStruct.remarks = remarks->text();
+    QStringList names{"deviceNum","deviceIp","devicePort","deviceType","remarks"};
+    QStringList values{deviceStruct.deviceNum,deviceStruct.deviceIp,QString(deviceStruct.port),deviceStruct.deviceType,deviceStruct.remarks};
+   if(!DataBaseUnit::GetInstance()->insertDb("t_device_info",names,values))
+       qDebug()<<"insert fail";
     //handle deviceStruct
 }

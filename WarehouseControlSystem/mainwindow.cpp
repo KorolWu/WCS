@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     AddDevice *device = new AddDevice(this);
     device->move(300,150);
 
+    DataBaseUnit::GetInstance()->openDB();
 
 
 }

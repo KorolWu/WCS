@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
     From/CarStatusFrom.cpp \
-    From/adddevice.cpp
+    From/adddevice.cpp \
+    UnitClass/databaseunit.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     UnitClass/c_systemlogmng.h \
     datastructure.h \
     From/CarStatusFrom.h \
-    From/adddevice.h
+    From/adddevice.h \
+    UnitClass/databaseunit.h
 
 FORMS    += mainwindow.ui
 

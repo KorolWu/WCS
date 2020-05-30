@@ -9,6 +9,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <datastructure.h>
+#include <UnitClass/databaseunit.h>
 class AddDevice : public QWidget
 {
     Q_OBJECT

@@ -9,6 +9,33 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
+    initUI();
+    _Car_status s;
+    s.batter = 70;
+    s.carNum = "ABS-002";
+    f = new CarStatusFrom(s,this);
+    f->move(desk_rect.width()-600,desk_rect.height()-350);
+
+//    AddDevice *device = new AddDevice(this);
+//    device->move(300,150);
+
+    DataBaseUnit::GetInstance()->openDB();
+
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::closeWms()
+{
+    this->close();
+}
+
+void MainWindow::initUI()
+{
     desk_rect = QApplication::desktop()->availableGeometry();
     this->resize(desk_rect.width(),desk_rect.height());
 
@@ -54,29 +81,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWms);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
-
-    _Car_status s;
-    s.batter = 70;
-    s.carNum = "ABS-002";
-    f = new CarStatusFrom(s,this);
-    f->move(desk_rect.width()-600,desk_rect.height()-350);
-
-    AddDevice *device = new AddDevice(this);
-    device->move(300,150);
-
-    DataBaseUnit::GetInstance()->openDB();
-
-
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::closeWms()
-{
-    this->close();
 }
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)

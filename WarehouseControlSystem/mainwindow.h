@@ -40,6 +40,7 @@ private:
     QPushButton *exit_btn;
     QPushButton *user_btn;
     void closeWms();
+    void initUI();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
 };

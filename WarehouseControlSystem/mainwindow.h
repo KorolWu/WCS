@@ -11,6 +11,7 @@
 #include <QStandardItem>
 #include <From/adddevice.h>
 #include <UnitClass/databaseunit.h>
+#include <From/agvform.h>
 
 namespace Ui {
 class MainWindow;
@@ -39,6 +40,7 @@ private:
     QTreeView *p_treeView;
     QPushButton *exit_btn;
     QPushButton *user_btn;
+    QWidget *p_main_widget;
     void closeWms();
     void initUI();
 private slots:

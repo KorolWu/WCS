@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     UnitClass/c_systemlogmng.cpp \
     From/CarStatusFrom.cpp \
     From/adddevice.cpp \
-    UnitClass/databaseunit.cpp
+    UnitClass/databaseunit.cpp \
+    From/agvform.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     datastructure.h \
     From/CarStatusFrom.h \
     From/adddevice.h \
-    UnitClass/databaseunit.h
+    UnitClass/databaseunit.h \
+    From/agvform.h
 
 FORMS    += mainwindow.ui
 

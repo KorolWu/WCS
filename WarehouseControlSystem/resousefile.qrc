@@ -9,5 +9,16 @@
         <file>Image/shutdown.png</file>
         <file>Image/addDevice.png</file>
         <file>Image/grey2.png</file>
+        <file>Image/newlog.png</file>
+        <file>Image/mt.png</file>
+        <file>Image/Alarm.png</file>
+        <file>Image/shelvest.png</file>
+        <file>Image/devices.png</file>
+        <file>Image/log.png</file>
+        <file>Image/warehouset.png</file>
+        <file>Image/alarm_bell.png</file>
+        <file>Image/add.png</file>
+        <file>Image/delete.png</file>
+        <file>Image/download.png</file>
     </qresource>
 </RCC>

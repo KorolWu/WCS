@@ -57,6 +57,8 @@ AddDevice::AddDevice(QWidget *parent) : QWidget(parent)
     hbox->addWidget(remarks);
     vbox->addItem(hbox);
 
+
+
     yesBtn = new QPushButton("确认");
     connect(yesBtn,&QPushButton::clicked,this,&AddDevice::addDevices);
     calenBtn = new QPushButton("取消");

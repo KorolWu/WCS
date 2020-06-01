@@ -7,6 +7,8 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QTreeView>
+#include <QStandardItemModel>
+#include <QStandardItem>
 #include <From/adddevice.h>
 #include <UnitClass/databaseunit.h>
 
@@ -29,9 +31,17 @@ private:
 
     //treewidget
     QWidget *treewidget;
+    QStandardItemModel *p_treeStandarModel;
+    QStandardItem *p_standarItem;
+    QStandardItem *p_userItem;
+    QStandardItem *p_agvItem;
+    QStandardItem *p_elevator;
+    QTreeView *p_treeView;
     QPushButton *exit_btn;
     QPushButton *user_btn;
     void closeWms();
+private slots:
+    void onTreeviewClicked(const QModelIndex &index);
 };
 
 #endif // MAINWINDOW_H

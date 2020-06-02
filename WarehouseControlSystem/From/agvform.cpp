@@ -22,7 +22,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : QWidget(parent)
     p_input_text->move(440,10);
     p_query_btn = new QPushButton("查询",this);
     p_query_btn->move(610,10);
-    p_query_btn->setStyleSheet("background-color:rgb(24,24,72)");
+    p_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
 
 
     p_table_widget = new QTableWidget(18,7,this);

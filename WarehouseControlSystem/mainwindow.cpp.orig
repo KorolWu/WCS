@@ -135,9 +135,8 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "电梯管理")
     {
-        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        elevator->show();
+<<<<<<< HEAD
+        qDebug()<<"handle 电梯管理..."; // 电梯管理的属性信息界面
     }
 }
 
@@ -148,5 +147,11 @@ void MainWindow::slotlogin()
     {
         //获取当前用户信息和级别
         user_btn->setText(tr("admin"));
+=======
+        qDebug()<<"handle 电梯管理...";
+        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        elevator->show();
+>>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
     }
 }

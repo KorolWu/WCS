@@ -31,8 +31,11 @@ SOURCES += main.cpp\
     From/adddevice.cpp \
     UnitClass/databaseunit.cpp \
     From/agvform.cpp \
-    From/elevatorfrom.cpp\
-UnitClass/logininfowg.cpp
+<<<<<<< HEAD
+    UnitClass/logininfowg.cpp
+=======
+    From/elevatorfrom.cpp
+>>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -43,8 +46,11 @@ HEADERS  += mainwindow.h \
     From/adddevice.h \
     UnitClass/databaseunit.h \
     From/agvform.h \
-    From/elevatorfrom.h\
- UnitClass/logininfowg.h
+<<<<<<< HEAD
+    UnitClass/logininfowg.h
+=======
+    From/elevatorfrom.h
+>>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
 
 FORMS    += mainwindow.ui
 

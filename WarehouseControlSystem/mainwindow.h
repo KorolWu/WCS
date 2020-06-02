@@ -45,6 +45,7 @@ private:
     void initUI();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
+    void  slotlogin();
 };
 
 #endif // MAINWINDOW_H

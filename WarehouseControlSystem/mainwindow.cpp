@@ -3,6 +3,7 @@
 #include <datastructure.h>
 #include <QDesktopWidget>
 #include <QIcon>
+#include "UnitClass/logininfowg.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -19,8 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    AddDevice *device = new AddDevice(this);
 //    device->move(300,150);
 
-    DataBaseUnit::GetInstance()->openDB();
-
+    //DataBaseUnit::GetInstance()->openDB();
 }
 
 MainWindow::~MainWindow()
@@ -105,6 +105,7 @@ void MainWindow::initUI()
     user_btn = new QPushButton("用户",this);
     user_btn->setIcon(QIcon(":/resouse/Image/user.png"));
     user_btn->move(desk_rect.width()*0.85,desk_rect.height()/20);
+   connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
     exit_btn = new QPushButton("安全退出",this);
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWms);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
@@ -126,8 +127,22 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         car_from->show();
     }
+    else if(row_name == "货架管理")
+    {
+        qDebug()<<"handle 货架管理..."; // 电梯管理的属性信息界面
+    }
     else if(row_name == "电梯管理")
     {
-        qDebug()<<"handle 电梯管理...";
+        qDebug()<<"handle 电梯管理..."; // 电梯管理的属性信息界面
+    }
+}
+
+void MainWindow::slotlogin()
+{
+    LoginInfoWg login;
+    if (login.exec() == QDialog::Accepted)//调用login.exec()，阻塞主控制流，直到完成返回，继续执行主控制流
+    {
+        //获取当前用户信息和级别
+        user_btn->setText(tr("admin"));
     }
 }

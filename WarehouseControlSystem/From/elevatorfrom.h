@@ -1,5 +1,5 @@
-#ifndef AGVFORM_H
-#define AGVFORM_H
+#ifndef ELEVATORFROM_H
+#define ELEVATORFROM_H
 
 #include <QObject>
 #include <QWidget>
@@ -8,7 +8,6 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
-#include <From/adddevice.h>
 /**
  *
  * @author korol
@@ -16,18 +15,18 @@
  * @date 2020-06-01 16:02:59
  * use 小车硬件信息显示
  */
-class AgvForm : public QWidget
+class ElevatorFrom : public QWidget
 {
     Q_OBJECT
 public:
-    explicit AgvForm(int width,int height,QWidget *parent = 0);
+    explicit ElevatorFrom(int width, int height,QWidget *parent = 0);
 
 signals:
 
 public slots:
     void onAddClicked();
 private:
-    QTableView *p_table_widget;
+    QTableWidget *p_table_widget;
     QPushButton *p_add_btn;
     QPushButton *p_delete_btn;
     QPushButton *p_export_btn;
@@ -35,4 +34,4 @@ private:
     QLineEdit *p_input_text;
 };
 
-#endif // AGVFORM_H
+#endif // ELEVATORFROM_H

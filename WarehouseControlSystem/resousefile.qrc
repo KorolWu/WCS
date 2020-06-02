@@ -20,5 +20,6 @@
         <file>Image/add.png</file>
         <file>Image/delete.png</file>
         <file>Image/download.png</file>
+        <file>Image/elevator.png</file>
     </qresource>
 </RCC>

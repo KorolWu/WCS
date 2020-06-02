@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     From/CarStatusFrom.cpp \
     From/adddevice.cpp \
     UnitClass/databaseunit.cpp \
-    From/agvform.cpp
+    From/agvform.cpp \
+    From/elevatorfrom.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -40,7 +41,8 @@ HEADERS  += mainwindow.h \
     From/CarStatusFrom.h \
     From/adddevice.h \
     UnitClass/databaseunit.h \
-    From/agvform.h
+    From/agvform.h \
+    From/elevatorfrom.h
 
 FORMS    += mainwindow.ui
 

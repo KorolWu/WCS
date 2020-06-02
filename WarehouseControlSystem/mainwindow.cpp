@@ -86,8 +86,10 @@ void MainWindow::initUI()
     p_standarItem = new QStandardItem("设备管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/devices.png"));
     p_agvItem = new QStandardItem("小车管理");
-    p_elevator = new QStandardItem("电梯管理");
+    p_agvItem->setIcon(QIcon(":/resouse/Image/car.png"));
     p_standarItem->appendRow(p_agvItem);
+    p_elevator = new QStandardItem("电梯管理");
+    p_elevator->setIcon(QIcon(":/resouse/Image/elevator.png"));
     p_standarItem->appendRow(p_elevator);
 
     p_treeStandarModel->appendRow(p_standarItem);
@@ -129,5 +131,8 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "电梯管理")
     {
         qDebug()<<"handle 电梯管理...";
+        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        elevator->show();
     }
 }

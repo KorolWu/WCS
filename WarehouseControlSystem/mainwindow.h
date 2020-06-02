@@ -12,6 +12,7 @@
 #include <From/adddevice.h>
 #include <UnitClass/databaseunit.h>
 #include <From/agvform.h>
+#include <From/elevatorfrom.h>
 
 namespace Ui {
 class MainWindow;

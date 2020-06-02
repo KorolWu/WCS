@@ -8,7 +8,7 @@ DataBaseUnit::DataBaseUnit()
 bool DataBaseUnit::openDB()
 {
     data_base = QSqlDatabase::addDatabase("QMYSQL");
-    data_base.setHostName("192.168.1.32");
+    data_base.setHostName("192.168.195.221");
     data_base.setPort(3306);
     data_base.setDatabaseName("test_dev");
     data_base.setUserName("root");

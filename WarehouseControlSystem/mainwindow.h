@@ -13,6 +13,7 @@
 #include <UnitClass/databaseunit.h>
 #include <From/agvform.h>
 #include <From/elevatorfrom.h>
+#include "From/StorePosInfo/storeinfowidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -47,6 +48,9 @@ private:
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();
+
+private:
+    StoreInfoWidget *m_pstoreWg;
 };
 
 #endif // MAINWINDOW_H

@@ -22,6 +22,10 @@
         <file>Image/download.png</file>
         <file>Image/loginpasswd.png</file>
         <file>Image/loginyusername.png</file>
- <file>Image/elevator.png</file>
+        <file>Image/elevator.png</file>
+        <file>Image/Search.png</file>
+        <file>Image/import.png</file>
+        <file>Image/Edit.png</file>
+        <file>Image/btndelete.png</file>
     </qresource>
 </RCC>

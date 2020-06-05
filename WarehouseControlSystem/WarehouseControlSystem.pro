@@ -32,7 +32,11 @@ SOURCES += main.cpp\
     UnitClass/databaseunit.cpp \
     From/agvform.cpp \
     From/elevatorfrom.cpp\
-UnitClass/logininfowg.cpp
+UnitClass/logininfowg.cpp \
+    From/StorePosInfo/storeinfowidget.cpp \
+    From/StorePosInfo/storenbrinfotablemodel.cpp \
+    From/StorePosInfo/storenbrtableview.cpp \
+    From/StorePosInfo/buttondelegate.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -44,7 +48,11 @@ HEADERS  += mainwindow.h \
     UnitClass/databaseunit.h \
     From/agvform.h \
     From/elevatorfrom.h\
- UnitClass/logininfowg.h
+ UnitClass/logininfowg.h \
+    From/StorePosInfo/storeinfowidget.h \
+    From/StorePosInfo/storenbrinfotablemodel.h \
+    From/StorePosInfo/storenbrtableview.h \
+    From/StorePosInfo/buttondelegate.h
 
 FORMS    += mainwindow.ui
 

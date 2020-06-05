@@ -90,6 +90,13 @@ typedef struct  _StorePosInfoStru{
         return *this;
     }
 }StorePosInfoStru;
+typedef struct  _MapStorePosInfoStru {
+    QMap<QString,StorePosInfoStru> storeposInfoMap;
+     _MapStorePosInfoStru(){
+         storeposInfoMap.clear();
+     }
+}MapStorePosInfoStru;
+
 //货架信息结构体描述指料箱所放置位置信息表------------------------------2020/06/02
 #pragma pack()
 

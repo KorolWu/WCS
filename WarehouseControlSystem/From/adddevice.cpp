@@ -62,6 +62,7 @@ AddDevice::AddDevice(QWidget *parent) : QWidget(parent)
     yesBtn = new QPushButton("确认");
     connect(yesBtn,&QPushButton::clicked,this,&AddDevice::addDevices);
     calenBtn = new QPushButton("取消");
+    connect(calenBtn,&QPushButton::clicked,this,&AddDevice::cancelDevice);
     yesBtn->setStyleSheet("border-image:url();color:black");
     calenBtn->setStyleSheet("border-image:url();color:black");
     hbox = new QHBoxLayout();
@@ -84,7 +85,20 @@ void AddDevice::addDevices()
     deviceStruct.remarks = remarks->text();
     QStringList names{"deviceNum","deviceIp","devicePort","deviceType","remarks"};
     QStringList values{deviceStruct.deviceNum,deviceStruct.deviceIp,QString(deviceStruct.port),deviceStruct.deviceType,deviceStruct.remarks};
-   if(!DataBaseUnit::GetInstance()->insertDb("t_device_info",names,values))
-       qDebug()<<"insert fail";
+    QString sql = QString("INSERT t_device_info SET deviceNum = '%1',deviceIp = '%1',devicePort = '%2',deviceType = '%3',remarks = '%4';").arg(deviceStruct.deviceNum).arg(deviceStruct.deviceIp).arg(deviceStruct.port).arg(deviceStruct.deviceType);
+    qDebug()<<sql;
+    if(DataBaseUnit::GetInstance()->queryUseStr(sql))
+    {
+        // the same id,same ip
+        emit insert_emit();
+        this->hide();
+        this->deleteLater();
+    }
     //handle deviceStruct
+}
+
+void AddDevice::cancelDevice()
+{
+    this->hide();
+    this->deleteLater();
 }

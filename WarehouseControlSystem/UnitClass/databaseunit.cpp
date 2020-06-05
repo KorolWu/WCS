@@ -17,7 +17,7 @@ bool DataBaseUnit::openDB()
         return true;
     if(!data_base.open())
     {
-        qDebug()<<"open database successful";
+        qDebug()<<"open database fail";
         return true;
     }
     return false;
@@ -34,6 +34,12 @@ QSqlQuery DataBaseUnit::queryDb(const QString &querySql)
     QSqlQuery query(data_base);
     query.exec(querySql);
     return query;
+}
+
+bool DataBaseUnit::queryUseStr(const QString &sqlStr)
+{
+    QSqlQuery query(data_base);
+    return query.exec(sqlStr);
 }
 
 bool DataBaseUnit::insertDb(const QString &table, QStringList &names, QStringList &values)
@@ -97,4 +103,13 @@ bool DataBaseUnit::updataDb(const QString &table, QStringList &names, QStringLis
 DataBaseUnit *DataBaseUnit::GetInstance()
 {
     return Instance;
+}
+
+void DataBaseUnit::closeDb()
+{
+    if(data_base.isOpen())
+    {
+        data_base.close();
+    }
+   // QSqlDatabase::removeDatabase(data_base.connectionName());
 }

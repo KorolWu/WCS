@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    device->move(300,150);
 
     DataBaseUnit::GetInstance()->openDB();
+
 }
 
 MainWindow::~MainWindow()
@@ -30,6 +31,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeWms()
 {
+    DataBaseUnit::GetInstance()->closeDb();
     this->close();
 }
 
@@ -75,7 +77,7 @@ void MainWindow::initUI()
     p_treeView->setFixedSize(desk_rect.width()/7-5,desk_rect.height()/10*9-5);
     p_treeStandarModel = new QStandardItemModel(p_treeView);
     p_treeView->setModel(p_treeStandarModel);
-    p_treeView->setFont(QFont("宋体",11));
+    p_treeView->setFont(QFont("宋体",12));
     p_treeView->header()->hide();
     p_treeView->setEditTriggers(0);
     p_standarItem = new QStandardItem("用户管理");
@@ -112,39 +114,50 @@ void MainWindow::initUI()
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWms);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
-//  QVBoxLayout * mainv = new QVBoxLayout();
-//  p_main_widget->setLayout(mainv);
-    //增加货架管理信息的界面
+   //增加货架管理信息的界面
    m_pstoreWg = new StoreInfoWidget(p_main_widget);
    m_pstoreWg->hide();
 }
 
+void MainWindow::deleteChildrenList()
+{
+    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
+    if(list.size() == 0)
+        return;
+    foreach (BaseFrom* w, list) {
+        w->hide();
+        //w = nullptr;
+        w->deleteLater();
+    }
+}
+
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
+    deleteChildrenList();
     int row_index = index.row();
     QString row_name = index.data().toString();
     if(row_name == "权限管理")
     {
-        //qDebug()<<"handle 权限管理...";
+        qDebug()<<"handle 权限管理...";
     }
     else if(row_name == "小车管理")
     {
-       // qDebug()<<"handle 小车管理...";
-//        AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-//        car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-//        car_from->show();
+        qDebug()<<"handle 小车管理...";
+        AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        car_from->show();
     }
     else if(row_name == "货架管理")
     {
+
         m_pstoreWg->show();
     }
     else if(row_name == "电梯管理")
     {
-//        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-//        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-//        elevator->show();
+        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        elevator->show();
     }
-
 }
 
 void MainWindow::slotlogin()
@@ -156,5 +169,3 @@ void MainWindow::slotlogin()
         user_btn->setText(tr("admin"));
     }
 }
-
-

@@ -19,6 +19,7 @@ public:
     explicit AddDevice(QWidget *parent = 0);
 
 signals:
+    void insert_emit();
 private:
     QWidget *w;
     QLineEdit *deviceNum;
@@ -32,6 +33,7 @@ private:
     QVBoxLayout *vbox;
     AddDeviceStu deviceStruct;
     void addDevices();
+    void cancelDevice();
 };
 
 #endif // ADDDEVICE_H

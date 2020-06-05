@@ -9,6 +9,15 @@
 #include <QLineEdit>
 #include <QLabel>
 #include <From/adddevice.h>
+#include <QAbstractItemModel>
+#include <QModelIndex>
+#include <QVariant>
+#include <From/CarStatusFrom.h>
+#include <From/labeldelegate.h>
+#include <From/progressbardelegate.h>
+#include <From/basefrom.h>
+#include <QTableView>
+#include <QSqlTableModel>
 /**
  *
  * @author korol
@@ -16,7 +25,7 @@
  * @date 2020-06-01 16:02:59
  * use 小车硬件信息显示
  */
-class AgvForm : public QWidget
+class AgvForm : public BaseFrom
 {
     Q_OBJECT
 public:
@@ -26,13 +35,17 @@ signals:
 
 public slots:
     void onAddClicked();
+    void tableRowClicked();
+    void refreshTable();
 private:
-    QTableView *p_table_widget;
+    QTableView *p_table_view;
     QPushButton *p_add_btn;
     QPushButton *p_delete_btn;
     QPushButton *p_export_btn;
     QPushButton *p_query_btn;
     QLineEdit *p_input_text;
+    CarStatusFrom *p_car_info;
+    QSqlTableModel *model;
 };
 
 #endif // AGVFORM_H

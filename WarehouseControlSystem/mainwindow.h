@@ -13,6 +13,7 @@
 #include <UnitClass/databaseunit.h>
 #include <From/agvform.h>
 #include <From/elevatorfrom.h>
+#include <From/basefrom.h>
 #include "From/StorePosInfo/storeinfowidget.h"
 
 namespace Ui {
@@ -45,6 +46,7 @@ private:
     QWidget *p_main_widget;
     void closeWms();
     void initUI();
+    void deleteChildrenList();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();

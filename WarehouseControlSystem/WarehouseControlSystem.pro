@@ -33,6 +33,10 @@ SOURCES += main.cpp\
     From/agvform.cpp \
     From/elevatorfrom.cpp\
 UnitClass/logininfowg.cpp \
+    From/labeldelegate.cpp \
+    From/basefrom.cpp \
+    From/progressbardelegate.cpp \
+    From/lineeditdelegate.cpp\
     From/StorePosInfo/storeinfowidget.cpp \
     From/StorePosInfo/storenbrinfotablemodel.cpp \
     From/StorePosInfo/storenbrtableview.cpp \
@@ -52,7 +56,11 @@ HEADERS  += mainwindow.h \
     From/StorePosInfo/storeinfowidget.h \
     From/StorePosInfo/storenbrinfotablemodel.h \
     From/StorePosInfo/storenbrtableview.h \
-    From/StorePosInfo/buttondelegate.h
+    From/StorePosInfo/buttondelegate.h\
+    From/labeldelegate.h \
+    From/basefrom.h \
+    From/progressbardelegate.h \
+    From/lineeditdelegate.h
 
 FORMS    += mainwindow.ui
 

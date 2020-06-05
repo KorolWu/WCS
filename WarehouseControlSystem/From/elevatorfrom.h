@@ -8,6 +8,9 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
+#include <From/basefrom.h>
+#include <QDebug>
+#include <QSpinBox>
 /**
  *
  * @author korol
@@ -15,7 +18,7 @@
  * @date 2020-06-01 16:02:59
  * use 小车硬件信息显示
  */
-class ElevatorFrom : public QWidget
+class ElevatorFrom : public BaseFrom
 {
     Q_OBJECT
 public:
@@ -26,7 +29,7 @@ signals:
 public slots:
     void onAddClicked();
 private:
-    QTableWidget *p_table_widget;
+    QTableView *p_table_widget;
     QPushButton *p_add_btn;
     QPushButton *p_delete_btn;
     QPushButton *p_export_btn;

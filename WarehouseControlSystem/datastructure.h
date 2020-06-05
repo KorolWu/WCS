@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QSize>
 #include <QObject>
+#include <QDebug>
 typedef struct _Car_status
 {
     //小车编号

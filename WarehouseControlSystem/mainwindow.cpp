@@ -20,7 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
 //    AddDevice *device = new AddDevice(this);
 //    device->move(300,150);
 
-    //DataBaseUnit::GetInstance()->openDB();
+    DataBaseUnit::GetInstance()->openDB();
+
 }
 
 MainWindow::~MainWindow()
@@ -30,6 +31,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeWms()
 {
+    DataBaseUnit::GetInstance()->closeDb();
     this->close();
 }
 
@@ -114,8 +116,21 @@ void MainWindow::initUI()
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
 }
 
+void MainWindow::deleteChildrenList()
+{
+    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
+    if(list.size() == 0)
+        return;
+    foreach (BaseFrom* w, list) {
+        w->hide();
+        //w = nullptr;
+        w->deleteLater();
+    }
+}
+
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
+    deleteChildrenList();
     int row_index = index.row();
     QString row_name = index.data().toString();
     if(row_name == "权限管理")

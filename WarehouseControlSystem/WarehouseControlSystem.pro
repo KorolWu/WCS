@@ -32,7 +32,11 @@ SOURCES += main.cpp\
     UnitClass/databaseunit.cpp \
     From/agvform.cpp \
     From/elevatorfrom.cpp\
-UnitClass/logininfowg.cpp
+UnitClass/logininfowg.cpp \
+    From/labeldelegate.cpp \
+    From/basefrom.cpp \
+    From/progressbardelegate.cpp \
+    From/lineeditdelegate.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -44,7 +48,11 @@ HEADERS  += mainwindow.h \
     UnitClass/databaseunit.h \
     From/agvform.h \
     From/elevatorfrom.h\
- UnitClass/logininfowg.h
+ UnitClass/logininfowg.h \
+    From/labeldelegate.h \
+    From/basefrom.h \
+    From/progressbardelegate.h \
+    From/lineeditdelegate.h
 
 FORMS    += mainwindow.ui
 

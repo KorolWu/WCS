@@ -13,6 +13,7 @@
 #include <UnitClass/databaseunit.h>
 #include <From/agvform.h>
 #include <From/elevatorfrom.h>
+#include <From/basefrom.h>
 
 namespace Ui {
 class MainWindow;
@@ -44,6 +45,7 @@ private:
     QWidget *p_main_widget;
     void closeWms();
     void initUI();
+    void deleteChildrenList();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();

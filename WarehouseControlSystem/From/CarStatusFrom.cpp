@@ -8,6 +8,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
 
 
    // this->move(desktop.width()-PAD_X-20,desktop.height()-PAD_Y-20);
+    this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
     back_lab->resize(PAD_X,PAD_Y);
@@ -63,7 +64,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     b->setStyleSheet("color:white");
     b->move(450,line1_y);
 
-    this->setStyleSheet("QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+   // this->setStyleSheet("QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     table = new QTableWidget(this);
     table->setColumnCount(4);    //设置列数
     table->setRowCount(4);        //设置行数/

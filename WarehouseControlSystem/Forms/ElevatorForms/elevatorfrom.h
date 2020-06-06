@@ -8,7 +8,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
-#include <From/basefrom.h>
+#include <Forms/basefrom.h>
 #include <QDebug>
 #include <QSpinBox>
 /**

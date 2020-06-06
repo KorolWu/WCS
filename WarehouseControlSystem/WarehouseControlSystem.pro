@@ -27,40 +27,42 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
-    From/CarStatusFrom.cpp \
-    From/adddevice.cpp \
     UnitClass/databaseunit.cpp \
-    From/agvform.cpp \
-    From/elevatorfrom.cpp\
-UnitClass/logininfowg.cpp \
-    From/labeldelegate.cpp \
-    From/basefrom.cpp \
-    From/progressbardelegate.cpp \
-    From/lineeditdelegate.cpp\
-    From/StorePosInfo/storeinfowidget.cpp \
-    From/StorePosInfo/storenbrinfotablemodel.cpp \
-    From/StorePosInfo/storenbrtableview.cpp \
-    From/StorePosInfo/buttondelegate.cpp
+    UnitClass/logininfowg.cpp \
+    Forms/basefrom.cpp \
+    Forms/CarForms/adddevice.cpp \
+    Forms/CarForms/agvform.cpp \
+    Forms/CarForms/CarStatusFrom.cpp \
+    Forms/CarForms/labeldelegate.cpp \
+    Forms/CarForms/progressbardelegate.cpp \
+    Forms/ElevatorForms/elevatorfrom.cpp \
+    Forms/ElevatorForms/lineeditdelegate.cpp \
+    Forms/StorePosInfo/buttondelegate.cpp \
+    Forms/StorePosInfo/storeinfowidget.cpp \
+    Forms/StorePosInfo/storenbrinfotablemodel.cpp \
+    Forms/StorePosInfo/storenbrtableview.cpp
+
+
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
     datastructure.h \
-    From/CarStatusFrom.h \
-    From/adddevice.h \
     UnitClass/databaseunit.h \
-    From/agvform.h \
-    From/elevatorfrom.h\
- UnitClass/logininfowg.h \
-    From/StorePosInfo/storeinfowidget.h \
-    From/StorePosInfo/storenbrinfotablemodel.h \
-    From/StorePosInfo/storenbrtableview.h \
-    From/StorePosInfo/buttondelegate.h\
-    From/labeldelegate.h \
-    From/basefrom.h \
-    From/progressbardelegate.h \
-    From/lineeditdelegate.h
+    UnitClass/logininfowg.h \
+    Forms/basefrom.h \
+    Forms/CarForms/adddevice.h \
+    Forms/CarForms/agvform.h \
+    Forms/CarForms/CarStatusFrom.h \
+    Forms/CarForms/labeldelegate.h \
+    Forms/CarForms/progressbardelegate.h \
+    Forms/ElevatorForms/elevatorfrom.h \
+    Forms/ElevatorForms/lineeditdelegate.h \
+    Forms/StorePosInfo/buttondelegate.h \
+    Forms/StorePosInfo/storeinfowidget.h \
+    Forms/StorePosInfo/storenbrinfotablemodel.h \
+    Forms/StorePosInfo/storenbrtableview.h
 
 FORMS    += mainwindow.ui
 

@@ -1,7 +1,7 @@
 #include "elevatorfrom.h"
 #include <QHeaderView>
 #include <QIcon>
-#include <From/labeldelegate.h>
+#include <Forms/CarForms/labeldelegate.h>
 #include <QStandardItemModel>
 #include "From/StorePosInfo/buttondelegate.h"
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)

@@ -8,14 +8,14 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QLabel>
-#include <From/adddevice.h>
+#include <Forms/CarForms/adddevice.h>
 #include <QAbstractItemModel>
 #include <QModelIndex>
 #include <QVariant>
-#include <From/CarStatusFrom.h>
-#include <From/labeldelegate.h>
-#include <From/progressbardelegate.h>
-#include <From/basefrom.h>
+#include <Forms/CarForms/CarStatusFrom.h>
+#include <Forms/CarForms/labeldelegate.h>
+#include <Forms/CarForms/progressbardelegate.h>
+#include <Forms/basefrom.h>
 #include <QTableView>
 #include <QSqlTableModel>
 /**

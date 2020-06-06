@@ -124,7 +124,6 @@ void MainWindow::deleteChildrenList()
         return;
     foreach (BaseFrom* w, list) {
         w->hide();
-        //w = nullptr;
         w->deleteLater();
     }
 }

@@ -2,19 +2,19 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <From/CarStatusFrom.h>
+#include <Forms/CarForms/CarStatusFrom.h>
 #include <QRect>
 #include <QLabel>
 #include <QPushButton>
 #include <QTreeView>
 #include <QStandardItemModel>
 #include <QStandardItem>
-#include <From/adddevice.h>
+#include <Forms/CarForms/adddevice.h>
 #include <UnitClass/databaseunit.h>
-#include <From/agvform.h>
-#include <From/elevatorfrom.h>
-#include <From/basefrom.h>
-#include "From/StorePosInfo/storeinfowidget.h"
+#include <Forms/CarForms/agvform.h>
+#include <Forms/ElevatorForms/elevatorfrom.h>
+#include <Forms/basefrom.h>
+#include "Forms/StorePosInfo/storeinfowidget.h"
 
 namespace Ui {
 class MainWindow;

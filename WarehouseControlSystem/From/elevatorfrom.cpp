@@ -3,6 +3,7 @@
 #include <QIcon>
 #include <From/labeldelegate.h>
 #include <QStandardItemModel>
+#include "From/StorePosInfo/buttondelegate.h"
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     p_add_btn = new QPushButton("添加",this);
@@ -35,8 +36,11 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->setModel(model);
 
 
+ p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegate *delegate = new LabelDelegate();
     p_table_view->setItemDelegateForColumn(1,delegate);
+   // ButtonDelegate *opbytn  = ButtonDelegate(this);
+    //  p_table_view->setItemDelegateForColumn(8,delegate);
     QStringList header;
     header<<"编号"<<"状态"<<"类型"<<"通讯地址"<<"位置"<<"靠近点位置"<<"当前层"<<"目标层"<<"操作按钮";
     //p_table_view->setHorizontalHeaderLabels(header);
@@ -45,7 +49,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
 
-    p_table_view->setColumnWidth(0,width/20*1);
+   p_table_view ->setColumnWidth(0,width/20*1);
     p_table_view->setColumnWidth(1,width/20*2);
     p_table_view->setColumnWidth(2,width/20*3);
     p_table_view->setColumnWidth(3,width/20*3);
@@ -54,13 +58,14 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->setColumnWidth(5,width/20*2);
     p_table_view->setColumnWidth(6,width/20*2);
     p_table_view->horizontalHeader()->setMinimumHeight(40);
-
-
     // is online and status is a part of struct elevator
-    for(int i = 0;i < 9; i++)
-    {
-     model->setItem(0,i,new QStandardItem("virtual"));
-    }
+//    for(int i = 0;i < 9; i++)
+//    {
+//        QStandardItem *item = new QStandardItem("virtual");
+//        Qt::ItemFlags  flag = Qt::ItemIsEnabled | Qt::ItemIsSelectable  ;
+//      item->setFlags(flag);
+//     model->setItem(0,i,item);
+//    }
     int row_count = model->rowCount();
 
     for (int j = 0; j < row_count; j++)

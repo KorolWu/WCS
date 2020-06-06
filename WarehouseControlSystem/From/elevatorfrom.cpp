@@ -27,33 +27,33 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
 
 
-    p_table_widget = new QTableView(this);
-    p_table_widget->move(5,60);
-    p_table_widget->verticalHeader()->hide();
-    p_table_widget->resize(width,height);
+    p_table_view = new QTableView(this);
+    p_table_view->move(5,60);
+    p_table_view->verticalHeader()->hide();
+    p_table_view->resize(width,height);
     QStandardItemModel *model = new QStandardItemModel(10,9);
-    p_table_widget->setModel(model);
+    p_table_view->setModel(model);
 
 
     LabelDelegate *delegate = new LabelDelegate();
-    p_table_widget->setItemDelegateForColumn(1,delegate);
+    p_table_view->setItemDelegateForColumn(1,delegate);
     QStringList header;
     header<<"编号"<<"状态"<<"类型"<<"通讯地址"<<"位置"<<"靠近点位置"<<"当前层"<<"目标层"<<"操作按钮";
-    //p_table_widget->setHorizontalHeaderLabels(header);
+    //p_table_view->setHorizontalHeaderLabels(header);
     for(int i = 0 ;i <header.size();i++)
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
 
-    p_table_widget->setColumnWidth(0,width/20*1);
-    p_table_widget->setColumnWidth(1,width/20*2);
-    p_table_widget->setColumnWidth(2,width/20*3);
-    p_table_widget->setColumnWidth(3,width/20*3);
+    p_table_view->setColumnWidth(0,width/20*1);
+    p_table_view->setColumnWidth(1,width/20*2);
+    p_table_view->setColumnWidth(2,width/20*3);
+    p_table_view->setColumnWidth(3,width/20*3);
 
-    p_table_widget->setColumnWidth(4,width/20*2);
-    p_table_widget->setColumnWidth(5,width/20*2);
-    p_table_widget->setColumnWidth(6,width/20*2);
-    p_table_widget->horizontalHeader()->setMinimumHeight(40);
+    p_table_view->setColumnWidth(4,width/20*2);
+    p_table_view->setColumnWidth(5,width/20*2);
+    p_table_view->setColumnWidth(6,width/20*2);
+    p_table_view->horizontalHeader()->setMinimumHeight(40);
 
 
     // is online and status is a part of struct elevator
@@ -68,12 +68,12 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         QSpinBox *spinBox = new QSpinBox();
         spinBox->setMinimum(1);
         spinBox->setMaximum(12);
-        p_table_widget->setIndexWidget(model->index(j,7), spinBox);
+        p_table_view->setIndexWidget(model->index(j,7), spinBox);
     }
     qDebug()<<"the model count :"<<row_count;
 
 
-   //p_table_widget->setFont(QFont("宋体",26)); //设置字体
+   //p_table_view->setFont(QFont("宋体",26)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}");
 
 }

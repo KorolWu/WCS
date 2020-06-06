@@ -29,7 +29,7 @@ signals:
 public slots:
     void onAddClicked();
 private:
-    QTableView *p_table_widget;
+    QTableView *p_table_view;
     QPushButton *p_add_btn;
     QPushButton *p_delete_btn;
     QPushButton *p_export_btn;

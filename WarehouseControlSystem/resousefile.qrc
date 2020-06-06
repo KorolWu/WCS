@@ -27,5 +27,8 @@
         <file>Image/import.png</file>
         <file>Image/Edit.png</file>
         <file>Image/btndelete.png</file>
+        <file>Image/tasks.png</file>
+        <file>Image/all_tasks.png</file>
+        <file>Image/current_tasks.png</file>
     </qresource>
 </RCC>

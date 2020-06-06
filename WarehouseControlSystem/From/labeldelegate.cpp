@@ -65,7 +65,6 @@ void LabelDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     else
         painter->setBrush(QColor(250,0,0));
     painter->drawRect( option.rect.x()+2, option.rect.y()+2, option.rect.width()-4, option.rect.height()-4 );
-//    painter->setPen(Qt::black);
     painter->setFont(QFont("Arial", 10));
     painter->drawText(option.rect.x()+2, option.rect.y()+2, option.rect.width()-4, option.rect.height()-4, Qt::AlignCenter, str);
 }

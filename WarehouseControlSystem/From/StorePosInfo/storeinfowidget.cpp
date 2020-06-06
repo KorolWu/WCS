@@ -40,8 +40,11 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 
     m_pquenbrBtn = new QPushButton(tr("查询仓位编号"),this);
     m_pquenbrBtn->setIcon(QIcon(":/resouse/Image/Search.png"));
+    m_pquenbrBtn->setStyleSheet("background-color:rgba(150,255,150,255);");
     pbtnLayout->addWidget(m_pquenbrBtn);
     connect(m_pquenbrBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotquenbrinfo);
+
+
 
     m_pImportBtn = new QPushButton(tr("导入"),this);
     m_pImportBtn->setIcon(QIcon(":/resouse/Image/import.png"));
@@ -101,8 +104,9 @@ void StoreInfoWidget::slotBatchDelnbrinfo()
 ///
 /// \brief StoreInfoWidget::slotquenbrinfo
 ///
-void StoreInfoWidget::slotquenbrinfo()
+void StoreInfoWidget::slotquenbrinfo() //查询信息
 {
+emit signalFindNbrInfo();
 
 }
 ///

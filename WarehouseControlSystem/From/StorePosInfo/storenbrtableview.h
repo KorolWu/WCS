@@ -23,14 +23,14 @@ signals:
     void signalEditRowData(int row);
      void signalDelRowData(int row);
 private:
-    StorenbrInfoTablemodel *m_ptablemodel;
-   QList<QStringList> m_nbrList;
-   // QWidget interface
-   //public slots:
-   // virtual void setVisible(bool visible);
-   //public:
-   // virtual QSize sizeHint() const;
-   // virtual QSize minimumSizeHint() const;
+     StorenbrInfoTablemodel *m_ptablemodel;
+     QList<QStringList> m_nbrList;
+     //QWidget interface
+     //public slots:
+     //virtual void setVisible(bool visible);
+     //public:
+     // virtual QSize sizeHint() const;
+     // virtual QSize minimumSizeHint() const;
 };
 
 #endif // STORENBRTABLEVIEW_H

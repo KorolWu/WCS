@@ -1,0 +1,61 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include <From/CarStatusFrom.h>
+#include <QRect>
+#include <QLabel>
+#include <QPushButton>
+#include <QTreeView>
+#include <QStandardItemModel>
+#include <QStandardItem>
+#include <From/adddevice.h>
+#include <UnitClass/databaseunit.h>
+#include <From/agvform.h>
+#include <From/elevatorfrom.h>
+<<<<<<< HEAD
+#include "From/StorePosInfo/storeinfowidget.h"
+=======
+#include <From/basefrom.h>
+>>>>>>> d1926354441027d7140a731bdb1eca9321e40679
+
+namespace Ui {
+class MainWindow;
+}
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    explicit MainWindow(QWidget *parent = 0);
+    ~MainWindow();
+
+private:
+    Ui::MainWindow *ui;
+    CarStatusFrom *f;
+    QRect desk_rect;
+
+    //treewidget
+    QWidget *treewidget;
+    QStandardItemModel *p_treeStandarModel;
+    QStandardItem *p_standarItem;
+    QStandardItem *p_userItem;
+    QStandardItem *p_agvItem;
+    QStandardItem *p_elevator;
+    QTreeView *p_treeView;
+    QPushButton *exit_btn;
+    QPushButton *user_btn;
+    QWidget *p_main_widget;
+    void closeWms();
+    void initUI();
+    void deleteChildrenList();
+private slots:
+    void onTreeviewClicked(const QModelIndex &index);
+    void  slotlogin();
+
+private:
+    StoreInfoWidget *m_pstoreWg;
+};
+
+#endif // MAINWINDOW_H

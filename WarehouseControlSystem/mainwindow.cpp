@@ -133,7 +133,7 @@ void MainWindow::deleteChildrenList()
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
-    deleteChildrenList();
+  //  deleteChildrenList();
     int row_index = index.row();
     QString row_name = index.data().toString();
     if(row_name == "权限管理")
@@ -142,21 +142,20 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "小车管理")
     {
-        qDebug()<<"handle 小车管理...";
-        AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        car_from->show();
+//        qDebug()<<"handle 小车管理...";
+//        AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+//        car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+//        car_from->show();
     }
     else if(row_name == "货架管理")
     {
-
         m_pstoreWg->show();
     }
     else if(row_name == "电梯管理")
     {
-        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        elevator->show();
+//        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+//        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+//        elevator->show();
     }
 }
 

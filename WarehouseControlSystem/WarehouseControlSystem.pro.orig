@@ -31,11 +31,19 @@ SOURCES += main.cpp\
     From/adddevice.cpp \
     UnitClass/databaseunit.cpp \
     From/agvform.cpp \
+    From/elevatorfrom.cpp\
+UnitClass/logininfowg.cpp \
 <<<<<<< HEAD
-    UnitClass/logininfowg.cpp
+    From/StorePosInfo/storeinfowidget.cpp \
+    From/StorePosInfo/storenbrinfotablemodel.cpp \
+    From/StorePosInfo/storenbrtableview.cpp \
+    From/StorePosInfo/buttondelegate.cpp
 =======
-    From/elevatorfrom.cpp
->>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
+    From/labeldelegate.cpp \
+    From/basefrom.cpp \
+    From/progressbardelegate.cpp \
+    From/lineeditdelegate.cpp
+>>>>>>> d1926354441027d7140a731bdb1eca9321e40679
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -46,11 +54,19 @@ HEADERS  += mainwindow.h \
     From/adddevice.h \
     UnitClass/databaseunit.h \
     From/agvform.h \
+    From/elevatorfrom.h\
+ UnitClass/logininfowg.h \
 <<<<<<< HEAD
-    UnitClass/logininfowg.h
+    From/StorePosInfo/storeinfowidget.h \
+    From/StorePosInfo/storenbrinfotablemodel.h \
+    From/StorePosInfo/storenbrtableview.h \
+    From/StorePosInfo/buttondelegate.h
 =======
-    From/elevatorfrom.h
->>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
+    From/labeldelegate.h \
+    From/basefrom.h \
+    From/progressbardelegate.h \
+    From/lineeditdelegate.h
+>>>>>>> d1926354441027d7140a731bdb1eca9321e40679
 
 FORMS    += mainwindow.ui
 

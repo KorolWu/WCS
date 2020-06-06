@@ -8,7 +8,7 @@ StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->setFrameShape(QFrame::NoFrame);
-    this->setStyleSheet("QTableView {alternate-background-color: rgb(230, 230, 230);}");//设置交替颜色样式
+    this->setStyleSheet("QTableView {alternate-background-color: rgb(200,200, 200);}");//设置交替颜色样式
     this->setAlternatingRowColors(true);
     connect(m_ptablemodel,&StorenbrInfoTablemodel::signalCheckDatachanged,this,&StorenbrTableView::SlotCheckstatChanged);
 }
@@ -66,7 +66,6 @@ void StorenbrTableView::SlotCheckstatChanged(int row, bool check)
     else {
 
     }
-
 }
 ///
 /// \brief StorenbrTableView::SlotEditBtnClicked

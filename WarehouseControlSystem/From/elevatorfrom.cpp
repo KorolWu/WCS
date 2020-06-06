@@ -71,8 +71,6 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         p_table_widget->setIndexWidget(model->index(j,7), spinBox);
     }
     qDebug()<<"the model count :"<<row_count;
-
-
    //p_table_widget->setFont(QFont("宋体",26)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}");
 

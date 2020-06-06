@@ -25,6 +25,8 @@ private slots:
     void  slotBatchDelnbrinfo();
     void  slotquenbrinfo();
     void slotImportnbrinfo();
+signals:
+    void signalFindNbrInfo();
 private:
     MapStorePosInfoStru m_stroreposmap; //数据信息
     StorenbrTableView *m_ptableview;

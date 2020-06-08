@@ -1,8 +1,10 @@
 #include "storenbrtableview.h"
 #include "buttondelegate.h"
+#include "From/labeldelegate.h"
 StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
 {
-    m_ptablemodel = new StorenbrInfoTablemodel();
+      m_ptablemodel = new StorenbrInfoTablemodel();
+     this->setEditTriggers(QAbstractItemView::NoEditTriggers);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->verticalHeader()->hide();
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
@@ -37,7 +39,7 @@ void StorenbrTableView::SetTableHeaderData(QStringList datalist, int columncnt)
        ButtonDelegate* opbtsBoxDelegate = new ButtonDelegate(this);
        connect(opbtsBoxDelegate,&ButtonDelegate::signalEditButtonClicked,this,&StorenbrTableView::SlotEditBtnClicked);
        connect(opbtsBoxDelegate,&ButtonDelegate::signalDeleteButtonClicked,this,&StorenbrTableView::SlotDelBtnClicked);
-       //在第二列，第四列，添加combobox代理
+       //在最后一列添加操作按钮
        this->setItemDelegateForColumn(columncnt-1, opbtsBoxDelegate);
 }
 ///

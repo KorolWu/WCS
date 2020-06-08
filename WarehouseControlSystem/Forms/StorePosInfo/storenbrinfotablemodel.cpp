@@ -72,7 +72,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
     {
         int row = index.row();
         int column = index.column();
-        if(column == 0)
+        if(column == 0 || column == 3 )
             return "";
        return m_storenbrList->at(row).at(column);
     }
@@ -161,7 +161,11 @@ Qt::ItemFlags StorenbrInfoTablemodel::flags(const QModelIndex &index) const
   {
       return (Qt::ItemIsEnabled|Qt::ItemIsSelectable |Qt::ItemIsUserCheckable );
   }
-  Qt::ItemFlags  flag = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+//  if( index.column() == 3)
+//  {
+//     return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable );
+//  }
+  Qt::ItemFlags  flag = Qt::ItemIsEnabled | Qt::ItemIsSelectable  ;
     return flag;
 }
 

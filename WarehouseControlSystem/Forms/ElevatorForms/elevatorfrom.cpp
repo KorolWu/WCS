@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <Forms/CarForms/labeldelegate.h>
 #include <QStandardItemModel>
-#include "From/StorePosInfo/buttondelegate.h"
+
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     p_add_btn = new QPushButton("添加",this);
@@ -67,7 +67,6 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
 //     model->setItem(0,i,item);
 //    }
     int row_count = model->rowCount();
-
     for (int j = 0; j < row_count; j++)
     {
         QSpinBox *spinBox = new QSpinBox();
@@ -76,8 +75,6 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         p_table_view->setIndexWidget(model->index(j,7), spinBox);
     }
     qDebug()<<"the model count :"<<row_count;
-
-
    //p_table_view->setFont(QFont("宋体",26)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}");
 

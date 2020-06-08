@@ -7,6 +7,8 @@
 #include <QLineEdit>
 #include "datastructure.h"
 #include "Forms/StorePosInfo/storenbrtableview.h"
+#include <QStringList>
+#include "watingdialogwg.h"
 
 class StoreInfoWidget  : public QWidget
 {
@@ -25,9 +27,16 @@ private slots:
     void  slotBatchDelnbrinfo();
     void  slotquenbrinfo();
     void slotImportnbrinfo();
+public slots:
+    void SlotDelSinglerow(QString nbrinfo );
+   void  SlotBatchDelData(QStringList nbrlist);
+signals:
+    void signalfindinfo(QString nbrinfo,int clomun);
+    void signalBatchDel();
 private:
     MapStorePosInfoStru m_stroreposmap; //数据信息
     StorenbrTableView *m_ptableview;
+
 };
 
 #endif // STOREINFOWIDGET_H

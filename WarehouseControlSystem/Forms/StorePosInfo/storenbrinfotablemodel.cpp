@@ -72,7 +72,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
     {
         int row = index.row();
         int column = index.column();
-        if(column == 0 || column == 3 )
+        if(column == 0 )
             return "";
        return m_storenbrList->at(row).at(column);
     }

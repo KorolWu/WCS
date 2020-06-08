@@ -36,9 +36,9 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
 
 
     LabelDelegate *delegate = new LabelDelegate();
-    p_table_view->setItemDelegateForColumn(1,delegate);
+    p_table_view->setItemDelegateForColumn(8,delegate);
     QStringList header;
-    header<<"编号"<<"状态"<<"类型"<<"通讯地址"<<"位置"<<"靠近点位置"<<"当前层"<<"目标层"<<"操作按钮";
+    header<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"当前层"<<"目标层"<<"位置"<<"状态"<<"操作按钮";
     //p_table_view->setHorizontalHeaderLabels(header);
     for(int i = 0 ;i <header.size();i++)
     {
@@ -62,13 +62,14 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
      model->setItem(0,i,new QStandardItem("virtual"));
     }
     int row_count = model->rowCount();
-
+    //table row count is up to elevator count
     for (int j = 0; j < row_count; j++)
     {
         QSpinBox *spinBox = new QSpinBox();
-        spinBox->setMinimum(1);
+        spinBox->setMinimum(0);
         spinBox->setMaximum(12);
-        p_table_view->setIndexWidget(model->index(j,7), spinBox);
+        spinBox->setValue(0);
+        p_table_view->setIndexWidget(model->index(j,5), spinBox);
     }
     qDebug()<<"the model count :"<<row_count;
 
@@ -80,5 +81,11 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
 
 void ElevatorFrom::onAddClicked()
 {
-
+    QStringList list;
+    list<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置";
+    AddElevatorForm *elevator = new AddElevatorForm(list,this);
+    elevator->setContent(list);
+    QRect r = QApplication::desktop()->availableGeometry();
+    elevator->move(r.width()/2-elevator->width(),r.height()/2-elevator->height());
+    elevator->show();
 }

@@ -11,6 +11,7 @@
 #include <Forms/basefrom.h>
 #include <QDebug>
 #include <QSpinBox>
+#include "Forms/ElevatorForms/addelevatorform.h"
 /**
  *
  * @author korol

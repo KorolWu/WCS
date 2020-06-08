@@ -40,7 +40,9 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/buttondelegate.cpp \
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
-    Forms/StorePosInfo/storenbrtableview.cpp
+    Forms/StorePosInfo/storenbrtableview.cpp \
+    Forms/ElevatorForms/addelevatorform.cpp \
+    Forms/dialogabstractclass.cpp
 
 
 
@@ -62,7 +64,9 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/buttondelegate.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
-    Forms/StorePosInfo/storenbrtableview.h
+    Forms/StorePosInfo/storenbrtableview.h \
+    Forms/ElevatorForms/addelevatorform.h \
+    Forms/dialogabstractclass.h
 
 FORMS    += mainwindow.ui
 

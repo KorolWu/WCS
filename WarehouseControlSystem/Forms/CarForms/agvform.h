@@ -18,6 +18,7 @@
 #include <Forms/basefrom.h>
 #include <QTableView>
 #include <QSqlTableModel>
+#include <datastructure.h>
 /**
  *
  * @author korol
@@ -35,6 +36,7 @@ signals:
 
 public slots:
     void onAddClicked();
+    void onDeleteClicked();
     void tableRowClicked();
     void refreshTable();
 private:

@@ -14,6 +14,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
     p_add_btn->move(5,15);
     p_delete_btn= new QPushButton("删除",this);
     p_delete_btn->setIcon(QIcon(":/resouse/Image/delete.png"));
+    connect(p_delete_btn,&QPushButton::clicked,this,&AgvForm::onDeleteClicked);
     p_delete_btn->move(100,15);
     p_export_btn= new QPushButton("导出",this);
     p_export_btn->move(200,15);
@@ -31,7 +32,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
 
 
     p_table_view = new QTableView(this);//18,7,
-    connect(p_table_view,&QTableView::clicked,this,&AgvForm::tableRowClicked);
+    connect(p_table_view,&QTableView::doubleClicked,this,&AgvForm::tableRowClicked);
     p_table_view->move(5,60);
     p_table_view->verticalHeader()->hide();
     p_table_view->resize(width,height);
@@ -88,6 +89,18 @@ void AgvForm::onAddClicked()
     //qDebug()<<r.width()/2-d->width()/2<<","<<(r.height()-d->height()/2)<<"main-width:"<<r.height()<<"d-width"<<d->height();
     d->show();
 
+}
+
+void AgvForm::onDeleteClicked()
+{
+    int row_index = p_table_view->currentIndex().row();
+    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
+    QVariant data = model->data(index);
+    int Id = data.toInt();
+    QString sql_str = QString("DELETE FROM t_device_info WHERE id = '%1'").arg(Id);
+    bool result = DataBaseUnit::GetInstance()->queryUseStr(sql_str);
+    model->select();
+    qDebug()<<"crrunt id is:"<<Id<< "query result :"<<result;
 }
 
 void AgvForm::tableRowClicked()

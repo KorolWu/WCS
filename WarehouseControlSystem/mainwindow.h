@@ -40,6 +40,8 @@ private:
     QStandardItem *p_userItem;
     QStandardItem *p_agvItem;
     QStandardItem *p_elevator;
+    QStandardItem *p_all_tasks;
+    QStandardItem *p_current_tasks;
     QTreeView *p_treeView;
     QPushButton *exit_btn;
     QPushButton *user_btn;

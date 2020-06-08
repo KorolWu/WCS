@@ -105,6 +105,17 @@ void MainWindow::initUI()
     p_standarItem->setIcon(QIcon(":/resouse/Image/log.png"));
     p_treeStandarModel->appendRow(p_standarItem);
 
+    p_standarItem = new QStandardItem("任务管理");
+    p_standarItem->setIcon(QIcon(":/resouse/Image/tasks.png"));
+    p_all_tasks = new QStandardItem("全部任务");
+    p_all_tasks->setIcon(QIcon(":/resouse/Image/all_tasks.png"));
+    p_standarItem->appendRow(p_all_tasks);
+
+    p_current_tasks = new QStandardItem("当前任务");
+    p_current_tasks->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
+    p_standarItem->appendRow(p_current_tasks);
+    p_treeStandarModel->appendRow(p_standarItem);
+
 
     user_btn = new QPushButton("用户",this);
     user_btn->setIcon(QIcon(":/resouse/Image/user.png"));

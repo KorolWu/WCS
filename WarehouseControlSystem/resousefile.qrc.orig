@@ -20,11 +20,20 @@
         <file>Image/add.png</file>
         <file>Image/delete.png</file>
         <file>Image/download.png</file>
-<<<<<<< HEAD
         <file>Image/loginpasswd.png</file>
         <file>Image/loginyusername.png</file>
-=======
         <file>Image/elevator.png</file>
->>>>>>> 2dc977f20fc341c328d98941c3e3653dafcb2558
+        <file>Image/Search.png</file>
+        <file>Image/import.png</file>
+        <file>Image/Edit.png</file>
+        <file>Image/btndelete.png</file>
+<<<<<<< HEAD
+        <file>Image/waiting.gif</file>
+        <file>Image/wainting2.gif</file>
+=======
+        <file>Image/tasks.png</file>
+        <file>Image/all_tasks.png</file>
+        <file>Image/current_tasks.png</file>
+>>>>>>> 5114c88d89a8e4a4205d5944b04d498ea4bca885
     </qresource>
 </RCC>

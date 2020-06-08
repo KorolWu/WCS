@@ -9,7 +9,7 @@ QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#TARGET = WarehouseControlSystem
+TARGET = WarehouseControlSystem
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
     Forms/StorePosInfo/storenbrtableview.cpp \
-    Forms/StorePosInfo/watingdialogwg.cpp
+    Forms/StorePosInfo/watingdialogwg.cpp\
+    Forms/ElevatorForms/addelevatorform.cpp \
+    Forms/dialogabstractclass.cpp
 
 
 
@@ -65,7 +67,9 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
     Forms/StorePosInfo/storenbrtableview.h \
-    Forms/StorePosInfo/watingdialogwg.h
+    Forms/StorePosInfo/watingdialogwg.h \
+    Forms/ElevatorForms/addelevatorform.h \
+    Forms/dialogabstractclass.h
 
 FORMS    += mainwindow.ui
 

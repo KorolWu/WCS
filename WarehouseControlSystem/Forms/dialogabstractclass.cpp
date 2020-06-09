@@ -48,6 +48,12 @@ void DialogAbstractClass::CreatUi()
         m_edit_list.append(edit);
         m_vbox->addItem(m_hbox);
     }
+    m_err_lab = new QLabel();
+    m_hbox = new QHBoxLayout();
+    m_hbox->addSpacing(50);
+    m_err_lab->setStyleSheet("color:red");
+    m_hbox->addWidget(m_err_lab);
+    m_vbox->addItem(m_hbox);
     m_hbox = new QHBoxLayout();
     m_hbox->addSpacing(50);
     m_yesbtn = new QPushButton("Ok");

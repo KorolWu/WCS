@@ -15,7 +15,9 @@
 #include <Forms/ElevatorForms/elevatorfrom.h>
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
-
+#include "Myconfig.h"
+#include <../SDK/include/MysqlDataBase/readtabledata.h>
+#include <../SDK/include/MysqlDataBase/crudbaseoperation.h>
 namespace Ui {
 class MainWindow;
 }
@@ -49,6 +51,7 @@ private:
     void closeWms();
     void initUI();
     void deleteChildrenList();
+    void getParameterFromDB();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();

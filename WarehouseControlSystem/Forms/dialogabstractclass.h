@@ -30,6 +30,8 @@ public:
     QStringList getContent();
     void setContent(const QStringList &list);
     QStringList m_list;
+    //yes_btn info for user
+    QLabel *m_err_lab;
 
 signals:
 

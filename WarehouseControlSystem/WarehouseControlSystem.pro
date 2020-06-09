@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
     Forms/StorePosInfo/storenbrtableview.cpp \
     Forms/ElevatorForms/addelevatorform.cpp \
-    Forms/dialogabstractclass.cpp
+    Forms/dialogabstractclass.cpp \
+    Forms/CarForms/addcar.cpp
 
 
 
@@ -66,8 +67,12 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
     Forms/StorePosInfo/storenbrtableview.h \
     Forms/ElevatorForms/addelevatorform.h \
-    Forms/dialogabstractclass.h
+    Forms/dialogabstractclass.h \
+    Forms/CarForms/addcar.h
 
+INCLUDEPATH += ../SDK/include/
+LIBS += -L../SDK/lib -lCRUDBaseOperation
+LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui
 
 RESOURCES += \

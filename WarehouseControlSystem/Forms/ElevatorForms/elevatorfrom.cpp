@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <Forms/CarForms/labeldelegate.h>
 #include <QStandardItemModel>
-#include "From/StorePosInfo/buttondelegate.h"
+#include "Forms/StorePosInfo/buttondelegate.h"
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     p_add_btn = new QPushButton("添加",this);
@@ -36,7 +36,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->setModel(model);
 
 
- p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegate *delegate = new LabelDelegate();
     p_table_view->setItemDelegateForColumn(8,delegate);
     QStringList header;
@@ -59,7 +59,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     // is online and status is a part of struct elevator
     for(int i = 0;i < 9; i++)
     {
-     model->setItem(0,i,new QStandardItem("virtual"));
+
     }
     int row_count = model->rowCount();
     //table row count is up to elevator count

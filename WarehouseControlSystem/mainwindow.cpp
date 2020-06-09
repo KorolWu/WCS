@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 //    AddDevice *device = new AddDevice(this);
 //    device->move(300,150);
 
-    DataBaseUnit::GetInstance()->openDB();
+//    DataBaseUnit::GetInstance()->openDB();
+    CRUDBaseOperation::getInstance()->openDB();
+    getParameterFromDB();
 
 }
 
@@ -137,6 +139,13 @@ void MainWindow::deleteChildrenList()
         w->hide();
         w->deleteLater();
     }
+}
+
+void MainWindow::getParameterFromDB()
+{
+    ReadTableData r;
+    r.readt_device_info();
+    qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)

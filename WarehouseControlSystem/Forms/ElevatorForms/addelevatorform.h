@@ -10,6 +10,9 @@
 #include <QDesktopWidget>
 #include <QIcon>
 #include "../dialogabstractclass.h"
+#include "../SDK/include/datastructure.h"
+#include "../SDK/include/Myconfig.h"
+#include "../../SDK/include/MysqlDataBase/crudbaseoperation.h"
 /**
  *
  * @author korol
@@ -24,7 +27,7 @@ public:
     explicit AddElevatorForm(const QStringList &list,QWidget *parent = 0);
 
 signals:
-
+    void insert_emit();
 public slots:
 
     // DialogAbstractClass interface

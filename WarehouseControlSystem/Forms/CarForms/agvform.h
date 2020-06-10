@@ -37,8 +37,8 @@ public:
     void setTableViewValue();
 
 signals:
-
 public slots:
+    void onEditClicked();
     void onAddClicked();
     void onDeleteClicked();
     void tableRowClicked();
@@ -53,6 +53,7 @@ private:
     QLineEdit *p_input_text;
     CarStatusFrom *p_car_info;
     QStandardItemModel *model;
+    QPushButton *p_edit_btn;
 };
 
 #endif // AGVFORM_H

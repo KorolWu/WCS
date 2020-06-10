@@ -33,17 +33,16 @@ SOURCES += main.cpp\
     Forms/CarForms/adddevice.cpp \
     Forms/CarForms/agvform.cpp \
     Forms/CarForms/CarStatusFrom.cpp \
-    Forms/CarForms/labeldelegate.cpp \
     Forms/CarForms/progressbardelegate.cpp \
     Forms/ElevatorForms/elevatorfrom.cpp \
-    Forms/ElevatorForms/lineeditdelegate.cpp \
     Forms/StorePosInfo/buttondelegate.cpp \
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
     Forms/StorePosInfo/storenbrtableview.cpp \
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
-    Forms/CarForms/addcar.cpp
+    Forms/CarForms/addcar.cpp \
+    Forms/CarForms/labeldelegate.cpp
 
 
 
@@ -51,7 +50,6 @@ HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
-    datastructure.h \
     UnitClass/databaseunit.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
@@ -61,7 +59,6 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/labeldelegate.h \
     Forms/CarForms/progressbardelegate.h \
     Forms/ElevatorForms/elevatorfrom.h \
-    Forms/ElevatorForms/lineeditdelegate.h \
     Forms/StorePosInfo/buttondelegate.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \

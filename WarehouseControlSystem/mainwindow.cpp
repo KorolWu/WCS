@@ -145,6 +145,7 @@ void MainWindow::getParameterFromDB()
 {
     ReadTableData r;
     r.readt_device_info();
+    r.readt_elevator();
     qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 

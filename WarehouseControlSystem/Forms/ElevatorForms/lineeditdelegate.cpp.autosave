@@ -1,4 +1,4 @@
-#include "lineeditdelegate.h"
+#include "Buttondelegate.h"
 
 LineEditDelegate::LineEditDelegate(QWidget *parent):
     QItemDelegate(parent)

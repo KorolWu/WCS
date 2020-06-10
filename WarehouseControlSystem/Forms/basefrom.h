@@ -7,6 +7,7 @@ class BaseFrom:public QWidget
 {
 public:
     BaseFrom(QWidget *parent);
+    int getClickIndex(QString str);
 };
 
 #endif // BASEFROM_H

@@ -17,5 +17,6 @@ public:
 public:
     //carinfo <car_ip,car_info>
     QMap<QString,CarInfoStru> m_CarMap;
+    QMap<QString,ElevatorInfoStru> m_elevatorMap;
 };
 #endif

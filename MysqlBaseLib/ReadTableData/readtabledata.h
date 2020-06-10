@@ -12,6 +12,7 @@ class READTABLEDATASHARED_EXPORT ReadTableData
 public:
     ReadTableData();
     void readt_device_info();
+    void readt_elevator();
 };
 
 #endif // READTABLEDATA_H

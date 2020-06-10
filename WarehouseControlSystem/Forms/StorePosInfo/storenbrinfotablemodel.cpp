@@ -1,7 +1,8 @@
 #include "storenbrinfotablemodel.h"
 #include <QDebug>
 
-StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QAbstractTableModel(parent)
+
+StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QSqlTableModel(parent)
 {
     m_columncount = 0 ;
     m_headerlist.clear();
@@ -74,7 +75,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         int column = index.column();
         if(column == 0 )
             return "";
-       return m_storenbrList->at(row).at(column);
+       return m_storenbrList->at(row).at(column);;
     }
     else if (role == Qt::CheckStateRole)
     {
@@ -82,7 +83,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         int column = index.column();
         if(column == 0)
         {
-            QString checkstr = m_storenbrList->at(row).at(column);
+          QString checkstr = m_storenbrList->at(row).at(column);
             bool check = false;
             if(checkstr == "1")
             {
@@ -136,9 +137,9 @@ bool StorenbrInfoTablemodel::setData(const QModelIndex &index, const QVariant &v
     }
     return false;
 }
-///
-/// \brief StorenbrInfoTablemodel::headerData
-/// \param section
+/////
+///// \brief StorenbrInfoTablemodel::headerData
+///// \param section
 /// \param orientation 表格 横向  纵向
 /// \param role 角色
 /// \return
@@ -161,10 +162,6 @@ Qt::ItemFlags StorenbrInfoTablemodel::flags(const QModelIndex &index) const
   {
       return (Qt::ItemIsEnabled|Qt::ItemIsSelectable |Qt::ItemIsUserCheckable );
   }
-//  if( index.column() == 3)
-//  {
-//     return (Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable );
-//  }
   Qt::ItemFlags  flag = Qt::ItemIsEnabled | Qt::ItemIsSelectable  ;
     return flag;
 }

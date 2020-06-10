@@ -32,5 +32,6 @@
         <file>Image/tasks.png</file>
         <file>Image/all_tasks.png</file>
         <file>Image/current_tasks.png</file>
+        <file>Image/exportfile.png</file>
     </qresource>
 </RCC>

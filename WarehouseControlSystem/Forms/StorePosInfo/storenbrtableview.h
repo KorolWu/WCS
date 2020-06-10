@@ -15,6 +15,9 @@ public:
 public:
     void SetTableHeaderData(QStringList datalist,int columncnt);
     void setModeldatalist(QList<QStringList>& list);
+     StorenbrInfoTablemodel * GetStoretablemodel(){
+         return m_ptablemodel;
+     }
 public slots:
     void SlotCheckstatChanged(int row, bool check);
     void SlotEditBtnClicked(int row,int column);

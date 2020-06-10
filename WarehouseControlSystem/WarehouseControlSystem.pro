@@ -44,7 +44,9 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/storenbrtableview.cpp \
     Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
-    Forms/dialogabstractclass.cpp
+    Forms/dialogabstractclass.cpp \
+    Forms/StorePosInfo/localfileoperate.cpp
+
 
 
 
@@ -69,7 +71,9 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storenbrtableview.h \
     Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
-    Forms/dialogabstractclass.h
+    Forms/dialogabstractclass.h \
+    Forms/StorePosInfo/localfileoperate.h
+
 
 FORMS    += mainwindow.ui
 

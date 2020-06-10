@@ -22,14 +22,19 @@ private:
     QLineEdit *m_pnbrlineEdit;
     QPushButton *m_pquenbrBtn;
     QPushButton *m_pImportBtn;
+    QPushButton *m_pExportBtn;
 private slots:
     void slotaddnbrinfo();
     void  slotBatchDelnbrinfo();
     void  slotquenbrinfo();
     void slotImportnbrinfo();
+    void slotExportnbrinfo();
+private:
+    void  Dataselectfromdatabase();
+    void  DelDataBaseInfo(QStringList nbrlist);
 public slots:
     void SlotDelSinglerow(QString nbrinfo );
-   void  SlotBatchDelData(QStringList nbrlist);
+    void  SlotBatchDelData(QStringList nbrlist);
 signals:
     void signalfindinfo(QString nbrinfo,int clomun);
     void signalBatchDel();

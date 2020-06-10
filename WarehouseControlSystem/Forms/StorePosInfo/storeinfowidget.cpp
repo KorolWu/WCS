@@ -9,8 +9,9 @@
 #include <QMessageBox>
 #include <QEventLoop>
 #include <QTimer>
-
-
+#include "UnitClass/databaseunit.h"
+#include <QFileDialog>
+#include "localfileoperate.h"
 
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {
@@ -54,7 +55,13 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     m_pImportBtn->setIcon(QIcon(":/resouse/Image/import.png"));
     pbtnLayout->addWidget(m_pImportBtn);
     connect(m_pImportBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotImportnbrinfo);
+
+    m_pExportBtn = new QPushButton(tr("导出"),this);
+    m_pExportBtn->setIcon(QIcon(":/resouse/Image/exportfile.png"));
+    pbtnLayout->addWidget(m_pExportBtn);
+    connect(m_pExportBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotExportnbrinfo);
     pbtnLayout->addStretch();
+
      //添加table表头
     m_ptableview = new StorenbrTableView();
     m_ptableview->resize(parent->width(),parent->height());
@@ -76,25 +83,10 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     connect(m_ptableview,&StorenbrTableView::SignalBatchDel,this,&StoreInfoWidget::SlotBatchDelData);
     //数据假测试进行测试
     QStringList strTypeList;
-    strTypeList<<tr("选择")<<tr("序号")<<tr("仓位编号")
+    strTypeList<<tr("选择")<</*tr("序号")<<*/tr("仓位编号")
               <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级")<<tr("操作");
     m_ptableview->SetTableHeaderData(strTypeList,strTypeList.size());
-    //数据测试时效果图
-    QStringList strlist;
-    strlist<<tr("0")<<tr("0")<<tr("abcdef")
-                  <<tr("大")<<tr("3456")<<tr("789")<<tr("8999")<<tr("cdfh")<<tr("占用")<<tr("9")<<tr("操作");
-    QStringList strlist1;
-    strlist1<<tr("0")<<tr("0")<<tr("abc")
-                  <<tr("大")<<tr("3456")<<tr("789")<<tr("8999")<<tr("cdfh")<<tr("占用")<<tr("9")<<tr("操作");
-    QStringList strlist2;
-    strlist2<<tr("0")<<tr("0")<<tr("2333")
-                  <<tr("大")<<tr("3456")<<tr("789")<<tr("8999")<<tr("cdfh")<<tr("占用")<<tr("9")<<tr("操作");
-    QList<QStringList> list;
-    list.append(strlist);
-    list.append(strlist1);
-    list.append(strlist);
-    list.append(strlist2);
-    m_ptableview->setModeldatalist(list);
+    Dataselectfromdatabase();
     this->resize(parent->size());
 }
 ///
@@ -109,7 +101,7 @@ StoreInfoWidget::~StoreInfoWidget()
 }
 ///
 /// \brief StoreInfoWidget::slotaddnbrinfo
-///
+/// 添加编号信息数据框
 void StoreInfoWidget::slotaddnbrinfo()
 {
 
@@ -143,9 +135,96 @@ void StoreInfoWidget::slotImportnbrinfo()
     ///1.读取数据进行插入
     /// 2.保存到数据库 内存数据与数据库保持 一致
     /// 3.改变内存的方式
-     //ESC
-    WatingDialogWg dialogwg;
-     dialogwg.exec(); //加载3s结束
+   QMessageBox::information(this, tr("导入数据"),tr("会覆盖原有数据"), tr("确定"));
+    QFileDialog* fd = new QFileDialog(this);
+    QString fileName = fd->getOpenFileName(this,tr("Open File"),"/home",tr("Excel(*.csv)"));
+    if(fileName == "")
+          return;
+   LocalFileOperate fileob;
+   fileob.ReadFileData(fileName);
+   QString exportfileName = QFileDialog::getSaveFileName(this, tr("Excel file"), qApp->applicationDirPath (),
+                                           tr("Files (*.csv)"));
+   if (exportfileName.isEmpty())
+       return;
+}
+///
+/// \brief StoreInfoWidget::slotExportnbrinfo
+/// 数据库表格的数据进行导出操作
+void StoreInfoWidget::slotExportnbrinfo()
+{
+    QString exportfileName = QFileDialog::getSaveFileName(this, tr("Excel file"), qApp->applicationDirPath (),
+                                            tr("Files (*.csv)"));
+    if (exportfileName.isEmpty())
+        return;
+   QList<QStringList> datalist;
+   LocalFileOperate fileob;
+   if(fileob.WriteFileData(datalist,exportfileName))
+  {
+       QMessageBox::information(this, tr("导出数据成功"), tr("信息已保存在%1！").arg(exportfileName), tr("确定"));
+   }
+}
+///
+/// \brief StoreInfoWidget::Dataselectfromdatabase
+///
+void StoreInfoWidget::Dataselectfromdatabase()
+{
+           //读数据库表格
+       m_stroreposmap.storeposInfoMap.clear();//添加 数据库的内容映射到结构体中
+        QList<QStringList> list;
+        QString tablename = "t_storeposinfo";
+        QString selectsql = QString("select * from %1").arg(tablename);
+       QSqlQuery query =  DataBaseUnit::GetInstance()->queryDb(selectsql);
+        QMap<QString,StorePosInfoStru> storeposInfoMap;
+       while (query.next()) {
+            StorePosInfoStru stru ;
+           QStringList strlist;
+           strlist.append("0");
+           QByteArray bytearrayid;
+           //= query.value("id").toByteArray();
+         //  strlist.append(QString::number(bytearrayid.toInt()));
+           bytearrayid = query.value("idNbr").toByteArray();
+           strlist.append(QString(bytearrayid));
+           memcpy(stru.idnbr,bytearrayid,bytearrayid.size());
+           bytearrayid = query.value("type").toByteArray();
+            stru.type = bytearrayid.toInt();
+           strlist.append(QString(bytearrayid));
+           bytearrayid = query.value("coordx").toByteArray();
+           stru.coordx = bytearrayid.toDouble();
+           strlist.append(QString(bytearrayid));
+           bytearrayid = query.value("coordy").toByteArray();
+           stru.coordy = bytearrayid.toDouble();
+           strlist.append(QString(bytearrayid));
+           bytearrayid = query.value("coordz").toByteArray();
+           stru.coordz = bytearrayid.toDouble();
+           strlist.append(QString(bytearrayid));
+           bytearrayid = query.value("boxnbr").toByteArray();
+           memcpy(stru.boxnbr,bytearrayid,bytearrayid.size());
+           strlist.append(QString(bytearrayid));
+          bytearrayid= query.value("storestat").toByteArray();
+            stru.storestat =bytearrayid.toInt();
+           strlist.append((QString(bytearrayid)));
+           bytearrayid = query.value("storepri").toByteArray();
+           stru.storepri = bytearrayid.toInt();
+           strlist.append(QString(bytearrayid));
+            m_stroreposmap.storeposInfoMap.insert(QString(stru.idnbr),stru);
+           list.append(strlist);
+       }
+       m_ptableview->setModeldatalist(list);
+}
+
+void StoreInfoWidget::DelDataBaseInfo(QStringList nbrlist)
+{
+    QString tablename = "t_storeposinfo";
+    for(int i = 0 ; i < nbrlist.size(); ++i)
+    {
+        if(m_stroreposmap.storeposInfoMap.contains(nbrlist[i]))
+        {
+            m_stroreposmap.storeposInfoMap.remove(nbrlist[i]);
+        }
+            //调用数据库进行删除操作 ，删除的操作语句
+          QString   sql = QString("delete from %1 Where idNbr = '%2'").arg(tablename).arg(nbrlist[i]);
+           DataBaseUnit::GetInstance()->queryDb(sql);
+    }
 }
 ///
 /// \brief StoreInfoWidget::SlotDelSinglerow
@@ -153,11 +232,9 @@ void StoreInfoWidget::slotImportnbrinfo()
 ///表格中删除按钮
 void StoreInfoWidget::SlotDelSinglerow(QString nbrinfo)
 {
-    if(m_stroreposmap.storeposInfoMap.contains(nbrinfo))
-    {
-        m_stroreposmap.storeposInfoMap.remove(nbrinfo);
-    }
-    //更新数据库内容进行删除操作
+   QStringList list;
+   list.append(nbrinfo);
+   DelDataBaseInfo(list);
 }
 ///
 /// \brief StoreInfoWidget::SlotBatchDelData
@@ -165,14 +242,6 @@ void StoreInfoWidget::SlotDelSinglerow(QString nbrinfo)
 ///批量删除数据库中编号信息
 void StoreInfoWidget::SlotBatchDelData(QStringList nbrlist)
 {
-    for(int i = 0 ; i < nbrlist.size(); ++i)
-    {
-        if(m_stroreposmap.storeposInfoMap.contains(nbrlist[i]))
-        {
-            m_stroreposmap.storeposInfoMap.remove(nbrlist[i]);
-        }
-    }
-    //调用数据库进行删除操作 ，删除的操作语句
-
+    DelDataBaseInfo(nbrlist);
 }
 

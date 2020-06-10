@@ -4,6 +4,10 @@
 StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
 {
     m_ptablemodel = new StorenbrInfoTablemodel();
+//    m_ptablemodel->setTable("t_storeposinfo");
+//    m_ptablemodel->select();
+//    m_ptablemodel->insertColumn(0);
+
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->verticalHeader()->hide();
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
@@ -29,7 +33,7 @@ void StorenbrTableView::SetTableHeaderData(QStringList datalist, int columncnt)
 {
        m_ptablemodel->SetTableHeader(datalist);
        m_ptablemodel->SetColumncnt(datalist.size());
-       this->setModel(m_ptablemodel);
+        this->setModel(m_ptablemodel);
        int nColumWidth = this->width() / columncnt;
        for(int i = 0; i < datalist.count(); i++)
        {
@@ -95,7 +99,7 @@ void StorenbrTableView::SlotDelBtnClicked(int row, int column)
     m_nbrList.removeAt(row);
     QString nbrinfo = m_nbrList[row].at(column);
     emit signalDelRowData(nbrinfo);
-     m_ptablemodel->refrush();
+    m_ptablemodel->refrush();
 }
 
 ///
@@ -147,7 +151,7 @@ void StorenbrTableView::SlotBatchDeltableInfo()
     {
          //发送批量删除信号
             emit SignalBatchDel(delnbrlist);
-            m_ptablemodel->refrush();
+           m_ptablemodel->refrush();
     }
  }
 

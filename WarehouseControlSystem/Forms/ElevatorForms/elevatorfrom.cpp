@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <Forms/CarForms/labeldelegate.h>
 #include <QStandardItemModel>
-#include "From/StorePosInfo/buttondelegate.h"
+#include "Forms/StorePosInfo/buttondelegate.h"
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     p_add_btn = new QPushButton("添加",this);

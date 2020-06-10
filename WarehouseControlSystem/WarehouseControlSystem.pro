@@ -45,8 +45,8 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
-    Forms/StorePosInfo/localfileoperate.cpp
-
+    Forms/StorePosInfo/localfileoperate.cpp \
+    Forms/CarForms/addcar.cpp
 
 
 
@@ -72,9 +72,12 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
-    Forms/StorePosInfo/localfileoperate.h
+    Forms/StorePosInfo/localfileoperate.h \
+    Forms/CarForms/addcar.h
 
-
+INCLUDEPATH += ../SDK/include/
+LIBS += -L../SDK/lib -lCRUDBaseOperation
+LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui
 
 RESOURCES += \

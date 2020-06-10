@@ -83,10 +83,8 @@ void AddDevice::addDevices()
     deviceStruct.port = port->text().toInt();
     deviceStruct.deviceType = deviceType->text();
     deviceStruct.remarks = remarks->text();
-    QStringList names{"deviceNum","deviceIp","devicePort","deviceType","remarks"};
-    QStringList values{deviceStruct.deviceNum,deviceStruct.deviceIp,QString(deviceStruct.port),deviceStruct.deviceType,deviceStruct.remarks};
+
     QString sql = QString("INSERT t_device_info SET deviceNum = '%1',deviceIp = '%1',devicePort = '%2',deviceType = '%3',remarks = '%4';").arg(deviceStruct.deviceNum).arg(deviceStruct.deviceIp).arg(deviceStruct.port).arg(deviceStruct.deviceType);
-    qDebug()<<sql;
     if(DataBaseUnit::GetInstance()->queryUseStr(sql))
     {
         // the same id,same ip

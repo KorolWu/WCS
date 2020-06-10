@@ -31,7 +31,7 @@ private:
     QPushButton *calenBtn;
     QHBoxLayout *hbox;
     QVBoxLayout *vbox;
-    AddDeviceStu deviceStruct;
+    CarInfoStru deviceStruct;
     void addDevices();
     void cancelDevice();
 };

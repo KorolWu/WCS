@@ -9,7 +9,7 @@ QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-#TARGET = WarehouseControlSystem
+TARGET = WarehouseControlSystem
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -42,12 +42,15 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
     Forms/StorePosInfo/storenbrtableview.cpp \
-<<<<<<< HEAD
-    Forms/StorePosInfo/watingdialogwg.cpp
-=======
+    Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
-    Forms/dialogabstractclass.cpp
->>>>>>> 5114c88d89a8e4a4205d5944b04d498ea4bca885
+    Forms/dialogabstractclass.cpp \
+<<<<<<< HEAD
+    Forms/StorePosInfo/localfileoperate.cpp
+
+=======
+    Forms/CarForms/addcar.cpp
+>>>>>>> c853983e102ef9dd170be34e0fc2810564508520
 
 
 
@@ -70,13 +73,19 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
     Forms/StorePosInfo/storenbrtableview.h \
-<<<<<<< HEAD
-    Forms/StorePosInfo/watingdialogwg.h
-=======
+    Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
-    Forms/dialogabstractclass.h
->>>>>>> 5114c88d89a8e4a4205d5944b04d498ea4bca885
+    Forms/dialogabstractclass.h \
+<<<<<<< HEAD
+    Forms/StorePosInfo/localfileoperate.h
 
+=======
+    Forms/CarForms/addcar.h
+>>>>>>> c853983e102ef9dd170be34e0fc2810564508520
+
+INCLUDEPATH += ../SDK/include/
+LIBS += -L../SDK/lib -lCRUDBaseOperation
+LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui
 
 RESOURCES += \

@@ -40,13 +40,9 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
    p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
    p_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-//    QSqlQueryModel *model = new QSqlQueryModel;
-//    model->setQuery("select *from t_device_info;");
-//    model->query();
-//    p_table_view->setModel(model);
-    model = new QSqlTableModel();
-    model->setTable("t_device_info");
-    model->select();
+    model = new QStandardItemModel(4,7);
+//    model->setTable("t_device_info");
+//    model->select();
     p_table_view->setModel(model);
     p_table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -73,20 +69,45 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
     p_table_view->horizontalHeader()->setMinimumHeight(40);
     p_table_view->setFont(QFont("宋体",12)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}QProgressBar{color:red}");
-//    int row_count = model->rowCount();
-//    for (int i = 0;i < row_count;i++)
-//    {
-
-//    }
+    setTableViewValue();
 }
 
+void AgvForm::setTableViewValue()
+{
+    int row_count = Myconfig::GetInstance()->m_CarMap.size();
+    for(int j = 0; j< 7 ;j++)
+    {
+        auto it = Myconfig::GetInstance()->m_CarMap.begin();
+        for(int i = 0;i<row_count;i++)
+        {
+
+            if(j == 0)
+                model->setItem(i,j,new QStandardItem(QString("%1").arg(i)));
+            else if(j == 1)
+                model->setItem(i,j,new QStandardItem(it.value().deviceNum));
+            else if(j == 2)
+                model->setItem(i,j,new QStandardItem(it.value().deviceIp));
+            else if(j == 3)
+                model->setItem(i,j,new QStandardItem(QString("%1").arg(it.value().port)));
+            else if(j == 4)
+                model->setItem(i,j,new QStandardItem(it.value().deviceType));
+            else if(j == 5)
+                model->setItem(i,j,new QStandardItem(QString("%1").arg(i+i*10+10)));
+            else if(j == 6)
+                model->setItem(i,j,new QStandardItem("在线"));
+            it ++;
+        }
+    }
+}
 void AgvForm::onAddClicked()
 {
     QRect r = QApplication::desktop()->availableGeometry();
-    AddDevice * d = new AddDevice();
-    connect(d,&AddDevice::insert_emit,this,&AgvForm::refreshTable);
-    d->move(r.width()/2-d->width()/2,(r.height()-d->height())/2);
-    //qDebug()<<r.width()/2-d->width()/2<<","<<(r.height()-d->height()/2)<<"main-width:"<<r.height()<<"d-width"<<d->height();
+//    AddDevice * d = new AddDevice();
+    QStringList list;
+    list <<"设备编号"<<"设备IP"<<"端口"<<"设备类型"<<"说明";
+    AddCar *d = new AddCar(list,this);
+    connect(d,&AddCar::insert_emit,this,&AgvForm::refreshTable);
+    d->move(r.width()/2-d->width(),r.height()/2-d->height());
     d->show();
 
 }
@@ -99,7 +120,7 @@ void AgvForm::onDeleteClicked()
     int Id = data.toInt();
     QString sql_str = QString("DELETE FROM t_device_info WHERE id = '%1'").arg(Id);
     bool result = DataBaseUnit::GetInstance()->queryUseStr(sql_str);
-    model->select();
+    //model->select();
     qDebug()<<"crrunt id is:"<<Id<< "query result :"<<result;
 }
 
@@ -137,8 +158,10 @@ void AgvForm::tableRowClicked()
 
 void AgvForm::refreshTable()
 {
-    //model->database().commit();
-    //model->setTable("t_device_info");
-    //model->submitAll();
-    model->select();
+    //model->select();
+}
+
+int AgvForm::randomValue()
+{
+
 }

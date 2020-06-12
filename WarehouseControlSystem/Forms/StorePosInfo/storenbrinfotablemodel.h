@@ -10,7 +10,7 @@
 #include <QStyledItemDelegate>
 #include <QSqlTableModel>
 
-class StorenbrInfoTablemodel : public  QSqlTableModel // QAbstractTableModel // ,
+class StorenbrInfoTablemodel : public  QAbstractTableModel  /*QSqlTableModel*/
 {
     Q_OBJECT
 public:

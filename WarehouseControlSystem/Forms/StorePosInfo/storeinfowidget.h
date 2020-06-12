@@ -9,6 +9,7 @@
 #include "Forms/StorePosInfo/storenbrtableview.h"
 #include <QStringList>
 #include "watingdialogwg.h"
+#include <MysqlDataBase/readtabledata.h>
 
 class StoreInfoWidget  : public QWidget
 {
@@ -31,16 +32,18 @@ private slots:
     void slotExportnbrinfo();
 private:
     void  Dataselectfromdatabase();
-    void  DelDataBaseInfo(QStringList nbrlist);
+    void  DelDataBaseInfo(  QList<QVariant> nbrlist);
+     QList<QStringList> GetdatalistFromstru( QMap<QString,StorePosInfoStru> infoMap);
 public slots:
-    void SlotDelSinglerow(QString nbrinfo );
-    void  SlotBatchDelData(QStringList nbrlist);
+    void  SlotDelSinglerow(QString nbrinfo );
+    void  SlotBatchDelData(  QList<QVariant> nbrlist);
 signals:
     void signalfindinfo(QString nbrinfo,int clomun);
     void signalBatchDel();
 private:
     MapStorePosInfoStru m_stroreposmap; //数据信息
     StorenbrTableView *m_ptableview;
+    ReadTableData m_databaseopob;
 
 };
 

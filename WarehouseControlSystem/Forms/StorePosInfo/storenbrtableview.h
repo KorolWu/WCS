@@ -27,7 +27,7 @@ public slots:
 signals:
     void signalEditRowData(QString nbrinfo);
      void signalDelRowData(QString nbrinfo);
-     void SignalBatchDel(QStringList datalist);
+     void SignalBatchDel(  QList<QVariant> datalist);
 private:
     StorenbrInfoTablemodel *m_ptablemodel;
    QList<QStringList> m_nbrList;

@@ -137,12 +137,12 @@ void StorenbrTableView::SlotFindNbrinfo(QString info,int column )
 /// 记录批量删除状态进行删除表格中的数据
 void StorenbrTableView::SlotBatchDeltableInfo()
 {
-    QStringList delnbrlist;
+    QList<QVariant> delnbrlist;
     foreach(auto item,m_nbrList)
     {
         if (item[0] == "1")
         {
-            delnbrlist.append(item[2] );
+            delnbrlist.append(item[1] );
             m_nbrList.removeOne(item);
         }
     }

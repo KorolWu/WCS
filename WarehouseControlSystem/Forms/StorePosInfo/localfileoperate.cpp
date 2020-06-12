@@ -26,6 +26,11 @@ QList<QStringList> LocalFileOperate::ReadFileData(QString filename)
          QStringList tempbar = tempOption.at(i).split(",");//一行中的单元格以，区分
          if(tempbar.size() >=2)
         {
+             if(tempbar.contains(""))
+             {
+                 listdata.clear();
+                 return listdata;
+             }
              listdata.append(tempbar);
          }
     }
@@ -37,7 +42,7 @@ QList<QStringList> LocalFileOperate::ReadFileData(QString filename)
 /// \param filename
 /// \return
 ///
-bool LocalFileOperate::WriteFileData(QList<QStringList> Datalist, QString filename)
+bool LocalFileOperate::WriteFileData(QList<QStringList> Datalist, QString filename,QStringList tableheadlist)
 {
      //打开.csv文件
      QFile file(filename);
@@ -49,9 +54,11 @@ bool LocalFileOperate::WriteFileData(QList<QStringList> Datalist, QString filena
      }
      QTextStream out(&file);
      //获取数据
-     out << tr("姓名：,") << "WUWENPENG" << ",\n";
-     out << tr("年龄：,") << 18 << ",\n";
-     out << tr("1,") << tr("2,")<< tr("3,") << tr("4,") <<",\n";//表头
+     for(int i = 0; i < tableheadlist.size(); ++i)
+    {
+          out << tableheadlist[i]<<",";
+     }
+       out << "\n";//表头
      //获取表格内容
      for(int i = 0; i < Datalist.size(); i ++)
      {

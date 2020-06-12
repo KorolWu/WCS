@@ -2,7 +2,7 @@
 #include <QDebug>
 
 
-StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QSqlTableModel(parent)
+StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QAbstractTableModel(parent)
 {
     m_columncount = 0 ;
     m_headerlist.clear();

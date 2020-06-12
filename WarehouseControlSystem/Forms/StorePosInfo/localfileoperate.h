@@ -11,7 +11,7 @@ class LocalFileOperate :public QObject
 public:
      LocalFileOperate();
     QList<QStringList> ReadFileData(QString filename);
-    bool WriteFileData(QList<QStringList>  Data,QString filename);
+    bool WriteFileData(QList<QStringList>  Data,QString filename,QStringList tableheadlist);
 };
 
 #endif // LOCALFILEOPERATE_H

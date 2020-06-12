@@ -3,13 +3,15 @@
 #include <QWidget>
 #include "../dialogabstractclass.h"
 #include <QStringList>
-#include "../../datastructure.h"
+#include "../SDK/include/datastructure.h"
+#include "../SDK/include/Myconfig.h"
+#include "../SDK/include/MysqlDataBase/crudbaseoperation.h"
 
 class AddCar:public DialogAbstractClass
 {
     Q_OBJECT
 public:
-    AddCar(const QStringList &list,QWidget *parent);
+    AddCar(const QStringList &list,QString flag ,QWidget *parent);
 
     // DialogAbstractClass interface
 public:

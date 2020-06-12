@@ -13,6 +13,8 @@
 #include <UnitClass/databaseunit.h>
 #include <Forms/CarForms/agvform.h>
 #include <Forms/ElevatorForms/elevatorfrom.h>
+#include "Forms/TaskForms/currenttask.h"
+#include "Forms/TaskForms/alltask.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
 #include "Myconfig.h"

@@ -33,5 +33,9 @@
         <file>Image/all_tasks.png</file>
         <file>Image/current_tasks.png</file>
         <file>Image/exportfile.png</file>
+        <file>Image/up_down_move.png</file>
+        <file>Image/out.png</file>
+        <file>Image/in.png</file>
+        <file>Image/all.png</file>
     </qresource>
 </RCC>

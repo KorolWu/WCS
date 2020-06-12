@@ -40,9 +40,8 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
    p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
    p_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
 
-    model = new QStandardItemModel(4,7);
-//    model->setTable("t_device_info");
-//    model->select();
+   int row_count = Myconfig::GetInstance()->m_CarMap.size();
+    model = new QStandardItemModel(row_count,8);
     p_table_view->setModel(model);
     p_table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -51,8 +50,9 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
     ProgressBarDelegate *delegate_progressBar = new ProgressBarDelegate(this);
     p_table_view->setItemDelegateForColumn(5,delegate_progressBar);
 
+
     QStringList header;
-    header<<"ID"<<"穿梭车编号"<<"通讯地址"<<"端口号"<<"类型"<<"电量"<<"状态"<<"位置"<<"工作模式"<<"运行操作";
+    header<<"ID"<<"穿梭车编号"<<"通讯地址"<<"端口号"<<"类型"<<"电量"<<"状态"<<"编辑"<<"工作模式"<<"运行操作";
     for(int i = 0 ;i <header.size();i++)
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
@@ -65,7 +65,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
 
     p_table_view->setColumnWidth(4,width/20*2);
     p_table_view->setColumnWidth(5,width/20*3);
-    p_table_view->setColumnWidth(6,width/20*3);
+    p_table_view->setColumnWidth(6,width/20*2);
     p_table_view->horizontalHeader()->setMinimumHeight(40);
     p_table_view->setFont(QFont("宋体",12)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}QProgressBar{color:red}");
@@ -98,14 +98,49 @@ void AgvForm::setTableViewValue()
             it ++;
         }
     }
+    //table row count is up to elevator count
+    for (int j = 0; j < row_count; j++)
+    {
+        p_edit_btn = new QPushButton();
+        p_edit_btn->setText("修改");
+        p_edit_btn->setFont(QFont("宋体",11));
+        p_edit_btn->setIcon(QIcon(":/resouse/Image/Edit.png"));
+        p_edit_btn->setObjectName(QString("edit_%1").arg(j));
+        connect(p_edit_btn,&QPushButton::clicked,this,&AgvForm::onEditClicked);
+        p_table_view->setIndexWidget(model->index(j,7),p_edit_btn);
+    }
+}
+
+void AgvForm::onEditClicked()
+{
+    QPushButton *btn =(QPushButton*)sender();
+    QStringList carList;
+    int current_row = getClickIndex(btn->objectName());
+    QModelIndex modelIndex = model->index(current_row,1);
+    QVariant value =  model->data(modelIndex);
+    carList << value.toString();
+    modelIndex = model->index(current_row,2);
+    carList << model->data(modelIndex).toString();
+    modelIndex = model->index(current_row,3);
+    carList << model->data(modelIndex).toString();
+    modelIndex = model->index(current_row,4);
+    carList << model->data(modelIndex).toString()<<" ";
+
+    QStringList labelList;
+    labelList<<"设备编号"<<"设备IP"<<"端口"<<"设备类型"<<"说明";
+    AddCar *d = new AddCar(labelList,"Update",this);
+    connect(d,&AddCar::insert_emit,this,&AgvForm::refreshTable);
+    d->setContent(carList);
+    QRect r = QApplication::desktop()->availableGeometry();
+    d->move(r.width()/2-d->width(),r.height()/2-d->height());
+    d->show();
 }
 void AgvForm::onAddClicked()
 {
     QRect r = QApplication::desktop()->availableGeometry();
-//    AddDevice * d = new AddDevice();
     QStringList list;
     list <<"设备编号"<<"设备IP"<<"端口"<<"设备类型"<<"说明";
-    AddCar *d = new AddCar(list,this);
+    AddCar *d = new AddCar(list,"Insert",this);
     connect(d,&AddCar::insert_emit,this,&AgvForm::refreshTable);
     d->move(r.width()/2-d->width(),r.height()/2-d->height());
     d->show();
@@ -115,13 +150,21 @@ void AgvForm::onAddClicked()
 void AgvForm::onDeleteClicked()
 {
     int row_index = p_table_view->currentIndex().row();
-    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
+    QModelIndex index = model->index(row_index,2);//选中行第一列的内容
     QVariant data = model->data(index);
-    int Id = data.toInt();
-    QString sql_str = QString("DELETE FROM t_device_info WHERE id = '%1'").arg(Id);
+    QString str_ip = data.toString();
+    QString sql_str = QString("DELETE FROM t_device_info WHERE deviceIp = '%1'").arg(str_ip);
     bool result = DataBaseUnit::GetInstance()->queryUseStr(sql_str);
-    //model->select();
-    qDebug()<<"crrunt id is:"<<Id<< "query result :"<<result;
+    QString key_ip = model->data(model->index(row_index,2)).toString();
+    qDebug()<<key_ip;
+    if(Myconfig::GetInstance()->m_CarMap.contains(key_ip))
+    {
+        Myconfig::GetInstance()->m_CarMap.remove(key_ip);
+        model->removeRows(0,model->rowCount());
+        setTableViewValue();
+    }
+
+    qDebug()<<"crrunt id is:"<<key_ip<< "query result :"<<result;
 }
 
 void AgvForm::tableRowClicked()
@@ -158,7 +201,7 @@ void AgvForm::tableRowClicked()
 
 void AgvForm::refreshTable()
 {
-    //model->select();
+    setTableViewValue();
 }
 
 int AgvForm::randomValue()

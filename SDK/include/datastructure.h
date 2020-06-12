@@ -39,6 +39,27 @@ typedef struct _CarInfoStru
     QString remarks = "";
 
 }CarInfoStru;
+typedef struct _ElevatorInfoStru
+{
+    //"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"remarks"
+    QString elevatorNum;
+    QString elevatorType;
+    QString elevatorIp;
+    int     elevatorPort;
+    QString elevatorNearPos;
+    QString elevatorPos;
+    QString remarks;
+    _ElevatorInfoStru()
+    {
+         elevatorNum = "";
+         elevatorType = "";
+         elevatorIp = "";
+         elevatorPort = 0;
+         elevatorNearPos = "";
+         elevatorPos = "";
+         remarks = "";
+    }
+}ElevatorInfoStru;
 //用户登录信息结构体 1字节对齐
 #pragma pack(1)
 typedef struct  _LoginInfoStru {

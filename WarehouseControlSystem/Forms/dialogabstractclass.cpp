@@ -1,9 +1,10 @@
 #include "dialogabstractclass.h"
 
-DialogAbstractClass::DialogAbstractClass(const QStringList &widget_name_list, QWidget *parent):QWidget(parent)
+DialogAbstractClass::DialogAbstractClass(const QStringList &widget_name_list,QString flag, QWidget *parent):QWidget(parent)
 {
     m_vbox = new QVBoxLayout();
     m_list = widget_name_list;
+    m_sql_flag = flag;
     CreatUi();
 }
 

@@ -25,13 +25,15 @@ class DialogAbstractClass : public QWidget
 {
     Q_OBJECT
 public:
-    explicit DialogAbstractClass(const QStringList &widget_name_list,QWidget *parent = 0);
+    explicit DialogAbstractClass(const QStringList &widget_name_list, QString flag="Insert",QWidget *parent = 0);
     //explicit DialogAbstractClass(const QStringList &widget_name_list,const QStringList &value_list,QWidget *parent = 0);
     QStringList getContent();
     void setContent(const QStringList &list);
     QStringList m_list;
     //yes_btn info for user
     QLabel *m_err_lab;
+    //sql flags insert or update
+    QString m_sql_flag;
 
 signals:
 

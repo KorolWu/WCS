@@ -109,7 +109,7 @@ void MainWindow::initUI()
 
     p_standarItem = new QStandardItem("任务管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/tasks.png"));
-    p_all_tasks = new QStandardItem("全部任务");
+    p_all_tasks = new QStandardItem("已完成任务");
     p_all_tasks->setIcon(QIcon(":/resouse/Image/all_tasks.png"));
     p_standarItem->appendRow(p_all_tasks);
 
@@ -175,6 +175,18 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
         elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         elevator->show();
+    }
+    else if(row_name == "当前任务")
+    {
+        CurrentTask *t = new CurrentTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        t->show();
+    }
+    else if(row_name == "已完成任务")
+    {
+        AllTask *t = new AllTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        t->show();
     }
 }
 

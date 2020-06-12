@@ -42,7 +42,9 @@ SOURCES += main.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
     Forms/CarForms/addcar.cpp \
-    Forms/CarForms/labeldelegate.cpp
+    Forms/CarForms/labeldelegate.cpp \
+    Forms/TaskForms/currenttask.cpp \
+    Forms/TaskForms/alltask.cpp
 
 
 
@@ -65,7 +67,9 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storenbrtableview.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
-    Forms/CarForms/addcar.h
+    Forms/CarForms/addcar.h \
+    Forms/TaskForms/currenttask.h \
+    Forms/TaskForms/alltask.h
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

@@ -5,7 +5,7 @@
 LabelDelegate::LabelDelegate(QObject *parent): QStyledItemDelegate(parent)
 {
 
-    qDebug()<<"into delegate";
+
 }
 
 QWidget *LabelDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const

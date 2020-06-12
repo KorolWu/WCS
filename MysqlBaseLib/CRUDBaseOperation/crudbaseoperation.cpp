@@ -8,7 +8,7 @@ CRUDBaseOperation::CRUDBaseOperation()
 bool CRUDBaseOperation::openDB()
 {
     data_base = QSqlDatabase::addDatabase("QMYSQL");
-    data_base.setHostName("192.168.195.221");
+    data_base.setHostName("192.168.188.103");
     data_base.setPort(3306);
     data_base.setDatabaseName("test_dev");
     data_base.setUserName("root");

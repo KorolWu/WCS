@@ -128,18 +128,19 @@ void AgvForm::onEditClicked()
 
     QStringList labelList;
     labelList<<"设备编号"<<"设备IP"<<"端口"<<"设备类型"<<"说明";
-    AddCar *elevator = new AddCar(labelList,this);
-    elevator->setContent(carList);
+    AddCar *d = new AddCar(labelList,"Update",this);
+    connect(d,&AddCar::insert_emit,this,&AgvForm::refreshTable);
+    d->setContent(carList);
     QRect r = QApplication::desktop()->availableGeometry();
-    elevator->move(r.width()/2-elevator->width(),r.height()/2-elevator->height());
-    elevator->show();
+    d->move(r.width()/2-d->width(),r.height()/2-d->height());
+    d->show();
 }
 void AgvForm::onAddClicked()
 {
     QRect r = QApplication::desktop()->availableGeometry();
     QStringList list;
     list <<"设备编号"<<"设备IP"<<"端口"<<"设备类型"<<"说明";
-    AddCar *d = new AddCar(list,this);
+    AddCar *d = new AddCar(list,"Insert",this);
     connect(d,&AddCar::insert_emit,this,&AgvForm::refreshTable);
     d->move(r.width()/2-d->width(),r.height()/2-d->height());
     d->show();
@@ -200,7 +201,6 @@ void AgvForm::tableRowClicked()
 
 void AgvForm::refreshTable()
 {
-    //model->select();
     setTableViewValue();
 }
 

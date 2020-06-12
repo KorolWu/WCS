@@ -60,7 +60,6 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     {
 
     }
-    addControlForTableView();
     p_table_view->setFont(QFont("宋体",12)); //设置字体
     setTableViewValue();
    //p_table_view->setFont(QFont("宋体",26)); //设置字体
@@ -102,7 +101,7 @@ void ElevatorFrom::onAddClicked()
 {
     QStringList list;
     list<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置";
-    AddElevatorForm *elevator = new AddElevatorForm(list,this);
+    AddElevatorForm *elevator = new AddElevatorForm(list,"Insert",this);
     connect(elevator,&AddElevatorForm::insert_emit,this,&ElevatorFrom::refreshTable);
     QRect r = QApplication::desktop()->availableGeometry();
     elevator->move(r.width()/2-elevator->width(),r.height()/2-elevator->height());
@@ -135,7 +134,8 @@ void ElevatorFrom::onEditClicked()
     elevatorList << model->data(modelIndex).toString();
     QStringList labelList;
     labelList<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置";
-    AddElevatorForm *elevator = new AddElevatorForm(labelList,this);
+    AddElevatorForm *elevator = new AddElevatorForm(labelList,"Update",this);
+     connect(elevator,&AddElevatorForm::insert_emit,this,&ElevatorFrom::refreshTable);
     elevator->setContent(elevatorList);
     QRect r = QApplication::desktop()->availableGeometry();
     elevator->move(r.width()/2-elevator->width(),r.height()/2-elevator->height());

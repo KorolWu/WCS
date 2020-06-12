@@ -24,7 +24,7 @@ class AddElevatorForm : public DialogAbstractClass
 {
     Q_OBJECT
 public:
-    explicit AddElevatorForm(const QStringList &list,QWidget *parent = 0);
+    explicit AddElevatorForm(const QStringList &list,QString flag,QWidget *parent = 0);
 
 signals:
     void insert_emit();

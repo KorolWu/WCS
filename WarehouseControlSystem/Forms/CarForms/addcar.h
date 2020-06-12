@@ -11,7 +11,7 @@ class AddCar:public DialogAbstractClass
 {
     Q_OBJECT
 public:
-    AddCar(const QStringList &list,QWidget *parent);
+    AddCar(const QStringList &list,QString flag ,QWidget *parent);
 
     // DialogAbstractClass interface
 public:

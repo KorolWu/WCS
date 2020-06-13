@@ -5,6 +5,8 @@
 #include "datastructure.h"
 #include "Myconfig.h"
 #include <MysqlDataBase/crudbaseoperation.h>
+#include <QMutex>
+#include <QMutexLocker>
 
 class READTABLEDATASHARED_EXPORT ReadTableData
 {

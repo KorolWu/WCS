@@ -27,13 +27,18 @@
         <file>Image/import.png</file>
         <file>Image/Edit.png</file>
         <file>Image/btndelete.png</file>
-<<<<<<< HEAD
         <file>Image/waiting.gif</file>
         <file>Image/wainting2.gif</file>
-=======
         <file>Image/tasks.png</file>
         <file>Image/all_tasks.png</file>
         <file>Image/current_tasks.png</file>
->>>>>>> 5114c88d89a8e4a4205d5944b04d498ea4bca885
+<<<<<<< HEAD
+        <file>Image/exportfile.png</file>
+=======
+        <file>Image/up_down_move.png</file>
+        <file>Image/out.png</file>
+        <file>Image/in.png</file>
+        <file>Image/all.png</file>
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
     </qresource>
 </RCC>

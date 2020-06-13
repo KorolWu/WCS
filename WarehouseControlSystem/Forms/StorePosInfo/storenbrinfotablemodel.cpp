@@ -91,6 +91,15 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
             }
             return check ? Qt::Checked:Qt::Unchecked;
         }
+        else if (role == Qt::BackgroundColorRole)
+        {
+           if(column == 7) //状态列
+           {
+               const QVariant value(data(index,Qt::DisplayRole));
+               return QVariant(QColor(value.toInt()==0?Qt::green:Qt::red));
+
+           }
+        }
     }
     return QVariant();
 }
@@ -110,6 +119,7 @@ bool StorenbrInfoTablemodel::setData(const QModelIndex &index, const QVariant &v
             return false;
         }
         if(column == 0) //索引号变化变更 被选中
+
         {
             //记录索引号对应的 料箱编号信息
             if((role == Qt::CheckStateRole))

@@ -37,7 +37,6 @@ SOURCES += main.cpp\
     Forms/CarForms/labeldelegate.cpp \
     Forms/CarForms/progressbardelegate.cpp \
     Forms/ElevatorForms/elevatorfrom.cpp \
-    Forms/ElevatorForms/lineeditdelegate.cpp \
     Forms/StorePosInfo/buttondelegate.cpp \
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
@@ -45,11 +44,10 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
-    Forms/StorePosInfo/localfileoperate.cpp
+    Forms/StorePosInfo/localfileoperate.cpp\
     Forms/CarForms/addcar.cpp \
-    Forms/CarForms/labeldelegate.cpp \
     Forms/TaskForms/currenttask.cpp \
-    Forms/TaskForms/alltask.cpp
+   Forms/TaskForms/alltask.cpp
 
 
 
@@ -67,7 +65,6 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/labeldelegate.h \
     Forms/CarForms/progressbardelegate.h \
     Forms/ElevatorForms/elevatorfrom.h \
-    Forms/ElevatorForms/lineeditdelegate.h \
     Forms/StorePosInfo/buttondelegate.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
@@ -76,7 +73,7 @@ HEADERS  += mainwindow.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
     Forms/StorePosInfo/localfileoperate.h \
-    Forms/CarForms/addcar.h
+    Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
     Forms/TaskForms/alltask.h
 

@@ -7,13 +7,12 @@ StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
 //    m_ptablemodel->setTable("t_storeposinfo");
 //    m_ptablemodel->select();
 //    m_ptablemodel->insertColumn(0);
-
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->verticalHeader()->hide();
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->setFrameShape(QFrame::NoFrame);
-    this->setStyleSheet("QTableView {alternate-background-color: rgb(230, 230, 230);}");//设置交替颜色样式
+    this->setStyleSheet("QTableView {alternate-background-color: rgb(220, 220, 220);}");//设置交替颜色样式
     this->setAlternatingRowColors(true);
     connect(m_ptablemodel,&StorenbrInfoTablemodel::signalCheckDatachanged,this,&StorenbrTableView::SlotCheckstatChanged);
 }

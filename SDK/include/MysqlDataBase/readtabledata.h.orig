@@ -1,0 +1,23 @@
+#ifndef READTABLEDATA_H
+#define READTABLEDATA_H
+
+#include "readtabledata_global.h"
+#include "../../SDK/include/datastructure.h"
+#include "../../SDK/include/Myconfig.h"
+#include <../../SDK/include/MysqlDataBase/crudbaseoperation.h>
+
+class READTABLEDATASHARED_EXPORT ReadTableData
+{
+
+public:
+    ReadTableData();
+    void readt_device_info();
+<<<<<<< HEAD
+    void ReadStoreposinfoDataBase();
+    bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
+=======
+    void readt_elevator();
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
+};
+
+#endif // READTABLEDATA_H

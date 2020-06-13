@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
+
     initUI();
     _Car_status s;
     s.batter = 70;
@@ -20,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    AddDevice *device = new AddDevice(this);
 //    device->move(300,150);
 
-//    DataBaseUnit::GetInstance()->openDB();
+   // DataBaseUnit::GetInstance()->openDB();
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
 

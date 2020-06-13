@@ -12,9 +12,12 @@ class READTABLEDATASHARED_EXPORT ReadTableData
 public:
     ReadTableData();
     void readt_device_info();
-    void readt_elevator();
+<<<<<<< HEAD
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
+=======
+    void readt_elevator();
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
 };
 
 #endif // READTABLEDATA_H

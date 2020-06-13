@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <Forms/CarForms/labeldelegate.h>
 #include <QStandardItemModel>
-#include "From/StorePosInfo/buttondelegate.h"
+
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     p_add_btn = new QPushButton("添加",this);
@@ -38,13 +38,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
 
  p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegate *delegate = new LabelDelegate();
-<<<<<<< HEAD
     p_table_view->setItemDelegateForColumn(8,delegate);
-=======
-    p_table_view->setItemDelegateForColumn(1,delegate);
-   // ButtonDelegate *opbytn  = ButtonDelegate(this);
-    //  p_table_view->setItemDelegateForColumn(8,delegate);
->>>>>>> 6121895acd7388c65d99d628ee2c9f5f37435492
     QStringList header;
     header<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"当前层"<<"目标层"<<"位置"<<"状态"<<"操作按钮";
     //p_table_view->setHorizontalHeaderLabels(header);
@@ -53,7 +47,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
 
-   p_table_view ->setColumnWidth(0,width/20*1);
+    p_table_view->setColumnWidth(0,width/20*1);
     p_table_view->setColumnWidth(1,width/20*2);
     p_table_view->setColumnWidth(2,width/20*3);
     p_table_view->setColumnWidth(3,width/20*3);
@@ -63,15 +57,15 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->setColumnWidth(6,width/20*2);
     p_table_view->horizontalHeader()->setMinimumHeight(40);
     // is online and status is a part of struct elevator
-//    for(int i = 0;i < 9; i++)
-//    {
-//        QStandardItem *item = new QStandardItem("virtual");
-//        Qt::ItemFlags  flag = Qt::ItemIsEnabled | Qt::ItemIsSelectable  ;
-//      item->setFlags(flag);
-//     model->setItem(0,i,item);
-//    }
+    for(int i = 0;i < 9; i++)
+    {
+     model->setItem(0,i,new QStandardItem("virtual"));
+    }
     int row_count = model->rowCount();
+<<<<<<< HEAD
+=======
     //table row count is up to elevator count
+>>>>>>> 5114c88d89a8e4a4205d5944b04d498ea4bca885
     for (int j = 0; j < row_count; j++)
     {
         QSpinBox *spinBox = new QSpinBox();
@@ -81,8 +75,6 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
         p_table_view->setIndexWidget(model->index(j,5), spinBox);
     }
     qDebug()<<"the model count :"<<row_count;
-
-
    //p_table_view->setFont(QFont("宋体",26)); //设置字体
     this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}");
 

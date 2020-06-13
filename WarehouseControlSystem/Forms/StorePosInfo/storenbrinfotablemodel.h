@@ -8,7 +8,9 @@
 #include <QStringList>
 #include <QHeaderView>
 #include <QStyledItemDelegate>
-class StorenbrInfoTablemodel : public QAbstractTableModel
+#include <QSqlTableModel>
+
+class StorenbrInfoTablemodel : public  QAbstractTableModel  /*QSqlTableModel*/
 {
     Q_OBJECT
 public:

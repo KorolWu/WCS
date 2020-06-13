@@ -27,9 +27,12 @@
         <file>Image/import.png</file>
         <file>Image/Edit.png</file>
         <file>Image/btndelete.png</file>
+        <file>Image/waiting.gif</file>
+        <file>Image/wainting2.gif</file>
         <file>Image/tasks.png</file>
         <file>Image/all_tasks.png</file>
         <file>Image/current_tasks.png</file>
+        <file>Image/exportfile.png</file>
         <file>Image/up_down_move.png</file>
         <file>Image/out.png</file>
         <file>Image/in.png</file>

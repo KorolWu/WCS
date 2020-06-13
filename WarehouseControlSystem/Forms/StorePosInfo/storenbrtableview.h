@@ -15,13 +15,19 @@ public:
 public:
     void SetTableHeaderData(QStringList datalist,int columncnt);
     void setModeldatalist(QList<QStringList>& list);
+     StorenbrInfoTablemodel * GetStoretablemodel(){
+         return m_ptablemodel;
+     }
 public slots:
     void SlotCheckstatChanged(int row, bool check);
     void SlotEditBtnClicked(int row,int column);
     void SlotDelBtnClicked(int row,int column);
+    void SlotFindNbrinfo(QString info , int column = 2);
+    void SlotBatchDeltableInfo();
 signals:
-    void signalEditRowData(int row);
-     void signalDelRowData(int row);
+    void signalEditRowData(QString nbrinfo);
+     void signalDelRowData(QString nbrinfo);
+     void SignalBatchDel(  QList<QVariant> datalist);
 private:
     StorenbrInfoTablemodel *m_ptablemodel;
    QList<QStringList> m_nbrList;

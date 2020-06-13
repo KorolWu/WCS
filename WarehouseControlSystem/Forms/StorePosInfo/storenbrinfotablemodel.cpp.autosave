@@ -91,15 +91,6 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
             }
             return check ? Qt::Checked:Qt::Unchecked;
         }
-        else if (role == Qt::BackgroundColorRole)
-        {
-           if(column == 7) //状态列
-           {
-               const QVariant value(data(index,Qt::DisplayRole));
-               return QVariant(QColor(value.toInt()==0?Qt::green:Qt::red));
-
-           }
-        }
     }
     return QVariant();
 }

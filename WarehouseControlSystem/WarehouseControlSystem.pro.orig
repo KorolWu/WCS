@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui sql
+QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,47 +28,65 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
-    From/CarStatusFrom.cpp \
-    From/adddevice.cpp \
     UnitClass/databaseunit.cpp \
-    From/agvform.cpp \
-    From/elevatorfrom.cpp\
-UnitClass/logininfowg.cpp \
+    UnitClass/logininfowg.cpp \
+    Forms/basefrom.cpp \
+    Forms/CarForms/adddevice.cpp \
+    Forms/CarForms/agvform.cpp \
+    Forms/CarForms/CarStatusFrom.cpp \
+    Forms/CarForms/progressbardelegate.cpp \
+    Forms/ElevatorForms/elevatorfrom.cpp \
+    Forms/StorePosInfo/buttondelegate.cpp \
+    Forms/StorePosInfo/storeinfowidget.cpp \
+    Forms/StorePosInfo/storenbrinfotablemodel.cpp \
+    Forms/StorePosInfo/storenbrtableview.cpp \
+    Forms/StorePosInfo/watingdialogwg.cpp\
+    Forms/ElevatorForms/addelevatorform.cpp \
+    Forms/dialogabstractclass.cpp \
 <<<<<<< HEAD
-    From/StorePosInfo/storeinfowidget.cpp \
-    From/StorePosInfo/storenbrinfotablemodel.cpp \
-    From/StorePosInfo/storenbrtableview.cpp \
-    From/StorePosInfo/buttondelegate.cpp
+    Forms/StorePosInfo/localfileoperate.cpp \
+    Forms/CarForms/addcar.cpp
 =======
-    From/labeldelegate.cpp \
-    From/basefrom.cpp \
-    From/progressbardelegate.cpp \
-    From/lineeditdelegate.cpp
->>>>>>> d1926354441027d7140a731bdb1eca9321e40679
+    Forms/CarForms/addcar.cpp \
+    Forms/CarForms/labeldelegate.cpp \
+    Forms/TaskForms/currenttask.cpp \
+    Forms/TaskForms/alltask.cpp
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
+
+
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
-    datastructure.h \
-    From/CarStatusFrom.h \
-    From/adddevice.h \
     UnitClass/databaseunit.h \
-    From/agvform.h \
-    From/elevatorfrom.h\
- UnitClass/logininfowg.h \
+    UnitClass/logininfowg.h \
+    Forms/basefrom.h \
+    Forms/CarForms/adddevice.h \
+    Forms/CarForms/agvform.h \
+    Forms/CarForms/CarStatusFrom.h \
+    Forms/CarForms/labeldelegate.h \
+    Forms/CarForms/progressbardelegate.h \
+    Forms/ElevatorForms/elevatorfrom.h \
+    Forms/StorePosInfo/buttondelegate.h \
+    Forms/StorePosInfo/storeinfowidget.h \
+    Forms/StorePosInfo/storenbrinfotablemodel.h \
+    Forms/StorePosInfo/storenbrtableview.h \
+    Forms/StorePosInfo/watingdialogwg.h \
+    Forms/ElevatorForms/addelevatorform.h \
+    Forms/dialogabstractclass.h \
 <<<<<<< HEAD
-    From/StorePosInfo/storeinfowidget.h \
-    From/StorePosInfo/storenbrinfotablemodel.h \
-    From/StorePosInfo/storenbrtableview.h \
-    From/StorePosInfo/buttondelegate.h
+    Forms/StorePosInfo/localfileoperate.h \
+    Forms/CarForms/addcar.h
 =======
-    From/labeldelegate.h \
-    From/basefrom.h \
-    From/progressbardelegate.h \
-    From/lineeditdelegate.h
->>>>>>> d1926354441027d7140a731bdb1eca9321e40679
+    Forms/CarForms/addcar.h \
+    Forms/TaskForms/currenttask.h \
+    Forms/TaskForms/alltask.h
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
 
+INCLUDEPATH += ../SDK/include/
+LIBS += -L../SDK/lib -lCRUDBaseOperation
+LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui
 
 RESOURCES += \

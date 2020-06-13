@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui sql
+QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,18 +34,20 @@ SOURCES += main.cpp\
     Forms/CarForms/adddevice.cpp \
     Forms/CarForms/agvform.cpp \
     Forms/CarForms/CarStatusFrom.cpp \
+    Forms/CarForms/labeldelegate.cpp \
     Forms/CarForms/progressbardelegate.cpp \
     Forms/ElevatorForms/elevatorfrom.cpp \
     Forms/StorePosInfo/buttondelegate.cpp \
     Forms/StorePosInfo/storeinfowidget.cpp \
     Forms/StorePosInfo/storenbrinfotablemodel.cpp \
     Forms/StorePosInfo/storenbrtableview.cpp \
+    Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
+    Forms/StorePosInfo/localfileoperate.cpp\
     Forms/CarForms/addcar.cpp \
-    Forms/CarForms/labeldelegate.cpp \
     Forms/TaskForms/currenttask.cpp \
-    Forms/TaskForms/alltask.cpp
+   Forms/TaskForms/alltask.cpp
 
 
 
@@ -52,6 +55,7 @@ HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
+    datastructure.h \
     UnitClass/databaseunit.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
@@ -65,8 +69,10 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/storeinfowidget.h \
     Forms/StorePosInfo/storenbrinfotablemodel.h \
     Forms/StorePosInfo/storenbrtableview.h \
+    Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
+    Forms/StorePosInfo/localfileoperate.h \
     Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
     Forms/TaskForms/alltask.h

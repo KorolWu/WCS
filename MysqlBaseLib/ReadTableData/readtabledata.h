@@ -15,6 +15,8 @@ public:
     ReadTableData();
     void readt_device_info();
     void readt_elevator();
+    void ReadStoreposinfoDataBase();
+    bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
 };
 
 #endif // READTABLEDATA_H

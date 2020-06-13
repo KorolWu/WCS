@@ -20,8 +20,11 @@ public:
 public:
     //carinfo <car_ip,car_info>
     QMap<QString,CarInfoStru> m_CarMap;
+<<<<<<< HEAD
+    QMap<QString,StorePosInfoStru>m_storeinfoMap;
+=======
     QMap<QString,ElevatorInfoStru> m_elevatorMap;
     QMutex m_mutex;
-    QMap<QString,StorePosInfoStru>m_storeinfoMap;
+>>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
 };
 #endif

@@ -21,7 +21,7 @@
 #include <QTableView>
 #include <QSqlTableModel>
 #include <datastructure.h>
-#include "../SDK/include/Myconfig.h"
+#include "Myconfig.h"
 /**
  *
  * @author korol

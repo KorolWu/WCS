@@ -13,9 +13,9 @@
 #include <QSpinBox>
 #include <QStandardItemModel>
 #include "Forms/ElevatorForms/addelevatorform.h"
-#include "../SDK/include/Myconfig.h"
-#include "../SDK/include/datastructure.h"
-#include "../SDK/include/MysqlDataBase/crudbaseoperation.h"
+#include "Myconfig.h"
+#include "datastructure.h"
+#include "MysqlDataBase/crudbaseoperation.h"
 /**
  *
  * @author korol

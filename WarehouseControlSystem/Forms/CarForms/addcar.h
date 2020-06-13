@@ -3,9 +3,9 @@
 #include <QWidget>
 #include "../dialogabstractclass.h"
 #include <QStringList>
-#include "../SDK/include/datastructure.h"
-#include "../SDK/include/Myconfig.h"
-#include "../SDK/include/MysqlDataBase/crudbaseoperation.h"
+#include "datastructure.h"
+#include "Myconfig.h"
+#include "MysqlDataBase/crudbaseoperation.h"
 
 class AddCar:public DialogAbstractClass
 {

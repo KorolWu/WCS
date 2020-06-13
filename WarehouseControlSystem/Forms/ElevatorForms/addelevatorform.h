@@ -10,9 +10,9 @@
 #include <QDesktopWidget>
 #include <QIcon>
 #include "../dialogabstractclass.h"
-#include "../SDK/include/datastructure.h"
-#include "../SDK/include/Myconfig.h"
-#include "../../SDK/include/MysqlDataBase/crudbaseoperation.h"
+#include "datastructure.h"
+#include "Myconfig.h"
+#include "MysqlDataBase/crudbaseoperation.h"
 /**
  *
  * @author korol

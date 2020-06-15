@@ -73,11 +73,28 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
     {
         int row = index.row();
         int column = index.column();
-        if(column == 0 )
-            return "";
-       return m_storenbrList->at(row).at(column);;
+       QString str = m_storenbrList->at(row).at(column);
+        switch (column) {
+        case 0:
+              return "";
+        case 7://仓位状态文字显示
+            if(str == "0")
+            {
+                return "空闲";
+            }
+            else if(str == "1")
+            {
+                  return "占用";
+            }
+            else if(str == "2")
+            {
+                  return "锁定";
+            }
+        default:
+          return m_storenbrList->at(row).at(column);
+        }
     }
-    else if (role == Qt::CheckStateRole)
+    else if (role == Qt::CheckStateRole) //第一列选中状态编辑
     {
         int row = index.row();
         int column = index.column();
@@ -91,14 +108,26 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
             }
             return check ? Qt::Checked:Qt::Unchecked;
         }
-        else if (role == Qt::BackgroundColorRole)
+    }
+    else if(role == Qt::BackgroundRole)
+    {
+        int row = index.row();
+        int column = index.column();
+        QString str = m_storenbrList->at(row).at(column);
+        switch (index.column()) {
+        case 7://仓位状态设置样式
         {
-           if(column == 7) //状态列
-           {
-               const QVariant value(data(index,Qt::DisplayRole));
-               return QVariant(QColor(value.toInt()==0?Qt::green:Qt::red));
-
-           }
+            if(str == "1")
+              return QVariant(QColor(Qt::red));
+            else if(str == "2"){
+                     return QVariant(QColor(Qt::yellow));
+            }
+            else{
+                  return QVariant(QColor(Qt::green));
+            }
+        }
+        default:
+            return QVariant(QColor(Qt::white));
         }
     }
     return QVariant();
@@ -119,6 +148,7 @@ bool StorenbrInfoTablemodel::setData(const QModelIndex &index, const QVariant &v
             return false;
         }
         if(column == 0) //索引号变化变更 被选中
+
 
         {
             //记录索引号对应的 料箱编号信息

@@ -97,6 +97,7 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
         return true;
     }
     else{
+        qDebug()<<"errorinfo:"<<errorinfo;
         return false;
     }
 }

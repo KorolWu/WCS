@@ -139,8 +139,6 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }
-
-
 }
 
 void CarStatusFrom::fromClose()

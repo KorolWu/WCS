@@ -14,6 +14,7 @@
 #include <QVBoxLayout>
 #include <QList>
 #include <QDebug>
+#include <QMouseEvent>
 
 /**
  * @author korol
@@ -41,12 +42,20 @@ public slots:
 private:
     void CreatUi();
     QWidget *w;
-    QList<QLineEdit*> m_edit_list;
     QLabel *m_info_lab;
     QHBoxLayout *m_hbox;
     QVBoxLayout *m_vbox;
     QPushButton *m_yesbtn;
     QPushButton *m_cleanbtn;
+public:
+     QList<QLineEdit*> m_edit_list;
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+private:
+    QPoint mousePoint;
+    bool mouse_press;
 public:
     virtual void onYesBtnClicked();
     virtual void onCleanBtnClicked();

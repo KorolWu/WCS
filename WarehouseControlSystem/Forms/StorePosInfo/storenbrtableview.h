@@ -23,14 +23,19 @@ public slots:
     void SlotEditBtnClicked(int row,int column);
     void SlotDelBtnClicked(int row,int column);
     void SlotFindNbrinfo(QString info , int column = 2);
-    void SlotBatchDeltableInfo();
+    void SlotaddNbrInfo(QStringList list);
+    void SlotEditInfo(QStringList newlist,int row);
+public:
+     QList<QVariant> GetBatchDellist();
+     void BatchDeltableInfo();
+     void Delsinglerow(int row);
 signals:
-    void signalEditRowData(QString nbrinfo);
-     void signalDelRowData(QString nbrinfo);
-     void SignalBatchDel(  QList<QVariant> datalist);
+    void signalEditRowData(QString nbrinfo,int row);
+     void signalDelRowData(QString nbrinfo,int row);
 private:
     StorenbrInfoTablemodel *m_ptablemodel;
    QList<QStringList> m_nbrList;
+
    // QWidget interface
    //public slots:
    // virtual void setVisible(bool visible);

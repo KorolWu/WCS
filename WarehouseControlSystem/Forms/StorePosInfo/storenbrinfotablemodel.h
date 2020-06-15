@@ -40,6 +40,13 @@ private:
     QStringList m_headerlist;
     int m_columncount;
   QList<QStringList>* m_storenbrList;
+  enum storepostype{
+      Large  = '1',
+      Middle = '2',
+      Small  = '3',
+      Other = '4' ,
+      Undefined =99
+  };
 };
 
 

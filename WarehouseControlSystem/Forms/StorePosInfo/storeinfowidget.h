@@ -30,21 +30,37 @@ private slots:
     void  slotquenbrinfo();
     void slotImportnbrinfo();
     void slotExportnbrinfo();
+    void slotEditData(QStringList datalist);
+    void slottableeditbtn(QString);
 private:
     void  Dataselectfromdatabase();
-    void  DelDataBaseInfo(  QList<QVariant> nbrlist);
-     QList<QStringList> GetdatalistFromstru( QMap<QString,StorePosInfoStru> infoMap);
+    bool  DelDataBaseInfo( QList<QVariant> nbrlist);
+    QList<QStringList> GetdatalistFromstru( QMap<QString,StorePosInfoStru> infoMap);
+    bool CheckBoxNbrInfo(QString boxnbr);
 public slots:
-    void  SlotDelSinglerow(QString nbrinfo );
+    void  SlotDelSinglerow(QString nbrinfo,int row );
     void  SlotBatchDelData(  QList<QVariant> nbrlist);
 signals:
     void signalfindinfo(QString nbrinfo,int clomun);
     void signalBatchDel();
+    void signalUpdatetable(QStringList);
+private:
+    enum storepostype{
+        Large  = '1',
+        Middle = '2',
+        Small  = '3',
+        Other = '4' ,
+        Undefined =99
+    };
+    enum storestat{
+
+    };
 private:
     MapStorePosInfoStru m_stroreposmap; //数据信息
     StorenbrTableView *m_ptableview;
     ReadTableData m_databaseopob;
-
 };
+
+
 
 #endif // STOREINFOWIDGET_H

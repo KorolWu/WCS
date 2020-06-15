@@ -44,10 +44,11 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
-    Forms/StorePosInfo/localfileoperate.cpp\
     Forms/CarForms/addcar.cpp \
     Forms/TaskForms/currenttask.cpp \
-   Forms/TaskForms/alltask.cpp
+   Forms/TaskForms/alltask.cpp \
+    UnitClass/ImportExportFile/localfileoperate.cpp \
+    Forms/StorePosInfo/editstorenbrinfodialog.cpp
 
 
 
@@ -72,10 +73,11 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
-    Forms/StorePosInfo/localfileoperate.h \
     Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
-    Forms/TaskForms/alltask.h
+    Forms/TaskForms/alltask.h \
+    UnitClass/ImportExportFile/localfileoperate.h \
+    Forms/StorePosInfo/editstorenbrinfodialog.h
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

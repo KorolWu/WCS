@@ -72,6 +72,32 @@ void DialogAbstractClass::CreatUi()
                         "QLabel{background:transparent;color:white}");
 }
 
+void DialogAbstractClass::mouseMoveEvent(QMouseEvent *event)
+{
+    if(mouse_press){
+        move(event->globalPos() - mousePoint);
+    }
+}
+
+void DialogAbstractClass::mousePressEvent(QMouseEvent *event)
+{
+    if( (event->button() == Qt::LeftButton) ){
+        mouse_press = true;
+        mousePoint = event->globalPos() - this->pos();
+        //        event->accept();
+    }
+    else if(event->button() == Qt::RightButton){
+        //如果是右键
+        this->close();
+
+    }
+}
+
+void DialogAbstractClass::mouseReleaseEvent(QMouseEvent *event)
+{
+    mouse_press = false;
+}
+
 void DialogAbstractClass::onYesBtnClicked()
 {
     QStringList result = getContent();

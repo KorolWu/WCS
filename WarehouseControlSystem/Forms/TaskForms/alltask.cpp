@@ -17,12 +17,14 @@ AllTask::AllTask(int width, int height, QWidget *parent):BaseFrom(parent)
         m_all_btn->setIcon(QIcon(":/resouse/Image/all.png"));
 
         m_start_date = new QDateEdit(this);
+        m_start_date->setDateTime(QDateTime::currentDateTime());
         m_start_date->setCalendarPopup(true);
         m_start_date->move(450,10);
         QLabel *l = new QLabel(this);
         l->setText("-");
         l->move(580,10);
         m_end_date = new QDateEdit(this);
+        m_end_date->setDateTime(QDateTime::currentDateTime());
         m_end_date->setCalendarPopup(true);
         m_end_date->move(600,10);
 
@@ -40,27 +42,30 @@ void AllTask::initTableView()
     m_table_view->verticalHeader()->hide();
     m_table_view->resize(width,height);
 
-    model = new QStandardItemModel(10,8);
+    model = new QSqlTableModel();
+    model->setTable("t_all_task");
     m_table_view->setModel(model);
-
+    model->select();
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
 
     QStringList header;
-    header<<"任务号"<<"任务状态"<<"料箱号"<<"优先级"<<"来源"<<"目标"<<"穿梭车号"<<"创建时间";
+    header<<"ID"<<"任务号"<<"任务状态"<<"料箱号"<<"优先级"<<"来源"<<"目标"<<"穿梭车号"<<"创建时间"<<"结束时间";
     for(int i = 0 ;i <header.size();i++)
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
     m_table_view->setColumnWidth(0,width/20*1);
     m_table_view->setColumnWidth(1,width/20*2);
-    m_table_view->setColumnWidth(2,width/20*3);
+    m_table_view->setColumnWidth(2,width/20*2);
     m_table_view->setColumnWidth(3,width/20*2);
 
     m_table_view->setColumnWidth(4,width/20*2);
     m_table_view->setColumnWidth(5,width/20*2);
     m_table_view->setColumnWidth(6,width/20*2);
-    m_table_view->setColumnWidth(7,width/20*3);
+    m_table_view->setColumnWidth(7,width/20*1);
+    m_table_view->setColumnWidth(8,width/20*3);
+    m_table_view->setColumnWidth(9,width/20*3);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
     m_table_view->setFont(QFont("宋体",13)); //设置字体
 }

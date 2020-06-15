@@ -1,35 +1,34 @@
-#ifndef MYCONFIG_H
-#define MYCONFIG_H
+#ifndef MYINICONFIG_H
+#define MYINICONFIG_H
 #include <QSettings>
 #include <QStandardPaths>
-#include<QDebug>
+#include <QDebug>
 #include <QApplication>
-class My_Config
+class MyIniConfig
 {
 private:
     QString m_qstrFileName;
     QSettings *m_psetting;
 public:
-    My_Config()
+    MyIniConfig()
     {
 
     }
-    ~My_Config()
+    ~MyIniConfig()
     {
         delete m_psetting;
         m_psetting = 0;
     }
     void Config(QString qstrfilename = "")
     {
-//        if (qstrfilename.isEmpty())
-//           {
-//               m_qstrFileName = QCoreApplication::applicationDirPath() + "/Config.ini";
-//           }
-//           else
-//           {
-              // m_qstrFileName = qstrfilename;
-          m_qstrFileName = QCoreApplication::applicationDirPath() + "/Config.ini";
-//           }
+        if (qstrfilename.isEmpty())
+           {
+               m_qstrFileName = QCoreApplication::applicationDirPath() + "/Config.ini";
+           }
+           else
+           {
+               m_qstrFileName = qstrfilename;
+           }
 
            m_psetting = new QSettings(m_qstrFileName, QSettings::IniFormat);
            m_psetting->setIniCodec("UTF-8");

@@ -17,6 +17,9 @@ public:
     void readt_elevator();
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
+private:
+    QMutex m_mutex;
+
 };
 
 #endif // READTABLEDATA_H

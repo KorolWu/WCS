@@ -28,7 +28,7 @@ SOURCES += crudbaseoperation.cpp
 
 HEADERS += crudbaseoperation.h\
         crudbaseoperation_global.h
-
+INCLUDEPATH += ../../SDK/include/
 unix {
     target.path = /usr/lib
     INSTALLS += target

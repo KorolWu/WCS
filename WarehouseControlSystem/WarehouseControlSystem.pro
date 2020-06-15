@@ -53,7 +53,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
-    UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
     datastructure.h \
     UnitClass/databaseunit.h \
@@ -75,7 +74,8 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/localfileoperate.h \
     Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
-    Forms/TaskForms/alltask.h
+    Forms/TaskForms/alltask.h \
+    UnitClass/myIniconfig.h
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

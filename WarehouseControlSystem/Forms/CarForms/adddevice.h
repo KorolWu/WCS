@@ -9,8 +9,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <datastructure.h>
-#include <UnitClass/databaseunit.h>
 #include <QLineEdit>
+#include <MysqlDataBase/crudbaseoperation.h>
 
 class AddDevice : public QWidget
 {

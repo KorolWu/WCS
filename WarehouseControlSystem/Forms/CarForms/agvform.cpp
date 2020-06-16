@@ -154,7 +154,7 @@ void AgvForm::onDeleteClicked()
     QVariant data = model->data(index);
     QString str_ip = data.toString();
     QString sql_str = QString("DELETE FROM t_device_info WHERE deviceIp = '%1'").arg(str_ip);
-    bool result = DataBaseUnit::GetInstance()->queryUseStr(sql_str);
+    bool result = CRUDBaseOperation::getInstance()->queryUseStr(sql_str);
     QString key_ip = model->data(model->index(row_index,2)).toString();
     qDebug()<<key_ip;
     if(Myconfig::GetInstance()->m_CarMap.contains(key_ip))

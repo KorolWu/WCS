@@ -17,9 +17,12 @@
 #include "Forms/TaskForms/alltask.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
-#include "Myconfig.h"
+//#include "Myconfig.h"
 #include <MysqlDataBase/readtabledata.h>
 #include <MysqlDataBase/crudbaseoperation.h>
+#include <QCoreApplication>
+#include <QDir>
+
 namespace Ui {
 class MainWindow;
 }
@@ -54,6 +57,7 @@ private:
     void initUI();
     void deleteChildrenList();
     void getParameterFromDB();
+    void getConfigParameter();
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();

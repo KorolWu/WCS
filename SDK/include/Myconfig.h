@@ -23,5 +23,6 @@ public:
     QMap<QString,ElevatorInfoStru> m_elevatorMap;
     QMutex m_mutex;
     QMap<QString,StorePosInfoStru>m_storeinfoMap;
+    DataBaseInfoStru m_databaseInfo;
 };
 #endif

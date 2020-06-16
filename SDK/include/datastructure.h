@@ -39,6 +39,26 @@ typedef struct _CarInfoStru
     QString remarks = "";
 
 }CarInfoStru;
+//数据库配置参数
+typedef struct _DataBaseInfoStru
+{
+    QString sqlName;
+    QString databaseName;
+    QString ip;
+    int port;
+    QString userName;
+    QString passWord;
+    _DataBaseInfoStru()
+    {
+         sqlName = "";
+         databaseName = "";
+         ip = "";
+         port = 3306;
+         userName = "";
+         passWord = "";
+    }
+
+}DataBaseInfoStru;
 typedef struct _ElevatorInfoStru
 {
     //"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"remarks"

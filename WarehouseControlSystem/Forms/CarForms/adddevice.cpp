@@ -85,7 +85,7 @@ void AddDevice::addDevices()
     deviceStruct.remarks = remarks->text();
 
     QString sql = QString("INSERT t_device_info SET deviceNum = '%1',deviceIp = '%1',devicePort = '%2',deviceType = '%3',remarks = '%4';").arg(deviceStruct.deviceNum).arg(deviceStruct.deviceIp).arg(deviceStruct.port).arg(deviceStruct.deviceType);
-    if(DataBaseUnit::GetInstance()->queryUseStr(sql))
+    if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
     {
         // the same id,same ip
         emit insert_emit();

@@ -4,6 +4,7 @@
 #include <QDesktopWidget>
 #include <QIcon>
 #include "UnitClass/logininfowg.h"
+#include "UnitClass/myIniconfig.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -17,11 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     s.carNum = "ABS-002";
     f = new CarStatusFrom(s,this);
     f->move(desk_rect.width()-600,desk_rect.height()-350);
-
-//    AddDevice *device = new AddDevice(this);
-//    device->move(300,150);
-
-   // DataBaseUnit::GetInstance()->openDB();
+    getConfigParameter();
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
 
@@ -148,6 +145,25 @@ void MainWindow::getParameterFromDB()
     r.readt_device_info();
     r.readt_elevator();
     qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
+}
+
+void MainWindow::getConfigParameter()
+{
+    QString currPath = QCoreApplication::applicationDirPath();
+    QStringList list = currPath.split("/");
+    if(list.size() > 1)
+        list.removeAt(list.size()-1);
+    QString absPath = list.join("/");
+    MyIniConfig f;
+    f.Config(absPath+"/config.ini");
+    //QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    Myconfig::GetInstance()->m_databaseInfo.databaseName = f.Get("DataBase","databaseName").toString();
+    Myconfig::GetInstance()->m_databaseInfo.ip = f.Get("DataBase","ip").toString();
+    Myconfig::GetInstance()->m_databaseInfo.passWord = f.Get("DataBase","passWord").toString();
+    Myconfig::GetInstance()->m_databaseInfo.port = f.Get("DataBase","port").toInt();
+    Myconfig::GetInstance()->m_databaseInfo.sqlName = f.Get("DataBase","sqlName").toString();
+    Myconfig::GetInstance()->m_databaseInfo.userName = f.Get("DataBase","userName").toString();
+    qDebug()<<"Myconfig::GetInstance()->m_databaseInfo";
 }
 
 void MainWindow::onTreeviewClicked(const QModelIndex &index)

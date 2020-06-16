@@ -10,6 +10,8 @@
 #include <QHeaderView>
 #include <QTableView>
 #include <QStandardItemModel>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
 #include "../basefrom.h"
 
 class AllTask : public BaseFrom
@@ -24,7 +26,7 @@ public:
     QDateEdit   *m_end_date;
     QPushButton *m_query_btn;
     QTableView  *m_table_view;
-    QStandardItemModel *model;
+    QSqlTableModel *model;
 
     void initTableView();
     int width;

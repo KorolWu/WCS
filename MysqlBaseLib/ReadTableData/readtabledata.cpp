@@ -7,6 +7,7 @@ ReadTableData::ReadTableData()
 
 void ReadTableData::readt_device_info()
 {
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     QString sql = "SELECT * FROM t_device_info;";
     QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
     while (query.next()) {
@@ -23,6 +24,7 @@ void ReadTableData::readt_elevator()
 {
     QString sql = "SELECT * FROM t_elevator;";
     QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     while (query.next()) {
         ElevatorInfoStru elevator_stru;
         elevator_stru.elevatorNum = query.value(1).toString();

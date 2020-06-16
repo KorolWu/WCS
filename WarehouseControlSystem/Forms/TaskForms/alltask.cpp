@@ -49,6 +49,7 @@ void AllTask::initTableView()
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
 
+
     QStringList header;
     header<<"ID"<<"任务号"<<"任务状态"<<"料箱号"<<"优先级"<<"来源"<<"目标"<<"穿梭车号"<<"创建时间"<<"结束时间";
     for(int i = 0 ;i <header.size();i++)

@@ -103,3 +103,12 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
     }
 }
 
+bool ReadTableData::WriteLoginfo(int level, QString from, QString log_info)
+{
+    QString sql = QString("INSERT INTO `t_log` (`level`,`from`,`loginfo`) VALUES ('%1','%2','%3');").arg(level).arg(from).arg(log_info);
+    qDebug()<<sql;
+    if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
+        return true;
+    return false;
+}
+

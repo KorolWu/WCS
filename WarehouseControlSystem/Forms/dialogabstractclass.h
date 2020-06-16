@@ -41,13 +41,13 @@ public slots:
 private:
     void CreatUi();
     QWidget *w;
-    QList<QLineEdit*> m_edit_list;
     QLabel *m_info_lab;
     QHBoxLayout *m_hbox;
-    QVBoxLayout *m_vbox;
     QPushButton *m_yesbtn;
     QPushButton *m_cleanbtn;
 public:
+    QVBoxLayout *m_vbox;
+    QList<QLineEdit*> m_edit_list;
     virtual void onYesBtnClicked();
     virtual void onCleanBtnClicked();
 };

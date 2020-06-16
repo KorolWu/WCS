@@ -75,12 +75,9 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
     Forms/TaskForms/alltask.h \
-<<<<<<< HEAD
     UnitClass/ImportExportFile/localfileoperate.h \
-    Forms/StorePosInfo/editstorenbrinfodialog.h
-=======
+    Forms/StorePosInfo/editstorenbrinfodialog.h \
     UnitClass/myIniconfig.h
->>>>>>> 7d5b1ce299b8e1ca9e339e33219135066bd95672
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

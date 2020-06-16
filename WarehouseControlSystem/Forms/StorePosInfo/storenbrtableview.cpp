@@ -1,6 +1,7 @@
 #include "storenbrtableview.h"
 #include "buttondelegate.h"
 #include <QMessageBox>
+const  QString   headstlye ="QHeaderView:section{height:32px;font:12px;border:3;color: rgb(250, 250, 250);background-color: rgba(68, 69, 71,200);}";
 StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
 {
     m_ptablemodel = new StorenbrInfoTablemodel();
@@ -14,6 +15,8 @@ StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
     this->setFrameShape(QFrame::NoFrame);
     this->setAlternatingRowColors(true);
     connect(m_ptablemodel,&StorenbrInfoTablemodel::signalCheckDatachanged,this,&StorenbrTableView::SlotCheckstatChanged);
+    this->horizontalHeader()->setStyleSheet(headstlye);
+    this->verticalHeader()->setStyleSheet(headstlye);
 }
 ///
 /// \brief StorenbrTableView::~StorenbrTableView

@@ -19,6 +19,7 @@ public:
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
     bool WriteLoginfo(int level,QString from,QString log_info);
+    bool WriteUpdateInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QVector<QVariant> keyvalue,QString &errorinfo);
 private:
     QMutex m_mutex;
 

@@ -31,7 +31,7 @@ private slots:
     void slotImportnbrinfo();
     void slotExportnbrinfo();
     void slotEditData(QStringList datalist);
-    void slottableeditbtn(QString);
+    void slottableeditbtn(QString ,int row);
 private:
     void  Dataselectfromdatabase();
     bool  DelDataBaseInfo( QList<QVariant> nbrlist);
@@ -43,7 +43,7 @@ public slots:
 signals:
     void signalfindinfo(QString nbrinfo,int clomun);
     void signalBatchDel();
-    void signalUpdatetable(QStringList);
+    void signalUpdatetable(QStringList ,int row) ;
 private:
     enum storepostype{
         Large  = '1',
@@ -56,9 +56,12 @@ private:
 
     };
 private:
+    void DelDialogBaseob();
+private:
     MapStorePosInfoStru m_stroreposmap; //数据信息
     StorenbrTableView *m_ptableview;
     ReadTableData m_databaseopob;
+    int m_editrow ;
 };
 
 

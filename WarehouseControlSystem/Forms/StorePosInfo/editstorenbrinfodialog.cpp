@@ -5,12 +5,17 @@
 
 EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString flag, QWidget *parent):DialogAbstractClass(list,flag,parent)
 {
+    m_sql_flag = flag;
     if(m_edit_list.size() == 8)
     {
         m_edit_list[0]->setMaxLength(64);
-        QStringList list;
-        list<<"L"<<"M"<<"S";
-        QCompleter *completer = new QCompleter(list,this);
+        if(flag != "add")
+        {
+            m_edit_list[0]->setEnabled(false);
+        }
+        QStringList listtype;
+        listtype<<"L"<<"M"<<"S";
+        QCompleter *completer = new QCompleter(listtype,this);
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
         m_edit_list[1]->setCompleter(completer);
@@ -58,21 +63,43 @@ void EditStorenbrinfoDialog::onYesBtnClicked()
     QMap<QString,StorePosInfoStru> infoMap;
     infoMap.insert( list[0],storestru);
     QString msg;
-  //  if( rwdb.WriteStoreposinfotoDataBase(infoMap,msg))
+    if(m_sql_flag =="add")
     {
-//        Myconfig::GetInstance()->m_storeinfoMap.insert(list[0],storestru);
-        emit signalAckBtn(list);
-        this->hide();
-        this->deleteLater();
+        if( rwdb.WriteStoreposinfotoDataBase(infoMap,msg))
+        {
+            Myconfig::GetInstance()->m_storeinfoMap.insert(list[0],storestru);
+            emit signalAckBtn(list);
+            this->hide();
+            this->deleteLater();
+        }
+        else
+        {
+            if(msg == " ")
+            {
+                msg = "数据库打开失败";
+            }
+            m_err_lab->setText(QString("编辑 %1失败请检查，信息内容：%2").arg(m_sql_flag).arg(msg));
+        }
     }
-//    else
-//    {
-//        if(msg == " ")
-//        {
-//            msg = "数据库打开失败";
-//        }
-//        m_err_lab->setText(QString("编辑失败请检查，信息内容：%1").arg(msg));
-//    }
+    else{//是更新
+        QVector<QVariant> keyvec;
+        QVariant var  = list[1];
+        keyvec.append(var);
+       if(rwdb.WriteUpdateInfoDataBase(infoMap,keyvec,msg))
+       {
+           Myconfig::GetInstance()->m_storeinfoMap[list[0]] = storestru;
+           emit signalAckBtn(list);
+           this->hide();
+           this->deleteLater();
+       }
+       else{
+           if(msg == " ")
+           {
+               msg = "数据库打开失败";
+           }
+           m_err_lab->setText(QString("编辑 %1失败请检查，信息内容：%2").arg(m_sql_flag).arg(msg));
+       }
+    }
 }
 
 //QButtonGroup *EditStorenbrinfoDialog::Getradiogroup(QString list)

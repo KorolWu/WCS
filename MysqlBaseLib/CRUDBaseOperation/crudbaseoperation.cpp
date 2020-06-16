@@ -7,12 +7,6 @@ CRUDBaseOperation::CRUDBaseOperation()
 
 bool CRUDBaseOperation::openDB()
 {
-    data_base = QSqlDatabase::addDatabase("QMYSQL");
-    data_base.setHostName("192.168.188.103");
-    data_base.setPort(3306);
-    data_base.setDatabaseName("test_dev");
-    data_base.setUserName("root");
-    data_base.setPassword("orange");
     data_base = QSqlDatabase::addDatabase(Myconfig::GetInstance()->m_databaseInfo.databaseName);
     data_base.setHostName(Myconfig::GetInstance()->m_databaseInfo.ip);
     data_base.setPort(Myconfig::GetInstance()->m_databaseInfo.port);
@@ -20,7 +14,10 @@ bool CRUDBaseOperation::openDB()
     data_base.setUserName(Myconfig::GetInstance()->m_databaseInfo.userName);
     data_base.setPassword(Myconfig::GetInstance()->m_databaseInfo.passWord);
     if(data_base.isOpen())
+    {
+        qDebug()<<"sb";
         return true;
+    }
    if(!data_base.open())
     {
         qDebug()<<"open database fail";
@@ -164,16 +161,16 @@ bool CRUDBaseOperation::ExcBatchUpdateDB(const QString &table, QStringList &name
    for(int i=0;i<valuesvec.size();++i )
    {
        QString keyid;
-       if( keytype.contains("varchar"))
+       if(keytype.contains("char"))
        {
            keyid+=QString("='%1'").arg(keyvalue[i].toString());
        }
-       else if(keytype.contains("int"))
+       else if((keytype.contains("int"))|| (keytype.contains("double")))
        {
            keyid+=QString("=%1").arg(keyvalue[i].toString());
        }
        QString str =QString("%1 %2").arg(updatesql).arg(keyid);
-       //qDebug()<<"sql:"<<str;
+//       qDebug()<<"sql:"<<str;
        query.prepare(str);
        for(int j=0; j< valuesvec[i].size();++j)
        {

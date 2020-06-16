@@ -12,7 +12,6 @@ StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
     this->setSelectionMode(QAbstractItemView::SingleSelection);
     this->setFrameShape(QFrame::NoFrame);
-    this->setStyleSheet("QTableView {alternate-background-color: rgb(220, 220, 220);}");//设置交替颜色样式
     this->setAlternatingRowColors(true);
     connect(m_ptablemodel,&StorenbrInfoTablemodel::signalCheckDatachanged,this,&StorenbrTableView::SlotCheckstatChanged);
 }
@@ -148,8 +147,11 @@ void StorenbrTableView::SlotaddNbrInfo(QStringList list)
 void StorenbrTableView::SlotEditInfo(QStringList newlist, int row)
 {
     //替换
-
-
+    if(m_nbrList.size() > row )
+    {
+        m_nbrList.replace(row,newlist);
+          m_ptablemodel->refrush();
+    }
 }
 
 QList<QVariant> StorenbrTableView::GetBatchDellist()

@@ -13,12 +13,18 @@
 #include <QFileDialog>
 #include "UnitClass/ImportExportFile/localfileoperate.h"
 #include "editstorenbrinfodialog.h"
-
-
+const QString stylestr =  "QPushButton{font:12px;}"
+                     "QLabel{font:12px;}"
+                    "QPushButton:hover{background-color:rgba(255,255,255,110);}"
+                    "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
+                    "QHeaderView{height:60px;font:12px;border:none;alternate-background-color: rgb(220, 220, 220);}"
+                    "QTableView{font:12px;selection-background-color:rgba(0,191,255,255);}"
+                    "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {
     //Init data
     m_stroreposmap.storeposInfoMap.clear();
+    m_editrow = -1;
     //读取数据库的内容映射到内存中
     //Init UI
     QVBoxLayout *pmainlayout = new QVBoxLayout;
@@ -81,7 +87,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 
     connect(this,&StoreInfoWidget::signalfindinfo,m_ptableview,&StorenbrTableView::SlotFindNbrinfo);
     connect(m_ptableview,&StorenbrTableView::signalDelRowData,this,&StoreInfoWidget::SlotDelSinglerow);//表格中的单行操作
-  //  connect(this,&StoreInfoWidget::signalUpdatetable,m_ptableview,&StorenbrTableView::SlotEditInfo);
+    connect(this,&StoreInfoWidget::signalUpdatetable,m_ptableview,&StorenbrTableView::SlotEditInfo);
     connect(m_ptableview,&StorenbrTableView::signalEditRowData,this,&StoreInfoWidget::slottableeditbtn);
     //数据假测试进行测试r
     QStringList strTypeList;
@@ -90,6 +96,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     m_ptableview->SetTableHeaderData(strTypeList,strTypeList.size());
     Dataselectfromdatabase();
     this->resize(parent->size());
+    this->setStyleSheet(stylestr);
 }
 ///
 /// \brief StoreInfoWidget::~StoreInfoWidget
@@ -112,10 +119,12 @@ StoreInfoWidget::~StoreInfoWidget()
 /// 添加编号信息数据框
 void StoreInfoWidget::slotaddnbrinfo()
 {
+    DelDialogBaseob();
     QStringList strTypeList;
     strTypeList<<tr("仓位编号")
               <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
     QString flag;
+    flag = "add";
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
     adddialog->show();
     connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
@@ -147,7 +156,7 @@ void StoreInfoWidget::slotBatchDelnbrinfo()
 void StoreInfoWidget::slotquenbrinfo()
 {
     QString text  = m_pnbrlineEdit->text();
-    emit signalfindinfo(text,2);
+    emit signalfindinfo(text,1);
 }
 ///
 /// \brief StoreInfoWidget::slotImportnbrinfo
@@ -253,13 +262,15 @@ void StoreInfoWidget::slotExportnbrinfo()
 /// update 表格
 void StoreInfoWidget::slotEditData(QStringList datalist)
 {
-    emit signalUpdatetable(datalist);
+    emit signalUpdatetable(datalist ,m_editrow);
 }
 ///
 /// \brief StoreInfoWidget::slottableeditbtn
 /// 表格编辑按钮传输过来slot函数
-void StoreInfoWidget::slottableeditbtn(QString nbrinfo)
+void StoreInfoWidget::slottableeditbtn(QString nbrinfo ,int row)
 {
+      DelDialogBaseob();
+    m_editrow = row;
     QList<QStringList> list;
     if(m_stroreposmap.storeposInfoMap.contains(nbrinfo))
     {
@@ -267,19 +278,22 @@ void StoreInfoWidget::slottableeditbtn(QString nbrinfo)
         storeposInfoMap.insert(nbrinfo,m_stroreposmap.storeposInfoMap[nbrinfo]);
         list =  GetdatalistFromstru(storeposInfoMap);
     }
-//    if(list.size() !=1)
-//        return;
+    if(list.size() !=1)
+        return;
     QStringList strTypeList;
     strTypeList<<tr("仓位编号")
               <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
-    QString flag;
+    QString flag = "update";
     //测试数据
     QStringList TEST;
     TEST.clear();
     TEST << "nbr005"<<"L"<<"234"<<"456"<<"789"<<"box005"<<"1"<<"5";
     //测试
+  TEST = list[0];
+   list[0].removeFirst();
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
-    adddialog->setContent(TEST);
+    adddialog->move(m_ptableview->pos().x() +m_ptableview->width()/2 - adddialog->width()/2,m_ptableview->pos().y() + m_ptableview->height()/2-adddialog->height()/2);
+    adddialog->setContent( list[0]);
     adddialog->show();
     connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
 }
@@ -298,11 +312,15 @@ void StoreInfoWidget::Dataselectfromdatabase()
     rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"444"<<"1"<<"2"<<"5";
     list.append(rowlist);
     rowlist.clear();
-    rowlist<<"1"<<"nbr001"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"1"<<"5";
+    rowlist<<"1"<<"10"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"1"<<"5";
     list.append(rowlist);
     rowlist.clear();
-    rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"0"<<"5";
-    list.append(rowlist);
+    rowlist<<"0"<<"11"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"0"<<"5";
+    if(list.size() == 0)
+    {
+        //若数据库打不开则插入测试数据
+        list.append(rowlist);
+    }
     m_ptableview->setModeldatalist(list);
 }
 
@@ -390,5 +408,18 @@ void StoreInfoWidget::SlotBatchDelData(  QList<QVariant> nbrlist)
 {
     DelDataBaseInfo(nbrlist);
 
+}
+///
+/// \brief StoreInfoWidget::DelDialogBaseob
+///
+void StoreInfoWidget::DelDialogBaseob()
+{
+    QList<EditStorenbrinfoDialog *> list = this->findChildren<EditStorenbrinfoDialog*>();
+    if(list.size() == 0)
+        return;
+    foreach (EditStorenbrinfoDialog* w, list) {
+        w->hide();
+        w->deleteLater();
+    }
 }
 

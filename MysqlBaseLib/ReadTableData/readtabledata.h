@@ -7,6 +7,7 @@
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QDebug>
 
 class READTABLEDATASHARED_EXPORT ReadTableData
 {
@@ -17,6 +18,7 @@ public:
     void readt_elevator();
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
+    bool WriteLoginfo(int level,QString from,QString log_info);
 private:
     QMutex m_mutex;
 

@@ -28,7 +28,6 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
-    UnitClass/databaseunit.cpp \
     UnitClass/logininfowg.cpp \
     Forms/basefrom.cpp \
     Forms/CarForms/adddevice.cpp \
@@ -47,6 +46,7 @@ SOURCES += main.cpp\
     Forms/CarForms/addcar.cpp \
     Forms/TaskForms/currenttask.cpp \
    Forms/TaskForms/alltask.cpp \
+    UnitClass/logmanager.cpp \
     UnitClass/ImportExportFile/localfileoperate.cpp \
     Forms/StorePosInfo/editstorenbrinfodialog.cpp
 
@@ -56,7 +56,6 @@ HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/c_systemlogmng.h \
     datastructure.h \
-    UnitClass/databaseunit.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
     Forms/CarForms/adddevice.h \
@@ -76,8 +75,9 @@ HEADERS  += mainwindow.h \
     Forms/TaskForms/currenttask.h \
     Forms/TaskForms/alltask.h \
     UnitClass/ImportExportFile/localfileoperate.h \
-    Forms/StorePosInfo/editstorenbrinfodialog.h \
-    UnitClass/myIniconfig.h
+    Forms/StorePosInfo/editstorenbrinfodialog.h\
+    UnitClass/myIniconfig.h \
+    UnitClass/logmanager.h
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

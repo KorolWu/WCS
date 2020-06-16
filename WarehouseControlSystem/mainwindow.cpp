@@ -21,7 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     getConfigParameter();
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
-
+    GetSystemLogObj()->writeLog("电梯管理",0);
+    GetSystemLogObj()->writeLog("电梯管理",0);
+    GetSystemLogObj()->writeLog("电梯管理",1);
+    GetSystemLogObj()->writeLog("电梯管理",2);
+    LogManager *l = new LogManager(this);
+    l->start();
 }
 
 MainWindow::~MainWindow()
@@ -29,9 +34,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::closeWms()
+void MainWindow::closeWcs()
 {
-    DataBaseUnit::GetInstance()->closeDb();
+    //DataBaseUnit::GetInstance()->closeDb();
     this->close();
 }
 
@@ -122,7 +127,7 @@ void MainWindow::initUI()
     user_btn->move(desk_rect.width()*0.85,desk_rect.height()/20);
    connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
     exit_btn = new QPushButton("安全退出",this);
-    connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWms);
+    connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
     m_pstoreWg = nullptr;
@@ -166,17 +171,24 @@ void MainWindow::getConfigParameter()
     qDebug()<<"Myconfig::GetInstance()->m_databaseInfo";
 }
 
+void MainWindow::delay_msc(int msc)
+{
+    QEventLoop loop;
+    QTimer::singleShot(msc,&loop,SLOT(quit()));
+    loop.exec();
+}
+
 void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
     deleteChildrenList();
     QString row_name = index.data().toString();
     if(row_name == "权限管理")
     {
-        qDebug()<<"handle 权限管理...";
+        //qDebug()<<"handle 权限管理...";
+        Myconfig::GetInstance()->InsertLog(0,"mainwindow","This test message is from MainWindow form");
     }
     else if(row_name == "小车管理")
     {
-        qDebug()<<"handle 小车管理...";
         AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
         car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         car_from->show();

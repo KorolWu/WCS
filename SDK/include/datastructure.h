@@ -59,6 +59,19 @@ typedef struct _DataBaseInfoStru
     }
 
 }DataBaseInfoStru;
+// log struct
+typedef struct _LogInfoStru
+{
+    QString from;
+    int level;
+    QString info;
+    _LogInfoStru()
+    {
+        from = "";
+        level = 0;
+        info = "";
+    }
+}LogInfoStru;
 typedef struct _ElevatorInfoStru
 {
     //"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"remarks"

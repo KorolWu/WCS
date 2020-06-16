@@ -10,18 +10,20 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <Forms/CarForms/adddevice.h>
-#include <UnitClass/databaseunit.h>
 #include <Forms/CarForms/agvform.h>
 #include <Forms/ElevatorForms/elevatorfrom.h>
 #include "Forms/TaskForms/currenttask.h"
 #include "Forms/TaskForms/alltask.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
-//#include "Myconfig.h"
+#include <QTimer>
+#include <QEventLoop>
 #include <MysqlDataBase/readtabledata.h>
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QCoreApplication>
 #include <QDir>
+#include <UnitClass/c_systemlogmng.h>
+#include "UnitClass/logmanager.h"
 
 namespace Ui {
 class MainWindow;
@@ -53,11 +55,12 @@ private:
     QPushButton *exit_btn;
     QPushButton *user_btn;
     QWidget *p_main_widget;
-    void closeWms();
+    void closeWcs();
     void initUI();
     void deleteChildrenList();
     void getParameterFromDB();
     void getConfigParameter();
+    void delay_msc(int msc);
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void  slotlogin();

@@ -44,10 +44,13 @@ private:
     QWidget *w;
     QLabel *m_info_lab;
     QHBoxLayout *m_hbox;
-    QVBoxLayout *m_vbox;
     QPushButton *m_yesbtn;
     QPushButton *m_cleanbtn;
 public:
+<<<<<<< HEAD
+    QVBoxLayout *m_vbox;
+    QList<QLineEdit*> m_edit_list;
+=======
      QList<QLineEdit*> m_edit_list;
 protected:
     void mouseMoveEvent(QMouseEvent *event);
@@ -57,6 +60,7 @@ private:
     QPoint mousePoint;
     bool mouse_press;
 public:
+>>>>>>> 6f92a2be60bae5715c64e0a7f8159aff381aefbd
     virtual void onYesBtnClicked();
     virtual void onCleanBtnClicked();
 };

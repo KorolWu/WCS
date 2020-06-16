@@ -28,12 +28,12 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     UnitClass/jeson2object.cpp \
     UnitClass/c_systemlogmng.cpp \
-    UnitClass/databaseunit.cpp \
     UnitClass/logininfowg.cpp \
     Forms/basefrom.cpp \
     Forms/CarForms/adddevice.cpp \
     Forms/CarForms/agvform.cpp \
     Forms/CarForms/CarStatusFrom.cpp \
+    Forms/CarForms/labeldelegate.cpp \
     Forms/CarForms/progressbardelegate.cpp \
     Forms/ElevatorForms/elevatorfrom.cpp \
     Forms/StorePosInfo/buttondelegate.cpp \
@@ -43,23 +43,22 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/watingdialogwg.cpp\
     Forms/ElevatorForms/addelevatorform.cpp \
     Forms/dialogabstractclass.cpp \
-<<<<<<< HEAD
-    Forms/StorePosInfo/localfileoperate.cpp \
-    Forms/CarForms/addcar.cpp
-=======
     Forms/CarForms/addcar.cpp \
-    Forms/CarForms/labeldelegate.cpp \
     Forms/TaskForms/currenttask.cpp \
-    Forms/TaskForms/alltask.cpp
->>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
+   Forms/TaskForms/alltask.cpp \
+<<<<<<< HEAD
+    UnitClass/logmanager.cpp
+=======
+    UnitClass/ImportExportFile/localfileoperate.cpp \
+    Forms/StorePosInfo/editstorenbrinfodialog.cpp
+>>>>>>> 6f92a2be60bae5715c64e0a7f8159aff381aefbd
 
 
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
-    UnitClass/myconfig.h \
     UnitClass/c_systemlogmng.h \
-    UnitClass/databaseunit.h \
+    datastructure.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
     Forms/CarForms/adddevice.h \
@@ -75,14 +74,20 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/watingdialogwg.h \
     Forms/ElevatorForms/addelevatorform.h \
     Forms/dialogabstractclass.h \
-<<<<<<< HEAD
-    Forms/StorePosInfo/localfileoperate.h \
-    Forms/CarForms/addcar.h
-=======
     Forms/CarForms/addcar.h \
     Forms/TaskForms/currenttask.h \
-    Forms/TaskForms/alltask.h
->>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
+    Forms/TaskForms/alltask.h \
+<<<<<<< HEAD
+    UnitClass/myIniconfig.h \
+    UnitClass/logmanager.h
+=======
+<<<<<<< HEAD
+    UnitClass/ImportExportFile/localfileoperate.h \
+    Forms/StorePosInfo/editstorenbrinfodialog.h
+=======
+    UnitClass/myIniconfig.h
+>>>>>>> 7d5b1ce299b8e1ca9e339e33219135066bd95672
+>>>>>>> 6f92a2be60bae5715c64e0a7f8159aff381aefbd
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

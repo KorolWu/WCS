@@ -11,7 +11,8 @@
 #include <QTimer>
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QFileDialog>
-#include "localfileoperate.h"
+#include "UnitClass/ImportExportFile/localfileoperate.h"
+#include "editstorenbrinfodialog.h"
 
 
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
@@ -80,9 +81,9 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 
     connect(this,&StoreInfoWidget::signalfindinfo,m_ptableview,&StorenbrTableView::SlotFindNbrinfo);
     connect(m_ptableview,&StorenbrTableView::signalDelRowData,this,&StoreInfoWidget::SlotDelSinglerow);//表格中的单行操作
-    connect(this,&StoreInfoWidget::signalBatchDel,m_ptableview,&StorenbrTableView::SlotBatchDeltableInfo);
-    connect(m_ptableview,&StorenbrTableView::SignalBatchDel,this,&StoreInfoWidget::SlotBatchDelData);
-    //数据假测试进行测试
+  //  connect(this,&StoreInfoWidget::signalUpdatetable,m_ptableview,&StorenbrTableView::SlotEditInfo);
+    connect(m_ptableview,&StorenbrTableView::signalEditRowData,this,&StoreInfoWidget::slottableeditbtn);
+    //数据假测试进行测试r
     QStringList strTypeList;
     strTypeList<<tr("选择")<</*tr("序号")<<*/tr("仓位编号")
               <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级")<<tr("操作");
@@ -111,7 +112,13 @@ StoreInfoWidget::~StoreInfoWidget()
 /// 添加编号信息数据框
 void StoreInfoWidget::slotaddnbrinfo()
 {
-
+    QStringList strTypeList;
+    strTypeList<<tr("仓位编号")
+              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
+    QString flag;
+    EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
+    adddialog->show();
+    connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
 }
 ///
 /// \brief StoreInfoWidget::slotBatchDelnbrinfo
@@ -124,7 +131,15 @@ void StoreInfoWidget::slotBatchDelnbrinfo()
     if(ret == QMessageBox::No)
         return;
     //先进行表格数据，查看checkbox的状态
-    emit signalBatchDel();
+    //获取表格选中状态
+    QList<QVariant> list =   m_ptableview->GetBatchDellist();
+    if(list.size() > 0 )
+    {
+        if(DelDataBaseInfo(list))
+        {
+            m_ptableview->BatchDeltableInfo();
+        }
+    }
 }
 ///
 /// \brief StoreInfoWidget::slotquenbrinfo
@@ -233,6 +248,42 @@ void StoreInfoWidget::slotExportnbrinfo()
     }
 }
 ///
+/// \brief StoreInfoWidget::slotEditData
+/// \param datalist
+/// update 表格
+void StoreInfoWidget::slotEditData(QStringList datalist)
+{
+    emit signalUpdatetable(datalist);
+}
+///
+/// \brief StoreInfoWidget::slottableeditbtn
+/// 表格编辑按钮传输过来slot函数
+void StoreInfoWidget::slottableeditbtn(QString nbrinfo)
+{
+    QList<QStringList> list;
+    if(m_stroreposmap.storeposInfoMap.contains(nbrinfo))
+    {
+        QMap<QString,StorePosInfoStru> storeposInfoMap;
+        storeposInfoMap.insert(nbrinfo,m_stroreposmap.storeposInfoMap[nbrinfo]);
+        list =  GetdatalistFromstru(storeposInfoMap);
+    }
+//    if(list.size() !=1)
+//        return;
+    QStringList strTypeList;
+    strTypeList<<tr("仓位编号")
+              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
+    QString flag;
+    //测试数据
+    QStringList TEST;
+    TEST.clear();
+    TEST << "nbr005"<<"L"<<"234"<<"456"<<"789"<<"box005"<<"1"<<"5";
+    //测试
+    EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
+    adddialog->setContent(TEST);
+    adddialog->show();
+    connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
+}
+///
 /// \brief StoreInfoWidget::Dataselectfromdatabase
 ///查询数据库的内容，得到信息 映射到表格中
 void StoreInfoWidget::Dataselectfromdatabase()
@@ -243,26 +294,39 @@ void StoreInfoWidget::Dataselectfromdatabase()
     QList<QStringList> list;
     m_stroreposmap.storeposInfoMap =  Myconfig::GetInstance()->m_storeinfoMap;
     list =  GetdatalistFromstru(m_stroreposmap.storeposInfoMap);
+    QStringList rowlist;
+    rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"444"<<"1"<<"2"<<"5";
+    list.append(rowlist);
+    rowlist.clear();
+    rowlist<<"1"<<"nbr001"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"1"<<"5";
+    list.append(rowlist);
+    rowlist.clear();
+    rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"0"<<"5";
+    list.append(rowlist);
     m_ptableview->setModeldatalist(list);
 }
 
-void StoreInfoWidget::DelDataBaseInfo(QList<QVariant> nbrlist)
+bool StoreInfoWidget::DelDataBaseInfo(QList<QVariant> nbrlist)
 {
     QString tablename = "t_storeposinfo";
-    for(int i = 0 ; i < nbrlist.size(); ++i)
-    {
-        QString key = nbrlist[i].toString();
-        if(m_stroreposmap.storeposInfoMap.contains(key))
-        {
-            m_stroreposmap.storeposInfoMap.remove(key);
-        }
-        //调用数据库进行删除操作 ，删除的操作语句
-    }
     QString msg;
     QString id = "idNbr";
     if(!CRUDBaseOperation::getInstance()->ExcBatchDeleteDB(tablename,id,nbrlist,msg))
     {
         QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+        return false;
+    }
+    else{
+        for(int i = 0 ; i < nbrlist.size(); ++i)
+        {
+            QString key = nbrlist[i].toString();
+            if(m_stroreposmap.storeposInfoMap.contains(key))
+            {
+                m_stroreposmap.storeposInfoMap.remove(key);
+            }
+            //调用数据库进行删除操作 ，删除的操作语句
+        }
+        return true;
     }
 }
 ///
@@ -290,14 +354,33 @@ QList<QStringList> StoreInfoWidget::GetdatalistFromstru(QMap<QString, StorePosIn
     return list;
 }
 ///
+/// \brief StoreInfoWidget::CheckBoxNbrInfo
+/// \param boxnbr
+/// \return
+///检查是否有重复的boxnbrInfo
+bool StoreInfoWidget::CheckBoxNbrInfo(QString boxnbr)
+{
+    for(auto it = m_stroreposmap.storeposInfoMap.begin(); it !=  m_stroreposmap.storeposInfoMap.end();++it)
+    {
+        if(QString::fromUtf8(it.value().boxnbr) ==boxnbr )
+        {
+            return  false;;
+        }
+    }
+    return true;
+}
+///
 /// \brief StoreInfoWidget::SlotDelSinglerow
 /// \param nbrinfo
 ///表格中删除按钮
-void StoreInfoWidget::SlotDelSinglerow(QString nbrinfo)
+void StoreInfoWidget::SlotDelSinglerow(QString nbrinfo,int row)
 {
     QList<QVariant> list;
     list.append(nbrinfo);
-    DelDataBaseInfo(list);
+    if(DelDataBaseInfo(list))
+    {
+        m_ptableview->Delsinglerow(row);
+    }
 }
 ///
 /// \brief StoreInfoWidget::SlotBatchDelData
@@ -306,5 +389,6 @@ void StoreInfoWidget::SlotDelSinglerow(QString nbrinfo)
 void StoreInfoWidget::SlotBatchDelData(  QList<QVariant> nbrlist)
 {
     DelDataBaseInfo(nbrlist);
+
 }
 

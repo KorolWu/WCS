@@ -7,15 +7,24 @@ CRUDBaseOperation::CRUDBaseOperation()
 
 bool CRUDBaseOperation::openDB()
 {
+<<<<<<< HEAD
+    data_base = QSqlDatabase::addDatabase("QMYSQL");
+    data_base.setHostName("10.0.1.11");
+    data_base.setPort(3306);
+    data_base.setDatabaseName("test_dev");
+    data_base.setUserName("root");
+    data_base.setPassword("orange");
+=======
     data_base = QSqlDatabase::addDatabase(Myconfig::GetInstance()->m_databaseInfo.databaseName);
     data_base.setHostName(Myconfig::GetInstance()->m_databaseInfo.ip);
     data_base.setPort(Myconfig::GetInstance()->m_databaseInfo.port);
     data_base.setDatabaseName(Myconfig::GetInstance()->m_databaseInfo.sqlName);
     data_base.setUserName(Myconfig::GetInstance()->m_databaseInfo.userName);
     data_base.setPassword(Myconfig::GetInstance()->m_databaseInfo.passWord);
+>>>>>>> 7d5b1ce299b8e1ca9e339e33219135066bd95672
     if(data_base.isOpen())
         return true;
-    if(!data_base.open())
+   if(!data_base.open())
     {
         qDebug()<<"open database fail";
         return true;
@@ -158,11 +167,11 @@ bool CRUDBaseOperation::ExcBatchUpdateDB(const QString &table, QStringList &name
    for(int i=0;i<valuesvec.size();++i )
    {
        QString keyid;
-       if( keytype.contains("VARCHAR"))
+       if( keytype.contains("varchar"))
        {
            keyid+=QString("='%1'").arg(keyvalue[i].toString());
        }
-       else if(keytype.contains("INT"))
+       else if(keytype.contains("int"))
        {
            keyid+=QString("=%1").arg(keyvalue[i].toString());
        }
@@ -211,11 +220,13 @@ QSqlQuery CRUDBaseOperation::ExcBatchSelectDB(const QString table)
 /// replace into 语句批量使用可替换插入和更新操作//如果没有其他字段赋值会把其他字段置为默认值
 bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &names, QList<QVariantList> &values,QString &sqlerror)
 {
+    QString msg;
     for(int i = 0 ; i < values.size();++i )
     {
         if(names.size() != values[i].size() )
         {
-                sqlerror = "字段的数量与传入的值数据大小不一致";
+                msg = "字段的数量与传入的值数据大小不一致";
+                sqlerror = msg;
             return false;
         }
     }
@@ -232,7 +243,9 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
     insertsql += QString(") values(") + valuesnumstr;
     insertsql.chop(1);
     insertsql +=")";
-    query.prepare(insertsql);
+    if(!query.prepare(insertsql)){
+           sqlerror = query.lastError().text();
+    }
     for(int i = 0 ; i < names.size();++i)
     {
         QVariantList list;
@@ -248,6 +261,7 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
     {
         sqlerror = query.lastError().text();
         data_base.rollback();
+        qDebug()<<"info" << sqlerror;
         return false;
     }
     return true;

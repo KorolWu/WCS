@@ -4,9 +4,9 @@
 StorenbrTableView::StorenbrTableView(QWidget *parent):QTableView(parent)
 {
     m_ptablemodel = new StorenbrInfoTablemodel();
-//    m_ptablemodel->setTable("t_storeposinfo");
-//    m_ptablemodel->select();
-//    m_ptablemodel->insertColumn(0);
+    //    m_ptablemodel->setTable("t_storeposinfo");
+    //    m_ptablemodel->select();
+    //    m_ptablemodel->insertColumn(0);
     this->setSelectionBehavior(QAbstractItemView::SelectRows);
     this->verticalHeader()->hide();
     this->horizontalHeader()->setStretchLastSection(true); // 设置最后一列填充
@@ -30,19 +30,19 @@ StorenbrTableView::~StorenbrTableView()
 ///
 void StorenbrTableView::SetTableHeaderData(QStringList datalist, int columncnt)
 {
-       m_ptablemodel->SetTableHeader(datalist);
-       m_ptablemodel->SetColumncnt(datalist.size());
-        this->setModel(m_ptablemodel);
-       int nColumWidth = this->width() / columncnt;
-       for(int i = 0; i < datalist.count(); i++)
-       {
-           this->setColumnWidth(i,nColumWidth);
-       }
-       ButtonDelegate* opbtsBoxDelegate = new ButtonDelegate(this);
-       connect(opbtsBoxDelegate,&ButtonDelegate::signalEditButtonClicked,this,&StorenbrTableView::SlotEditBtnClicked);
-       connect(opbtsBoxDelegate,&ButtonDelegate::signalDeleteButtonClicked,this,&StorenbrTableView::SlotDelBtnClicked);
-       //在第二列，第四列，添加combobox代理
-       this->setItemDelegateForColumn(columncnt-1, opbtsBoxDelegate);
+    m_ptablemodel->SetTableHeader(datalist);
+    m_ptablemodel->SetColumncnt(datalist.size());
+    this->setModel(m_ptablemodel);
+    int nColumWidth = this->width() / columncnt;
+    for(int i = 0; i < datalist.count(); i++)
+    {
+        this->setColumnWidth(i,nColumWidth);
+    }
+    ButtonDelegate* opbtsBoxDelegate = new ButtonDelegate(this);
+    connect(opbtsBoxDelegate,&ButtonDelegate::signalEditButtonClicked,this,&StorenbrTableView::SlotEditBtnClicked);
+    connect(opbtsBoxDelegate,&ButtonDelegate::signalDeleteButtonClicked,this,&StorenbrTableView::SlotDelBtnClicked);
+    //在第二列，第四列，添加combobox代理
+    this->setItemDelegateForColumn(columncnt-1, opbtsBoxDelegate);
 }
 ///
 /// \brief StorenbrTableView::setModeldatalist
@@ -50,9 +50,9 @@ void StorenbrTableView::SetTableHeaderData(QStringList datalist, int columncnt)
 ///
 void StorenbrTableView::setModeldatalist(QList<QStringList> &list)
 {
-   m_nbrList = list;
-   m_ptablemodel->setModelDatas(&m_nbrList);
-   m_ptablemodel->refrush();
+    m_nbrList = list;
+    m_ptablemodel->setModelDatas(&m_nbrList);
+    m_ptablemodel->refrush();
 }
 ///
 /// \brief StorenbrTableView::SlotCheckstatChanged
@@ -61,7 +61,8 @@ void StorenbrTableView::setModeldatalist(QList<QStringList> &list)
 ///记录选择状态的索引号
 void StorenbrTableView::SlotCheckstatChanged(int row, bool check)
 {
-    int index = row;
+    Q_UNUSED(row)
+    //  int index = row;
     if(check)
     {
         // list 做改变
@@ -70,7 +71,6 @@ void StorenbrTableView::SlotCheckstatChanged(int row, bool check)
     else {
 
     }
-
 }
 ///
 /// \brief StorenbrTableView::SlotEditBtnClicked
@@ -79,8 +79,9 @@ void StorenbrTableView::SlotCheckstatChanged(int row, bool check)
 ///
 void StorenbrTableView::SlotEditBtnClicked(int row, int column)
 {
-  QString nbrinfo = m_nbrList[row].at(column);
-    emit signalEditRowData(nbrinfo);
+    Q_UNUSED(column)
+    QString nbrinfo = m_nbrList[row].at(1);
+    emit signalEditRowData(nbrinfo,row);
 }
 ///
 /// \brief StorenbrTableView::SlotDelBtnClicked
@@ -94,11 +95,8 @@ void StorenbrTableView::SlotDelBtnClicked(int row, int column)
                                    QMessageBox::Yes | QMessageBox::No,QMessageBox::No);
     if(ret == QMessageBox::No)
         return;
-    //Qtring 需要删除当前信息
-    m_nbrList.removeAt(row);
     QString nbrinfo = m_nbrList[row].at(column);
-    emit signalDelRowData(nbrinfo);
-    m_ptablemodel->refrush();
+    emit signalDelRowData(nbrinfo,row);
 }
 
 ///
@@ -132,9 +130,44 @@ void StorenbrTableView::SlotFindNbrinfo(QString info,int column )
     }
 }
 ///
-/// \brief StorenbrTableView::SlotBatchDelInfo
-/// 记录批量删除状态进行删除表格中的数据
-void StorenbrTableView::SlotBatchDeltableInfo()
+/// \brief StorenbrTableView::SlotaddNbrInfo
+/// \param list
+///新增插入
+void StorenbrTableView::SlotaddNbrInfo(QStringList list)
+{
+    int sizerow = m_nbrList.size();
+    m_nbrList.append(list);
+    m_ptablemodel->refrush();
+    this->selectRow(sizerow);
+}
+///
+/// \brief StorenbrTableView::SlotEditInfo
+/// \param newlist
+/// \param row
+///编辑数据进行替换
+void StorenbrTableView::SlotEditInfo(QStringList newlist, int row)
+{
+    //替换
+
+
+}
+
+QList<QVariant> StorenbrTableView::GetBatchDellist()
+{
+    QList<QVariant> delnbrlist;
+    foreach(auto item,m_nbrList)
+    {
+        if (item[0] == "1")
+        {
+            delnbrlist.append(item[1] );
+        }
+    }
+    return delnbrlist;
+}
+///
+/// \brief StorenbrTableView::BatchDeltableInfo
+///批量删除表格中的数据
+void StorenbrTableView::BatchDeltableInfo()
 {
     QList<QVariant> delnbrlist;
     foreach(auto item,m_nbrList)
@@ -148,10 +181,19 @@ void StorenbrTableView::SlotBatchDeltableInfo()
     // 记录批量删除编号信息
     if(delnbrlist.size() > 0)
     {
-         //发送批量删除信号
-            emit SignalBatchDel(delnbrlist);
-           m_ptablemodel->refrush();
+        //发送批量删除信号
+        m_ptablemodel->refrush();
     }
- }
+}
+///
+/// \brief StorenbrTableView::Delsinglerow
+/// \param row
+///更新表格中的数据
+void StorenbrTableView::Delsinglerow(int row)
+{
+    //Qtring 需要删除当前信息
+    m_nbrList.removeAt(row);
+    m_ptablemodel->refrush();
+}
 
 

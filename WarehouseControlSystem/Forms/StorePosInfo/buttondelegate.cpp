@@ -36,7 +36,7 @@ void ButtonDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         //button2->rect = option.rect.adjusted(button1->rect.width() + 4, 4, -4, -4);
        // delbutton->text = "删除";
         delbutton->state |= QStyle::State_Enabled;
-        delbutton->icon = QIcon(":/resouse/Image/btndelete.png");
+        delbutton->icon = QIcon(":/resouse/Image/deleterow.png");
         delbutton->iconSize= QSize(16,16);
         delbutton->palette = palette;
         buttons =new  QPair<QStyleOptionButton*, QStyleOptionButton*>(editbutton, delbutton);

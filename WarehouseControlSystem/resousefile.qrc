@@ -37,5 +37,6 @@
         <file>Image/out.png</file>
         <file>Image/in.png</file>
         <file>Image/all.png</file>
+        <file>Image/deleterow.png</file>
     </qresource>
 </RCC>

@@ -17,8 +17,7 @@ const QString stylestr =  "QPushButton{font:12px;}"
                      "QLabel{font:12px;}"
                     "QPushButton:hover{background-color:rgba(255,255,255,110);}"
                     "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
-                    "QHeaderView{height:60px;font:12px;border:none;alternate-background-color: rgb(220, 220, 220);}"
-                    "QTableView{font:12px;selection-background-color:rgba(0,191,255,255);}"
+                    "QTableView{font:12px;selection-background-color:rgba(68,69,71,100);alternate-background-color: rgb(220, 220, 220);}"
                     "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {

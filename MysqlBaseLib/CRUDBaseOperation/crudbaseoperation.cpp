@@ -23,7 +23,15 @@ bool CRUDBaseOperation::openDB()
         qDebug()<<"open database fail";
         return true;
     }
-    return false;
+   return false;
+}
+
+void CRUDBaseOperation::closeDB()
+{
+    if(data_base.isOpen())
+        data_base.close();
+    else
+        return;
 }
 
 void CRUDBaseOperation::createTable(const QString &creatTableSql)

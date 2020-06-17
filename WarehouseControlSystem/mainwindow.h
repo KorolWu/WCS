@@ -16,6 +16,7 @@
 #include "Forms/TaskForms/alltask.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
+#include "Forms/LogForms/logforms.h"
 #include <QTimer>
 #include <QEventLoop>
 #include <MysqlDataBase/readtabledata.h>

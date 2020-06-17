@@ -48,7 +48,8 @@ SOURCES += main.cpp\
    Forms/TaskForms/alltask.cpp \
     UnitClass/logmanager.cpp \
     UnitClass/ImportExportFile/localfileoperate.cpp \
-    Forms/StorePosInfo/editstorenbrinfodialog.cpp
+    Forms/StorePosInfo/editstorenbrinfodialog.cpp \
+    Forms/LogForms/logforms.cpp
 
 
 
@@ -77,7 +78,8 @@ HEADERS  += mainwindow.h \
     UnitClass/ImportExportFile/localfileoperate.h \
     Forms/StorePosInfo/editstorenbrinfodialog.h\
     UnitClass/myIniconfig.h \
-    UnitClass/logmanager.h
+    UnitClass/logmanager.h \
+    Forms/LogForms/logforms.h
 
 INCLUDEPATH += ../SDK/include/
 LIBS += -L../SDK/lib -lCRUDBaseOperation

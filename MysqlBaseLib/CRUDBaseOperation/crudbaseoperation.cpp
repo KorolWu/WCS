@@ -7,21 +7,12 @@ CRUDBaseOperation::CRUDBaseOperation()
 
 bool CRUDBaseOperation::openDB()
 {
-<<<<<<< HEAD
-    data_base = QSqlDatabase::addDatabase("QMYSQL");
-    data_base.setHostName("10.0.1.11");
-    data_base.setPort(3306);
-    data_base.setDatabaseName("test_dev");
-    data_base.setUserName("root");
-    data_base.setPassword("orange");
-=======
     data_base = QSqlDatabase::addDatabase(Myconfig::GetInstance()->m_databaseInfo.databaseName);
     data_base.setHostName(Myconfig::GetInstance()->m_databaseInfo.ip);
     data_base.setPort(Myconfig::GetInstance()->m_databaseInfo.port);
     data_base.setDatabaseName(Myconfig::GetInstance()->m_databaseInfo.sqlName);
     data_base.setUserName(Myconfig::GetInstance()->m_databaseInfo.userName);
     data_base.setPassword(Myconfig::GetInstance()->m_databaseInfo.passWord);
->>>>>>> 7d5b1ce299b8e1ca9e339e33219135066bd95672
     if(data_base.isOpen())
         return true;
    if(!data_base.open())
@@ -29,7 +20,15 @@ bool CRUDBaseOperation::openDB()
         qDebug()<<"open database fail";
         return true;
     }
-    return false;
+   return false;
+}
+
+void CRUDBaseOperation::closeDB()
+{
+    if(data_base.isOpen())
+        data_base.close();
+    else
+        return;
 }
 
 void CRUDBaseOperation::createTable(const QString &creatTableSql)

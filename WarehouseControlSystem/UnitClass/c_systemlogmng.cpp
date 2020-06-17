@@ -41,7 +41,7 @@ C_SYSTEMLOGMNG::C_SYSTEMLOGMNG()
     m_log.setFileName(_applicationDir.path() + "/" + fileNamelog);
     if(m_log.exists())
     {
-        m_log.remove();
+        //m_log.remove();
     }
 
     if(m_log.open(QIODevice::ReadWrite | QIODevice::Text | QFile::Append))

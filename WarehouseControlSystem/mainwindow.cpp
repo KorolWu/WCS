@@ -185,9 +185,9 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     if(row_name == "权限管理")
     {
         //qDebug()<<"handle 权限管理...";
-        Myconfig::GetInstance()->InsertLog(0,"mainwindow","This test message is from MainWindow form");
+
     }
-    else if(row_name == "小车管理")
+    else if(row_name == "小车管理"||row_name == "设备管理")
     {
         AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
         car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
@@ -211,11 +211,17 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         t->show();
     }
-    else if(row_name == "已完成任务")
+    else if(row_name == "已完成任务"||row_name == "任务管理")
     {
         AllTask *t = new AllTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
         t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         t->show();
+    }
+    else if(row_name == "日志管理")
+    {
+        LogForms *l = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        l->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
+        l->show();
     }
 }
 

@@ -5,7 +5,7 @@
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
-#include<QPushButton>
+#include <QPushButton>
 
 class LoginInfoWg:public QDialog
 {

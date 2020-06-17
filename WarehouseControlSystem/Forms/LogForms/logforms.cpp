@@ -61,5 +61,5 @@ void LogForms::initTableView()
     m_table_view->setColumnWidth(3,width/20*8);
     m_table_view->setColumnWidth(4,width/20*4);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
-    m_table_view->setFont(QFont("宋体",13)); //设置字体
+    m_table_view->setFont(QFont("宋体",12)); //设置字体
 }

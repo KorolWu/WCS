@@ -80,7 +80,6 @@ void AgvForm::setTableViewValue()
         auto it = Myconfig::GetInstance()->m_CarMap.begin();
         for(int i = 0;i<row_count;i++)
         {
-
             if(j == 0)
                 model->setItem(i,j,new QStandardItem(QString("%1").arg(i)));
             else if(j == 1)
@@ -206,5 +205,5 @@ void AgvForm::refreshTable()
 
 int AgvForm::randomValue()
 {
-
+    return 0;
 }

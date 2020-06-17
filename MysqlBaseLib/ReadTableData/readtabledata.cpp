@@ -42,32 +42,32 @@ void ReadTableData::readt_elevator()
 /// 读货架仓位信息表格数据库
 void ReadTableData::ReadStoreposinfoDataBase()
 {
-QString tablename = "t_storeposinfo";
- Myconfig::GetInstance()->m_storeinfoMap.clear();
-QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
-while (query.next()) {
-    StorePosInfoStru stru ;
-    QByteArray bytearrayid;
-    //= query.value("id").toByteArray();
-    //  strlist.append(QString::number(bytearrayid.toInt()));
-    bytearrayid = query.value("idNbr").toByteArray();
-    memcpy(stru.idnbr,bytearrayid,bytearrayid.size());
-    bytearrayid = query.value("type").toByteArray();
-    stru.type = bytearrayid.toInt();
-    bytearrayid = query.value("coordx").toByteArray();
-    stru.coordx = bytearrayid.toDouble();
-    bytearrayid = query.value("coordy").toByteArray();
-    stru.coordy = bytearrayid.toDouble();
-    bytearrayid = query.value("coordz").toByteArray();
-    stru.coordz = bytearrayid.toDouble();
-    bytearrayid = query.value("boxnbr").toByteArray();
-    memcpy(stru.boxnbr,bytearrayid,bytearrayid.size());
-    bytearrayid= query.value("storestat").toByteArray();
-    stru.storestat =bytearrayid.toInt();
-    bytearrayid = query.value("storepri").toByteArray();
-    stru.storepri = bytearrayid.toInt();
-   Myconfig::GetInstance()->m_storeinfoMap.insert(QString(stru.idnbr),stru);
-}
+    QString tablename = "t_storeposinfo";
+    Myconfig::GetInstance()->m_storeinfoMap.clear();
+    QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
+    while (query.next()) {
+        StorePosInfoStru stru ;
+        QByteArray bytearrayid;
+        //= query.value("id").toByteArray();
+        //  strlist.append(QString::number(bytearrayid.toInt()));
+        bytearrayid = query.value("idNbr").toByteArray();
+        memcpy(stru.idnbr,bytearrayid,bytearrayid.size());
+        bytearrayid = query.value("type").toByteArray();
+        stru.type = bytearrayid.toInt();
+        bytearrayid = query.value("coordx").toByteArray();
+        stru.coordx = bytearrayid.toDouble();
+        bytearrayid = query.value("coordy").toByteArray();
+        stru.coordy = bytearrayid.toDouble();
+        bytearrayid = query.value("coordz").toByteArray();
+        stru.coordz = bytearrayid.toDouble();
+        bytearrayid = query.value("boxnbr").toByteArray();
+        memcpy(stru.boxnbr,bytearrayid,bytearrayid.size());
+        bytearrayid= query.value("storestat").toByteArray();
+        stru.storestat =bytearrayid.toInt();
+        bytearrayid = query.value("storepri").toByteArray();
+        stru.storepri = bytearrayid.toInt();
+        Myconfig::GetInstance()->m_storeinfoMap.insert(QString(stru.idnbr),stru);
+    }
 }
 ///
 /// \brief ReadTableData::WriteStoreposinfotoDataBase
@@ -111,5 +111,36 @@ bool ReadTableData::WriteLoginfo(int level, QString from, QString log_info)
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
         return true;
     return false;
+}
+
+bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QVector<QVariant> keyvalue,QString &errorinfo)
+{
+    QString tablename = "t_storeposinfo";
+    QStringList names;
+    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz"<<"boxnbr"<<"storestat"<<"storepri";
+    QList<QVariantList> values;
+    for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
+    {
+        QVariantList list;
+        list.append(QString::fromUtf8(it.value().idnbr));
+        list.append(it.value().type);
+        list.append(it.value().coordx);
+        list.append(it.value().coordy);
+        list.append(it.value().coordz);
+        list.append(QString::fromUtf8(it.value().boxnbr));
+        list.append(it.value().storestat);
+        list.append(it.value().storepri);
+        values.append(list);
+    }
+    QString idname = "idNbr";
+    QVector<QVariantList> valueVec =values.toVector() ;
+    if(CRUDBaseOperation::getInstance()->ExcBatchUpdateDB(tablename,names,valueVec,idname,keyvalue,errorinfo))
+    {
+        return true;
+    }
+    else{
+        qDebug()<<"errorinfo:"<<errorinfo;
+        return false;
+    }
 }
 

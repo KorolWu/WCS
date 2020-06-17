@@ -18,6 +18,8 @@ public:
     void onYesBtnClicked();
 signals:
     void signalAckBtn(QStringList datalist);
+private:
+    QString m_idnbr;
 //private:
 //    QButtonGroup *Getradiogroup(QString list);
 //    QButtonGroup *m_pButtonGroup;

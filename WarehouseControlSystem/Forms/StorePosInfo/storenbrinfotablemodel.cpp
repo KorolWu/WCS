@@ -127,7 +127,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
             }
         }
         default:
-            return QVariant(QColor(Qt::white));
+         return QVariant();
         }
     }
     return QVariant();

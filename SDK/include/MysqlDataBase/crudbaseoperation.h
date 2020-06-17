@@ -7,6 +7,7 @@
 #include <QSqlRecord>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include "Myconfig.h"
 class CRUDBASEOPERATIONSHARED_EXPORT CRUDBaseOperation
 {
 

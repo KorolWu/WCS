@@ -14,7 +14,10 @@ bool CRUDBaseOperation::openDB()
     data_base.setUserName(Myconfig::GetInstance()->m_databaseInfo.userName);
     data_base.setPassword(Myconfig::GetInstance()->m_databaseInfo.passWord);
     if(data_base.isOpen())
+    {
+        qDebug()<<"sb";
         return true;
+    }
    if(!data_base.open())
     {
         qDebug()<<"open database fail";
@@ -166,16 +169,16 @@ bool CRUDBaseOperation::ExcBatchUpdateDB(const QString &table, QStringList &name
    for(int i=0;i<valuesvec.size();++i )
    {
        QString keyid;
-       if( keytype.contains("varchar"))
+       if(keytype.contains("char"))
        {
            keyid+=QString("='%1'").arg(keyvalue[i].toString());
        }
-       else if(keytype.contains("int"))
+       else if((keytype.contains("int"))|| (keytype.contains("double")))
        {
            keyid+=QString("=%1").arg(keyvalue[i].toString());
        }
        QString str =QString("%1 %2").arg(updatesql).arg(keyid);
-       //qDebug()<<"sql:"<<str;
+//       qDebug()<<"sql:"<<str;
        query.prepare(str);
        for(int j=0; j< valuesvec[i].size();++j)
        {

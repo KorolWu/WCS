@@ -38,6 +38,7 @@ AllTask::AllTask(int width, int height, QWidget *parent):BaseFrom(parent)
 void AllTask::initTableView()
 {
     m_table_view = new QTableView(this);
+    m_table_view->horizontalHeader()->setStyleSheet(headstlye);
     m_table_view->move(5,60);
     m_table_view->verticalHeader()->hide();
     m_table_view->resize(width,height);
@@ -48,7 +49,8 @@ void AllTask::initTableView()
     model->select();
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
-
+    LabelDelegateV1 *l1 = new LabelDelegateV1();
+    m_table_view->setItemDelegateForColumn(2,l1);
 
     QStringList header;
     header<<"ID"<<"任务号"<<"任务状态"<<"料箱号"<<"优先级"<<"来源"<<"目标"<<"穿梭车号"<<"创建时间"<<"结束时间";
@@ -68,5 +70,5 @@ void AllTask::initTableView()
     m_table_view->setColumnWidth(8,width/20*3);
     m_table_view->setColumnWidth(9,width/20*3);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
-    m_table_view->setFont(QFont("宋体",13)); //设置字体
+    m_table_view->setFont(QFont("宋体",12)); //设置字体
 }

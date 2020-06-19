@@ -37,6 +37,7 @@ LogForms::LogForms(int width, int height,QWidget *parent):BaseFrom(parent)
 void LogForms::initTableView()
 {
     m_table_view = new QTableView(this);
+    m_table_view->horizontalHeader()->setStyleSheet(headstlye);
     m_table_view->move(5,60);
     m_table_view->verticalHeader()->hide();
     m_table_view->resize(width,height);

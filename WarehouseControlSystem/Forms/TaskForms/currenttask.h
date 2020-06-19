@@ -11,7 +11,10 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QHeaderView>
-
+#include <QDebug>
+#include <datastructure.h>
+#include <QDateTime>
+#include "Myconfig.h"
 /**
  *
  * @author korol
@@ -23,6 +26,7 @@ class CurrentTask : public BaseFrom
 {
 public:
     CurrentTask(int width,int height,QWidget *parent);
+    void setTableViewValue();
 private:
 //    QPushButton *m_in_btn;
 //    QPushButton *m_out_btn;
@@ -36,6 +40,8 @@ private:
     void initTableView();
     int width;
     int height;
+public slots:
+    void handelHttpTask(QString reply);
 };
 
 #endif // CURRENTTASK_H

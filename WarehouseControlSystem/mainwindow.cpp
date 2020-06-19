@@ -5,6 +5,7 @@
 #include <QIcon>
 #include "UnitClass/logininfowg.h"
 #include "UnitClass/myIniconfig.h"
+#include "JQHttpServer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -22,11 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
     GetSystemLogObj()->writeLog("电梯管理",0);
-    GetSystemLogObj()->writeLog("电梯管理",0);
-    GetSystemLogObj()->writeLog("电梯管理",1);
-    GetSystemLogObj()->writeLog("电梯管理",2);
     LogManager *l = new LogManager(this);
     l->start();
+
+    KHttpServer *HttpServer = new KHttpServer();
+    connect(HttpServer,&KHttpServer::replyReady,this,&MainWindow::onReplyReady);
+    HttpServer->start();
+
 }
 
 MainWindow::~MainWindow()
@@ -208,6 +211,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "当前任务")
     {
         CurrentTask *t = new CurrentTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+        connect(this,&MainWindow::httpRedReady,t,&CurrentTask::handelHttpTask);
         t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         t->show();
     }
@@ -233,4 +237,12 @@ void MainWindow::slotlogin()
         //获取当前用户信息和级别
         user_btn->setText(tr("admin"));
     }
+}
+
+void MainWindow::onReplyReady(QString str)
+{
+
+    qDebug()<<"in Warehouse Control System"<<str;
+    emit httpRedReady(str);
+
 }

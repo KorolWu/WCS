@@ -23,8 +23,10 @@
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QCoreApplication>
 #include <QDir>
-#include <UnitClass/c_systemlogmng.h>
+#include "UnitClass/c_systemlogmng.h"
 #include "UnitClass/logmanager.h"
+#include "UnitClass/khttpserver.h"
+#include "JQHttpServer.h"
 
 namespace Ui {
 class MainWindow;
@@ -64,10 +66,13 @@ private:
     void delay_msc(int msc);
 private slots:
     void onTreeviewClicked(const QModelIndex &index);
-    void  slotlogin();
+    void slotlogin();
+    void onReplyReady(QString str);
 
 private:
     StoreInfoWidget *m_pstoreWg;
+signals:
+    void httpRedReady(QString str);
 };
 
 #endif // MAINWINDOW_H

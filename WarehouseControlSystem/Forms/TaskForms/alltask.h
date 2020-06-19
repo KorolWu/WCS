@@ -12,6 +12,7 @@
 #include <QStandardItemModel>
 #include <QSqlQueryModel>
 #include <QSqlTableModel>
+#include "labeldelegateV1.h"
 #include "../basefrom.h"
 
 class AllTask : public BaseFrom

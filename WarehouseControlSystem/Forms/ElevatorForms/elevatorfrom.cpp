@@ -27,8 +27,8 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_query_btn->move(610,10);
     p_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
 
-
     p_table_view = new QTableView(this);
+    p_table_view->horizontalHeader()->setStyleSheet(headstlye);
     p_table_view->move(5,60);
     p_table_view->verticalHeader()->hide();
     p_table_view->resize(width,height);

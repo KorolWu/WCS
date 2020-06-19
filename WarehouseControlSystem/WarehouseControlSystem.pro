@@ -1,10 +1,11 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2020-05-26T13:13:47
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network concurrent
 QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -49,7 +50,9 @@ SOURCES += main.cpp\
     UnitClass/logmanager.cpp \
     UnitClass/ImportExportFile/localfileoperate.cpp \
     Forms/StorePosInfo/editstorenbrinfodialog.cpp \
-    Forms/LogForms/logforms.cpp
+    Forms/LogForms/logforms.cpp \
+    Forms/TaskForms/labeldelegateV1.cpp \
+    UnitClass/khttpserver.cpp
 
 
 
@@ -79,9 +82,12 @@ HEADERS  += mainwindow.h \
     Forms/StorePosInfo/editstorenbrinfodialog.h\
     UnitClass/myIniconfig.h \
     UnitClass/logmanager.h \
-    Forms/LogForms/logforms.h
+    Forms/LogForms/logforms.h \
+    Forms/TaskForms/labeldelegateV1.h \
+    UnitClass/khttpserver.h
 
 INCLUDEPATH += ../SDK/include/
+include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )
 LIBS += -L../SDK/lib -lCRUDBaseOperation
 LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui

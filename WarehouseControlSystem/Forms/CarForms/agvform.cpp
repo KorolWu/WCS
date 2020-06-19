@@ -32,6 +32,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
 
 
     p_table_view = new QTableView(this);//18,7,
+    p_table_view->horizontalHeader()->setStyleSheet(headstlye);
     connect(p_table_view,&QTableView::doubleClicked,this,&AgvForm::tableRowClicked);
     p_table_view->move(5,60);
     p_table_view->verticalHeader()->hide();

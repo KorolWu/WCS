@@ -968,6 +968,10 @@ void JQHttpServer::AbstractManage::handleAccepted(const QPointer<Session> &sessi
         }
 
         this->httpAcceptedCallback_( session );
+        Session *s = qobject_cast<Session*>(session);
+        if(s != nullptr)
+           emit onRedReady(s->requestBody());
+
     } );
 }
 

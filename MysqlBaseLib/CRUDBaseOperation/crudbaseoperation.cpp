@@ -52,6 +52,23 @@ bool CRUDBaseOperation::queryUseStr(const QString &sqlStr)
     QSqlQuery query(data_base);
     return query.exec(sqlStr);
 }
+
+bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru)
+{
+    //INSERT t_crrunt_task SET taskNum=9898,taskStatus='down',boxNum='box-009',priority='1',
+    //origin='origin',target='warehouse',carNum='car980';
+    if(data_base.isOpen())
+    {
+        QString sql =QString("INSERT t_crrunt_task SET taskNum=%1,taskStatus='%2',"
+                             "boxNum='%3',priority='%4',origin='%5',"
+                             "target='%6',carNum='%7';") .arg(taskStru.taskNum).arg(taskStru.status).arg(taskStru.boxNum)\
+                                .arg(taskStru.pripty).arg(taskStru.from).arg(taskStru.end).arg(taskStru.carNum);
+        QSqlQuery query(data_base);
+        return query.exec(sql);
+
+    }
+    return false;
+}
 ///
 /// \brief CRUDBaseOperation::GetKeyType
 /// \param tablename
@@ -273,4 +290,5 @@ CRUDBaseOperation *CRUDBaseOperation::getInstance()
 {
     if (Instance != nullptr)
         return Instance;
+    return nullptr;
 }

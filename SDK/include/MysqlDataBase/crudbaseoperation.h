@@ -14,9 +14,11 @@ class CRUDBASEOPERATIONSHARED_EXPORT CRUDBaseOperation
 public:
     CRUDBaseOperation();
     bool openDB();
+    void closeDB();
     void createTable(const QString &creatTableSql);
     QSqlQuery queryDb(const QString &querySql);
     bool queryUseStr(const QString &sqlStr);  
+    bool saveCrruntTask(TaskInfoStru taskStru);
    public:
   /*******批量操作数据库************************************2020-06-12*/
   bool ExcBatchDeleteDB(const QString &table,QString keyname, QList<QVariant> keys,QString &error);

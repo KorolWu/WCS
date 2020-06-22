@@ -16,13 +16,13 @@ void KHttpServer::run()
         m_queue.enqueue(requestBody);
 
     } );
-    if (tcpServerManage.listen( QHostAddress::Any, 23412 ))
+    if (tcpServerManage.listen(QHostAddress::Any, 23412))
     {
         GetSystemLogObj()->writeLog("httpserver reboot successful",0);
     }
     else
         GetSystemLogObj()->writeLog("httpserver reboot fail",3);
-    while(1)
+    while(true == Myconfig::GetInstance()->m_flag)
     {
         if(!m_queue.isEmpty())
         {

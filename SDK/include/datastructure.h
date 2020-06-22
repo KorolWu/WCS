@@ -6,6 +6,7 @@
 #include <QSize>
 #include <QObject>
 #include <QDebug>
+#include <QDateTime>
 typedef struct _Car_status
 {
     //小车编号
@@ -93,6 +94,30 @@ typedef struct _ElevatorInfoStru
          remarks = "";
     }
 }ElevatorInfoStru;
+
+//由WCS发过来的任务数据
+typedef struct _TaskInfoStru
+{
+    QString taskNum;
+    QString status;
+    QString boxNum;
+    int pripty;
+    QString from;
+    QString end;
+    QString carNum;
+    QDateTime creatTime;
+    _TaskInfoStru()
+    {
+         taskNum = "";
+         status = "";
+         boxNum = "";
+         pripty = 1;
+         from = "";
+         end = "";
+         carNum = "";
+         creatTime = QDateTime::currentDateTime();
+    }
+}TaskInfoStru;
 //用户登录信息结构体 1字节对齐
 #pragma pack(1)
 typedef struct  _LoginInfoStru {

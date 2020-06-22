@@ -178,7 +178,7 @@ protected:
 
 signals:
     void readyToClose();
-
+    void onRedReady(QString reply);
 protected:
     QSharedPointer< QThreadPool > serverThreadPool_;
     QSharedPointer< QThreadPool > handleThreadPool_;

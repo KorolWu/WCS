@@ -15,6 +15,8 @@
 #include <datastructure.h>
 #include <QDateTime>
 #include "Myconfig.h"
+#include "MysqlDataBase/crudbaseoperation.h"
+#include "UnitClass/c_systemlogmng.h"
 /**
  *
  * @author korol
@@ -38,6 +40,7 @@ private:
     QStandardItemModel *model;
 
     void initTableView();
+    void saveTaskToDB(TaskInfoStru taskStru);
     int width;
     int height;
 public slots:

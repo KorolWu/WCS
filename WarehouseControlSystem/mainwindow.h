@@ -42,7 +42,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    CarStatusFrom *f;
     QRect desk_rect;
 
     //treewidget
@@ -58,6 +57,13 @@ private:
     QPushButton *exit_btn;
     QPushButton *user_btn;
     QWidget *p_main_widget;
+    CurrentTask *t;
+    LogForms *m_pLog;
+    AgvForm *car_from;
+    AllTask *m_pTaskAll;
+    ElevatorFrom *p_mElevator;
+    JQHttpServer::TcpServerManage *m_pHttpServer;
+    //KHttpServer *HttpServer;
     void closeWcs();
     void initUI();
     void deleteChildrenList();

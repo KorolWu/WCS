@@ -6,6 +6,7 @@
 #include <QQueue>
 #include "JQHttpServer.h"
 #include "UnitClass/c_systemlogmng.h"
+#include "Myconfig.h"
 /**
  *
  * @author korol

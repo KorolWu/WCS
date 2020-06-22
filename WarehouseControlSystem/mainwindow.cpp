@@ -5,7 +5,6 @@
 #include <QIcon>
 #include "UnitClass/logininfowg.h"
 #include "UnitClass/myIniconfig.h"
-#include "JQHttpServer.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -13,22 +12,28 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
-    initUI();
-    _Car_status s;
-    s.batter = 70;
-    s.carNum = "ABS-002";
-    f = new CarStatusFrom(s,this);
-    f->move(desk_rect.width()-600,desk_rect.height()-350);
     getConfigParameter();
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
     GetSystemLogObj()->writeLog("电梯管理",0);
+    initUI();
     LogManager *l = new LogManager(this);
     l->start();
-
-    KHttpServer *HttpServer = new KHttpServer();
-    connect(HttpServer,&KHttpServer::replyReady,this,&MainWindow::onReplyReady);
-    HttpServer->start();
+    m_pstoreWg = new StoreInfoWidget(p_main_widget);
+    deleteChildrenList();
+    m_pHttpServer = new  JQHttpServer::TcpServerManage(2);
+    connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
+    m_pHttpServer->setHttpAcceptedCallback( []( const QPointer< JQHttpServer::Session > &session )
+    {
+        session->replyText(QString("Whatever you ask, I'll only respond to sb"));
+    } );
+   if(m_pHttpServer->listen( QHostAddress::Any, 23412 ))
+       GetSystemLogObj()->writeLog("HttpServer 启动成功",0);
+   else
+   {
+       GetSystemLogObj()->writeLog("HttpServer 启动失败",3);
+       qDebug()<<"httpserver open fail";
+   }
 
 }
 
@@ -39,7 +44,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeWcs()
 {
-    //DataBaseUnit::GetInstance()->closeDb();
+    CRUDBaseOperation::getInstance()->closeDB();
+    Myconfig::GetInstance()->m_flag = false;
+//    HttpServer->quit();
+//    HttpServer->wait();
+    if(m_pHttpServer != nullptr)
+        m_pHttpServer->deleteLater();
     this->close();
 }
 
@@ -47,7 +57,6 @@ void MainWindow::initUI()
 {
     desk_rect = QApplication::desktop()->availableGeometry();
     this->resize(desk_rect.width(),desk_rect.height());
-
 
     QLabel *head_lab = new QLabel(this);
     head_lab->resize(desk_rect.width(),desk_rect.height()/10);
@@ -70,6 +79,12 @@ void MainWindow::initUI()
     p_main_widget->move(desk_rect.width()/7+3,desk_rect.height()/10+3);
     p_main_widget->setStyleSheet("background-color:rgb(230,230,230)");
 
+    t = new CurrentTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    connect(this,&MainWindow::httpRedReady,t,&CurrentTask::handelHttpTask);
+    car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    m_pTaskAll = new AllTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    m_pLog = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    p_mElevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_treeView = new QTreeView(treewidget);
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
                                                                      "QTreeView::item {height: 40px;border-radius: 2px;"
@@ -133,18 +148,25 @@ void MainWindow::initUI()
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
-    m_pstoreWg = nullptr;
+
 }
 
 void MainWindow::deleteChildrenList()
 {
-    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
-    if(list.size() == 0)
-        return;
-    foreach (BaseFrom* w, list) {
-        w->hide();
-        w->deleteLater();
-    }
+//    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
+//    if(list.size() == 0)
+//        return;
+//    foreach (BaseFrom* w, list) {
+//        w->hide();
+//        w->deleteLater();
+//    }
+    t->hide();
+    m_pLog->hide();
+    car_from->hide();
+    m_pTaskAll->hide();
+    p_mElevator->hide();
+    m_pstoreWg->hide();
+
 }
 
 void MainWindow::getParameterFromDB()
@@ -192,40 +214,28 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "小车管理"||row_name == "设备管理")
     {
-        AgvForm *car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        car_from->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         car_from->show();
     }
     else if(row_name == "货架管理")
     {
         //增加货架管理信息的界面
-        m_pstoreWg = new StoreInfoWidget(p_main_widget);
         m_pstoreWg->show();
     }
     else if(row_name == "电梯管理")
     {
-        ElevatorFrom *elevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        elevator->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        elevator->show();
+        p_mElevator->show();
     }
     else if(row_name == "当前任务")
     {
-        CurrentTask *t = new CurrentTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        connect(this,&MainWindow::httpRedReady,t,&CurrentTask::handelHttpTask);
-        t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
         t->show();
     }
     else if(row_name == "已完成任务"||row_name == "任务管理")
     {
-        AllTask *t = new AllTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        t->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        t->show();
+        m_pTaskAll->show();
     }
     else if(row_name == "日志管理")
     {
-        LogForms *l = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-        l->resize(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5);
-        l->show();
+        m_pLog->show();
     }
 }
 

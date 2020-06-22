@@ -32,6 +32,7 @@ public:
     QMap<QString,ElevatorInfoStru> m_elevatorMap;
     QMutex m_mutex;
     QMap<QString,StorePosInfoStru>m_storeinfoMap;
+    QMap<QString,TaskInfoStru> m_taskMap;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;

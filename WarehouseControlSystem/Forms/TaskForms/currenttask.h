@@ -40,7 +40,7 @@ private:
     QStandardItemModel *model;
 
     void initTableView();
-    void saveTaskToDB(TaskInfoStru taskStru);
+    bool saveTaskToDB(TaskInfoStru taskStru);
     int width;
     int height;
 public slots:

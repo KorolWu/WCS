@@ -55,8 +55,6 @@ bool CRUDBaseOperation::queryUseStr(const QString &sqlStr)
 
 bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru)
 {
-    //INSERT t_crrunt_task SET taskNum=9898,taskStatus='down',boxNum='box-009',priority='1',
-    //origin='origin',target='warehouse',carNum='car980';
     if(data_base.isOpen())
     {
         QString sql =QString("INSERT t_crrunt_task SET taskNum=%1,taskStatus='%2',"
@@ -68,6 +66,28 @@ bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru)
 
     }
     return false;
+}
+///
+/// \brief CRUDBaseOperation::saveKBaseStruct 处理 KBaseStruct 派生类的保存
+/// \param tableName
+/// \param s
+/// \return
+///
+bool CRUDBaseOperation::saveKBaseStruct(const QString &tableName, KBaseStruct &s)
+{
+    if(s.getNameList().size() != s.getValueList().size())
+        return false;
+    QString sql = "INSERT "+tableName+" SET ";
+    QString name;
+    for(int i = 0;i < s.getNameList().size();i++)
+    {
+        name += s.getNameList()[i] + "="+"'"+ s.getValueList()[i].toString()+"'"+",";
+    }
+    name.chop(1);
+    name+= ";";
+    sql+=name;
+    QSqlQuery query(data_base);
+    return query.exec(sql);
 }
 ///
 /// \brief CRUDBaseOperation::GetKeyType

@@ -5,7 +5,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network concurrent
+QT       += core gui sql network concurrent serialport serialbus
 QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -52,7 +52,8 @@ SOURCES += main.cpp\
     Forms/StorePosInfo/editstorenbrinfodialog.cpp \
     Forms/LogForms/logforms.cpp \
     Forms/TaskForms/labeldelegateV1.cpp \
-    UnitClass/khttpserver.cpp
+    UnitClass/khttpserver.cpp \
+    UnitClass/KCommunication.cpp
 
 
 
@@ -84,7 +85,8 @@ HEADERS  += mainwindow.h \
     UnitClass/logmanager.h \
     Forms/LogForms/logforms.h \
     Forms/TaskForms/labeldelegateV1.h \
-    UnitClass/khttpserver.h
+    UnitClass/khttpserver.h \
+    UnitClass/KCommunication.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

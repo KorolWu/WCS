@@ -7,6 +7,10 @@
 #include <QObject>
 #include <QDebug>
 #include <QDateTime>
+typedef struct KBaseStruct{
+    virtual QStringList getNameList();
+    virtual QList<QVariant> getValueList();
+}KBaseStruct;
 typedef struct _Car_status
 {
     //小车编号

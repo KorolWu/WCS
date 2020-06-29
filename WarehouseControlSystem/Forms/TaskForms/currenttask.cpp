@@ -97,8 +97,14 @@ void CurrentTask::initTableView()
     m_table_view->setFont(QFont("宋体",12)); //设置字体
 }
 //save to crruntTask table
-void CurrentTask::saveTaskToDB(TaskInfoStru taskStru)
+bool CurrentTask::saveTaskToDB(TaskInfoStru taskStru)
 {
+    if(!CRUDBaseOperation::getInstance()->saveCrruntTask(taskStru))
+    {
+        GetSystemLogObj()->writeLog("insert current task fail!",3);
+        return false;
+    }
+    return true;
 
 }
 
@@ -122,9 +128,7 @@ void CurrentTask::handelHttpTask(QString reply)
     t.end = list[5];
     t.carNum = list[6];
     t.creatTime = QDateTime::currentDateTime();
-
-    if(!CRUDBaseOperation::getInstance()->saveCrruntTask(t))
-        GetSystemLogObj()->writeLog("insert current task fail!",3);
+    saveTaskToDB(t);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
     setTableViewValue();
 

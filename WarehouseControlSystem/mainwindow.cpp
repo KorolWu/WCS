@@ -186,7 +186,6 @@ void MainWindow::getConfigParameter()
     QString absPath = list.join("/");
     MyIniConfig f;
     f.Config(absPath+"/config.ini");
-    //QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     Myconfig::GetInstance()->m_databaseInfo.databaseName = f.Get("DataBase","databaseName").toString();
     Myconfig::GetInstance()->m_databaseInfo.ip = f.Get("DataBase","ip").toString();
     Myconfig::GetInstance()->m_databaseInfo.passWord = f.Get("DataBase","passWord").toString();

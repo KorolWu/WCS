@@ -19,6 +19,8 @@ public:
     QSqlQuery queryDb(const QString &querySql);
     bool queryUseStr(const QString &sqlStr);  
     bool saveCrruntTask(TaskInfoStru taskStru);
+    // KBaseStruct SubClass CRUD
+    bool saveKBaseStruct(const QString &tableName, KBaseStruct &s);
    public:
   /*******批量操作数据库************************************2020-06-12*/
   bool ExcBatchDeleteDB(const QString &table,QString keyname, QList<QVariant> keys,QString &error);

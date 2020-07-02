@@ -53,7 +53,8 @@ SOURCES += main.cpp\
     Forms/LogForms/logforms.cpp \
     Forms/TaskForms/labeldelegateV1.cpp \
     UnitClass/khttpserver.cpp \
-    UnitClass/KCommunication.cpp
+    UnitClass/KCommunication.cpp \
+    ControlClass/basedevice.cpp
 
 
 
@@ -86,7 +87,8 @@ HEADERS  += mainwindow.h \
     Forms/LogForms/logforms.h \
     Forms/TaskForms/labeldelegateV1.h \
     UnitClass/khttpserver.h \
-    UnitClass/KCommunication.h
+    UnitClass/KCommunication.h \
+    ControlClass/basedevice.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

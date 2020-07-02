@@ -2,7 +2,7 @@
 
 LogManager::LogManager(QObject *parent)
 {
-
+    Q_UNUSED(parent);
 }
 
 void LogManager::run()

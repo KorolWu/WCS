@@ -94,7 +94,7 @@ void AgvForm::setTableViewValue()
             else if(j == 5)
                 model->setItem(i,j,new QStandardItem(QString("%1").arg(i+i*10+10)));
             else if(j == 6)
-                model->setItem(i,j,new QStandardItem("在线"));
+                model->setItem(i,j,new QStandardItem(it.value().deveceStatus.isOnline ? "在线":"离线"));
             it ++;
         }
     }
@@ -175,21 +175,24 @@ void AgvForm::tableRowClicked()
         p_car_info->deleteLater();
         p_car_info = nullptr;
     }
-    _Car_status device_stru;
+    CarInfoStru device_stru;
     int row_index = p_table_view->currentIndex().row();
     QAbstractItemModel *model = p_table_view->model ();
 
-    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
+/*    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
     QVariant data = model->data(index);
     index = model->index(row_index,1);
     data = model->data(index);
-    device_stru.carNum = data.toString();
-    index = model->index(row_index,2);
-    data = model->data(index);
-    device_stru.carIp = data.toString();
-    index = model->index(row_index,5);
-    data = model->data(index);
-    device_stru.status = data.toString();
+    device_stru.carNum = data.toString()*/;
+    QModelIndex index = model->index(row_index,2);
+    QVariant data = model->data(index);
+    if(Myconfig::GetInstance()->m_CarMap.contains(data.toString()))
+        device_stru = Myconfig::GetInstance()->m_CarMap[data.toString()];
+    device_stru.deviceIp = data.toString();
+
+//    index = model->index(row_index,5);
+//    data = model->data(index);
+//    device_stru.status = data.toString();
     //base information to get other status of agv
      p_car_info = new CarStatusFrom(device_stru,this);
      QRect r = QApplication::desktop()->availableGeometry();

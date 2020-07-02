@@ -1,6 +1,6 @@
 #include "CarStatusFrom.h"
 #include <QDebug>
-CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(parent)
+CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(parent)
 {
     desktop =  QApplication::desktop()->availableGeometry();
 
@@ -16,9 +16,9 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
 
     online_image = new QLabel(this);
     online_image->resize(15,15);
-    online_image->setStyleSheet(carStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    online_image->setStyleSheet(carStatus.deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
     online_image->move(30,10);
-    online_lab = new QLabel(carStatus.isOnline? "在线":"离线",this);
+    online_lab = new QLabel(carStatus.deveceStatus.isOnline? "在线":"离线",this);
     online_lab->move (60,10);
     online_lab->setStyleSheet("color:white");
 
@@ -36,7 +36,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     car_image->move(50,line1_y/2);
     car_number = new QLabel(this);
     car_number->resize(150,20);
-    car_number->setText(carStatus.carNum);
+    car_number->setText(carStatus.deviceNum);
     car_number->move(70,line1_y-20);
     car_number->setFont(font);
     car_number->setAlignment(Qt::AlignCenter);
@@ -50,8 +50,7 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
     battery_image->move(400,line1_y/2);
     battery_lab = new QLabel(this);
     battery_lab->resize(80,20);
-    battery_lab->setText(QString::number(carStatus.batter)+"%");
-    qDebug()<<QString::number(carStatus.batter);
+    battery_lab->setText(QString::number(carStatus.deveceStatus.batter)+"%");
     battery_lab->move(450,line1_y-20);
     battery_lab->setFont(font);
     battery_lab->setStyleSheet("color:white");
@@ -75,33 +74,33 @@ CarStatusFrom::CarStatusFrom(_Car_status carStatus,QWidget *parent) : QWidget(pa
 
     QTableWidgetItem *item = new QTableWidgetItem ("设备IP");
     table->setItem(0, 0, item);
-    item = new QTableWidgetItem (carStatus.carIp);
+    item = new QTableWidgetItem (carStatus.deviceIp);
     table->setItem(0, 1, item);
     item = new QTableWidgetItem ("执行状态");
     table->setItem(0, 2, item);
-    item = new QTableWidgetItem (carStatus.status);
+    item = new QTableWidgetItem (carStatus.deveceStatus.enable? "enable" : "disable");
     table->setItem(0, 3, item);
     item = new QTableWidgetItem ("设备名称");
     table->setItem(1, 0, item);
-    item = new QTableWidgetItem (carStatus.carNum);
+    item = new QTableWidgetItem (carStatus.deviceNum);
     table->setItem(1, 1, item);
     item = new QTableWidgetItem ("货架名称");
     table->setItem(1, 2, item);
-    item = new QTableWidgetItem (carStatus.shelves);
+    item = new QTableWidgetItem ("");
     table->setItem(1, 3, item);
 
     item = new QTableWidgetItem ("当前位置");
     table->setItem(2, 0, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.x).arg(carStatus.y));
+    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.x).arg(carStatus.deveceStatus.y));
     table->setItem(2, 1, item);
     item = new QTableWidgetItem ("目标位置");
     table->setItem(2, 2, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.x_end).arg(carStatus.y_end));
+    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.x_end).arg(carStatus.deveceStatus.y_end));
     table->setItem(2, 3, item);
 
     item = new QTableWidgetItem ("是否可用");
     table->setItem(3, 0, item);
-    item = new QTableWidgetItem (carStatus.enable);
+    item = new QTableWidgetItem (carStatus.deveceStatus.enable? "enable" : "disable");
     table->setItem(3, 1, item);
     item = new QTableWidgetItem ("任务编号");
     table->setItem(3, 2, item);

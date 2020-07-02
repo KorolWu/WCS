@@ -22,7 +22,7 @@ class CarStatusFrom : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CarStatusFrom(_Car_status carStatus, QWidget *parent = 0);
+    explicit CarStatusFrom(CarInfoStru carStatus, QWidget *parent = 0);
 
 public slots:
     void fromClose();

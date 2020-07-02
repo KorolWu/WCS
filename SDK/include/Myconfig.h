@@ -5,6 +5,7 @@
 #include <QMutexLocker>
 #include <QWaitCondition>
 #include <QQueue>
+
 class Myconfig
 {
 private:
@@ -28,11 +29,12 @@ public:
     }
 public:
     //carinfo <car_ip,car_info>
-    QMap<QString,CarInfoStru> m_CarMap;
-    QMap<QString,ElevatorInfoStru> m_elevatorMap;
+    QMap<QString, CarInfoStru> m_CarMap;
+    QMap<QString, ElevatorInfoStru> m_elevatorMap;
+    //QMap<QString, BaseDevice *> m_carCommnicationMap;
     QMutex m_mutex;
-    QMap<QString,StorePosInfoStru>m_storeinfoMap;
-    QMap<QString,TaskInfoStru> m_taskMap;
+    QMap<QString, StorePosInfoStru> m_storeinfoMap;
+    QMap<QString, TaskInfoStru> m_taskMap;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;

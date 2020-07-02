@@ -13,15 +13,12 @@ typedef struct KBaseStruct{
 }KBaseStruct;
 typedef struct _Car_status
 {
-    //小车编号
-    QString carNum = "----";
     //电量
-    int batter = 0;
-    //小车ip
-    QString carIp = "----";
+    int batter = 20;
     //小车坐标
     int x = 0;
     int y = 0;
+    int z = 0;
     //是否启用
     bool enable = false;
     //是否在线
@@ -29,10 +26,8 @@ typedef struct _Car_status
     //目标坐标
     int x_end = 0;
     int y_end = 0;
-    //货架编号
-    QString shelves = "---";
-    //status
-    QString status = "---";
+    int z_end = 0;
+
 }Car_status;
 typedef struct _CarInfoStru
 {
@@ -42,6 +37,26 @@ typedef struct _CarInfoStru
     int port = 0;
     QString deviceType = "";
     QString remarks = "";
+    Car_status deveceStatus;
+
+    _CarInfoStru& operator=(const _CarInfoStru &other)
+    {
+        deviceNum = other.deviceNum;
+        deviceIp = other.deviceIp;
+        port = other.port;
+        deviceType = other.deviceType;
+        remarks = other.remarks;
+        deveceStatus.batter = other.deveceStatus.batter;
+        deveceStatus.enable = other.deveceStatus.enable;
+        deveceStatus.isOnline = other.deveceStatus.isOnline;
+        deveceStatus.x = other.deveceStatus.x;
+        deveceStatus.y = other.deveceStatus.y;
+        deveceStatus.x_end = other.deveceStatus.x_end;
+        deveceStatus.y_end = other.deveceStatus.y_end;
+        deveceStatus.z = other.deveceStatus.z;
+        deveceStatus.z_end = other.deveceStatus.z_end;
+        return *this;
+    }
 
 }CarInfoStru;
 //数据库配置参数

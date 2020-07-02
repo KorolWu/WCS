@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
     m_pHttpServer->setHttpAcceptedCallback( []( const QPointer< JQHttpServer::Session > &session )
     {
-        session->replyText(QString("Whatever you ask, I'll only respond to sb"));
+        session->replyText(QString("Whatever you ask, I'll only respond to hello"));
     } );
    if(m_pHttpServer->listen( QHostAddress::Any, 23412 ))
        GetSystemLogObj()->writeLog("HttpServer 启动成功",0);
@@ -34,6 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
        GetSystemLogObj()->writeLog("HttpServer 启动失败",3);
        qDebug()<<"httpserver open fail";
    }
+   // init devece Client
+   initDeviceClient();
 
 }
 
@@ -44,10 +46,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeWcs()
 {
+    //check the task isn`t over,get user dialog
     CRUDBaseOperation::getInstance()->closeDB();
     Myconfig::GetInstance()->m_flag = false;
-//    HttpServer->quit();
-//    HttpServer->wait();
     if(m_pHttpServer != nullptr)
         m_pHttpServer->deleteLater();
     this->close();
@@ -151,6 +152,25 @@ void MainWindow::initUI()
 
 }
 
+void MainWindow::initDeviceClient()
+{
+    for(auto it = Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
+    {
+         BaseDevice *b = new BaseDevice(it.value().deviceIp,it.value().port,this);
+         KDeviceSingleton::getInstance()->m_DeviceMap.insert(it.value().deviceIp,b);
+         if(b->init())
+         {
+             GetSystemLogObj()->writeLog(it.value().deviceIp+" connect successful!",0);
+             qDebug()<<it.value().deviceIp+" connect successful!";
+         }
+         else
+         {
+             qDebug()<<it.value().deviceIp+" connect failed!";
+             GetSystemLogObj()->writeLog(it.value().deviceIp+" connect failed!",2);
+         }
+    }
+}
+
 void MainWindow::deleteChildrenList()
 {
 //    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
@@ -213,6 +233,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "小车管理"||row_name == "设备管理")
     {
+        car_from->refreshTable();
         car_from->show();
     }
     else if(row_name == "货架管理")

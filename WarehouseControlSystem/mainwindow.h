@@ -27,6 +27,9 @@
 #include "UnitClass/logmanager.h"
 #include "UnitClass/khttpserver.h"
 #include "JQHttpServer.h"
+#include "ControlClass/basedevice.h"
+#include "KDeviceSingleton.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -43,8 +46,6 @@ public:
 private:
     Ui::MainWindow *ui;
     QRect desk_rect;
-
-    //treewidget
     QWidget *treewidget;
     QStandardItemModel *p_treeStandarModel;
     QStandardItem *p_standarItem;
@@ -63,9 +64,9 @@ private:
     AllTask *m_pTaskAll;
     ElevatorFrom *p_mElevator;
     JQHttpServer::TcpServerManage *m_pHttpServer;
-    //KHttpServer *HttpServer;
     void closeWcs();
     void initUI();
+    void initDeviceClient();
     void deleteChildrenList();
     void getParameterFromDB();
     void getConfigParameter();

@@ -15,6 +15,10 @@ void AddCar::onYesBtnClicked()
         return;
     }
     deviceStruct.deviceNum =  list[0];
+    if(m_sql_flag == "Update")
+    {
+       deviceStruct.deviceIp = Myconfig::GetInstance()->m_CarMap[list[1]].deviceIp;
+    }
     deviceStruct.deviceIp = list[1];
     deviceStruct.port = QString(list[2]).toInt();
     deviceStruct.deviceType = list[3];
@@ -33,7 +37,17 @@ void AddCar::onYesBtnClicked()
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
     {
         // the same id,same ip
-        Myconfig::GetInstance()->m_CarMap.insert(deviceStruct.deviceIp,deviceStruct);
+        if(m_sql_flag == "Insert")
+            Myconfig::GetInstance()->m_CarMap.insert(deviceStruct.deviceIp,deviceStruct);
+        else if(m_sql_flag == "Update")
+        {
+             if(Myconfig::GetInstance()->m_CarMap.contains(deviceStruct.deviceIp))
+             {
+                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceNum = deviceStruct.deviceNum;
+                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].port = deviceStruct.port;
+                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceType = deviceStruct.deviceType;
+             }
+        }
         emit insert_emit();
         this->hide();
         this->deleteLater();

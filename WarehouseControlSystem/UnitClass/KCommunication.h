@@ -56,11 +56,18 @@ public:
     ~KTcpClient();
     bool creadTcpClient(QString ip, qint16 port);
     bool connectServer(QString ip,qint16 port);
+    bool reConnection();
     int write(QByteArray array);
     QTcpSocket *socket;//通讯套接字
     bool m_connectStatus;
+    void onDisconnected();
+
+private:
+    QString ip;
+    qint16 port;
 signals:
     void onTcpClientResive(QByteArray buff);
+    void clientDisconnect();
 };
 
 ///
@@ -85,6 +92,10 @@ private:
 signals:
      void onSerialResive(QString str);
 };
+///
+/// \brief The KModbusTcpClient class
+///  ModbusTcpClient
+///
 class KModbusTcpClient : public QObject
 {
     Q_OBJECT

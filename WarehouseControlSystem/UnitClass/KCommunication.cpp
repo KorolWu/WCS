@@ -65,7 +65,10 @@ KCommunication::KTcpClient::KTcpClient(QObject *parent)
 
 bool KCommunication::KTcpClient::creadTcpClient(QString ip, qint16 port)
 {
-    socket=new QTcpSocket(this);
+    this->ip = ip;
+    this->port = port;
+    socket = new QTcpSocket(this);
+    connect(socket,&QTcpSocket::disconnected,this,&KTcpClient::onDisconnected);
     connect(socket,&QTcpSocket::connected,
             [=]()
     {
@@ -82,8 +85,10 @@ bool KCommunication::KTcpClient::creadTcpClient(QString ip, qint16 port)
 
 bool KCommunication::KTcpClient::connectServer(QString ip, qint16 port)
 {
+    if(socket == nullptr)
+        return false;
     socket->connectToHost(QHostAddress(ip),port);
-    if(socket->waitForConnected(3000))
+    if(socket->waitForConnected(1000))
     {
        return true;
     }
@@ -93,11 +98,23 @@ bool KCommunication::KTcpClient::connectServer(QString ip, qint16 port)
     }
 }
 
+bool KCommunication::KTcpClient::reConnection()
+{
+    m_connectStatus = connectServer(this->ip,this->port);
+    return m_connectStatus;
+}
+
 int KCommunication::KTcpClient::write(QByteArray array)
 {
     if(socket == nullptr)
         return 1;
     return socket->write(array);
+}
+
+void KCommunication::KTcpClient::onDisconnected()
+{
+    m_connectStatus = false;
+    emit clientDisconnect();
 }
 
 KCommunication::KTcpClient::~KTcpClient()

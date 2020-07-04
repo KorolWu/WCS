@@ -8,6 +8,7 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QDebug>
+#include <QDateTime>
 
 class READTABLEDATASHARED_EXPORT ReadTableData
 {
@@ -16,6 +17,7 @@ public:
     ReadTableData();
     void readt_device_info();
     void readt_elevator();
+    void readt_crrunt_task();
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
     bool WriteLoginfo(int level,QString from,QString log_info);

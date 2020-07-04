@@ -29,6 +29,8 @@
 #include "JQHttpServer.h"
 #include "ControlClass/basedevice.h"
 #include "KDeviceSingleton.h"
+#include "datastructure.h"
+#include "Forms/CarForms/carlistform.h"
 
 
 namespace Ui {
@@ -54,15 +56,16 @@ private:
     QStandardItem *p_elevator;
     QStandardItem *p_all_tasks;
     QStandardItem *p_current_tasks;
-    QTreeView *p_treeView;
-    QPushButton *exit_btn;
-    QPushButton *user_btn;
-    QWidget *p_main_widget;
-    CurrentTask *t;
-    LogForms *m_pLog;
-    AgvForm *car_from;
-    AllTask *m_pTaskAll;
-    ElevatorFrom *p_mElevator;
+    QTreeView     *p_treeView;
+    QPushButton   *exit_btn;
+    QPushButton   *user_btn;
+    QWidget       *p_main_widget;
+    CurrentTask   *t;
+    LogForms      *m_pLog;
+    AgvForm       *car_from;
+    AllTask       *m_pTaskAll;
+    ElevatorFrom  *p_mElevator;
+    CarListForm   *p_mCarList;
     JQHttpServer::TcpServerManage *m_pHttpServer;
     void closeWcs();
     void initUI();

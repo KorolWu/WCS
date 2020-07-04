@@ -37,6 +37,27 @@ void ReadTableData::readt_elevator()
         Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorIp,elevator_stru);
     }
 }
+
+void ReadTableData::readt_crrunt_task()
+{
+    QString sql = "SELECT * FROM t_crrunt_task";
+    QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    while(query.next())
+    {
+        TaskInfoStru t;
+        t.taskNum = query.value(1).toString();
+        t.status = query.value(2).toString();
+        t.boxNum = query.value(3).toString();
+        t.pripty = query.value(4).toInt();
+        t.from = query.value(5).toString();
+        t.end = query.value(6).toString();
+        t.carNum = query.value(7).toString();
+        t.creatTime = query.value(8).toDateTime();
+        qDebug()<<query.value(8).toString().replace("T"," ")<<" :time"<<t.creatTime.toString("yyyy-MM-dd hh:mm:ss");
+        Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
+    }
+}
 ///
 /// \brief ReadTableData::ReadStoreposinfoDataBase
 /// 读货架仓位信息表格数据库

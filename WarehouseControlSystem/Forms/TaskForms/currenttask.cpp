@@ -58,10 +58,15 @@ void CurrentTask::setTableViewValue()
             else if(j == 6)
                 model->setItem(i,j,new QStandardItem(it.value().carNum));
             else if(j == 7)
-                model->setItem(i,j,new QStandardItem(it.value().creatTime.toString()));
+                model->setItem(i,j,new QStandardItem(it.value().creatTime.toString("yyyy-MM-dd hh:mm:ss")));
             it ++;
         }
     }
+}
+
+void CurrentTask::refreshTable()
+{
+    setTableViewValue();
 }
 
 void CurrentTask::initTableView()
@@ -128,8 +133,10 @@ void CurrentTask::handelHttpTask(QString reply)
     t.end = list[5];
     t.carNum = list[6];
     t.creatTime = QDateTime::currentDateTime();
-    saveTaskToDB(t);
+    //saveTaskToDB(t);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
+    if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t))
+        GetSystemLogObj()->writeLog("save current to dbbase failed!",2);
     setTableViewValue();
 
 }

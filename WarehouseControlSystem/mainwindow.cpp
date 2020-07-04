@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <datastructure.h>
 #include <QDesktopWidget>
 #include <QIcon>
 #include "UnitClass/logininfowg.h"
@@ -149,6 +148,9 @@ void MainWindow::initUI()
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
+    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
+    p_mCarList->move(1200,3);
+    p_mCarList->show();
 
 }
 
@@ -194,6 +196,7 @@ void MainWindow::getParameterFromDB()
     ReadTableData r;
     r.readt_device_info();
     r.readt_elevator();
+    r.readt_crrunt_task();
     qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 
@@ -247,6 +250,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     }
     else if(row_name == "当前任务")
     {
+        t->refreshTable();
         t->show();
     }
     else if(row_name == "已完成任务"||row_name == "任务管理")

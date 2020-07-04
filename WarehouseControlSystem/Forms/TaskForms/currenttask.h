@@ -29,6 +29,7 @@ class CurrentTask : public BaseFrom
 public:
     CurrentTask(int width,int height,QWidget *parent);
     void setTableViewValue();
+    void refreshTable();
 private:
 //    QPushButton *m_in_btn;
 //    QPushButton *m_out_btn;

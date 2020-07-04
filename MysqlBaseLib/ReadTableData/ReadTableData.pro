@@ -28,6 +28,7 @@ SOURCES += readtabledata.cpp
 HEADERS += readtabledata.h\
         readtabledata_global.h
 INCLUDEPATH += ../../SDK/include/
+LIBS += -L../../SDK/lib -lCRUDBaseOperation
 unix {
     target.path = /usr/lib
     INSTALLS += target

@@ -46,7 +46,7 @@ SOURCES += main.cpp\
     Forms/dialogabstractclass.cpp \
     Forms/CarForms/addcar.cpp \
     Forms/TaskForms/currenttask.cpp \
-   Forms/TaskForms/alltask.cpp \
+    Forms/TaskForms/alltask.cpp \
     UnitClass/logmanager.cpp \
     UnitClass/ImportExportFile/localfileoperate.cpp \
     Forms/StorePosInfo/editstorenbrinfodialog.cpp \
@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     Forms/TaskForms/labeldelegateV1.cpp \
     UnitClass/khttpserver.cpp \
     UnitClass/KCommunication.cpp \
-    ControlClass/basedevice.cpp
+    ControlClass/basedevice.cpp \
+    Forms/CarForms/carlistform.cpp
 
 
 
@@ -88,7 +89,8 @@ HEADERS  += mainwindow.h \
     Forms/TaskForms/labeldelegateV1.h \
     UnitClass/khttpserver.h \
     UnitClass/KCommunication.h \
-    ControlClass/basedevice.h
+    ControlClass/basedevice.h \
+    Forms/CarForms/carlistform.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

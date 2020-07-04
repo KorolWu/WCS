@@ -5,6 +5,7 @@
 #include <QMutexLocker>
 #include <QWaitCondition>
 #include <QQueue>
+#include <datastructure.h>
 
 class Myconfig
 {
@@ -34,6 +35,7 @@ public:
     //QMap<QString, BaseDevice *> m_carCommnicationMap;
     QMutex m_mutex;
     QMap<QString, StorePosInfoStru> m_storeinfoMap;
+    //taskNum,task
     QMap<QString, TaskInfoStru> m_taskMap;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;

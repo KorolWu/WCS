@@ -38,5 +38,6 @@
         <file>Image/in.png</file>
         <file>Image/all.png</file>
         <file>Image/deleterow.png</file>
+        <file>Image/Listbackground.png</file>
     </qresource>
 </RCC>

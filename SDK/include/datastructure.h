@@ -7,9 +7,9 @@
 #include <QObject>
 #include <QDebug>
 #include <QDateTime>
-typedef struct KBaseStruct{
-    virtual QStringList getNameList();
-    virtual QList<QVariant> getValueList();
+typedef struct KBaseStruct_{
+    virtual QStringList getNameList(){QStringList list;list.clear();return list;}
+    virtual QList<QVariant> getValueList(){QList<QVariant> list;list.clear();return list;}
 }KBaseStruct;
 typedef struct _Car_status
 {
@@ -19,8 +19,10 @@ typedef struct _Car_status
     int x = 0;
     int y = 0;
     int z = 0;
-    //是否启用
+    //是否启用 int working warrn online  disonline
     bool enable = false;
+    // 0 alarm, 1 stand by, 2 working,
+    int status = 1;
     //是否在线
     bool isOnline = false;
     //目标坐标
@@ -39,7 +41,7 @@ typedef struct _CarInfoStru
     QString remarks = "";
     Car_status deveceStatus;
 
-    _CarInfoStru& operator=(const _CarInfoStru &other)
+    _CarInfoStru& operator = (const _CarInfoStru &other)
     {
         deviceNum = other.deviceNum;
         deviceIp = other.deviceIp;
@@ -48,6 +50,7 @@ typedef struct _CarInfoStru
         remarks = other.remarks;
         deveceStatus.batter = other.deveceStatus.batter;
         deveceStatus.enable = other.deveceStatus.enable;
+        deveceStatus.status = other.deveceStatus.status;
         deveceStatus.isOnline = other.deveceStatus.isOnline;
         deveceStatus.x = other.deveceStatus.x;
         deveceStatus.y = other.deveceStatus.y;
@@ -115,7 +118,7 @@ typedef struct _ElevatorInfoStru
 }ElevatorInfoStru;
 
 //由WCS发过来的任务数据
-typedef struct _TaskInfoStru
+typedef struct _TaskInfoStru : public KBaseStruct
 {
     QString taskNum;
     QString status;
@@ -135,6 +138,22 @@ typedef struct _TaskInfoStru
          end = "";
          carNum = "";
          creatTime = QDateTime::currentDateTime();
+    }
+
+    // KBaseStruct interface
+public:
+    QStringList getNameList(){QStringList list;list <<"taskNum"<<"taskStatus"<<"boxNum"<<"priority"<<"origin"<<"target"<<"beginTime";return list;}
+    QList<QVariant> getValueList()
+    {
+        QList<QVariant> list;
+        list.append(this->taskNum);
+        list.append(this->status);
+        list.append(this->boxNum);
+        list.append(this->pripty);
+        list.append(this->from);
+        list.append(this->end);
+        list.append(this->creatTime.toString("yyyy-MM-dd hh:mm:ss"));
+        return list;
     }
 }TaskInfoStru;
 //用户登录信息结构体 1字节对齐

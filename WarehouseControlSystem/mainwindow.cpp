@@ -36,6 +36,10 @@ MainWindow::MainWindow(QWidget *parent) :
    // init devece Client
    initDeviceClient();
 
+   p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
+   p_mCarList->move(1200,3);
+   p_mCarList->show();
+
 }
 
 MainWindow::~MainWindow()
@@ -148,9 +152,7 @@ void MainWindow::initUI()
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
-    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
-    p_mCarList->move(1200,3);
-    p_mCarList->show();
+
 
 }
 

@@ -3,7 +3,7 @@
 CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(parent)
 {
     desktop =  QApplication::desktop()->availableGeometry();
-
+    this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
@@ -134,7 +134,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     move_btn = new QPushButton("移动",this);
     move_btn->move(10+interval*5-70,interval_y);
 
-    this->resize(600,PAD_Y);
+    this->resize(550,PAD_Y);
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }

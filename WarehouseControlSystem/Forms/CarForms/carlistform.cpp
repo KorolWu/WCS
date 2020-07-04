@@ -4,6 +4,7 @@ CarListForm::CarListForm(int width, int height, QWidget *parent):QWidget(parent)
 {
     this->m_width = width;
     this->m_height = height;
+    m_pressflag = false;
     m_InfoVec.clear();
     initUi();
 
@@ -33,7 +34,7 @@ void CarListForm::initUi()
          QLabel *l = new QLabel("asd",m_pMainWidget);
          l->setStyleSheet("color:white");
          l->setText(list[i]);
-         l->move(interval*i+interval-20,m_height/7*0.6);
+         l->move(interval*i+interval-20, m_height/7*0.6);
          l->setAttribute(Qt::WA_TranslucentBackground, true);
          l->setFont(m_font_l);
     }
@@ -67,26 +68,57 @@ void CarListForm::initUi()
         e->setStyleSheet("color:black");
         e->setFont(m_font_s);
         e->setText(list_h[i]);
-       // QLine *n = new QLine(interval*i+interval+10,m_height/7*1.1,interval*i+interval+10,m_height/7*1.1+10);
 
     }
     auto it = Myconfig::GetInstance()->m_CarMap.begin();
     for(int i = 0;i < Myconfig::GetInstance()->m_CarMap.size();i++)
     {
-        createListWidget(it.value())->move(5,m_height/5+i*60);
+        //createListWidget(it.value())->move(5,m_height/5+i*60);
+        CarStatusWidget *f = new CarStatusWidget(m_width,it.value(),m_pMainWidget);
+        f->move(5,m_height/5+i*60);
         it++;
     }
-    this->setStyleSheet("#KWidget{background-color:rgb(210, 210, 210)}");//QLabel{font: 15px}
+    this->setStyleSheet("#KWidget{background-color:rgb(210, 210, 210)}");
 }
 
-QWidget *CarListForm::createListWidget(CarInfoStru c)
+void CarListForm::mousePressEvent(QMouseEvent *event)
 {
-    QWidget *w = new QWidget(m_pMainWidget);
+    m_pressflag = true;
+    m_beginP = event->globalPos();
+    m_windowP = this->frameGeometry().topLeft();
+    QWidget::mousePressEvent(event);
+}
+
+void CarListForm::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_pressflag = true;
+    QWidget::mouseReleaseEvent(event);
+}
+
+void CarListForm::mouseMoveEvent(QMouseEvent *event)
+{
+    if(m_pressflag)
+    {
+        QPoint relativePos = event->globalPos() - m_beginP;
+        this->move(m_windowP + relativePos );
+    }
+    QWidget::mouseMoveEvent(event);
+}
+
+
+CarStatusWidget::CarStatusWidget(int width, CarInfoStru c, QWidget *parent) :QWidget(parent)
+{
+    m_pCar = nullptr;
+    //m_pParent = parent;
+    QWidget *w = new QWidget(this);
+    this->m_car = c;
     int interval = 50;
     int y = 10;
-    w->resize(m_width-10,40);
+    w->resize(width-10,40);
+    QFont font("Times", 9 ,QFont::Bold);
     QLabel *numLab = new QLabel(c.deviceNum,w);
     numLab->setAttribute(Qt::WA_TranslucentBackground, true);
+    numLab->setFont(font);
     numLab->move(10,y);
 
     QLabel *staLab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",w);
@@ -108,7 +140,16 @@ QWidget *CarListForm::createListWidget(CarInfoStru c)
     QString batter = QString("%1%").arg(c.deveceStatus.batter);
     QLabel *beterLab = new QLabel(batter,w);
     beterLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    beterLab->move(interval*6+20,y);//
+    beterLab->move(interval*6+20,y);
     w->setStyleSheet("QWidget:hover{background-color:white; color: black;}QWidget:pressed{background-color:rgb(85, 170, 255);}");
-    return w;
+}
+
+void CarStatusWidget::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    //QWidget *w = qobject_cast<QWidget *>(m_pParent);
+    m_pCar = new CarStatusFrom(m_car);
+    QRect  desktop =  QApplication::desktop()->availableGeometry();
+    m_pCar->move(desktop.width()/2,desktop.height()/2);
+    m_pCar->show();
+    QWidget::mouseDoubleClickEvent(event);
 }

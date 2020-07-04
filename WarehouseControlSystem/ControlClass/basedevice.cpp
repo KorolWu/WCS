@@ -34,7 +34,11 @@ bool BaseDevice::init()
         if(initResult)
             Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline = true;
         else
+        {
             Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline = false;
+            //if(!m_pTimer->isActive())
+                //m_pTimer->start(1000);
+        }
     }
     return initResult;
 }

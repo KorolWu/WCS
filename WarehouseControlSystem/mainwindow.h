@@ -79,6 +79,7 @@ private slots:
     void slotlogin();
     void onReplyReady(QString str);
 
+
 private:
     StoreInfoWidget *m_pstoreWg;
 signals:

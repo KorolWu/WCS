@@ -6,6 +6,8 @@
 #include <QTimer>
 #include "datastructure.h"
 #include "Myconfig.h"
+#include "observerbase.h"
+#include <QVector>
 
 /**
  * @brief The BaseDevice class
@@ -20,7 +22,7 @@ class BaseDevice :public QObject
 public:
     BaseDevice(QString ip, qint16 port, QObject *parent = 0);
     bool init();
-
+    void registObserver(ObserverBase *o);
     QTimer *m_pTimer;
     virtual void onResived(QByteArray array);
     virtual void onDisconnected();
@@ -30,7 +32,9 @@ private:
     QString m_ip;
     qint16 m_port;
     KCommunication::KTcpClient *m_pClient;
+    QVector< ObserverBase *> m_ObserverVec;
     void reConnected();
+    void noticeObserver();
 };
 
 #endif // BASEDEVICE_H

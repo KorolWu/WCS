@@ -39,7 +39,6 @@ MainWindow::MainWindow(QWidget *parent) :
    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
    p_mCarList->move(1200,3);
    p_mCarList->show();
-
 }
 
 MainWindow::~MainWindow()

@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     UnitClass/khttpserver.cpp \
     UnitClass/KCommunication.cpp \
     ControlClass/basedevice.cpp \
-    Forms/CarForms/carlistform.cpp
+    Forms/CarForms/carlistform.cpp \
+    ControlClass/observerbase.cpp
 
 
 
@@ -90,7 +91,8 @@ HEADERS  += mainwindow.h \
     UnitClass/khttpserver.h \
     UnitClass/KCommunication.h \
     ControlClass/basedevice.h \
-    Forms/CarForms/carlistform.h
+    Forms/CarForms/carlistform.h \
+    ControlClass/observerbase.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

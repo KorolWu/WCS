@@ -40,7 +40,13 @@ bool BaseDevice::init()
                 //m_pTimer->start(1000);
         }
     }
+    noticeObserver();
     return initResult;
+}
+
+void BaseDevice::registObserver(ObserverBase *o)
+{
+    m_ObserverVec.append(o);
 }
 ///
 /// \brief BaseDevice::onResived
@@ -62,6 +68,9 @@ void BaseDevice::onResived(QByteArray array)
 ///
 void BaseDevice::onDisconnected()
 {
+    if(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline != false)
+        Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline = false;
+    noticeObserver();
     m_pTimer->start(1000);
 }
 ///
@@ -91,5 +100,17 @@ void BaseDevice::reConnected()
     if(m_pClient == nullptr)
         return;
     if(m_pClient->reConnection())
+    {
+        Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline = true;
+        noticeObserver();
         m_pTimer->stop();
+    }
+}
+
+void BaseDevice::noticeObserver()
+{
+    for(int i = 0; i < m_ObserverVec.size();i++)
+    {
+       m_ObserverVec[i]->updateStatusOnBase();
+    }
 }

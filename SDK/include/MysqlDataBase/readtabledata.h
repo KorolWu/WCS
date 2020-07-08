@@ -12,7 +12,6 @@
 
 class READTABLEDATASHARED_EXPORT ReadTableData
 {
-
 public:
     ReadTableData();
     void readt_device_info();

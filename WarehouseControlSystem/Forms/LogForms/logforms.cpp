@@ -1,9 +1,10 @@
 #include "logforms.h"
+#include <QDebug>
 
 LogForms::LogForms(int width, int height,QWidget *parent):BaseFrom(parent)
 {
     this->width = width;
-    this->height = height;
+    this->m_height = height;
     QLabel *q = new QLabel("来源",this);
     q->move(5,10);
     m_com_box = new QComboBox(this);
@@ -32,6 +33,7 @@ LogForms::LogForms(int width, int height,QWidget *parent):BaseFrom(parent)
     m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
     this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}QComboBox{width:120px;height:25px}");
     initTableView();
+
 }
 
 void LogForms::initTableView()
@@ -40,16 +42,18 @@ void LogForms::initTableView()
     m_table_view->horizontalHeader()->setStyleSheet(headstlye);
     m_table_view->move(5,60);
     m_table_view->verticalHeader()->hide();
-    m_table_view->resize(width,height);
-
+    m_table_view->resize(width,m_height*0.9);
     model = new QSqlTableModel();
     model->setTable("t_log");
     m_table_view->setModel(model);
     model->select();
+    //page ob 功能实现方式
+    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg->SetParam(model,"t_log",25);
+    m_pagewg->InitpagefunWg();
+    m_pagewg->move(580,900);
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
-
-
     QStringList header;
     header<<"ID"<<"等级"<<"来自"<<"信息"<<"时间";
     for(int i = 0 ;i <header.size();i++)
@@ -63,4 +67,5 @@ void LogForms::initTableView()
     m_table_view->setColumnWidth(4,width/20*4);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
     m_table_view->setFont(QFont("宋体",12)); //设置字体
+
 }

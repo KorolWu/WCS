@@ -26,7 +26,7 @@ void ButtonDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         editbutton->icon = QIcon(":/resouse/Image/Edit.png");
         editbutton->iconSize= QSize(16,16);
         QColor veryLightBlue(230, 230, 230,0);
-        QPalette palette = editbutton->palette;
+        QPalette palette = editbutton->palette;     
         palette.setBrush(QPalette::Window,veryLightBlue);//窗口背景颜色
         // palette.setBrush(QPalette::Base, Qt::red);
         palette.setBrush(QPalette::Button,veryLightBlue);//按钮颜色

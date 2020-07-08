@@ -39,5 +39,8 @@
         <file>Image/all.png</file>
         <file>Image/deleterow.png</file>
         <file>Image/Listbackground.png</file>
+        <file>Image/left.png</file>
+        <file>Image/go.png</file>
+        <file>Image/right.png</file>
     </qresource>
 </RCC>

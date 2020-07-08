@@ -23,7 +23,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {
     //Init data
     m_stroreposmap.storeposInfoMap.clear();
-    m_editrow = -1;
+    m_editrow = 0;
     //读取数据库的内容映射到内存中
     //Init UI
     QVBoxLayout *pmainlayout = new QVBoxLayout;
@@ -126,7 +126,7 @@ void StoreInfoWidget::slotaddnbrinfo()
     flag = "add";
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
     adddialog->show();
-    connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
+    connect(adddialog,&EditStorenbrinfoDialog::signalAckAdd,m_ptableview,&StorenbrTableView::SlotaddNbrInfo);
 }
 ///
 /// \brief StoreInfoWidget::slotBatchDelnbrinfo

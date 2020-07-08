@@ -10,6 +10,7 @@
 #include <QHeaderView>
 #include <QLabel>
 #include <QComboBox>
+#include "UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h"
 /**
  * @author korol
  * @email wuwenpeng@cowain.com.cn
@@ -27,10 +28,11 @@ public:
     QPushButton *m_query_btn;
     QTableView  *m_table_view;
     QSqlTableModel *model;
+    SpiltPagesByQSqlTableModel *m_pagewg;
 
     void initTableView();
     int width;
-    int height;
+    int m_height;
 };
 
 #endif // LOGFORMS_H

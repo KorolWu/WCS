@@ -56,7 +56,8 @@ SOURCES += main.cpp\
     UnitClass/KCommunication.cpp \
     ControlClass/basedevice.cpp \
     Forms/CarForms/carlistform.cpp \
-    ControlClass/observerbase.cpp
+    ControlClass/observerbase.cpp \
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
 
 
 
@@ -92,7 +93,8 @@ HEADERS  += mainwindow.h \
     UnitClass/KCommunication.h \
     ControlClass/basedevice.h \
     Forms/CarForms/carlistform.h \
-    ControlClass/observerbase.h
+    ControlClass/observerbase.h \
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

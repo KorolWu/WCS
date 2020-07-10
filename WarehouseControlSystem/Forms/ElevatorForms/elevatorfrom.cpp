@@ -4,6 +4,7 @@
 #include <QDebug>
 #include <Forms/CarForms/labeldelegate.h>
 #include "Forms/StorePosInfo/buttondelegate.h"
+#include <QScreen>
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
     this->m_width = width;

@@ -31,7 +31,11 @@ public:
     SpiltPagesByQSqlTableModel *m_pagewg;
 
     void initTableView();
+<<<<<<< HEAD
     int m_width;
+=======
+    int width;
+>>>>>>> 18de693b7603c7ffa15f9c5717701130d000973a
     int m_height;
 };
 

@@ -18,6 +18,7 @@ public:
     void onYesBtnClicked();
 signals:
     void signalAckBtn(QStringList datalist);
+    void signalAckAdd(QStringList datalist);
 private:
     QString m_idnbr;
 //private:

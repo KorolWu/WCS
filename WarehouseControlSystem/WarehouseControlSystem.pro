@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     Forms/CarForms/carlistform.cpp \
     ControlClass/observerbase.cpp \
     ControlClass/selectcar.cpp \
-    ControlClass/AbstractClass/abstructdevice.cpp
+    ControlClass/AbstractClass/abstructdevice.cpp\
+UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
 
 
 
@@ -96,7 +97,8 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
     ControlClass/selectcar.h \
-    ControlClass/AbstractClass/abstructdevice.h
+    ControlClass/AbstractClass/abstructdevice.h\
+ UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

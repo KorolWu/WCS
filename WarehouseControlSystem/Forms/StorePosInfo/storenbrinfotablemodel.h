@@ -20,6 +20,8 @@ public:
     void SetTableHeader(QStringList list);
     void SetColumncnt(int colcnt);
     void setModelDatas(QList<QStringList> *list);
+    int m_setpagerowsize;
+    QMap<int , QList<QStringList>*>m_pageDataMap; //平均分配每一页的数据情况
 public:
     //    QModelIndex index(int row, int column, const QModelIndex &parent) const;
     int rowCount(const QModelIndex &parent) const override;

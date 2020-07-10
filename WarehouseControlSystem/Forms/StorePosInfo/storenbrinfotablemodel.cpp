@@ -7,6 +7,7 @@ StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QAbstractTableM
     m_columncount = 0 ;
     m_headerlist.clear();
     m_storenbrList = NULL;
+    m_setpagerowsize = 20;
 }
 ///
 /// \brief StorenbrInfoTablemodel::~StorenbrInfoTablemodel
@@ -32,6 +33,7 @@ void StorenbrInfoTablemodel::SetColumncnt(int colcnt)
 void StorenbrInfoTablemodel::setModelDatas(QList<QStringList> *list)
 {
     m_storenbrList = list;
+    m_setpagerowsize = m_storenbrList->size();
 }
 ///
 /// \brief StorenbrInfoTablemodel::rowCount
@@ -45,8 +47,7 @@ int StorenbrInfoTablemodel::rowCount(const QModelIndex &parent) const
     if(NULL == m_storenbrList)
         return 0;
     else
-        return m_storenbrList->size();
-
+        return m_setpagerowsize;
 }
 ///
 /// \brief StorenbrInfoTablemodel::columnCount

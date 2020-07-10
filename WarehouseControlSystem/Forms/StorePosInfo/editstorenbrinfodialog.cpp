@@ -68,7 +68,8 @@ void EditStorenbrinfoDialog::onYesBtnClicked()
         if( rwdb.WriteStoreposinfotoDataBase(infoMap,msg))
         {
             Myconfig::GetInstance()->m_storeinfoMap.insert(list[0],storestru);
-            emit signalAckBtn(list);
+           // emit signalAckBtn(list);
+         emit   signalAckAdd(list);
             this->hide();
             this->deleteLater();
         }

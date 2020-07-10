@@ -149,7 +149,9 @@ void StorenbrTableView::SlotaddNbrInfo(QStringList list)
 ///编辑数据进行替换
 void StorenbrTableView::SlotEditInfo(QStringList newlist, int row)
 {
-    //替换
+    //替换 新增
+    if(row < 0)
+        return;
     if(m_nbrList.size() > row )
     {
         m_nbrList.replace(row,newlist);

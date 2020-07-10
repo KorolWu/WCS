@@ -31,6 +31,12 @@ typedef struct _Car_status
     int z_end = 0;
 
 }Car_status;
+typedef struct KPosition_{
+    int x;
+    int y;
+    int z;
+    int state = 0;
+}KPosition;
 typedef struct _CarInfoStru
 {
     //小车编号

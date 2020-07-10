@@ -23,12 +23,15 @@ public:
     BaseDevice(QString ip, qint16 port, QObject *parent = 0);
     bool init();
     void registObserver(ObserverBase *o);
-    QTimer *m_pTimer;
+    void removeObserver(ObserverBase *o);
+    //check the readBuff is currunt data
+    bool m_rflag;
     virtual void onResived(QByteArray array);
     virtual void onDisconnected();
     virtual void clearAlarm(QByteArray data);
     int write(QByteArray data);
 private:
+    QTimer *m_pTimer;
     QString m_ip;
     qint16 m_port;
     KCommunication::KTcpClient *m_pClient;

@@ -7,27 +7,30 @@
 #include <QProgressBar>
 AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
 {
+    this->m_width = width;
+    this->m_height = height;
+    int heitht_fristLine = m_height/94;
     p_car_info = nullptr;
     p_add_btn = new QPushButton("添加",this);
     p_add_btn->setIcon(QIcon(":/resouse/Image/add.png"));
     connect(p_add_btn,&QPushButton::clicked,this,&AgvForm::onAddClicked);
-    p_add_btn->move(5,15);
+    p_add_btn->move(m_width/158.5,heitht_fristLine);
     p_delete_btn= new QPushButton("删除",this);
     p_delete_btn->setIcon(QIcon(":/resouse/Image/delete.png"));
     connect(p_delete_btn,&QPushButton::clicked,this,&AgvForm::onDeleteClicked);
-    p_delete_btn->move(100,15);
+    p_delete_btn->move(m_width/15.85,heitht_fristLine);
     p_export_btn= new QPushButton("导出",this);
-    p_export_btn->move(200,15);
+    p_export_btn->move(m_width/7.9,heitht_fristLine);
     p_export_btn->setIcon(QIcon(":/resouse/Image/download.png"));
 
     QLabel *text_lable = new QLabel("设备编号:",this);
-    text_lable->move(350,15);
+    text_lable->move(m_width/4.5,heitht_fristLine);
     text_lable->setAlignment(Qt::AlignBottom);
     p_input_text = new QLineEdit(this);
     p_input_text->resize(150,30);
-    p_input_text->move(440,15);
+    p_input_text->move(m_width/3.6,heitht_fristLine);
     p_query_btn = new QPushButton("查询",this);
-    p_query_btn->move(610,15);
+    p_query_btn->move(m_width/2.6,heitht_fristLine);
     p_query_btn->setStyleSheet("background-color:rgb(80,133,212)");
 
 

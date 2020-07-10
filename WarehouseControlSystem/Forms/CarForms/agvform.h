@@ -54,6 +54,8 @@ private:
     CarStatusFrom *p_car_info;
     QStandardItemModel *model;
     QPushButton *p_edit_btn;
+    int m_width;
+    int m_height;
 };
 
 #endif // AGVFORM_H

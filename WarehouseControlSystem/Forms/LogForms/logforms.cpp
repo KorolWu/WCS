@@ -1,34 +1,37 @@
 #include "logforms.h"
+#include <QDebug>
 
 LogForms::LogForms(int width, int height,QWidget *parent):BaseFrom(parent)
 {
-    this->width = width;
-    this->height = height;
+    this->m_width = width;
+    this->m_height = height;
+    qDebug()<<m_width <<";"<<m_height;
     QLabel *q = new QLabel("来源",this);
-    q->move(5,10);
+    int height_fristLine = m_height/94;
+    q->move(m_width/100,height_fristLine);
     m_com_box = new QComboBox(this);
     m_com_box->setToolTip("--select--");
     m_com_box->addItems(QStringList("--select--"));
 
-    m_com_box->move(100,10);
+    m_com_box->move(m_width/14,height_fristLine);
     m_all_btn= new QPushButton("查看全部",this);
-    m_all_btn->move(300,10);
+    m_all_btn->move(m_width/5,height_fristLine);
     m_all_btn->setIcon(QIcon(":/resouse/Image/all.png"));
 
     m_start_date = new QDateEdit(this);
     m_start_date->setDateTime(QDateTime::currentDateTime());
     m_start_date->setCalendarPopup(true);
-    m_start_date->move(450,10);
+    m_start_date->move(m_width/3.5,height_fristLine);
     QLabel *l = new QLabel(this);
     l->setText("-");
-    l->move(580,10);
+    l->move(m_width/2.7,height_fristLine);
     m_end_date = new QDateEdit(this);
     m_end_date->setDateTime(QDateTime::currentDateTime());
     m_end_date->setCalendarPopup(true);
-    m_end_date->move(600,10);
+    m_end_date->move(m_width/2.6,height_fristLine);
 
     m_query_btn = new QPushButton("查询",this);
-    m_query_btn->move(750,10);
+    m_query_btn->move(m_width/2.1,height_fristLine);
     m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
     this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}QComboBox{width:120px;height:25px}");
     initTableView();
@@ -40,7 +43,8 @@ void LogForms::initTableView()
     m_table_view->horizontalHeader()->setStyleSheet(headstlye);
     m_table_view->move(5,60);
     m_table_view->verticalHeader()->hide();
-    m_table_view->resize(width,height);
+
+    m_table_view->resize(m_width,m_height*0.9);
 
     model = new QSqlTableModel();
     model->setTable("t_log");
@@ -56,11 +60,12 @@ void LogForms::initTableView()
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
-    m_table_view->setColumnWidth(0,width/20*2);
-    m_table_view->setColumnWidth(1,width/20*2);
-    m_table_view->setColumnWidth(2,width/20*3);
-    m_table_view->setColumnWidth(3,width/20*8);
-    m_table_view->setColumnWidth(4,width/20*4);
+    m_table_view->setColumnWidth(0,m_width/20*2);
+    m_table_view->setColumnWidth(1,m_width/20*2);
+    m_table_view->setColumnWidth(2,m_width/20*3);
+    m_table_view->setColumnWidth(3,m_width/20*8);
+    m_table_view->setColumnWidth(4,m_width/20*4);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
     m_table_view->setFont(QFont("宋体",12)); //设置字体
+   // m_table_view->
 }

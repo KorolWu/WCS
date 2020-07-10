@@ -65,7 +65,7 @@ void BaseDevice::onResived(QByteArray array)
 {
      if(Myconfig::GetInstance()->m_CarMap.contains(this->m_ip))
      {
-         //将收到的数据解析好，塞到内存里面
+         //将收到的数据解析好，塞到内存里面  
 
      }
      qDebug()<<"handle array: "<<array;

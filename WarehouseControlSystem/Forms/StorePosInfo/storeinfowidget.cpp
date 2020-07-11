@@ -13,12 +13,13 @@
 #include <QFileDialog>
 #include "UnitClass/ImportExportFile/localfileoperate.h"
 #include "editstorenbrinfodialog.h"
+#include  "pagewg/tablepagebyabstractwg.h"
 const QString stylestr =  "QPushButton{font:12px;}"
-                     "QLabel{font:12px;}"
-                    "QPushButton:hover{background-color:rgba(255,255,255,110);}"
-                    "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
-                    "QTableView{font:12px;selection-background-color:rgba(68,69,71,100);alternate-background-color: rgb(220, 220, 220);}"
-                    "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
+                          "QLabel{font:12px;}"
+                          "QPushButton:hover{background-color:rgba(255,255,255,110);}"
+                          "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
+                          "QTableView{font:12px;selection-background-color:rgba(68,69,71,100);alternate-background-color: rgb(220, 220, 220);}"
+                          "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {
     //Init data
@@ -88,12 +89,24 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     connect(m_ptableview,&StorenbrTableView::signalDelRowData,this,&StoreInfoWidget::SlotDelSinglerow);//表格中的单行操作
     connect(this,&StoreInfoWidget::signalUpdatetable,m_ptableview,&StorenbrTableView::SlotEditInfo);
     connect(m_ptableview,&StorenbrTableView::signalEditRowData,this,&StoreInfoWidget::slottableeditbtn);
-    //数据假测试进行测试r
+    connect(m_ptableview,&StorenbrTableView::signalTableDataSizechange,this,&StoreInfoWidget::SlotupdatePageUI);
+    Dataselectfromdatabase();
+    //数据假测试进行测试
     QStringList strTypeList;
     strTypeList<<tr("选择")<</*tr("序号")<<*/tr("仓位编号")
               <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级")<<tr("操作");
     m_ptableview->SetTableHeaderData(strTypeList,strTypeList.size());
-    Dataselectfromdatabase();
+
+
+    //page ob 功能实现方式
+    m_ptableview->GetStoretablemodel()->m_setpagerowsize =20;
+    int setrecordsize =  m_ptableview->GetStoretablemodel()->m_setpagerowsize;
+    m_pagewg = new TablepagebyabstractWg(this);
+    m_pagewg->SetParam( m_stroreposmap.storeposInfoMap.size(),"t_storeposinfo",setrecordsize);
+    m_pagewg->InitpagefunWg();
+    pmainlayout->addWidget(m_pagewg);
+    connect(m_pagewg,&TablepagebyabstractWg::SetShowTableRecord,this,&StoreInfoWidget::slotSetCurPageData);
+
     this->resize(parent->size());
     this->setStyleSheet(stylestr);
 }
@@ -111,6 +124,7 @@ StoreInfoWidget::~StoreInfoWidget()
         delete m_pImportBtn;
         delete m_pExportBtn;
         delete m_ptableview;
+        delete m_pagewg;
     }
 }
 ///
@@ -127,6 +141,7 @@ void StoreInfoWidget::slotaddnbrinfo()
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
     adddialog->show();
     connect(adddialog,&EditStorenbrinfoDialog::signalAckAdd,m_ptableview,&StorenbrTableView::SlotaddNbrInfo);
+
 }
 ///
 /// \brief StoreInfoWidget::slotBatchDelnbrinfo
@@ -156,6 +171,12 @@ void StoreInfoWidget::slotquenbrinfo()
 {
     QString text  = m_pnbrlineEdit->text();
     emit signalfindinfo(text,1);
+//    if(m_pagewg->m_totalRecrodCount <=0)
+//        return;
+//    m_pagewg->m_totalRecrodCount = m_ptableview->m_findtotalnum;//更新记录数目更新界面数据
+//    m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();//总页数计算更新
+//    m_pagewg->updateParam();
+//    m_ptableview->GetStoretablemodel()->SetCurPage(0);
 }
 ///
 /// \brief StoreInfoWidget::slotImportnbrinfo
@@ -220,6 +241,7 @@ void StoreInfoWidget::slotImportnbrinfo()
         }
         else{ //更新成功
             Dataselectfromdatabase();
+            SlotupdatePageUI(datamap.size());
         }
     }
     else {
@@ -268,7 +290,7 @@ void StoreInfoWidget::slotEditData(QStringList datalist)
 /// 表格编辑按钮传输过来slot函数
 void StoreInfoWidget::slottableeditbtn(QString nbrinfo ,int row)
 {
-      DelDialogBaseob();
+    DelDialogBaseob();
     m_editrow = row;
     QList<QStringList> list;
     if(m_stroreposmap.storeposInfoMap.contains(nbrinfo))
@@ -288,13 +310,20 @@ void StoreInfoWidget::slottableeditbtn(QString nbrinfo ,int row)
     TEST.clear();
     TEST << "nbr005"<<"L"<<"234"<<"456"<<"789"<<"box005"<<"1"<<"5";
     //测试
-  TEST = list[0];
-   list[0].removeFirst();
+    TEST = list[0];
+    list[0].removeFirst();
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
     adddialog->move(m_ptableview->pos().x() +m_ptableview->width()/2 - adddialog->width()/2,m_ptableview->pos().y() + m_ptableview->height()/2-adddialog->height()/2);
     adddialog->setContent( list[0]);
     adddialog->show();
     connect(adddialog,&EditStorenbrinfoDialog::signalAckBtn,this,&StoreInfoWidget::slotEditData);
+}
+
+void StoreInfoWidget::slotSetCurPageData(int ipage)
+{
+    m_pagewg->m_totalRecrodCount = m_ptableview->GetStoretablemodel()->GetRowCount();//更新记录数目
+    m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();//总页数计算更新
+    m_ptableview->GetStoretablemodel()->SetCurPage(ipage);
 }
 ///
 /// \brief StoreInfoWidget::Dataselectfromdatabase
@@ -309,10 +338,10 @@ void StoreInfoWidget::Dataselectfromdatabase()
     list =  GetdatalistFromstru(m_stroreposmap.storeposInfoMap);
     QStringList rowlist;
     rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"444"<<"1"<<"2"<<"5";
-    list.append(rowlist);
+    rowlist.append(rowlist);
     rowlist.clear();
     rowlist<<"1"<<"10"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"1"<<"5";
-    list.append(rowlist);
+    rowlist.append(rowlist);
     rowlist.clear();
     rowlist<<"0"<<"11"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"0"<<"5";
     if(list.size() == 0)
@@ -408,6 +437,20 @@ void StoreInfoWidget::SlotBatchDelData(  QList<QVariant> nbrlist)
     DelDataBaseInfo(nbrlist);
 
 }
+///更新page界面状态情况
+void StoreInfoWidget::SlotupdatePageUI(int size)
+{
+    //根据记录数量重新计算总的页数
+    m_pagewg->m_totalRecrodCount = size;
+    m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();
+    if(m_pagewg->m_currentPage >= m_pagewg->m_totalPage )//如果计算之后的页数小于当前页那么当前页更新0
+    {
+        m_pagewg->m_currentPage = 0;
+    }
+    m_pagewg->updateParam();
+}
+
+
 ///
 /// \brief StoreInfoWidget::DelDialogBaseob
 ///

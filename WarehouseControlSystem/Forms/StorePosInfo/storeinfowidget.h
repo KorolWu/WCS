@@ -10,6 +10,7 @@
 #include <QStringList>
 #include "watingdialogwg.h"
 #include <MysqlDataBase/readtabledata.h>
+#include "pagewg/tablepagebyabstractwg.h"
 
 class StoreInfoWidget  : public QWidget
 {
@@ -32,6 +33,7 @@ private slots:
     void slotExportnbrinfo();
     void slotEditData(QStringList datalist);
     void slottableeditbtn(QString ,int row);
+    void  slotSetCurPageData(int ipage);
 private:
     void  Dataselectfromdatabase();
     bool  DelDataBaseInfo( QList<QVariant> nbrlist);
@@ -40,10 +42,12 @@ private:
 public slots:
     void  SlotDelSinglerow(QString nbrinfo,int row );
     void  SlotBatchDelData(  QList<QVariant> nbrlist);
+    void SlotupdatePageUI(int size);
 signals:
     void signalfindinfo(QString nbrinfo,int clomun);
     void signalBatchDel();
     void signalUpdatetable(QStringList ,int row) ;
+
 private:
     enum storepostype{
         Large  = '1',
@@ -62,6 +66,7 @@ private:
     StorenbrTableView *m_ptableview;
     ReadTableData m_databaseopob;
     int m_editrow ;
+    TablepagebyabstractWg *m_pagewg;
 };
 
 

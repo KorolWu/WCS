@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QMouseEvent>
 
 class LoginInfoWg:public QDialog
 {
@@ -16,6 +17,14 @@ public:
     //当前用户信息
 public slots:
     void login();//点击登录按钮是执行的槽函数
+protected:
+    void paintEvent(QPaintEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
+private:
+    QPoint mousePoint;
+    bool mouse_press;
 private:
     QLabel *m_userNameLbl;         //"用户名"标签
     QLabel *m_pwdLbl;              //"密码"标签

@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     Forms/CarForms/carlistform.cpp \
     ControlClass/observerbase.cpp \
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
+    ControlClass/basedatainfooperate.cpp
 
 
 
@@ -96,7 +97,8 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h \
+    ControlClass/basedatainfooperate.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

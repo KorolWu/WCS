@@ -1,10 +1,11 @@
+
 #-------------------------------------------------
 #
 # Project created by QtCreator 2020-05-26T13:13:47
 #
 #-------------------------------------------------
 
-QT       += core gui sql
+QT       += core gui sql network concurrent serialport serialbus
 QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -45,10 +46,25 @@ SOURCES += main.cpp\
     Forms/dialogabstractclass.cpp \
     Forms/CarForms/addcar.cpp \
     Forms/TaskForms/currenttask.cpp \
-   Forms/TaskForms/alltask.cpp \
+    Forms/TaskForms/alltask.cpp \
     UnitClass/logmanager.cpp \
     UnitClass/ImportExportFile/localfileoperate.cpp \
-    Forms/StorePosInfo/editstorenbrinfodialog.cpp
+    Forms/StorePosInfo/editstorenbrinfodialog.cpp \
+    Forms/LogForms/logforms.cpp \
+    Forms/TaskForms/labeldelegateV1.cpp \
+    UnitClass/khttpserver.cpp \
+    UnitClass/KCommunication.cpp \
+    ControlClass/basedevice.cpp \
+    Forms/CarForms/carlistform.cpp \
+    ControlClass/observerbase.cpp \
+<<<<<<< HEAD
+    ControlClass/selectcar.cpp \
+    ControlClass/AbstractClass/abstructdevice.cpp\
+UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
+=======
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp
+>>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
 
 
 
@@ -75,16 +91,27 @@ HEADERS  += mainwindow.h \
     Forms/TaskForms/currenttask.h \
     Forms/TaskForms/alltask.h \
     UnitClass/ImportExportFile/localfileoperate.h \
-<<<<<<< HEAD
-    Forms/StorePosInfo/editstorenbrinfodialog.h \
-    UnitClass/myIniconfig.h
-=======
     Forms/StorePosInfo/editstorenbrinfodialog.h\
     UnitClass/myIniconfig.h \
-    UnitClass/logmanager.h
->>>>>>> bd4414d87ff96dbdd915e879ca77237101b7984a
+    UnitClass/logmanager.h \
+    Forms/LogForms/logforms.h \
+    Forms/TaskForms/labeldelegateV1.h \
+    UnitClass/khttpserver.h \
+    UnitClass/KCommunication.h \
+    ControlClass/basedevice.h \
+    Forms/CarForms/carlistform.h \
+    ControlClass/observerbase.h \
+<<<<<<< HEAD
+    ControlClass/selectcar.h \
+    ControlClass/AbstractClass/abstructdevice.h\
+ UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
+=======
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h
+>>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
 
 INCLUDEPATH += ../SDK/include/
+include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )
 LIBS += -L../SDK/lib -lCRUDBaseOperation
 LIBS += -L../SDK/lib -lReadTableData
 FORMS    += mainwindow.ui

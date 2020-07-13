@@ -4,32 +4,6 @@ CurrentTask::CurrentTask(int width,int height,QWidget *parent):BaseFrom(parent)
 {
     this->width = width;
     this->height = height;
-//    m_in_btn = new QPushButton("只看入库",this);
-//    m_in_btn->setIcon(QIcon(":/resouse/Image/in.png"));
-//    //connect(m_in_btn,&QPushButton::clicked,this,&CurrentTask::onAddClicked);
-//    m_in_btn->move(5,10);
-//    m_out_btn= new QPushButton("只看出库",this);
-//    //connect(m_out_btn,&QPushButton::clicked,this,&CurrentTask::onDeleteClicked);
-//    m_out_btn->setIcon(QIcon(":/resouse/Image/out.png"));
-//    m_out_btn->move(150,10);
-//    m_all_btn= new QPushButton("查看全部",this);
-//    m_all_btn->move(300,10);
-//    m_all_btn->setIcon(QIcon(":/resouse/Image/all.png"));
-
-//    m_start_date = new QDateEdit(this);
-//    m_start_date->setCalendarPopup(true);
-//    m_start_date->move(450,10);
-//    QLabel *l = new QLabel(this);
-//    l->setText("-");
-//    l->move(580,10);
-//    m_end_date = new QDateEdit(this);
-//    m_end_date->setCalendarPopup(true);
-//    m_end_date->move(600,10);
-
-//    m_query_btn = new QPushButton("查询",this);
-//    m_query_btn->move(750,10);
-//    m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
-//    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}");
     initTableView();
 }
 

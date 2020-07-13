@@ -57,6 +57,8 @@ SOURCES += main.cpp\
     ControlClass/basedevice.cpp \
     Forms/CarForms/carlistform.cpp \
     ControlClass/observerbase.cpp \
+    ControlClass/selectcar.cpp \
+    ControlClass/AbstractClass/abstructdevice.cpp\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
     ControlClass/basedatainfooperate.cpp
@@ -96,6 +98,8 @@ HEADERS  += mainwindow.h \
     ControlClass/basedevice.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
+    ControlClass/selectcar.h \
+    ControlClass/AbstractClass/abstructdevice.h\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h \
     ControlClass/basedatainfooperate.h

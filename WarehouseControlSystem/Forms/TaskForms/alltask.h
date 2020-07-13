@@ -30,8 +30,8 @@ public:
     QSqlTableModel *model;
 
     void initTableView();
-    int width;
-    int height;
+    int m_width;
+    int m_height;
 };
 
 #endif // ALLTASK_H

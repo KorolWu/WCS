@@ -48,6 +48,8 @@ private:
     QPushButton *p_operation_btn;
     QPushButton *p_edit_btn;
     void addControlForTableView();
+    int m_width;
+    int m_height;
 
 };
 

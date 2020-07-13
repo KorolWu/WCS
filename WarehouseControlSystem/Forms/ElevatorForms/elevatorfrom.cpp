@@ -1,31 +1,35 @@
 #include "elevatorfrom.h"
 #include <QHeaderView>
 #include <QIcon>
+#include <QDebug>
 #include <Forms/CarForms/labeldelegate.h>
 #include "Forms/StorePosInfo/buttondelegate.h"
 #include <QScreen>
 ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(parent)
 {
+    this->m_width = width;
+    this->m_height = height;
+    int height_fristLine = height/94;
     p_add_btn = new QPushButton("添加",this);
     p_add_btn->setIcon(QIcon(":/resouse/Image/add.png"));
     connect(p_add_btn,&QPushButton::clicked,this,&ElevatorFrom::onAddClicked);
-    p_add_btn->move(5,10);
+    p_add_btn->move(m_width/158,height_fristLine);
     p_delete_btn= new QPushButton("删除",this);
     connect(p_delete_btn,&QPushButton::clicked,this,&ElevatorFrom::onDeleteClicked);
     p_delete_btn->setIcon(QIcon(":/resouse/Image/delete.png"));
-    p_delete_btn->move(100,10);
+    p_delete_btn->move(m_width/15.8,height_fristLine);
     p_export_btn= new QPushButton("导出",this);
-    p_export_btn->move(200,10);
+    p_export_btn->move(m_width/7.9,height_fristLine);
     p_export_btn->setIcon(QIcon(":/resouse/Image/download.png"));
 
     QLabel *text_lable = new QLabel("设备编号:",this);
-    text_lable->move(350,12);
+    text_lable->move(m_width/4.5,height_fristLine);
     text_lable->setAlignment(Qt::AlignBottom);
     p_input_text = new QLineEdit(this);
     p_input_text->resize(150,30);
-    p_input_text->move(440,10);
+    p_input_text->move(m_width/3.6,height_fristLine);
     p_query_btn = new QPushButton("查询",this);
-    p_query_btn->move(610,10);
+    p_query_btn->move(m_width/2.6,height_fristLine);
     p_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
 
     p_table_view = new QTableView(this);

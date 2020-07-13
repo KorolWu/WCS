@@ -59,10 +59,12 @@ SOURCES += main.cpp\
     ControlClass/observerbase.cpp \
 <<<<<<< HEAD
     ControlClass/selectcar.cpp \
-    ControlClass/AbstractClass/abstructdevice.cpp
+    ControlClass/AbstractClass/abstructdevice.cpp\
+UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
 =======
-    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
->>>>>>> 18de693b7603c7ffa15f9c5717701130d000973a
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp
+>>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
 
 
 
@@ -101,10 +103,12 @@ HEADERS  += mainwindow.h \
     ControlClass/observerbase.h \
 <<<<<<< HEAD
     ControlClass/selectcar.h \
-    ControlClass/AbstractClass/abstructdevice.h
+    ControlClass/AbstractClass/abstructdevice.h\
+ UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
 =======
-    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
->>>>>>> 18de693b7603c7ffa15f9c5717701130d000973a
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h
+>>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

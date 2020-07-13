@@ -1,8 +1,9 @@
 #include "storenbrinfotablemodel.h"
 #include <QDebug>
 
-
-StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QAbstractTableModel(parent)
+//QSqlTableModel
+//QAbstractTableModel
+StorenbrInfoTablemodel::StorenbrInfoTablemodel(QObject *parent) :QSqlQueryModel(parent)
 {
     m_columncount = 0 ;
     m_headerlist.clear();
@@ -33,7 +34,62 @@ void StorenbrInfoTablemodel::SetColumncnt(int colcnt)
 void StorenbrInfoTablemodel::setModelDatas(QList<QStringList> *list)
 {
     m_storenbrList = list;
-    m_setpagerowsize = m_storenbrList->size();
+ //  m_curpageDatalist = list;
+    m_setpagerowsize =20;
+    m_totalrecord = m_storenbrList->size();
+    SetCurPage(0);
+}
+
+int StorenbrInfoTablemodel::GetRowCount()
+{
+        m_totalrecord = m_storenbrList->size();
+    return m_totalrecord;
+}
+
+int StorenbrInfoTablemodel::GetPageSize()
+{
+    int size = (GetRowCount() % m_setpagerowsize == 0)
+            ? (GetRowCount() / m_setpagerowsize)
+            : (GetRowCount() / m_setpagerowsize + 1);
+    if(size == 0)
+        size = 1;
+    return size;
+}
+
+void StorenbrInfoTablemodel::SetCurPage(int iPage)
+{
+    //当前页必须小于总页数
+    if(iPage < 0)
+        return;
+    if (iPage < GetPageSize())
+    {
+        m_iCurPage = iPage;
+        //查询起始索引1
+        int iStart = m_setpagerowsize * m_iCurPage;
+        //查询结束索引
+        int iend = 0;
+        //如果本页可以填满
+        if (iStart + m_setpagerowsize < GetRowCount())
+        {
+            iend = iStart + m_setpagerowsize-1;
+        }
+        //本页没有被填满
+        else
+        {
+            iend = GetRowCount() - 1;
+        }
+        //填充当前页数据
+        m_curpageDatalist.clear();
+        for (int i = iStart; i <= iend; ++i)
+        {
+            if(i < m_storenbrList->size())
+           {
+                m_curpageDatalist.append(m_storenbrList->at(i));
+            }
+        }
+        refrush();
+    }
+    return;
 }
 ///
 /// \brief StorenbrInfoTablemodel::rowCount
@@ -47,7 +103,7 @@ int StorenbrInfoTablemodel::rowCount(const QModelIndex &parent) const
     if(NULL == m_storenbrList)
         return 0;
     else
-        return m_setpagerowsize;
+        return m_curpageDatalist.size(); //有争议
 }
 ///
 /// \brief StorenbrInfoTablemodel::columnCount
@@ -74,7 +130,10 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
     {
         int row = index.row();
         int column = index.column();
-       QString str = m_storenbrList->at(row).at(column);
+        if(row >=  m_curpageDatalist.size())
+            return QVariant();;
+      // QString str = m_storenbrList->at(row).at(column);//原来旧
+       QString str = m_curpageDatalist.at(row).at(column);  //变更增加
         switch (column) {
         case 0:
               return "";
@@ -92,7 +151,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
                   return "锁定";
             }
         default:
-          return m_storenbrList->at(row).at(column);
+          return m_curpageDatalist.at(row).at(column);
         }
     }
     else if (role == Qt::CheckStateRole) //第一列选中状态编辑
@@ -101,7 +160,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         int column = index.column();
         if(column == 0)
         {
-          QString checkstr = m_storenbrList->at(row).at(column);
+          QString checkstr = m_curpageDatalist.at(row).at(column);
             bool check = false;
             if(checkstr == "1")
             {
@@ -114,7 +173,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
     {
         int row = index.row();
         int column = index.column();
-        QString str = m_storenbrList->at(row).at(column);
+        QString str = m_curpageDatalist.at(row).at(column);
         switch (index.column()) {
         case 7://仓位状态设置样式
         {
@@ -148,9 +207,9 @@ bool StorenbrInfoTablemodel::setData(const QModelIndex &index, const QVariant &v
         {
             return false;
         }
+        //计算实际数据的下标
+        int dataindex = index.row() + m_iCurPage * m_setpagerowsize; //获得实际显示数据记录的索引编号
         if(column == 0) //索引号变化变更 被选中
-
-
         {
             //记录索引号对应的 料箱编号信息
             if((role == Qt::CheckStateRole))
@@ -160,17 +219,21 @@ bool StorenbrInfoTablemodel::setData(const QModelIndex &index, const QVariant &v
                     QString stat = "1";
                     if(m_storenbrList)
                     {
-                        QStringList list =  m_storenbrList->at(row);
+                        QStringList list =  m_storenbrList->at(dataindex);
                         list[0] = stat;
-                        m_storenbrList->replace(row,list);
-                      emit  signalCheckDatachanged (row, true);
+                        m_storenbrList->replace(dataindex,list); //改变总的数据
+                        m_curpageDatalist.replace(row,list);
+                        QString nbr = list[1];
+                      emit  signalCheckDatachanged (dataindex, true,nbr);
                     }
                 }
                 else{
-                    QStringList list =  m_storenbrList->at(row);
+                    QStringList list =  m_storenbrList->at(dataindex);
                     list[0] = "0";
-                    m_storenbrList->replace(row,list);
-                      emit  signalCheckDatachanged (row, false);
+                    m_storenbrList->replace(dataindex,list);
+                      m_curpageDatalist.replace(row,list);
+                          QString nbr = list[1];
+                      emit  signalCheckDatachanged (dataindex, false,nbr);
                 }
             }
         }

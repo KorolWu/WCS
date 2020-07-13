@@ -1,5 +1,5 @@
-#ifndef SPILTPAGESBYQSQLTABLEMODEL_H
-#define SPILTPAGESBYQSQLTABLEMODEL_H
+#ifndef TABLEPAGEBYABSTRACTWG_H
+#define TABLEPAGEBYABSTRACTWG_H
 
 #include <QObject>
 #include <QWidget>
@@ -9,18 +9,16 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QSqlQuery>
-
-class SpiltPagesByQSqlTableModel:public  QWidget
+class TablepagebyabstractWg:public  QWidget
 {
     Q_OBJECT
 public:
-    SpiltPagesByQSqlTableModel(QWidget *parent =0);
-    ~SpiltPagesByQSqlTableModel();
-    void SetParam(QSqlQueryModel *p,QString name,int  PageRecordCount =25);//先设置 参数
+    TablepagebyabstractWg(QWidget *parent =0);
+    void SetParam(int totalRecrodCount,/*QAbstractItemModel *p,*/QString name,int  PageRecordCount =25);//先设置 参数
     void InitpagefunWg();//初始化界面
-    void updateParam();//表格数据变化的时候重新计算表格总的数量，直接查询表格更新参数
-private:
-    QSqlQueryModel *m_sqltableMode;
+    void updateParam();//更新界面参数变化的时候进行界面更新
+public:
+    // QAbstractItemModel *m_sqltableMode;
     int       m_currentPage;      //当前页
     int       m_totalPage; //总页数
     int       m_totalRecrodCount;     //总记录数
@@ -36,14 +34,14 @@ private:
 private:
     int  GetTableTotalRecordCount();
     int GetTablePageCount();
-    void SetShowTableRecord(int limitdex);
     void UpdateUIStatus();
-    // 功能: 设置总数页文本
-    void SetTableTotalPageLabel();
-private slots:
+    void SetTableTotalPageLabel();    // 功能: 设置总数页文本
+public  slots:
     void  slotprepage();
     void  slotNextpage();
     void  slotToPage();
+signals:
+    void SetShowTableRecord(int limitdex); // 发送获得当前页进行展示数据
 };
 
-#endif // SPILTPAGESBYQSQLTABLEMODEL_H
+#endif // TABLEPAGEBYABSTRACTWG_H

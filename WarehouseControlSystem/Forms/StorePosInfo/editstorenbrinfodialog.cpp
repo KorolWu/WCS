@@ -19,7 +19,7 @@ EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString 
         completer->setCaseSensitivity(Qt::CaseInsensitive);
         completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
         m_edit_list[1]->setCompleter(completer);
-         m_edit_list[1]->setMaxLength(1);
+        m_edit_list[1]->setMaxLength(1);
         for(int i = 2; i< 5;++i)
         {
             QDoubleValidator *pIntValidator = new QDoubleValidator(this);
@@ -61,20 +61,46 @@ void EditStorenbrinfoDialog::onYesBtnClicked()
     storestru.storepri =   QString(list[8]).toInt();
     ReadTableData rwdb;
     QMap<QString,StorePosInfoStru> infoMap;
-    infoMap.insert( list[0],storestru);
+    infoMap.insert(list[1],storestru);
     QString msg;
     if(m_sql_flag =="add")
     {
-        if( rwdb.WriteStoreposinfotoDataBase(infoMap,msg))
+        if(!Myconfig::GetInstance()->m_storeinfoMap.contains(list[1])) //若是新增增加判断数据
         {
-            Myconfig::GetInstance()->m_storeinfoMap.insert(list[0],storestru);
-           // emit signalAckBtn(list);
-         emit   signalAckAdd(list);
+            if( rwdb.WriteStoreposinfotoDataBase(infoMap,msg))
+            {
+                Myconfig::GetInstance()->m_storeinfoMap.insert(list[1],storestru);
+                // emit signalAckBtn(list);
+                emit   signalAckAdd(list);
+                this->hide();
+                this->deleteLater();
+            }
+            else
+            {
+                if(msg == " ")
+                {
+                    msg = "数据库打开失败";
+                }
+                m_err_lab->setText(QString("编辑 %1失败请检查，信息内容：%2").arg(m_sql_flag).arg(msg));
+            }
+        }
+        else{
+            m_err_lab->setText(QString("仓位编号信息存在，请选择其他编号"));
+        }
+    }
+    else
+    {//是更新
+        QVector<QVariant> keyvec;
+        QVariant var  = list[1];
+        keyvec.append(var);
+        if(rwdb.WriteUpdateInfoDataBase(infoMap,keyvec,msg))
+        {
+            Myconfig::GetInstance()->m_storeinfoMap[list[1]] = storestru;
+            emit signalAckBtn(list);
             this->hide();
             this->deleteLater();
         }
-        else
-        {
+        else{
             if(msg == " ")
             {
                 msg = "数据库打开失败";
@@ -82,27 +108,7 @@ void EditStorenbrinfoDialog::onYesBtnClicked()
             m_err_lab->setText(QString("编辑 %1失败请检查，信息内容：%2").arg(m_sql_flag).arg(msg));
         }
     }
-    else{//是更新
-        QVector<QVariant> keyvec;
-        QVariant var  = list[1];
-        keyvec.append(var);
-       if(rwdb.WriteUpdateInfoDataBase(infoMap,keyvec,msg))
-       {
-           Myconfig::GetInstance()->m_storeinfoMap[list[0]] = storestru;
-           emit signalAckBtn(list);
-           this->hide();
-           this->deleteLater();
-       }
-       else{
-           if(msg == " ")
-           {
-               msg = "数据库打开失败";
-           }
-           m_err_lab->setText(QString("编辑 %1失败请检查，信息内容：%2").arg(m_sql_flag).arg(msg));
-       }
-    }
 }
-
 //QButtonGroup *EditStorenbrinfoDialog::Getradiogroup(QString list)
 //{
 //     m_pButtonGroup=new QButtonGroup(this);

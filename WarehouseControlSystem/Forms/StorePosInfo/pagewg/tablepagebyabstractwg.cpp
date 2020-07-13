@@ -1,4 +1,5 @@
-#include "spiltpagesbyqsqltablemodel.h"
+#include "tablepagebyabstractwg.h"
+#include<QMessageBox>
 #include <QHBoxLayout>
 #include <QSplitter>
 #include<QSqlQuery>
@@ -6,47 +7,30 @@
 #include <QMessageBox>
 
 
-SpiltPagesByQSqlTableModel::SpiltPagesByQSqlTableModel(QWidget *parent):QWidget(parent)
+TablepagebyabstractWg::TablepagebyabstractWg(QWidget *parent)
 {
-    m_sqltableMode = NULL;
-    m_currentPage = 1;
+    //m_sqltableMode = NULL;
+    m_currentPage = 0;
     m_totalPage = 1;
     m_totalRecrodCount = -1;
     m_PageRecordCount =-1;
 }
 
-SpiltPagesByQSqlTableModel::~SpiltPagesByQSqlTableModel()
+void TablepagebyabstractWg::SetParam(int totalRecrodCount,/*QSqlQueryModel *p, */QString name, int PageRecordCount)
 {
-
-}
-
-void SpiltPagesByQSqlTableModel::SetParam(QSqlQueryModel *p, QString name, int PageRecordCount)
-{
-    m_sqltableMode = p;
+    // m_sqltableMode = p;
     m_PageRecordCount = PageRecordCount;
     tablename = name;
-}
-///
-/// \brief SpiltPagesByQSqlTableModel::updateParam
-///  //重新查询进行更新 表格或者总的行数
-void SpiltPagesByQSqlTableModel::updateParam()
-{
-    //得到总的表格行数
-    m_totalRecrodCount = GetTableTotalRecordCount();
-    //得到总页数
-    m_totalPage = GetTablePageCount();
-    UpdateUIStatus();
-    //设置总的页数
-    SetTableTotalPageLabel();
+    m_totalRecrodCount = totalRecrodCount;
 }
 
-void SpiltPagesByQSqlTableModel::InitpagefunWg()
+void TablepagebyabstractWg::InitpagefunWg()
 {
     QHBoxLayout *hbox = new QHBoxLayout;
     this->setLayout(hbox);
     hbox->addWidget(new QSplitter());
     m_prevButton = new QPushButton(this);
-    //  m_prevButton->setText("前一页");:/resouse/Image/left.png
+    //  m_prevButton->setText("前一页");
     m_prevButton->setIcon(QIcon(":/resouse/Image/left.png"));
     m_prevButton->setLayoutDirection(Qt::LayoutDirectionAuto);
     m_prevButton->setFlat(true);
@@ -55,7 +39,7 @@ void SpiltPagesByQSqlTableModel::InitpagefunWg()
     m_switchPageLineEdit->setFixedHeight(20);
     m_switchPageLineEdit->setFixedWidth(60);
     m_switchPageLineEdit->setText("1");
-    connect(m_switchPageLineEdit,&QLineEdit::returnPressed,this,&SpiltPagesByQSqlTableModel::slotToPage);
+    connect(m_switchPageLineEdit,&QLineEdit::returnPressed,this,&TablepagebyabstractWg::slotToPage);
 
     m_swtoButton = new QPushButton(this);
     m_swtoButton->setText("go");
@@ -83,23 +67,27 @@ void SpiltPagesByQSqlTableModel::InitpagefunWg()
     hbox->addWidget(m_swtoButton);
 
     hbox->addWidget(new QSplitter());
-    connect(m_prevButton,&QPushButton::clicked,this,&SpiltPagesByQSqlTableModel::slotprepage);
-    connect(m_nextButton,&QPushButton::clicked,this,&SpiltPagesByQSqlTableModel::slotNextpage);
-    connect(m_swtoButton,&QPushButton::clicked,this,&SpiltPagesByQSqlTableModel::slotToPage);
+    connect(m_prevButton,&QPushButton::clicked,this,&TablepagebyabstractWg::slotprepage);
+    connect(m_nextButton,&QPushButton::clicked,this,&TablepagebyabstractWg::slotNextpage);
+    connect(m_swtoButton,&QPushButton::clicked,this,&TablepagebyabstractWg::slotToPage);
     //得到总的表格行数
-    m_totalRecrodCount = GetTableTotalRecordCount();
+    // m_totalRecrodCount = GetTableTotalRecordCount();
     //得到总页数
     m_totalPage = GetTablePageCount();
-    UpdateUIStatus();
-    //设置总的页数
-    SetTableTotalPageLabel();
-    SetShowTableRecord(1);
+    updateParam();
 }
-///
-/// \brief SpiltPagesByQSqlTableModel::GetTableTotalRecordCount
-/// \return
-///   // 功能: 得到记录数
-int SpiltPagesByQSqlTableModel::GetTableTotalRecordCount()
+
+void TablepagebyabstractWg::updateParam()
+{
+    if(m_currentPage >=0 && m_currentPage < m_totalPage && m_totalPage>=1)
+    {
+        UpdateUIStatus();
+        //设置总的页数
+        SetTableTotalPageLabel();
+    }
+}
+
+int TablepagebyabstractWg::GetTableTotalRecordCount()
 {
     QString slecttstr =QString("select * from %1").arg(tablename);
     QSqlQuery sql ;
@@ -108,82 +96,78 @@ int SpiltPagesByQSqlTableModel::GetTableTotalRecordCount()
     // qDebug()<<"num"<<num;
     return num /*m_sqltableMode->rowCount()*/;
 }
-///
-/// \brief SpiltPagesByQSqlTableModel::GetTablePageCount
-/// \return
-///得到总的页数
-int SpiltPagesByQSqlTableModel::GetTablePageCount()
+
+int TablepagebyabstractWg::GetTablePageCount()
 {
-    return  (m_totalRecrodCount % m_PageRecordCount == 0) ? (m_totalRecrodCount / m_PageRecordCount) : (m_totalRecrodCount / m_PageRecordCount + 1);
-}
-///
-/// \brief SpiltPagesByQSqlTableModel::SetShowTableRecord
-/// \param limitdex
-///展示显示的页面信息记录,通过sql语句查询的方式实现
-void SpiltPagesByQSqlTableModel::SetShowTableRecord(int limitdex)
-{
-    //可以过滤器的方式实现或者直接查询基类的query语句
-    //    QString str = QString("1=1 limit %1,%2").arg(limitdex) .arg(m_PageRecordCount) ;
-    //    m_sqltableMode->setFilter(str);
-    QString szQuery = QString("select * from t_log limit %1,%2").arg(limitdex).arg(m_PageRecordCount);
-    m_sqltableMode->setQuery(szQuery);
+    if(m_totalRecrodCount == 0)
+        return 1;
+    return  (m_totalRecrodCount % m_PageRecordCount == 0) ? \
+                (m_totalRecrodCount / m_PageRecordCount) :\
+                (m_totalRecrodCount / m_PageRecordCount + 1);
 }
 
-void SpiltPagesByQSqlTableModel::UpdateUIStatus()
+//void TablepagebyabstractWg::SetShowTableRecord(int limitdex)
+//{
+//    //可以过滤器的方式实现或者直接查询基类的query语句
+//    //    QString str = QString("1=1 limit %1,%2").arg(limitdex) .arg(m_PageRecordCount) ;
+//    //    m_sqltableMode->setFilter(str);
+//    QString szQuery = QString("select * from t_log limit %1,%2").arg(limitdex).arg(m_PageRecordCount);
+//    m_sqltableMode->setQuery(szQuery);
+//}
+
+void TablepagebyabstractWg::UpdateUIStatus()
 {
     //设置当前页文本
-    QString szCurrentText = QString("共%1").arg(QString::number(m_currentPage));
+    QString szCurrentText = QString("共%1").arg(QString::number(m_currentPage+1));
     //   szCurrentText = QString("<font color=\"#00FF00\">%1</font> ").arg(szCurrentText);
     m_currentPageLabel->setText(szCurrentText);
-
     //设置按钮是否可用
-    if(m_currentPage == 1)
+    if(m_currentPage ==0&& m_totalPage == 1) //    //当前第一页，且总共只有一页
+    {
+        m_prevButton->setEnabled(false);
+        m_nextButton->setEnabled(false);
+    }
+    else if(m_currentPage == 0&& m_totalPage > 1) //当前是第一页且数据大于1
     {
         m_prevButton->setEnabled(false);
         m_nextButton->setEnabled(true);
     }
-    else if(m_currentPage == m_totalPage)
+    else if(m_currentPage == (m_totalPage-1))
     {
         m_prevButton->setEnabled(true);
         m_nextButton->setEnabled(false);
     }
-    else
-    {
+    else{
         m_prevButton->setEnabled(true);
         m_nextButton->setEnabled(true);
     }
+
 }
-///设置总页数变化
-void SpiltPagesByQSqlTableModel::SetTableTotalPageLabel()
+
+void TablepagebyabstractWg::SetTableTotalPageLabel()
 {
     QString szPageCountText = QString("/%1页").arg(QString::number(m_totalPage));
     //szPageCountText = QString("<font color=\"#0000FF\">%1</font> ").arg(szPageCountText);
     m_totalPageLabel->setText(szPageCountText);
 }
-///
-/// \brief SpiltPagesByQSqlTableModel::slotprepage
-///前一页
-void SpiltPagesByQSqlTableModel::slotprepage()
+
+void TablepagebyabstractWg::slotprepage()
 {
-    int limitIndex = (m_currentPage - 2) * m_PageRecordCount;
-    SetShowTableRecord(limitIndex);
+    //  int limitIndex = (m_currentPage - 2) * m_PageRecordCount;
     m_currentPage -= 1;
+    emit  SetShowTableRecord(m_currentPage);
     UpdateUIStatus();
 }
-///
-/// \brief SpiltPagesByQSqlTableModel::slotNextpage
-///  后一页
-void SpiltPagesByQSqlTableModel::slotNextpage()
+
+void TablepagebyabstractWg::slotNextpage()
 {
-    int limitIndex = m_currentPage * m_PageRecordCount;
-    SetShowTableRecord(limitIndex);
+    //  int limitIndex = m_currentPage * m_PageRecordCount;
     m_currentPage += 1;
+    emit  SetShowTableRecord(m_currentPage);
     UpdateUIStatus();
 }
-///
-/// \brief SpiltPagesByQSqlTableModel::slotToPage
-///转到制定页面
-void SpiltPagesByQSqlTableModel::slotToPage()
+
+void TablepagebyabstractWg::slotToPage()
 {
     //得到输入字符串
     QString szText = m_switchPageLineEdit->text();
@@ -210,11 +194,11 @@ void SpiltPagesByQSqlTableModel::slotToPage()
         return;
     }
     //得到查询起始行号
-    int limitIndex = (pageIndex-1) * m_PageRecordCount;
-    //记录查询
-    SetShowTableRecord(limitIndex);
+    //  int limitIndex = (pageIndex-1) * m_PageRecordCount;
     //设置当前页
-    m_currentPage = pageIndex;
+    m_currentPage = pageIndex-1;
+    //记录查询
+    emit SetShowTableRecord(m_currentPage); //需要显示数据的展示
     //刷新状态
     UpdateUIStatus();
 }

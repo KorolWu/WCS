@@ -17,6 +17,11 @@ void AddCar::onYesBtnClicked()
     deviceStruct.deviceNum =  list[0];
     if(m_sql_flag == "Update")
     {
+        if(!Myconfig::GetInstance()->m_CarMap.contains(list[1]))
+        {
+            m_err_lab->setText("不允许在线修改IP");
+            return;
+        }
        deviceStruct.deviceIp = Myconfig::GetInstance()->m_CarMap[list[1]].deviceIp;
     }
     deviceStruct.deviceIp = list[1];

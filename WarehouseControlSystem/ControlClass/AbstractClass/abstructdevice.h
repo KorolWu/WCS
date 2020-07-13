@@ -15,6 +15,7 @@ class AbstructDevice
 {
 public:
     AbstructDevice(BaseDevice *b);
+    char *getBaseData();
     virtual bool move_x(const int &value);
     virtual bool move_y(const int &value);
     virtual bool right_get();
@@ -25,6 +26,16 @@ private:
     {
       qint64 v;
       char   c[8];
+    };
+    union kint16
+    {
+        qint16 v;
+        char   c[2];
+    };
+    union kint32
+    {
+        qint32 v;
+        char   c[4];
     };
 };
 

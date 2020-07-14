@@ -58,13 +58,15 @@ SOURCES += main.cpp\
     Forms/CarForms/carlistform.cpp \
     ControlClass/observerbase.cpp \
 <<<<<<< HEAD
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
+    ControlClass/basedatainfooperate.cpp
+=======
     ControlClass/selectcar.cpp \
     ControlClass/AbstractClass/abstructdevice.cpp\
+Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp\
 UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
-=======
-    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp
->>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
+>>>>>>> ca6c565e4ce67df4d8d594788f3d2826c89a4cbd
 
 
 
@@ -102,13 +104,16 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
 <<<<<<< HEAD
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h \
+    ControlClass/basedatainfooperate.h
+=======
     ControlClass/selectcar.h \
     ControlClass/AbstractClass/abstructdevice.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
-=======
-    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h
->>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
+ Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
+ UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
+ UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
+>>>>>>> ca6c565e4ce67df4d8d594788f3d2826c89a4cbd
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

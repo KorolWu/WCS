@@ -61,7 +61,6 @@ SOURCES += main.cpp\
     ControlClass/AbstractClass/abstructdevice.cpp\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
-    ControlClass/basedatainfooperate.cpp
 
 
 

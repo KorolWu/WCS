@@ -220,7 +220,13 @@ typedef struct  _MapStorePosInfoStru {
          storeposInfoMap.clear();
      }
 }MapStorePosInfoStru;
-
+//仓位状态的几种定义
+enum STORESTATE{
+    ENBLED = 0,
+    USING = 1,
+    LOCKING =2,
+    UNDEFINED  =3
+};
 //货架信息结构体描述指料箱所放置位置信息表------------------------------2020/06/02
 #pragma pack()
 

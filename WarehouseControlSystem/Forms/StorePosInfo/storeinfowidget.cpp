@@ -31,7 +31,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     setLayout(pmainlayout);
     QLabel *pshowlabeltitle = new QLabel(tr("当前位置：WCS系统<<货架管理..."));
     pmainlayout->addWidget(pshowlabeltitle);
-    pmainlayout->setSpacing(25);
+    pmainlayout->setSpacing(10);
     QHBoxLayout *pbtnLayout = new QHBoxLayout();
     m_pAddBtn = new QPushButton(tr("添加"),this);
     m_pAddBtn->setIcon(QIcon(":/resouse/Image/add.png"));

@@ -97,12 +97,12 @@ typedef struct _DataBaseInfoStru
     QString passWord;
     _DataBaseInfoStru()
     {
-         sqlName = "";
-         databaseName = "";
-         ip = "";
-         port = 3306;
-         userName = "";
-         passWord = "";
+        sqlName = "";
+        databaseName = "";
+        ip = "";
+        port = 3306;
+        userName = "";
+        passWord = "";
     }
 
 }DataBaseInfoStru;
@@ -131,13 +131,13 @@ typedef struct _ElevatorInfoStru
     QString remarks;
     _ElevatorInfoStru()
     {
-         elevatorNum = "";
-         elevatorType = "";
-         elevatorIp = "";
-         elevatorPort = 0;
-         elevatorNearPos = "";
-         elevatorPos = "";
-         remarks = "";
+        elevatorNum = "";
+        elevatorType = "";
+        elevatorIp = "";
+        elevatorPort = 0;
+        elevatorNearPos = "";
+        elevatorPos = "";
+        remarks = "";
     }
 }ElevatorInfoStru;
 
@@ -154,14 +154,14 @@ typedef struct _TaskInfoStru : public KBaseStruct
     QDateTime creatTime;
     _TaskInfoStru()
     {
-         taskNum = "";
-         status = "";
-         boxNum = "";
-         pripty = 1;
-         from = "";
-         end = "";
-         carNum = "";
-         creatTime = QDateTime::currentDateTime();
+        taskNum = "";
+        status = "";
+        boxNum = "";
+        pripty = 1;
+        from = "";
+        end = "";
+        carNum = "";
+        creatTime = QDateTime::currentDateTime();
     }
 
     // KBaseStruct interface
@@ -204,26 +204,26 @@ union Kbyte2
 //用户登录信息结构体 1字节对齐
 #pragma pack(1)
 typedef struct  _LoginInfoStru {
-char username[32];//登录用户名字
-char prilevel;//用户权限级别等级0 管理员高级模式  1 工程师模式  2 普通员工模式  3游客模式，只能查看页面，可以点击登录按钮
-char passwd[32];//用户密码
-_LoginInfoStru(){
-    memset(username,0,32);
-    prilevel = 3;
-    memset(passwd,0,32);
-}
-_LoginInfoStru& operator=(const _LoginInfoStru &other)
-{
-    strncpy(username,other.username,32);
-    strncpy(passwd,other.passwd,32);
-    return *this;
-}
+    char username[32];//登录用户名字
+    char prilevel;//用户权限级别等级0 管理员高级模式  1 工程师模式  2 普通员工模式  3游客模式，只能查看页面，可以点击登录按钮
+    char passwd[32];//用户密码
+    _LoginInfoStru(){
+        memset(username,0,32);
+        prilevel = 3;
+        memset(passwd,0,32);
+    }
+    _LoginInfoStru& operator=(const _LoginInfoStru &other)
+    {
+        strncpy(username,other.username,32);
+        strncpy(passwd,other.passwd,32);
+        return *this;
+    }
 }LoginInfoStru;
 typedef struct  _MapLoginInfoStru {
     QMap<QString,LoginInfoStru> loginInfoMap;
-     _MapLoginInfoStru(){
-         loginInfoMap.clear();
-     }
+    _MapLoginInfoStru(){
+        loginInfoMap.clear();
+    }
 }MapLoginInfoStru;
 //用户登录信息----------------------------------------2020/06/01
 //货架信息结构体描述指料箱所放置的位置-------------------------------2020/06/02
@@ -242,9 +242,9 @@ typedef struct  _StorePosInfoStru{
         coordx = 0.0;
         coordy = 0.0;
         coordz =0.0;
-       memset(boxnbr,0,64);
-       storestat = 0;
-       storepri = 0;
+        memset(boxnbr,0,64);
+        storestat = 0;
+        storepri = 0;
     }
     _StorePosInfoStru& operator=(const _StorePosInfoStru &other)
     {
@@ -255,12 +255,54 @@ typedef struct  _StorePosInfoStru{
 }StorePosInfoStru;
 typedef struct  _MapStorePosInfoStru {
     QMap<QString,StorePosInfoStru> storeposInfoMap;
-     _MapStorePosInfoStru(){
-         storeposInfoMap.clear();
-     }
+    _MapStorePosInfoStru(){
+        storeposInfoMap.clear();
+    }
 }MapStorePosInfoStru;
-
+//仓位状态的几种定义
+enum STORESTATE{
+    ENBLED = 0,
+    USING = 1,
+    LOCKING =2,
+    UNDEFINED  =3
+};
 //货架信息结构体描述指料箱所放置位置信息表------------------------------2020/06/02
+//报警信息结构体定义-----------------------------------------2020/07/15
+typedef struct  _ALARMINFOSTRU {
+    uint8_t alarmlevel = 1;
+    QString deviceid =  "";
+    uint8_t errortype = 0;
+    int errorcode = 0;
+    uint8_t Operatestate = 0;
+    QString cartaskid = "";
+    QString wmsTaskid = "";
+    QString boxnumber= "";
+    QString alarminfo= "";
+    double carcoordx= 0;
+    double carcoordy = 0;
+    double carcoordz = 0;
+    QString unused= "";
+}ALARMINFOSTRU;
+//alarmlevel 报警级别的定义
+enum ALARMLEVEL{
+    NONE = 0,
+    ESPSERIOUS = 1, //一级是特别严重，颜色红色
+    SERIOUS = 2,//严重，一般用橙色
+    MORSERIOUS = 3,// 较重，一般用黄色
+    COMSERIOUS  = 4,//一般，用蓝色表示
+};
+//故障类型定义
+enum ERRORTYPE{
+    COMM = 1,//通迅类型故障，小车通迅中断或者Wms通迅中断
+    HARDWARE = 2,//小车故障，其他硬件故障
+};
+//操作状态定义
+enum OPERATIONSTATUS{
+    AUTO = 1,
+    MANUAL = 2,
+    OTHER = 3,
+};
+//报警信息结构体定义-----------------------------------------2020/07/15
 #pragma pack()
 
 

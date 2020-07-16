@@ -108,6 +108,7 @@ void StorenbrTableView::SlotEditBtnClicked(int row, int column)
 /// 单项 删除信息 此行列表信息
 void StorenbrTableView::SlotDelBtnClicked(int row, int column)
 {
+    Q_UNUSED(column)
     int ret = QMessageBox::warning(NULL, tr("提示"),
                                    tr("删除后,不可恢复,请谨慎操作!"),
                                    QMessageBox::Yes | QMessageBox::No,QMessageBox::No);

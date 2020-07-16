@@ -11,7 +11,7 @@ QTPLUGIN += qgif
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = WarehouseControlSystem
-TEMPLATE = app
+ TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -57,14 +57,18 @@ SOURCES += main.cpp\
     ControlClass/basedevice.cpp \
     Forms/CarForms/carlistform.cpp \
     ControlClass/observerbase.cpp \
-<<<<<<< HEAD
     ControlClass/selectcar.cpp \
     ControlClass/AbstractClass/abstructdevice.cpp\
-UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
+<<<<<<< HEAD
+Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp\
+UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
+    ControlClass/kdispatch.cpp
 =======
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp
->>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
+    Forms/AlarmInfo/alarminfowg.cpp
+
+>>>>>>> 684a26447a3d877fd5a882693dd1974b966514a4
 
 
 
@@ -101,14 +105,19 @@ HEADERS  += mainwindow.h \
     ControlClass/basedevice.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
-<<<<<<< HEAD
     ControlClass/selectcar.h \
     ControlClass/AbstractClass/abstructdevice.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
+<<<<<<< HEAD
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
+    ControlClass/kdispatch.h
 =======
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
-    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h
->>>>>>> 8f99965ae500ecb22a2a8831736e601fea36007b
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h \
+    ControlClass/basedatainfooperate.h \
+    Forms/AlarmInfo/alarminfowg.h
+>>>>>>> 684a26447a3d877fd5a882693dd1974b966514a4
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

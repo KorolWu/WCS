@@ -42,5 +42,7 @@
         <file>Image/left.png</file>
         <file>Image/go.png</file>
         <file>Image/right.png</file>
+        <file>Image/Refresh.png</file>
+        <file>Image/search.png</file>
     </qresource>
 </RCC>

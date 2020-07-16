@@ -28,6 +28,7 @@ public:
                         QString keyname,QVector<QVariant> keyvalue,QString &sqlerror);
   QSqlQuery ExcBatchSelectDB(const QString table);
   bool ExcBatchReplaceDB(const QString &table, QStringList &names, QList<QVariantList> &values,QString &sqlerror);
+  bool ExcBatchInsertDb(const QString &table, QStringList &names,  QList<QVariantList> &values,QString &errorinfo);
 private:
      QString GetKeyType(QString tablename,QString name);
      void  GettablesFromDb(QStringList &tablelist);

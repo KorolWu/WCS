@@ -29,12 +29,12 @@ void SpiltPagesByQSqlTableModel::SetParam(QSqlQueryModel *p, QString name, int P
 ///
 /// \brief SpiltPagesByQSqlTableModel::updateParam
 ///  //重新查询进行更新 表格或者总的行数
-void SpiltPagesByQSqlTableModel::updateParam()
+void SpiltPagesByQSqlTableModel::updateParam(int totalRecrodCount)
 {
-    //得到总的表格行数
-    m_totalRecrodCount = GetTableTotalRecordCount();
+    m_totalRecrodCount = totalRecrodCount;
     //得到总页数
     m_totalPage = GetTablePageCount();
+    //得到总的表格行数
     UpdateUIStatus();
     //设置总的页数
     SetTableTotalPageLabel();
@@ -93,7 +93,7 @@ void SpiltPagesByQSqlTableModel::InitpagefunWg()
     UpdateUIStatus();
     //设置总的页数
     SetTableTotalPageLabel();
-    SetShowTableRecord(1);
+    SetShowTableRecord(0);
 }
 ///
 /// \brief SpiltPagesByQSqlTableModel::GetTableTotalRecordCount
@@ -114,6 +114,11 @@ int SpiltPagesByQSqlTableModel::GetTableTotalRecordCount()
 ///得到总的页数
 int SpiltPagesByQSqlTableModel::GetTablePageCount()
 {
+    if(m_totalRecrodCount == 0)
+    {
+        m_PageRecordCount = 1;
+        return 1;
+    }
     return  (m_totalRecrodCount % m_PageRecordCount == 0) ? (m_totalRecrodCount / m_PageRecordCount) : (m_totalRecrodCount / m_PageRecordCount + 1);
 }
 ///
@@ -125,7 +130,7 @@ void SpiltPagesByQSqlTableModel::SetShowTableRecord(int limitdex)
     //可以过滤器的方式实现或者直接查询基类的query语句
     //    QString str = QString("1=1 limit %1,%2").arg(limitdex) .arg(m_PageRecordCount) ;
     //    m_sqltableMode->setFilter(str);
-    QString szQuery = QString("select * from t_log limit %1,%2").arg(limitdex).arg(m_PageRecordCount);
+    QString szQuery = QString("select * from %1 limit %2,%3").arg(tablename).arg(limitdex).arg(m_PageRecordCount);
     m_sqltableMode->setQuery(szQuery);
 }
 
@@ -137,18 +142,22 @@ void SpiltPagesByQSqlTableModel::UpdateUIStatus()
     m_currentPageLabel->setText(szCurrentText);
 
     //设置按钮是否可用
-    if(m_currentPage == 1)
+    if(m_currentPage ==1&& m_totalPage == 1) //    //当前第一页，且总共只有一页
+    {
+        m_prevButton->setEnabled(false);
+        m_nextButton->setEnabled(false);
+    }
+    else if(m_currentPage == 1&& m_totalPage > 1) //当前是第一页且数据大于1
     {
         m_prevButton->setEnabled(false);
         m_nextButton->setEnabled(true);
     }
-    else if(m_currentPage == m_totalPage)
+    else if(m_currentPage == (m_totalPage))
     {
         m_prevButton->setEnabled(true);
         m_nextButton->setEnabled(false);
     }
-    else
-    {
+    else{
         m_prevButton->setEnabled(true);
         m_nextButton->setEnabled(true);
     }

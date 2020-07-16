@@ -18,7 +18,7 @@ public:
     ~SpiltPagesByQSqlTableModel();
     void SetParam(QSqlQueryModel *p,QString name,int  PageRecordCount =25);//先设置 参数
     void InitpagefunWg();//初始化界面
-    void updateParam();//表格数据变化的时候重新计算表格总的数量，直接查询表格更新参数
+    void updateParam(int totalRecrodCount);//表格数据变化的时候重新计算表格总的数量，直接查询表格更新参数
 private:
     QSqlQueryModel *m_sqltableMode;
     int       m_currentPage;      //当前页

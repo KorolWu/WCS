@@ -3,21 +3,24 @@
 #include <QAction>
 #include <QGraphicsDropShadowEffect>
 #include "datastructure.h"
+#include <QBitmap>
+#include <QPainter>
 
 LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
 {
     this->setFixedSize(300,280);
-   this-> setWindowFlags (Qt::FramelessWindowHint);
-   //this->setAttribute(Qt::WA_TranslucentBackground);
-   this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+   // this-> setWindowFlags (Qt::FramelessWindowHint);
+ //   setWindowFlags(Qt::Popup | Qt::FramelessWindowHint);
+    //this->setAttribute(Qt::WA_TranslucentBackground);
+   //this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect(this);
     shadow->setOffset(0, 0);
     shadow->setColor(QColor("#444444"));
-    shadow->setBlurRadius(30);
+    shadow->setBlurRadius(10);
     this->setGraphicsEffect(shadow);
-   // this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-    this->setObjectName("myloginWidget");
-    this->setStyleSheet("QWidget#myloginWidget { background-image : url(:/resouse/Image/addDevice.png); border-radius:10px;}");
+  //  this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    this->setObjectName("myloginWidget");//border-radius:10px;
+   this->setStyleSheet("QWidget#myloginWidget { background-image : url(:/resouse/Image/addDevice.png); }");
     //登录系统界面文字信息
     QLabel *wcsloginlabel = new QLabel(this);
     wcsloginlabel->move(90,35);
@@ -26,7 +29,7 @@ LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
     wcsloginlabel->setStyleSheet("color: rgba(255, 255, 240,70%);font: 13pt;");
     //用户名输入框
     m_puserNameLEd = new QLineEdit(this);
-   m_puserNameLEd->move(90,80);
+    m_puserNameLEd->move(90,80);
     m_puserNameLEd->setPlaceholderText(tr("Username"));//占位符
     QAction *nameAction = new QAction( m_puserNameLEd);
     nameAction->setIcon(QIcon(":/resouse/Image/loginyusername.png"));
@@ -58,9 +61,9 @@ LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
     connect(m_exitBtn,&QPushButton::clicked,this,&LoginInfoWg::close);
     QWidget::setTabOrder(m_puserNameLEd,m_pwdLEd);
     QWidget::setTabOrder(m_pwdLEd, m_loginBtn);
-   m_loginBtn->setShortcut(QKeySequence::InsertParagraphSeparator);//将小键盘回车键与登录按钮绑定在一起
-   m_loginBtn->setShortcut(Qt::Key_Enter);//将字母区回车键与登录按钮绑定在一起
-   m_loginBtn->setShortcut(Qt::Key_Return);//将小键盘回车键与登录按钮绑定在一起
+    m_loginBtn->setShortcut(QKeySequence::InsertParagraphSeparator);//将小键盘回车键与登录按钮绑定在一起
+    m_loginBtn->setShortcut(Qt::Key_Enter);//将字母区回车键与登录按钮绑定在一起
+    m_loginBtn->setShortcut(Qt::Key_Return);//将小键盘回车键与登录按钮绑定在一起
 }
 
 LoginInfoWg::~LoginInfoWg()
@@ -100,6 +103,45 @@ void LoginInfoWg::login()
         //光标定位
         m_puserNameLEd->setFocus();
     }
+}
+
+void LoginInfoWg::paintEvent(QPaintEvent *event)
+{
+    Q_UNUSED(event);
+    QBitmap bmp(this->size());
+    bmp.fill();
+    QPainter p(&bmp);
+    p.setPen(Qt::NoPen);
+    p.setBrush(Qt::black);
+    p.drawRoundedRect(bmp.rect(),15,15);
+    setMask(bmp);
+}
+
+void LoginInfoWg::mouseMoveEvent(QMouseEvent *event)
+{
+    if(mouse_press){
+        move(event->globalPos() - mousePoint);
+    }
+}
+
+void LoginInfoWg::mousePressEvent(QMouseEvent *event)
+{
+    if( (event->button() == Qt::LeftButton) ){
+        mouse_press = true;
+        mousePoint = event->globalPos() - this->pos();
+        //        event->accept();
+    }
+    else if(event->button() == Qt::RightButton){
+        //如果是右键
+        this->close();
+
+    }
+}
+
+void LoginInfoWg::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    mouse_press = false;
 }
 
 

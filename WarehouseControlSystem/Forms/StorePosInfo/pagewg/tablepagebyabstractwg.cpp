@@ -7,7 +7,7 @@
 #include <QMessageBox>
 
 
-TablepagebyabstractWg::TablepagebyabstractWg(QWidget *parent)
+TablepagebyabstractWg::TablepagebyabstractWg(QWidget *parent):QWidget(parent)
 {
     //m_sqltableMode = NULL;
     m_currentPage = 0;

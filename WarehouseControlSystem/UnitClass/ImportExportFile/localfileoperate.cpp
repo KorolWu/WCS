@@ -35,6 +35,7 @@ QList<QStringList> LocalFileOperate::ReadFileData(QString filename)
          }
     }
     file.close();//操作完成后记得关闭文件
+    return listdata;
 }
 ///
 /// \brief LocalFileOperate::WriteFileData

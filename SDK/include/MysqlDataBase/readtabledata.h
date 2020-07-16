@@ -10,8 +10,10 @@
 #include <QDebug>
 #include <QDateTime>
 
+
 class READTABLEDATASHARED_EXPORT ReadTableData
 {
+
 public:
     ReadTableData();
     void readt_device_info();
@@ -21,6 +23,7 @@ public:
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
     bool WriteLoginfo(int level,QString from,QString log_info);
     bool WriteUpdateInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QVector<QVariant> keyvalue,QString &errorinfo);
+    bool WriteAlarmInfo(ALARMINFOSTRU alarmstru ,QString &error);
 private:
     QMutex m_mutex;
 

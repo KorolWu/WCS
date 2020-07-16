@@ -4,7 +4,6 @@
 #include <QObject>
 #include "UnitClass/KCommunication.h"
 #include <QTimer>
-#include "datastructure.h"
 #include "Myconfig.h"
 #include "observerbase.h"
 #include <QVector>
@@ -38,6 +37,11 @@ private:
     QVector< ObserverBase *> m_ObserverVec;
     void reConnected();
     void noticeObserver();
+    union Rint16
+    {
+        qint16 v;
+        char   c[2];
+    };
 };
 
 #endif // BASEDEVICE_H

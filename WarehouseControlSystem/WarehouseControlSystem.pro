@@ -60,7 +60,8 @@ SOURCES += main.cpp\
     ControlClass/selectcar.cpp \
     ControlClass/AbstractClass/abstructdevice.cpp\
 Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp\
-UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp
+UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
+    ControlClass/kdispatch.cpp
 
 
 
@@ -99,9 +100,10 @@ HEADERS  += mainwindow.h \
     ControlClass/observerbase.h \
     ControlClass/selectcar.h \
     ControlClass/AbstractClass/abstructdevice.h\
- Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h
+    Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
+    UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
+    ControlClass/kdispatch.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

@@ -19,15 +19,15 @@ QString SelectCar::getCarIp_out(const KPosition &p)
         //小车的状态由自己来做标记，同一个任务需要多次向小车发送命令,在未完成之前都是doing状态
         if(it.value().deveceStatus.status == 1)
         {
-            if(it.value().deveceStatus.z == p.z)
+            if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {
                 return it.value().deviceIp;
             }
-            else if(qAbs(it.value().deveceStatus.z - p.z) == 1)
+            else if(qAbs(it.value().deveceStatus.carCurrentPosion.z - p.z) == 1)
             {
                 return it.value().deviceIp;
             }
-            socker_map.insert(qAbs(it.value().deveceStatus.z-p.z),it.value().deviceIp);
+            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().deviceIp);
         }
     }
     if(socker_map.size() == 0)
@@ -54,17 +54,18 @@ QString SelectCar::getCarIp_in(const KPosition &p)
     socker_map.clear();
     for(auto it= Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
+        //小车的状态由自己来做标记，同一个任务需要多次向小车发送命令,在未完成之前都是doing状态
         if(it.value().deveceStatus.status == 1)
         {
-            if(it.value().deveceStatus.z == p.z)
+            if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {
                 return it.value().deviceIp;
             }
-            else if(qAbs(it.value().deveceStatus.z - p.z) == 1)
+            else if(qAbs(it.value().deveceStatus.carCurrentPosion.z - p.z) == 1)
             {
                 return it.value().deviceIp;
             }
-            socker_map.insert(qAbs(it.value().deveceStatus.z-p.z),it.value().deviceIp);
+            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().deviceIp);
         }
     }
     if(socker_map.size() == 0)

@@ -18,7 +18,10 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QLineEdit>
-class CarStatusFrom : public QWidget
+#include "../../ControlClass/observerbase.h"
+#include "KDeviceSingleton.h"
+#include "Myconfig.h"
+class CarStatusFrom : public QWidget,ObserverBase
 {
     Q_OBJECT
 public:
@@ -56,7 +59,12 @@ private:
 
 
     QPushButton *closeBtn;
+    QString m_ip;
     //QTimer* timer;
+
+    // ObserverBase interface
+public:
+    void updateStatusOnBase();
 };
 
 #endif // CarStatusFrom_H

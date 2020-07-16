@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "../basedevice.h"
+#include "datastructure.h"
 /**
  * @brief The AbstructDevice class
  * @author korol
@@ -22,21 +23,7 @@ public:
     virtual bool left_get();
 private:
     BaseDevice *m_pBaseDevice;
-    union Kint64
-    {
-      qint64 v;
-      char   c[8];
-    };
-    union kint16
-    {
-        qint16 v;
-        char   c[2];
-    };
-    union kint32
-    {
-        qint32 v;
-        char   c[4];
-    };
+
 };
 
 #endif // ABSTRUCTDEVICE_H

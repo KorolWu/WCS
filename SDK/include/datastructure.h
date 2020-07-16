@@ -11,32 +11,50 @@ typedef struct KBaseStruct_{
     virtual QStringList getNameList(){QStringList list;list.clear();return list;}
     virtual QList<QVariant> getValueList(){QList<QVariant> list;list.clear();return list;}
 }KBaseStruct;
+typedef struct KPosition_{
+    double x;
+    double y;
+    double z;
+    int state = 0;
+}KPosition;
 typedef struct _Car_status
 {
     //电量
     int batter = 20;
-    //小车坐标
-    int x = 0;
-    int y = 0;
-    int z = 0;
+    KPosition carCurrentPosion;
     //是否启用 int working warrn online  disonline
     bool enable = false;
-    // 0 alarm, 1 stand by, 2 working,
+    // 1 stand by, 2 working,
     int status = 1;
+    //error
+    int err_code = 0;
+    // 1手动 2自动
+    int model = 1;
+    //0 左右都没有 1左有货 2右有货 3顶上有货
+    char box_status = 0;
+    // 到位信号,任务完成后小车会发送完成信号
+    bool inp = false;
     //是否在线
     bool isOnline = false;
     //目标坐标
-    int x_end = 0;
-    int y_end = 0;
-    int z_end = 0;
+    KPosition carEndPosion;
 
 }Car_status;
-typedef struct KPosition_{
-    int x;
-    int y;
-    int z;
-    int state = 0;
-}KPosition;
+enum Order{
+    X = 0,
+    Y = 1,
+    ChangeWhell = 2,
+    Left = 3,
+    Right = 4,
+    Call = 5,
+    Elevator_Near = 6
+};
+//子任务的结构 任务类型，值
+typedef struct _OrderStru
+{
+    Order order;
+    double value;
+}OrderStru;
 typedef struct _CarInfoStru
 {
     //小车编号
@@ -58,12 +76,12 @@ typedef struct _CarInfoStru
         deveceStatus.enable = other.deveceStatus.enable;
         deveceStatus.status = other.deveceStatus.status;
         deveceStatus.isOnline = other.deveceStatus.isOnline;
-        deveceStatus.x = other.deveceStatus.x;
-        deveceStatus.y = other.deveceStatus.y;
-        deveceStatus.x_end = other.deveceStatus.x_end;
-        deveceStatus.y_end = other.deveceStatus.y_end;
-        deveceStatus.z = other.deveceStatus.z;
-        deveceStatus.z_end = other.deveceStatus.z_end;
+        deveceStatus.carCurrentPosion.x = other.deveceStatus.carCurrentPosion.x;
+        deveceStatus.carCurrentPosion.y = other.deveceStatus.carCurrentPosion.y;
+        deveceStatus.carCurrentPosion.z = other.deveceStatus.carCurrentPosion.z;
+        deveceStatus.carEndPosion.x = other.deveceStatus.carEndPosion.x;
+        deveceStatus.carEndPosion.y = other.deveceStatus.carEndPosion.y;
+        deveceStatus.carEndPosion.z = other.deveceStatus.carEndPosion.z;
         return *this;
     }
 
@@ -162,6 +180,27 @@ public:
         return list;
     }
 }TaskInfoStru;
+// Data Union
+union Kint64
+{
+  qint64 v;
+  char   c[8];
+};
+union kint16
+{
+    qint16 v;
+    char   c[2];
+};
+union kint32
+{
+    qint32 v;
+    char   c[4];
+};
+union Kbyte2
+{
+  QByteArray buff;
+  char c[2];
+};
 //用户登录信息结构体 1字节对齐
 #pragma pack(1)
 typedef struct  _LoginInfoStru {

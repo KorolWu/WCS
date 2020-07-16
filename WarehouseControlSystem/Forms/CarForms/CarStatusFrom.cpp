@@ -5,6 +5,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     desktop =  QApplication::desktop()->availableGeometry();
     this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+    m_ip = carStatus.deviceIp;
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
     back_lab->resize(PAD_X,PAD_Y);
@@ -91,11 +92,11 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
     item = new QTableWidgetItem ("当前位置");
     table->setItem(2, 0, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.x).arg(carStatus.deveceStatus.y));
+    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carCurrentPosion.x).arg(carStatus.deveceStatus.carCurrentPosion.y));
     table->setItem(2, 1, item);
     item = new QTableWidgetItem ("目标位置");
     table->setItem(2, 2, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.x_end).arg(carStatus.deveceStatus.y_end));
+    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carEndPosion.x).arg(carStatus.deveceStatus.carEndPosion.y));
     table->setItem(2, 3, item);
 
     item = new QTableWidgetItem ("是否可用");
@@ -135,6 +136,10 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     move_btn->move(10+interval*5-70,interval_y);
 
     this->resize(550,PAD_Y);
+    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(carStatus.deviceIp))
+    {
+        KDeviceSingleton::getInstance()->m_DeviceMap[carStatus.deviceIp]->registObserver(this);
+    }
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }
@@ -142,6 +147,24 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
 void CarStatusFrom::fromClose()
 {
- this->close();
+    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(m_ip))
+    {
+        KDeviceSingleton::getInstance()->m_DeviceMap[m_ip]->removeObserver(this);
+    }
+    this->close();
+}
+// batter status enable online? position
+void CarStatusFrom::updateStatusOnBase()
+{
+    if(Myconfig::GetInstance()->m_CarMap.contains(m_ip))
+    {
+         online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"在线":"离线");
+         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.batter)+"%");
+         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.status == 1? "待命中" : "工作中");
+         table->setItem(0, 3, item);
+         item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.enable? "enable" : "disable");
+         table->setItem(3, 1, item);
+    }
 }
 

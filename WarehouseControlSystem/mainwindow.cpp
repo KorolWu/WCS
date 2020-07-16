@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     getConfigParameter();
     CRUDBaseOperation::getInstance()->openDB();
     getParameterFromDB();
-    GetSystemLogObj()->writeLog("电梯管理",0);
+    GetSystemLogObj()->writeLog("WCS initialization ...",0);
     initUI();
     LogManager *l = new LogManager(this);
     l->start();

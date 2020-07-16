@@ -95,7 +95,7 @@ void AgvForm::setTableViewValue()
             else if(j == 4)
                 model->setItem(i,j,new QStandardItem(it.value().deviceType));
             else if(j == 5)
-                model->setItem(i,j,new QStandardItem(QString("%1").arg(i+i*10+10)));
+                model->setItem(i,j,new QStandardItem(QString("%1").arg(it.value().deveceStatus.batter)));
             else if(j == 6)
                 model->setItem(i,j,new QStandardItem(it.value().deveceStatus.isOnline ? "在线":"离线"));
             it ++;

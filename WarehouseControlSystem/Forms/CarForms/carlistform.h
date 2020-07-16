@@ -35,7 +35,7 @@ private:
     QLabel *staLab;
     QLabel *taskLab;
     QLabel *workLab;
-    QLabel *beterLab;
+    QLabel *batterLab;
     // QWidget interface
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
@@ -63,8 +63,12 @@ private:
     QPoint m_beginP;
     QPoint m_windowP;
     QTimer *m_pTimer;
+    short m_onLineNum = 0;
+    short m_disonLineNum = 0;
+    short m_totalNum = 0;
     void initStatusForms();
-   QList<CarStatusWidget *> list;
+    void updateCarListHeader();
+    QList<CarStatusWidget *> list;
 signals:
     void updateList();
 public slots:

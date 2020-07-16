@@ -19,14 +19,12 @@ char *AbstructDevice::getBaseData()
     kint16 carNum;
     carNum.v = 1;
     memcpy(o+2,carNum.c,2);
-
-
 }
 ///
 /// \brief AbstructDevice::move_x
 /// Move relative position in X direction
 /// \param value
-/// \return
+/// \return Return true when the task is completed
 ///
 bool AbstructDevice::move_x(const int &value)
 {
@@ -34,8 +32,8 @@ bool AbstructDevice::move_x(const int &value)
     k.v = value;
     char *out = new char[40];
     memcpy(out+12,k.c,8);
-
     m_pBaseDevice->write(out);
+
 }
 ///
 /// \brief AbstructDevice::move_y

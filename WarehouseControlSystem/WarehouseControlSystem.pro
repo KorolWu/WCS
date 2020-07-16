@@ -11,7 +11,7 @@ QTPLUGIN += qgif
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = WarehouseControlSystem
-TEMPLATE = app
+ TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -61,6 +61,8 @@ SOURCES += main.cpp\
     ControlClass/AbstractClass/abstructdevice.cpp\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.cpp \
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.cpp \
+    Forms/AlarmInfo/alarminfowg.cpp
+
 
 
 
@@ -101,7 +103,8 @@ HEADERS  += mainwindow.h \
     ControlClass/AbstractClass/abstructdevice.h\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h \
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h \
-    ControlClass/basedatainfooperate.h
+    ControlClass/basedatainfooperate.h \
+    Forms/AlarmInfo/alarminfowg.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

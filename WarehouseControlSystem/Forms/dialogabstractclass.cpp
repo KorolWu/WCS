@@ -95,6 +95,7 @@ void DialogAbstractClass::mousePressEvent(QMouseEvent *event)
 
 void DialogAbstractClass::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
     mouse_press = false;
 }
 

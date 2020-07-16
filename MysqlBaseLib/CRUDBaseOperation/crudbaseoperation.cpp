@@ -306,6 +306,60 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
     return true;
 }
 
+bool CRUDBaseOperation::ExcBatchInsertDb(const QString &table, QStringList &names, QList<QVariantList> &values,QString &errorinfo)
+{
+    for(int i = 0 ; i < values.size();++i )
+    {
+        if(names.size() != values[i].size() )
+        {
+            errorinfo = "字段数量与传入值的数量不一致";
+            return false;
+        }
+    }
+    QSqlQuery query(data_base);
+    data_base.transaction();//启动事务
+    QString insertsql = QString("insert into %1(").arg(table);//直接使用占位符方式
+    for( int j = 0;j< names.size(); ++j)
+    {
+        insertsql += names[j] +",";
+    }
+    insertsql.chop(1);
+    insertsql += QString(") values(");
+    for(int i = 0; i < names.size();++i)
+    {
+        insertsql +=QString("?")+",";
+    }
+    insertsql.chop(1);
+    insertsql +=")";
+    //qDebug()<<"sql:"<<insertsql;
+    query.prepare(insertsql);
+    QVector<QVariantList> listvec;//
+    for(int i = 0 ; i< names.size();++i)
+    {
+        QVariantList list;
+        for(int j=0; j < values.size();++j)
+        {
+            list.append(values[j][i]);
+        }
+        listvec.append(list);
+        //list
+    }
+    for(int i=0;i<listvec.size();++i)
+    {
+        query.addBindValue(listvec[i]);
+    }
+    if(!query.execBatch()){
+        // qDebug()<<"eeror:"<<query.lastError().text();
+    }//进行批处理操作保证顺序一样
+    if(!data_base.commit())
+    {
+        data_base.rollback();
+        errorinfo =  query.lastError().text();
+        return false;
+    }
+    return true;
+}
+
 CRUDBaseOperation *CRUDBaseOperation::getInstance()
 {
     if (Instance != nullptr)

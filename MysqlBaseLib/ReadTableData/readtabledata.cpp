@@ -98,6 +98,7 @@ void ReadTableData::ReadStoreposinfoDataBase()
 ///写数据库的内容 以更新方式进行
 bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QString &errorinfo)
 {
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     QString tablename = "t_storeposinfo";
     QStringList names;
     names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz"<<"boxnbr"<<"storestat"<<"storepri";
@@ -155,12 +156,40 @@ bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> stor
     }
     QString idname = "idNbr";
     QVector<QVariantList> valueVec =values.toVector() ;
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchUpdateDB(tablename,names,valueVec,idname,keyvalue,errorinfo))
     {
         return true;
     }
     else{
         qDebug()<<"errorinfo:"<<errorinfo;
+        return false;
+    }
+}
+///
+/// \brief ReadTableData::WriteAlarmInfo
+/// \param alarmstru 报警信息结构体参数信息
+/// \return
+///实现报警信息的插入
+bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
+{
+    QString tablename = "t_alarmInfo";
+    QStringList names;
+    names<<"Alarmlevel"<<"DeviceID"<<"ErrorType"<<"Errorcode"<<"Operatestate"<<"CarTaskID"<<"WMSTaskID"\
+        <<"BoxNumber"<<"AlarmInfo"<<"Carcoordx"<<"Carcoordy"<<"Carcoordz";
+    QVariantList list;
+    QList<QVariantList> values;
+    values.append(list);
+    list<<alarmstru.alarmlevel<<alarmstru.deviceid<<alarmstru.errortype<<alarmstru.errorcode<<alarmstru.Operatestate<<alarmstru.cartaskid\
+       <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
+      <<alarmstru.carcoordz;
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
+    {
+        return true;
+    }
+    else{
+        qDebug()<<"error:"<<error;
         return false;
     }
 }

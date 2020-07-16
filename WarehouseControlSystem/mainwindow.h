@@ -31,6 +31,7 @@
 #include "KDeviceSingleton.h"
 #include "datastructure.h"
 #include "Forms/CarForms/carlistform.h"
+#include "Forms/AlarmInfo/alarminfowg.h"
 
 
 namespace Ui {
@@ -61,6 +62,7 @@ private:
     QPushButton   *user_btn;
     QWidget       *p_main_widget;
     CurrentTask   *t;
+    AlarmInfoWg *m_palarmWg;
     LogForms      *m_pLog;
     AgvForm       *car_from;
     AllTask       *m_pTaskAll;

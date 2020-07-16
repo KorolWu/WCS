@@ -121,12 +121,13 @@ public:
     /// 1.筛选出每层的仓位
     /// 2.筛选出空的仓位
     /// 3.筛选出优先级别最高的
-    static QString GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
+    static void  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
     {
-        //从底层筛选层数取值范围
+        //从低层筛选层数取值范围
         qSort(layers.begin(), layers.end());
         for(int i = 0; i < layers.size(); ++i)
         {
+             QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
             QMap<QString, StorePosInfoStru> laymap= BaseDataInfoOperate::GetStorePosInfoMapByLayer\
                     (layers[i],Myconfig::GetInstance()->m_storeinfoMap);
             if(laymap.size() > 0)

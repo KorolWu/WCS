@@ -131,7 +131,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         int row = index.row();
         int column = index.column();
         if(row >=  m_curpageDatalist.size())
-            return QVariant();;
+            return QVariant();
       // QString str = m_storenbrList->at(row).at(column);//原来旧
        QString str = m_curpageDatalist.at(row).at(column);  //变更增加
         switch (column) {

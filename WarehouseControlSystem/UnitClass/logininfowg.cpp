@@ -140,6 +140,7 @@ void LoginInfoWg::mousePressEvent(QMouseEvent *event)
 
 void LoginInfoWg::mouseReleaseEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event)
     mouse_press = false;
 }
 

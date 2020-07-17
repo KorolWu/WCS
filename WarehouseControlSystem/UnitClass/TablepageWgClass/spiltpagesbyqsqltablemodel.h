@@ -18,7 +18,7 @@ public:
     ~SpiltPagesByQSqlTableModel();
     void SetParam(QSqlQueryModel *p,QString name,int  PageRecordCount =25);//先设置 参数
     void InitpagefunWg();//初始化界面
-    void updateParam(int totalRecrodCount);//表格数据变化的时候重新计算表格总的数量，直接查询表格更新参数
+    void updateParam(int totalRecrodCount,QString sql);//表格数据变化的时候重新计算表格总的数量，直接查询表格更新参数
 private:
     QSqlQueryModel *m_sqltableMode;
     int       m_currentPage;      //当前页
@@ -26,6 +26,7 @@ private:
     int       m_totalRecrodCount;     //总记录数
     int      m_PageRecordCount;//每页显示的行数目
     QString tablename;
+    QString m_sqlstr;
 private:
     QLabel *m_totalPageLabel;//总页文本
     QLabel     *m_currentPageLabel; //当前页文本

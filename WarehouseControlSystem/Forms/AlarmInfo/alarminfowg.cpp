@@ -92,8 +92,10 @@ void AlarmInfoWg::InitTableViewUI()
 
     m_sqltablemodel = new MySqlTableModel();
     m_sqltablemodel->setTable("t_alarmInfo");
+     m_sqltablemodel->insertColumn(0);
     m_sqltableview->setModel(m_sqltablemodel);
     m_sqltablemodel->select();
+
     //page ob 功能实现方式
     m_pagewg = new SpiltPagesByQSqlTableModel(this);
     m_pagewg->SetParam(m_sqltablemodel,"t_alarmInfo",25);
@@ -106,13 +108,14 @@ void AlarmInfoWg::InitTableViewUI()
     {
         m_sqltablemodel->setHeaderData(i, Qt::Horizontal, headerlist.at(i));
     }
-    for(int i =0; i< headerlist.size(); ++i )
+    for(int i =1; i< headerlist.size(); ++i )
     {
-        if( i != 9)
+        if(i !=9)
         {
             m_sqltableview->setColumnWidth(i,this->width()*2/3/14);
         }
     }
+    m_sqltableview->setColumnWidth(0,40);
     m_sqltableview->setColumnWidth(9,this->width()/3);
     m_sqltableview->horizontalHeader()->setMinimumHeight(40);
     //m_sqltableview->s
@@ -129,18 +132,18 @@ QString AlarmInfoWg::GetSelectSqlStr()
     QString errortype = m_errortypecombox->currentText();
     if(deciveid == "")
     {
-        deciveid = QString("DeviceID LIKE '%'");
+       // deciveid = QString("DeviceID LIKE '%'");
     }
     else{
-        deciveid = QString("DeviceID LIKE %1").arg(deciveid);
+        deciveid = QString("DeviceID = '%1' AND ").arg(deciveid);
     }
     uint8_t value = GetValue(stat,0);
     if(value == 0)
     {
-        stat = QString("Operatestate LIKE '%'");
+        stat = QString("Operatestate LIKE '%' ");
     }
     else{
-        stat = QString("Operatestate LIKE %1").arg(value);
+        stat = QString("Operatestate = '%1'").arg(value);
     }
     value = GetValue(errortype,1);
     if(value == 0)
@@ -148,7 +151,7 @@ QString AlarmInfoWg::GetSelectSqlStr()
         errortype = QString("ErrorType LIKE '%'");
     }
     else{
-        errortype = QString("ErrorType LIKE %1").arg(value);
+        errortype = QString("ErrorType = '%1'").arg(value);
     }
     value = GetValue(level,2);
     if(value == 0)
@@ -156,11 +159,11 @@ QString AlarmInfoWg::GetSelectSqlStr()
         level = QString("Alarmlevel LIKE '%'");
     }
     else{
-        level = QString("Alarmlevel LIKE %1").arg(value);
+        level = QString("Alarmlevel = '%1'").arg(value);
     }
     //注意：过滤器使用查询方式区别查询语句 针对字符类型或者 数值类型不需要加’  ‘
-//    QString sqlstr = QString("SELECT * FROM t_alarmInfo WHERE %1 AND %2 AND %3 AND %4;").arg(deciveid).arg(stat).arg(level).arg(errortype);
-    QString sqlstr = QString("%1 AND %2 AND %3 AND %4;").arg(deciveid).arg(stat).arg(level).arg(errortype);
+    //QString sqlstr = QString("SELECT * FROM t_alarmInfo WHERE %1 AND %2 AND %3 AND %4;").arg(deciveid).arg(stat).arg(level).arg(errortype);
+    QString sqlstr = QString("%1  %2 AND %3 AND %4;").arg(deciveid).arg(stat).arg(level).arg(errortype);
     return sqlstr;
 }
 
@@ -190,22 +193,26 @@ void AlarmInfoWg::slotSlectTableInfo()
     //根据条件查询选择
     //获得查询条件  设备id 状态  报警等级  故障类型
     QString  sql = GetSelectSqlStr();
+     //select * from t_alarmInfo where DeviceID like '%' and ErrorType like '%' and Operatestate like '1' and Alarmlevel like '%'
     m_sqltablemodel->setFilter(sql);
     int total =  m_sqltablemodel->rowCount();
-     m_pagewg->updateParam(total);
+     sql= "select * from t_alarmInfo where "+sql;
+     sql.chop(1);
+  //   qDebug()<<"sql "<<sql << total;
+    m_pagewg->updateParam(total,sql);
 }
 ///
 /// \brief AlarmInfoWg::slotRefreshTableInfo
 ///刷新数据中的数据，重新读取数据中的信息
 void AlarmInfoWg::slotRefreshTableInfo()
 {
-     m_sqltablemodel->setFilter("");
+    m_sqltablemodel->setFilter("");
     if(m_sqltablemodel != NULL)
     {
         m_sqltablemodel->select();
     }
     //分页变化
-  int total =  m_sqltablemodel->rowCount();
-   m_pagewg->updateParam(total);
+    int total =  m_sqltablemodel->rowCount();
+    m_pagewg->updateParam(total,"");
 }
 

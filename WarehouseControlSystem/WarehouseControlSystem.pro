@@ -105,7 +105,9 @@ HEADERS  += mainwindow.h \
  Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
  UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
  UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
- ControlClass/kdispatch.h
+ ControlClass/kdispatch.h \
+    ControlClass/basedatainfooperate.h \
+    Forms/AlarmInfo/alarminfowg.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

@@ -94,7 +94,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     //数据假测试进行测试
     QStringList strTypeList;
     strTypeList<<tr("选择")<</*tr("序号")<<*/tr("仓位编号")
-              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级")<<tr("操作");
+              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标") << tr("方向状态")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级")<<tr("备注")<<tr("操作");
     m_ptableview->SetTableHeaderData(strTypeList,strTypeList.size());
 
 
@@ -135,7 +135,7 @@ void StoreInfoWidget::slotaddnbrinfo()
     DelDialogBaseob();
     QStringList strTypeList;
     strTypeList<<tr("仓位编号")
-              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
+              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号") << tr("方向状态")<<tr("仓位状态")<<tr("优先级")<<tr("备注");
     QString flag;
     flag = "add";
     EditStorenbrinfoDialog *adddialog = new EditStorenbrinfoDialog (strTypeList,flag,this);
@@ -205,22 +205,24 @@ void StoreInfoWidget::slotImportnbrinfo()
     for(int i = 1; i < listdata.size(); ++i) //从第二行开始屏蔽头数据
     {
         QStringList listrow =listdata[i] ;
-        if(listrow.size() >= 8)
+        if(listrow.size() >= 9)
         {
             if(boxnbr.contains(listrow[5]))
             {
                 datatype = false;
                 break;
             }
-            boxnbr.append(listrow[5]);
+            boxnbr.append(listrow[6]);
             StorePosInfoStru stru;
-            strncpy(stru.boxnbr,listrow[5].toStdString().c_str(),64);
+            strncpy(stru.boxnbr,listrow[6].toStdString().c_str(),64);
             strncpy(stru.idnbr,listrow[0].toStdString().c_str(),64);
             stru.coordx = listrow[2].toDouble();
             stru.coordy =listrow[3].toDouble();
             stru.coordz = listrow[4].toDouble();
-            stru.storestat = listrow[6].toInt();
-            stru.storepri = listrow[7].toInt();
+            stru.directionstate = listrow[5].toInt();
+            stru.storestat = listrow[7].toInt();
+            stru.storepri = listrow[8].toInt();
+             stru.unused = listrow[9];
             if(!datamap.contains(listrow[0]))
             {
                 datamap.insert(listrow[0],stru);
@@ -264,13 +266,13 @@ void StoreInfoWidget::slotExportnbrinfo()
     {
         QStringList listinfo ;
         listinfo<<QString::fromUtf8(it.value().idnbr)<<QString::number(it.value().type)<<QString::number(it.value().coordx)\
-               <<QString::number(it.value().coordy) <<QString::number(it.value().coordz) <<QString::fromUtf8(it.value().boxnbr) \
-              <<QString::number(it.value().storestat) <<QString::number(it.value().storepri);
+               <<QString::number(it.value().coordy) <<QString::number(it.value().coordz)  << QString::number(it.value().directionstate)<<QString::fromUtf8(it.value().boxnbr) \
+              <<QString::number(it.value().storestat) <<QString::number(it.value().storepri) << it.value().unused;
         datalist.append(listinfo);
     }
     //+
     QStringList tableheadlist;
-    tableheadlist<<tr("仓位编号")<<tr("类型")<<tr("x坐标")<<tr("y坐标")<<tr("z坐标")<<tr("箱子编号")<<tr("仓位状态")<<tr("仓位优先级");
+    tableheadlist<<tr("仓位编号")<<tr("类型")<<tr("x坐标")<<tr("y坐标")<<tr("z坐标")<<tr("方向状态")<<tr("箱子编号")<<tr("仓位状态")<<tr("仓位优先级")<<tr("备用");
     LocalFileOperate fileob;
     if(fileob.WriteFileData(datalist,exportfileName,tableheadlist))
     {
@@ -303,12 +305,12 @@ void StoreInfoWidget::slottableeditbtn(QString nbrinfo ,int row)
         return;
     QStringList strTypeList;
     strTypeList<<tr("仓位编号")
-              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级");
+              <<tr("类型")<<tr("X坐标")<<tr("Y坐标")<<tr("Z坐标")<<tr("状态方向")<<tr("料箱编号")<<tr("仓位状态")<<tr("优先级") <<tr("备用");
     QString flag = "update";
     //测试数据
     QStringList TEST;
     TEST.clear();
-    TEST << "nbr005"<<"L"<<"234"<<"456"<<"789"<<"box005"<<"1"<<"5";
+    TEST << "nbr005"<<"L"<<"234"<<"456"<<"789"<<"0"<<"box005"<<"1"<<"5" <<"unused";
     //测试
     TEST = list[0];
     list[0].removeFirst();
@@ -337,13 +339,13 @@ void StoreInfoWidget::Dataselectfromdatabase()
     m_stroreposmap.storeposInfoMap =  Myconfig::GetInstance()->m_storeinfoMap;
     list =  GetdatalistFromstru(m_stroreposmap.storeposInfoMap);
     QStringList rowlist;
-    rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"444"<<"1"<<"2"<<"5";
+    rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"0"<<"444"<<"1"<<"2"<<"5"<<"未使用";
     rowlist.append(rowlist);
     rowlist.clear();
-    rowlist<<"1"<<"10"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"1"<<"5";
+    rowlist<<"1"<<"10"<<"1"<<"345"<<"678.0"<<"0"<<"boxnbr"<<"1"<<"1"<<"5"<<"未使用";
     rowlist.append(rowlist);
     rowlist.clear();
-    rowlist<<"0"<<"11"<<"1"<<"345"<<"678.0"<<"boxnbr"<<"1"<<"0"<<"5";
+    rowlist<<"0"<<"11"<<"1"<<"345"<<"678.0"<<"1"<<"boxnbr"<<"1"<<"0"<<"5"<<"未使用";
     if(list.size() == 0)
     {
         //若数据库打不开则插入测试数据
@@ -392,9 +394,11 @@ QList<QStringList> StoreInfoWidget::GetdatalistFromstru(QMap<QString, StorePosIn
         columnlist.append(QString::number(it.value().coordx));
         columnlist.append(QString::number(it.value().coordy));
         columnlist.append(QString::number(it.value().coordz));
+        columnlist.append(QString::number(it.value().directionstate));
         columnlist.append(QString::fromUtf8(it.value().boxnbr));
         columnlist.append(QString::number(it.value().storestat));
         columnlist.append(QString::number(it.value().storepri));
+        columnlist.append(it.value().unused);
         list.append(columnlist);
     }
     return list;

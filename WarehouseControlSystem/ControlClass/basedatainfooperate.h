@@ -111,6 +111,24 @@ public:
         }
         return stru;
     }
+    ///
+    /// \brief GetLayersFromStorePosInfo
+    /// \return  返回料箱层数信息
+    ///编辑所有的信息获取整个仓库中所有的层数信息
+    static QList<double> GetLayersFromStorePosInfo()
+    {
+        QList<double> layers;
+        QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
+        auto it = Myconfig::GetInstance()->m_storeinfoMap.begin();
+        for(;it !=  Myconfig::GetInstance()->m_storeinfoMap.end(); ++it)
+        {
+            if(!layers.contains( it.value().coordz))
+            {
+                layers.append(it.value().coordz);
+            }
+        }
+        return layers;
+    }
 
     ///
     /// \brief GetWarehouselocationInfoForIn
@@ -127,7 +145,7 @@ public:
         qSort(layers.begin(), layers.end());
         for(int i = 0; i < layers.size(); ++i)
         {
-             QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
+            QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
             QMap<QString, StorePosInfoStru> laymap= BaseDataInfoOperate::GetStorePosInfoMapByLayer\
                     (layers[i],Myconfig::GetInstance()->m_storeinfoMap);
             if(laymap.size() > 0)

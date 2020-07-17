@@ -17,7 +17,7 @@
 
 class MySqlTableModel : public QSqlTableModel
 {
-    Q_OBJECT
+     Q_OBJECT
 public:
     MySqlTableModel(QObject * parent = 0, QSqlDatabase db = QSqlDatabase())
         : QSqlTableModel(parent,db) {;}

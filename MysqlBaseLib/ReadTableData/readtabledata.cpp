@@ -64,6 +64,7 @@ void ReadTableData::readt_crrunt_task()
 void ReadTableData::ReadStoreposinfoDataBase()
 {
     QString tablename = "t_storeposinfo";
+   QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     Myconfig::GetInstance()->m_storeinfoMap.clear();
     QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
     while (query.next()) {
@@ -81,12 +82,16 @@ void ReadTableData::ReadStoreposinfoDataBase()
         stru.coordy = bytearrayid.toDouble();
         bytearrayid = query.value("coordz").toByteArray();
         stru.coordz = bytearrayid.toDouble();
+        bytearrayid=  query.value("directionstate").toByteArray();
+        stru.directionstate = bytearrayid.toInt();
         bytearrayid = query.value("boxnbr").toByteArray();
         memcpy(stru.boxnbr,bytearrayid,bytearrayid.size());
         bytearrayid= query.value("storestat").toByteArray();
         stru.storestat =bytearrayid.toInt();
         bytearrayid = query.value("storepri").toByteArray();
-        stru.storepri = bytearrayid.toInt();
+        stru.storepri = bytearrayid.toInt(); 
+         bytearrayid=  query.value("unused").toByteArray();
+        stru.unused = QString(bytearrayid);
         Myconfig::GetInstance()->m_storeinfoMap.insert(QString(stru.idnbr),stru);
     }
 }
@@ -101,7 +106,7 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     QString tablename = "t_storeposinfo";
     QStringList names;
-    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz"<<"boxnbr"<<"storestat"<<"storepri";
+  names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
     QList<QVariantList> values;
     for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
     {
@@ -111,9 +116,11 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
         list.append(it.value().coordx);
         list.append(it.value().coordy);
         list.append(it.value().coordz);
+        list.append(it.value().directionstate);
         list.append(QString::fromUtf8(it.value().boxnbr));
         list.append(it.value().storestat);
         list.append(it.value().storepri);
+        list.append(it.value().unused);
         values.append(list);
     }
     if(CRUDBaseOperation::getInstance()->ExcBatchReplaceDB(tablename,names,values,errorinfo))
@@ -139,7 +146,7 @@ bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> stor
 {
     QString tablename = "t_storeposinfo";
     QStringList names;
-    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz"<<"boxnbr"<<"storestat"<<"storepri";
+    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
     QList<QVariantList> values;
     for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
     {
@@ -149,9 +156,11 @@ bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> stor
         list.append(it.value().coordx);
         list.append(it.value().coordy);
         list.append(it.value().coordz);
+        list.append(it.value().directionstate);
         list.append(QString::fromUtf8(it.value().boxnbr));
         list.append(it.value().storestat);
         list.append(it.value().storepri);
+        list.append(it.value().unused);
         values.append(list);
     }
     QString idname = "idNbr";

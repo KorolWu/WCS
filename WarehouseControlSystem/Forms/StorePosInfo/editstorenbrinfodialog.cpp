@@ -6,7 +6,7 @@
 EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString flag, QWidget *parent):DialogAbstractClass(list,flag,parent)
 {
     m_sql_flag = flag;
-    if(m_edit_list.size() == 8)
+    if(m_edit_list.size() == 10)
     {
         m_edit_list[0]->setMaxLength(64);
         if(flag != "add")
@@ -25,9 +25,10 @@ EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString 
             QDoubleValidator *pIntValidator = new QDoubleValidator(this);
             m_edit_list[i]->setValidator(pIntValidator);
         }
-        m_edit_list[5]->setMaxLength(64);
-        m_edit_list[6]->setMaxLength(1);
+        m_edit_list[5]->setMaxLength(1);
+        m_edit_list[6]->setMaxLength(64);
         m_edit_list[7]->setMaxLength(1);
+        m_edit_list[8]->setMaxLength(1);
     }
 }
 ///
@@ -36,12 +37,12 @@ EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString 
 void EditStorenbrinfoDialog::onYesBtnClicked()
 {
     QStringList list =  getContent();
-    if(list.size()!= 8)
+    if(list.size()!= 10)
     {
         m_err_lab->setText(tr("添加数据失败,获取内容数量"));
         return;
     }
-    for(int i = 0; i <list.size() ; ++i )
+    for(int i = 0; i <list.size()-1 ; ++i )
     {
         if(list[i]=="")
         {
@@ -56,9 +57,11 @@ void EditStorenbrinfoDialog::onYesBtnClicked()
     storestru.coordx = QString(list[3]).toDouble();
     storestru.coordy = QString(list[4]).toDouble();
     storestru.coordz = QString(list[5]).toDouble();
-    strncpy(storestru.boxnbr, list[6].toStdString().c_str(),64);
-    storestru.storestat = QString(list[7]).toInt();
-    storestru.storepri =   QString(list[8]).toInt();
+    storestru.directionstate = list[6].toInt();
+    strncpy(storestru.boxnbr, list[7].toStdString().c_str(),64);
+    storestru.storestat = QString(list[8]).toInt();
+    storestru.storepri =   QString(list[9]).toInt();
+    storestru.unused = list[10];
     ReadTableData rwdb;
     QMap<QString,StorePosInfoStru> infoMap;
     infoMap.insert(list[1],storestru);

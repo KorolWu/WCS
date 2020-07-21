@@ -137,7 +137,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         switch (column) {
         case 0:
               return "";
-        case 7://仓位状态文字显示
+        case 8://仓位状态文字显示
             if(str == "0")
             {
                 return "空闲";
@@ -175,7 +175,7 @@ QVariant StorenbrInfoTablemodel::data(const QModelIndex &index, int role) const
         int column = index.column();
         QString str = m_curpageDatalist.at(row).at(column);
         switch (index.column()) {
-        case 7://仓位状态设置样式
+        case 8://仓位状态设置样式
         {
             if(str == "1")
               return QVariant(QColor(Qt::red));

@@ -17,7 +17,7 @@
 
 class MySqlTableModel : public QSqlTableModel
 {
-    Q_OBJECT
+     Q_OBJECT
 public:
     MySqlTableModel(QObject * parent = 0, QSqlDatabase db = QSqlDatabase())
         : QSqlTableModel(parent,db) {;}
@@ -69,6 +69,11 @@ public:
         {
             int colum = index.column();
             QVariant test = QSqlTableModel::data(index,role);
+            if(test.type() ==QVariant::DateTime ) //日期类型显示格式
+          {
+                QDateTime time  = test.toDateTime();
+            return time.toString("yyyy-MM-dd ddd hh:mm:ss.zzz");
+            }
             switch (colum) {
             case 1://报警等级
             {
@@ -103,12 +108,6 @@ public:
                     return "未定义";
                     break;
                 }
-            }
-            case 13://日期类型的显示方式
-            {
-                QDateTime time  = test.toDateTime();
-                return time.toString("yyyy-MM-dd ddd hh:mm:ss.zzz");
-                break;
             }
             default:
                 break;

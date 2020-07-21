@@ -185,8 +185,8 @@ public:
 // Data Union
 union Kint64
 {
-  qint64 v;
-  char   c[8];
+    qint64 v;
+    char   c[8];
 };
 union kint16
 {
@@ -200,8 +200,8 @@ union kint32
 };
 union Kbyte2
 {
-  QByteArray buff;
-  char c[2];
+    QByteArray buff;
+    char c[2];
 };
 //用户登录信息结构体 1字节对齐
 #pragma pack(1)
@@ -238,6 +238,8 @@ typedef struct  _StorePosInfoStru{
     char boxnbr[64];//仓位对应料箱信息编号
     char storestat; //0 未使用   1  有 使用中  2 锁定状态 针对维修的情况  3
     char storepri; //仓位优先级
+    uint8_t directionstate = 0; //  新增 方向状态字段
+    QString unused ="";//  新增 备用字段
     _StorePosInfoStru(){
         memset(idnbr,0,64);
         type = 0;
@@ -273,9 +275,9 @@ enum STORESTATE{
 typedef struct  _ALARMINFOSTRU {
     uint8_t alarmlevel = 1;
     QString deviceid =  "";
-    uint8_t errortype = 0;
+    uint8_t errortype = 1;
     int errorcode = 0;
-    uint8_t Operatestate = 0;
+    uint8_t Operatestate = 1;
     QString cartaskid = "";
     QString wmsTaskid = "";
     QString boxnumber= "";

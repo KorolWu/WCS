@@ -55,6 +55,7 @@ void StorenbrTableView::SetTableHeaderData(QStringList datalist, int columncnt)
 void StorenbrTableView::setModeldatalist(QList<QStringList> &list)
 {
     m_nbrList = list;
+    m_findbeforenbrList = list;
     m_ptablemodel->setModelDatas(&m_nbrList);
     m_ptablemodel->refrush();
 }
@@ -176,7 +177,7 @@ void StorenbrTableView::SlotFindNbrinfo(QString info,int column )
         m_ptablemodel->refrush();
     }
     else{ //没有查询到相关的信息内容
-
+           QMessageBox::warning(this, tr("数据查询"),tr("无查询数据信息！！！"), tr("确定"));
     }
 }
 ///

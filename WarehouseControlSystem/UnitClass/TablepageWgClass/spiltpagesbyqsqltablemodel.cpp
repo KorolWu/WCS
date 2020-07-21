@@ -13,6 +13,7 @@ SpiltPagesByQSqlTableModel::SpiltPagesByQSqlTableModel(QWidget *parent):QWidget(
     m_totalPage = 1;
     m_totalRecrodCount = -1;
     m_PageRecordCount =-1;
+    m_sqlstr = "";
 }
 
 SpiltPagesByQSqlTableModel::~SpiltPagesByQSqlTableModel()
@@ -29,15 +30,19 @@ void SpiltPagesByQSqlTableModel::SetParam(QSqlQueryModel *p, QString name, int P
 ///
 /// \brief SpiltPagesByQSqlTableModel::updateParam
 ///  //重新查询进行更新 表格或者总的行数
-void SpiltPagesByQSqlTableModel::updateParam(int totalRecrodCount)
+void SpiltPagesByQSqlTableModel::updateParam(int totalRecrodCount,QString sql) //进行数据变换
 {
+    m_sqlstr = sql;
     m_totalRecrodCount = totalRecrodCount;
     //得到总页数
     m_totalPage = GetTablePageCount();
+    m_currentPage = 1;
+   // qDebug()<<" 总条数"<<m_totalRecrodCount<<m_totalPage<<m_currentPage;
     //得到总的表格行数
     UpdateUIStatus();
     //设置总的页数
     SetTableTotalPageLabel();
+    SetShowTableRecord(0);
 }
 
 void SpiltPagesByQSqlTableModel::InitpagefunWg()
@@ -116,7 +121,7 @@ int SpiltPagesByQSqlTableModel::GetTablePageCount()
 {
     if(m_totalRecrodCount == 0)
     {
-        m_PageRecordCount = 1;
+        m_totalPage = 1;
         return 1;
     }
     return  (m_totalRecrodCount % m_PageRecordCount == 0) ? (m_totalRecrodCount / m_PageRecordCount) : (m_totalRecrodCount / m_PageRecordCount + 1);
@@ -130,7 +135,16 @@ void SpiltPagesByQSqlTableModel::SetShowTableRecord(int limitdex)
     //可以过滤器的方式实现或者直接查询基类的query语句
     //    QString str = QString("1=1 limit %1,%2").arg(limitdex) .arg(m_PageRecordCount) ;
     //    m_sqltableMode->setFilter(str);
-    QString szQuery = QString("select * from %1 limit %2,%3").arg(tablename).arg(limitdex).arg(m_PageRecordCount);
+     QString szQuery;
+     if(m_sqlstr == "")
+     {
+         szQuery =  QString("select * from (%1) limit %2,%3").arg(tablename).arg(limitdex).arg(m_PageRecordCount);
+     }
+     else{
+         szQuery =  QString("select * from (%1) as a_table limit %2,%3").arg(m_sqlstr).arg(limitdex).arg(m_PageRecordCount);
+     }
+     //qDebug()<<"szQuery"<<szQuery;
+    // szQuery =  "select * from (select * from t_alarmInfo where DeviceID LIKE '%' AND Operatestate = '1' AND Alarmlevel LIKE '%' AND ErrorType LIKE '%') as a_table limit 0,25";
     m_sqltableMode->setQuery(szQuery);
 }
 
@@ -140,7 +154,6 @@ void SpiltPagesByQSqlTableModel::UpdateUIStatus()
     QString szCurrentText = QString("共%1").arg(QString::number(m_currentPage));
     //   szCurrentText = QString("<font color=\"#00FF00\">%1</font> ").arg(szCurrentText);
     m_currentPageLabel->setText(szCurrentText);
-
     //设置按钮是否可用
     if(m_currentPage ==1&& m_totalPage == 1) //    //当前第一页，且总共只有一页
     {

@@ -11,6 +11,7 @@
  */
 BaseDevice::BaseDevice(QString ip, qint16 port, QObject *parent)
 {
+     qRegisterMetaType<OrderStru>("OrderStru");
     Q_UNUSED(parent);
     this->m_ip = ip;
     this->m_port = port;
@@ -21,6 +22,7 @@ BaseDevice::BaseDevice(QString ip, qint16 port, QObject *parent)
 
     m_pTimer = new QTimer(this);
     connect(m_pTimer,&QTimer::timeout,this,&BaseDevice::reConnected);
+    m_pOrderStrategy = new AbstractOrder();
 }
 ///
 /// \brief BaseDevice::init
@@ -180,5 +182,25 @@ void BaseDevice::noticeObserver()
     {
        m_ObserverVec[i]->updateStatusOnBase();
     }
+}
+
+void BaseDevice::handelOrder(OrderStru o)
+{
+    static int i =0;
+    qDebug()<<"handel"<<i++;
+    //在预计时间类完成Order
+    if(o.order == Order::X)
+        write(m_pOrderStrategy->move_x(20));
+    else if(o.order == Order::Y)
+        write(m_pOrderStrategy->move_x(20));
+    else if(o.order == Order::ChangeWhell)
+        write(m_pOrderStrategy->changeWhell());
+    else if(o.order == Order::Left)
+        write(m_pOrderStrategy->left_get());
+    else if(o.order == Order::Elevator_Near)
+        write(m_pOrderStrategy->move_ElevatorNear());
+    else if(o.order == Order::Call)
+        write(m_pOrderStrategy->call_Elevator(2));
+
 }
 

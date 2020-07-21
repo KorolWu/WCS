@@ -40,6 +40,12 @@ MainWindow::MainWindow(QWidget *parent) :
    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
    p_mCarList->move(1200,3);
    p_mCarList->show();
+   p_mDispatchThread = new QThread();
+   DispatchCenter *m_dispatchCenter = new DispatchCenter;
+   m_dispatchCenter->moveToThread(p_mDispatchThread);
+   connect(this,&MainWindow::dispatched,m_dispatchCenter,&DispatchCenter::dispatchTaskThread);
+   p_mDispatchThread->start();
+   emit dispatched();
 }
 
 MainWindow::~MainWindow()

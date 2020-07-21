@@ -32,7 +32,7 @@
 #include "datastructure.h"
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
-
+#include "ControlClass/dispatchcenter.h"
 
 namespace Ui {
 class MainWindow;
@@ -68,7 +68,9 @@ private:
     AllTask       *m_pTaskAll;
     ElevatorFrom  *p_mElevator;
     CarListForm   *p_mCarList;
+    QThread       *p_mDispatchThread;
     JQHttpServer::TcpServerManage *m_pHttpServer;
+
     void closeWcs();
     void initUI();
     void initDeviceClient();
@@ -86,6 +88,7 @@ private:
     StoreInfoWidget *m_pstoreWg;
 signals:
     void httpRedReady(QString str);
+    void dispatched();
 };
 
 #endif // MAINWINDOW_H

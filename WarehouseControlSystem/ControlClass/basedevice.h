@@ -7,6 +7,8 @@
 #include "Myconfig.h"
 #include "observerbase.h"
 #include <QVector>
+#include <QEventLoop>
+#include "AbstractClass/abstractorder.h"
 
 /**
  * @brief The BaseDevice class
@@ -29,6 +31,8 @@ public:
     virtual void onDisconnected();
     virtual void clearAlarm(QByteArray data);
     int write(QByteArray data);
+    void handelOrder(OrderStru o);
+    AbstractOrder *m_pOrderStrategy;
 private:
     QTimer *m_pTimer;
     QString m_ip;

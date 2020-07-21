@@ -56,6 +56,7 @@ void ReadTableData::readt_crrunt_task()
         t.creatTime = query.value(8).toDateTime();
         qDebug()<<query.value(8).toString().replace("T"," ")<<" :time"<<t.creatTime.toString("yyyy-MM-dd hh:mm:ss");
         Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
+        Myconfig::GetInstance()->m_taskQueue.enqueue(t);
     }
 }
 ///
@@ -179,10 +180,10 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
         <<"BoxNumber"<<"AlarmInfo"<<"Carcoordx"<<"Carcoordy"<<"Carcoordz";
     QVariantList list;
     QList<QVariantList> values;
-    values.append(list);
     list<<alarmstru.alarmlevel<<alarmstru.deviceid<<alarmstru.errortype<<alarmstru.errorcode<<alarmstru.Operatestate<<alarmstru.cartaskid\
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
+     values.append(list);
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
     {

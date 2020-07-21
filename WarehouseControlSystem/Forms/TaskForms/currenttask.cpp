@@ -109,6 +109,7 @@ void CurrentTask::handelHttpTask(QString reply)
     t.creatTime = QDateTime::currentDateTime();
     //saveTaskToDB(t);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
+    Myconfig::GetInstance()->m_taskQueue.enqueue(t);
     if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t))
         GetSystemLogObj()->writeLog("save current to dbbase failed!",2);
     setTableViewValue();

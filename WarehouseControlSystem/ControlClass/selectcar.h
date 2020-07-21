@@ -17,6 +17,8 @@ public:
     explicit SelectCar(QObject *parent = 0);
     QString getCarIp_out(const KPosition &p);
     QString getCarIp_in(const KPosition &p);
+    //判断是否有可用车辆
+    bool hasUseCar();
 
 signals:
 

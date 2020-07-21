@@ -10,15 +10,17 @@
 #include "Myconfig.h"
 class CRUDBASEOPERATIONSHARED_EXPORT CRUDBaseOperation
 {
-
-public:
+private:
     CRUDBaseOperation();
+public:
     bool openDB();
     void closeDB();
     void createTable(const QString &creatTableSql);
     QSqlQuery queryDb(const QString &querySql);
     bool queryUseStr(const QString &sqlStr);  
     bool saveCrruntTask(TaskInfoStru taskStru);
+    bool removeCrruntTask(TaskInfoStru taskStru);
+    bool saveCompletedTask(TaskInfoStru taskStru);
     // KBaseStruct SubClass CRUD
     bool saveKBaseStruct(const QString &tableName, KBaseStruct &s);
    public:

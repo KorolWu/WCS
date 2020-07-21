@@ -38,6 +38,8 @@ public:
     QMutex m_rmutex;
     //taskNum,task
     QMap<QString, TaskInfoStru> m_taskMap;
+    //task queue
+    QQueue<TaskInfoStru> m_taskQueue;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;

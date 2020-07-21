@@ -68,6 +68,41 @@ bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru)
     return false;
 }
 ///
+/// \brief CRUDBaseOperation::removeCrruntTask 已完成的任务，从当前任务里删除掉
+/// \param taskStru
+/// \return
+///
+bool CRUDBaseOperation::removeCrruntTask(TaskInfoStru taskStru)
+{
+    if(data_base.isOpen())
+    {
+        QString sql =QString("DELETE FROM t_crrunt_task WHERE taskNum=%1;").arg(taskStru.taskNum);
+        QSqlQuery query(data_base);
+        return query.exec(sql);
+
+    }
+    return false;
+}
+///
+/// \brief CRUDBaseOperation::saveCompletedTask 将完成的任务，保存在所有任务里面
+/// \param taskStru
+/// \return
+///
+bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru)
+{
+    if(data_base.isOpen())
+    {
+        QString sql =QString("INSERT t_all_task SET taskNum=%1,taskStatus='%2',"
+                             "boxNum='%3',priority='%4',origin='%5',"
+                             "target='%6',carNum='%7',beginTime = '%8';") .arg(taskStru.taskNum).arg(taskStru.status).arg(taskStru.boxNum)\
+                                .arg(taskStru.pripty).arg(taskStru.from).arg(taskStru.end).arg(taskStru.carNum).arg(taskStru.creatTime.toString("yyyy-MM-dd hh:mm:ss"));
+        QSqlQuery query(data_base);
+        return query.exec(sql);
+
+    }
+    return false;
+}
+///
 /// \brief CRUDBaseOperation::saveKBaseStruct 处理 KBaseStruct 派生类的保存
 /// \param tableName
 /// \param s

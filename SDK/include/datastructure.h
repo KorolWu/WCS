@@ -26,6 +26,8 @@ typedef struct _Car_status
     bool enable = false;
     // 1 stand by, 2 working,
     int status = 1;
+    //locking 在执行多段任务过程中需要锁定小车
+    bool isLocking = false;
     //error
     int err_code = 0;
     // 1手动 2自动

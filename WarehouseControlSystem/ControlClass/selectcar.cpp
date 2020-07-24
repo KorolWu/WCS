@@ -21,10 +21,12 @@ QString SelectCar::getCarIp_out(const KPosition &p)
         {
             if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {
+                change_status(it.value().deviceIp);
                 return it.value().deviceIp;
             }
             else if(qAbs(it.value().deveceStatus.carCurrentPosion.z - p.z) == 1)
             {
+                change_status(it.value().deviceIp);
                 return it.value().deviceIp;
             }
             socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().deviceIp);
@@ -40,7 +42,7 @@ QString SelectCar::getCarIp_out(const KPosition &p)
             if(it.key() <key)
                 key = it.key();
         }
-        Myconfig::GetInstance()->m_CarMap[socker_map[key]].deveceStatus.isLocking = true;
+        change_status(socker_map[key]);
         return socker_map[key];
     }
 }
@@ -80,6 +82,13 @@ QString SelectCar::getCarIp_in(const KPosition &p)
     Myconfig::GetInstance()->m_CarMap[socker_map[key]].deveceStatus.isLocking = true;
     return socker_map[key];
 
+}
+
+void SelectCar::change_status(QString carIp)
+{
+    Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.isLocking = true;
+    Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.status = 2;
+    qDebug()<<"select car change car status"+carIp;
 }
 ///
 /// \brief SelectCar::hasUseCar

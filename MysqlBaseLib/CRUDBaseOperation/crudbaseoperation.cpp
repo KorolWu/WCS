@@ -108,7 +108,7 @@ bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru)
 /// \param s
 /// \return
 ///
-bool CRUDBaseOperation::saveKBaseStruct(const QString &tableName, KBaseStruct &s)
+bool CRUDBaseOperation::saveKBaseStruct(const QString &tableName, KBaseStruct &s, QString &errMessage)
 {
     if(s.getNameList().size() != s.getValueList().size())
         return false;
@@ -122,7 +122,11 @@ bool CRUDBaseOperation::saveKBaseStruct(const QString &tableName, KBaseStruct &s
     name+= ";";
     sql+=name;
     QSqlQuery query(data_base);
-    return query.exec(sql);
+    //qDebug()<<"saveKBaseStruct sql:"<<sql;
+    bool result = query.exec(sql);
+    errMessage = query.lastError().text();
+    return result;
+
 }
 ///
 /// \brief CRUDBaseOperation::GetKeyType

@@ -22,7 +22,7 @@ public:
     bool removeCrruntTask(TaskInfoStru taskStru);
     bool saveCompletedTask(TaskInfoStru taskStru);
     // KBaseStruct SubClass CRUD
-    bool saveKBaseStruct(const QString &tableName, KBaseStruct &s);
+    bool saveKBaseStruct(const QString &tableName, KBaseStruct &s, QString &errMessage);
    public:
   /*******批量操作数据库************************************2020-06-12*/
   bool ExcBatchDeleteDB(const QString &table,QString keyname, QList<QVariant> keys,QString &error);

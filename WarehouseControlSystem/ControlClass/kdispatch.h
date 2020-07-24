@@ -29,10 +29,20 @@ private:
     const int TIMEOUT = 1000;
     QString  m_ip;
     void getTrajectory();
+    void getTrajectory_out();
+    void getTrajectory_in();
+    bool saveSubTaskInfo();
+    void inElevator();
+    void outElevator();
     bool runSubTask();
+    void pickUp();
+    QString transformationOrder(int i);
     BaseDevice *m_pCom;
     QQueue<OrderStru> m_taskQueue;
     bool m_inp = false;
+    const double m_isYTrack = 1000;
+    const double m_elevatorX = 1000;
+    const double m_elevatorY = 2000;
 
 
     // QRunnable interface

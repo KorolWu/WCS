@@ -9,6 +9,7 @@
 #include <QVector>
 #include <QEventLoop>
 #include "AbstractClass/abstractorder.h"
+#include "MysqlDataBase/readtabledata.h"
 
 /**
  * @brief The BaseDevice class

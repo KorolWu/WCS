@@ -11,7 +11,7 @@
  */
 BaseDevice::BaseDevice(QString ip, qint16 port, QObject *parent)
 {
-     qRegisterMetaType<OrderStru>("OrderStru");
+    qRegisterMetaType<OrderStru>("OrderStru");
     Q_UNUSED(parent);
     this->m_ip = ip;
     this->m_port = port;
@@ -90,12 +90,12 @@ void BaseDevice::onResived(QByteArray array)
                 if(byte == 1)
                 {
                     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.batter = 20;
-                    qDebug()<<m_ip<<"batter"<< 20;
+                    //qDebug()<<m_ip<<"batter"<< 20;
                 }
                 else
                 {
                     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.batter = 80;
-                     qDebug()<<m_ip<<"batter"<< 80;
+                     //qDebug()<<m_ip<<"batter"<< 80;
                 }
                 byte = r.c[0] >> 3 & 0x01; // =1 standby can get order
                 if(byte == 1 )
@@ -119,7 +119,7 @@ void BaseDevice::onResived(QByteArray array)
                 byte = c[8] >> 1 & 0x01;  //台上有货
                 if(byte == 1)
                     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.box_status = 3;
-                qDebug()<<"Resive message :"<<QString(QLatin1String(c));
+                //qDebug()<<"Resive message :"<<QString(QLatin1String(c));
             //}
 //            else //简单信息
 //            {
@@ -129,7 +129,7 @@ void BaseDevice::onResived(QByteArray array)
          //}
 
      }
-     qDebug()<<"handle array: "<<array;
+    // qDebug()<<"handle array: "<<array;
 }
 
 ///
@@ -139,6 +139,16 @@ void BaseDevice::onDisconnected()
 {
     if(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline != false)
         Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline = false;
+    ReadTableData mysql;
+    ALARMINFOSTRU arm;
+    arm.alarminfo = "设备 "+m_ip+" 掉线";
+    arm.alarmlevel = 0;
+    arm.carcoordx = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.x;
+    arm.carcoordy = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.y;
+    arm.carcoordz = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z;
+    arm.deviceid = m_ip;
+    QString err;
+    mysql.WriteAlarmInfo(arm,err);
     noticeObserver();
     m_pTimer->start(1000);
 }

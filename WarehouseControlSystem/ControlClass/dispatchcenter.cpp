@@ -24,7 +24,7 @@ void DispatchCenter::dispatchTaskThread()
                     KDispatch *k = new KDispatch(task_p,m_car_ip,m_task);//完成的状态，完成的结果，写入数据库的时间??
                     m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+m_task.taskNum +" 分配给"+m_car_ip);
                     QThreadPool::globalInstance()->start(k);
-                    CRUDBaseOperation::getInstance()->saveCompletedTask(m_task);
+
                 }
                 else
                 {

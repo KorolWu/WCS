@@ -161,7 +161,7 @@ void CarStatusFrom::updateStatusOnBase()
          online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
          online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"在线":"离线");
          battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.batter)+"%");
-         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.status == 1? "待命中" : "工作中");
+         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isLocking == true? "待命中" : "工作中");
          table->setItem(0, 3, item);
          item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.enable? "enable" : "disable");
          table->setItem(3, 1, item);

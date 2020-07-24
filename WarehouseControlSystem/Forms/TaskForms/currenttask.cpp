@@ -110,8 +110,9 @@ void CurrentTask::handelHttpTask(QString reply)
     //saveTaskToDB(t);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
     Myconfig::GetInstance()->m_taskQueue.enqueue(t);
-    if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t))
-        GetSystemLogObj()->writeLog("save current to dbbase failed!",2);
+    QString errMsg = "";
+    if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t,errMsg))
+        GetSystemLogObj()->writeLog("save current to dbbase failed! ->"+errMsg,2);
     setTableViewValue();
 
 }

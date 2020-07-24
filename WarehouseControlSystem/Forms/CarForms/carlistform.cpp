@@ -211,14 +211,14 @@ void CarStatusWidget::updateStatusOnBase()
         staLab->setText(m_car.deveceStatus.isOnline? "在线":"离线");
         taskLab->setText("---");
         QString status = "";
-        if(m_car.deveceStatus.status == 1)
+        if(m_car.deveceStatus.isLocking == false)
             status = " 待命中";
-        else if(m_car.deveceStatus.status == 2)
+        else if(m_car.deveceStatus.isLocking == true)
             status  = "工作中";
         else
             status  = " 故障";
         workLab->setText(status);
-        qDebug()<<"listInfo batter:"<<m_car.deviceIp<<m_car.deveceStatus.batter;
+        //qDebug()<<"listInfo batter:"<<m_car.deviceIp<<m_car.deveceStatus.isLocking;
         batterLab->setText(QString("%1%").arg(m_car.deveceStatus.batter));
     }
 }

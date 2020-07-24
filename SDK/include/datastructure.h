@@ -84,6 +84,8 @@ typedef struct _CarInfoStru
         deveceStatus.carEndPosion.x = other.deveceStatus.carEndPosion.x;
         deveceStatus.carEndPosion.y = other.deveceStatus.carEndPosion.y;
         deveceStatus.carEndPosion.z = other.deveceStatus.carEndPosion.z;
+        deveceStatus.isLocking = other.deveceStatus.isLocking;
+        deveceStatus.inp = other.deveceStatus.inp;
         return *this;
     }
 
@@ -150,8 +152,8 @@ typedef struct _TaskInfoStru : public KBaseStruct
     QString status;
     QString boxNum;
     int pripty;
-    QString from;
-    QString end;
+    QString from; //beging position
+    QString end;  //end position
     QString carNum;
     QDateTime creatTime;
     _TaskInfoStru()

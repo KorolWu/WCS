@@ -1,0 +1,79 @@
+#include "subtask.h"
+#include <QDebug>
+SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
+{
+    this->m_width = width;
+    this->m_height = height;
+    int height_fristLine = height/94;
+    m_in_btn = new QPushButton("只看入库",this);
+    m_in_btn->setIcon(QIcon(":/resouse/Image/in.png"));
+    //connect(m_in_btn,&QPushButton::clicked,this,&CurrentTask::onAddClicked);
+    m_in_btn->move(m_width/158.5,height_fristLine);
+    m_out_btn= new QPushButton("只看出库",this);
+    //connect(m_out_btn,&QPushButton::clicked,this,&CurrentTask::onDeleteClicked);
+    m_out_btn->setIcon(QIcon(":/resouse/Image/out.png"));
+    m_out_btn->move(m_width/10.5,height_fristLine);
+    m_all_btn= new QPushButton("查看全部",this);
+    m_all_btn->move(m_width/5.3,height_fristLine);
+    m_all_btn->setIcon(QIcon(":/resouse/Image/all.png"));
+
+    m_task_edit = new QLineEdit(this);
+    m_task_edit->resize(200,34);
+    m_task_edit->setPlaceholderText("请输入任务号");
+    m_task_edit->move(m_width/2.94,height_fristLine);
+
+    m_query_btn = new QPushButton("查询",this);
+    connect(m_query_btn,&QPushButton::clicked,this,&SubTask::selectTask);
+    m_query_btn->move(m_width/2.11,height_fristLine);
+    m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
+    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}");
+    initTableView();
+}
+
+void SubTask::initTableView()
+{
+    m_table_view = new QTableView(this);
+    m_table_view->horizontalHeader()->setStyleSheet(headstlye);
+    m_table_view->move(5,60);
+    m_table_view->verticalHeader()->hide();
+    m_table_view->resize(m_width,m_height);
+
+    model = new QSqlQueryModel();
+    model->setQuery("select * from t_sub_taskInfo;");
+    //model->setTable("t_sub_taskInfo");
+    model->query();
+    m_table_view->setModel(model);
+    //model->select();
+    m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    LabelDelegateV1 *l1 = new LabelDelegateV1();
+    m_table_view->setItemDelegateForColumn(2,l1);
+
+    QStringList header;
+    header<<"ID"<<"任务号"<<"任务类型"<<"子任务类型"<<"顺序"<<"状态"<<"库位号"<<"穿梭车号"<<"发送内容"<<"创建时间";
+    for(int i = 0 ;i <header.size();i++)
+    {
+        model->setHeaderData(i, Qt::Horizontal, header.at(i));
+    }
+    m_table_view->setColumnWidth(0,m_width/20*1);
+    m_table_view->setColumnWidth(1,m_width/20*2);
+    m_table_view->setColumnWidth(2,m_width/20*2);
+    m_table_view->setColumnWidth(3,m_width/20*2);
+
+    m_table_view->setColumnWidth(4,m_width/20*2);
+    m_table_view->setColumnWidth(5,m_width/20*2);
+    m_table_view->setColumnWidth(6,m_width/20*2);
+    m_table_view->setColumnWidth(7,m_width/20*1);
+    m_table_view->setColumnWidth(8,m_width/20*3);
+    m_table_view->setColumnWidth(9,m_width/20*3);
+    m_table_view->horizontalHeader()->setMinimumHeight(40);
+    m_table_view->setFont(QFont("宋体",12)); //设置字体
+}
+
+void SubTask::selectTask()
+{
+    QString taskNum = m_task_edit->text();
+    model->setQuery(QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum));
+    qDebug()<<QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum);
+    model->query();
+}

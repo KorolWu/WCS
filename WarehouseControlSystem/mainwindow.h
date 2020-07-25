@@ -14,6 +14,7 @@
 #include <Forms/ElevatorForms/elevatorfrom.h>
 #include "Forms/TaskForms/currenttask.h"
 #include "Forms/TaskForms/alltask.h"
+#include "Forms/TaskForms/subtask.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
 #include "Forms/LogForms/logforms.h"
@@ -57,6 +58,7 @@ private:
     QStandardItem *p_elevator;
     QStandardItem *p_all_tasks;
     QStandardItem *p_current_tasks;
+    QStandardItem *p_sub_tasks;
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;
@@ -66,6 +68,7 @@ private:
     LogForms      *m_pLog;
     AgvForm       *car_from;
     AllTask       *m_pTaskAll;
+    SubTask       *m_pSubTask;
     ElevatorFrom  *p_mElevator;
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;

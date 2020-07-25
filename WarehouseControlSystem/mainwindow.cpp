@@ -93,6 +93,7 @@ void MainWindow::initUI()
     connect(this,&MainWindow::httpRedReady,t,&CurrentTask::handelHttpTask);
     car_from = new AgvForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     m_pTaskAll = new AllTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    m_pSubTask = new SubTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     m_pLog = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mElevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_treeView = new QTreeView(treewidget);
@@ -147,6 +148,9 @@ void MainWindow::initUI()
     p_current_tasks = new QStandardItem("当前任务");
     p_current_tasks->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
     p_standarItem->appendRow(p_current_tasks);
+    p_sub_tasks = new QStandardItem("子任务");
+    p_sub_tasks->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
+    p_standarItem->appendRow(p_sub_tasks);
     p_treeStandarModel->appendRow(p_standarItem);
 
 
@@ -197,6 +201,7 @@ void MainWindow::deleteChildrenList()
     p_mElevator->hide();
     m_pstoreWg->hide();
     m_palarmWg->hide();
+    m_pSubTask->hide();
 
 }
 
@@ -269,6 +274,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "已完成任务"||row_name == "任务管理")
     {
         m_pTaskAll->show();
+    }
+    else if(row_name == "子任务")
+    {
+        m_pSubTask->show();
     }
     else if(row_name == "日志管理")
     {

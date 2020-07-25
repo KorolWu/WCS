@@ -64,7 +64,8 @@ SOURCES += main.cpp\
     ControlClass/kdispatch.cpp \
     ControlClass/dispatchcenter.cpp \
     ControlClass/AbstractClass/abstractorder.cpp \
-    ControlClass/AbstractClass/rgvorder.cpp
+    ControlClass/AbstractClass/rgvorder.cpp \
+    Forms/TaskForms/subtask.cpp
 
 
 
@@ -110,7 +111,8 @@ HEADERS  += mainwindow.h \
     ControlClass/basedatainfooperate.h \
     ControlClass/dispatchcenter.h \
     ControlClass/AbstractClass/abstractorder.h \
-    ControlClass/AbstractClass/rgvorder.h
+    ControlClass/AbstractClass/rgvorder.h \
+    Forms/TaskForms/subtask.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

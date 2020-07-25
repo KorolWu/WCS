@@ -21,9 +21,7 @@ AllTask::AllTask(int width, int height, QWidget *parent):BaseFrom(parent)
         m_start_date->setDateTime(QDateTime::currentDateTime());
         m_start_date->setCalendarPopup(true);
         m_start_date->move(m_width/3.5,height_fristLine);
-        QLabel *l = new QLabel(this);
-        l->setText("-");
-        l->move(m_width/2.7,height_fristLine);
+
         m_end_date = new QDateEdit(this);
         m_end_date->setDateTime(QDateTime::currentDateTime());
         m_end_date->setCalendarPopup(true);

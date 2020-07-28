@@ -34,6 +34,7 @@
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
 #include "ControlClass/dispatchcenter.h"
+#include "MointorUI/monitorui.h"
 
 namespace Ui {
 class MainWindow;
@@ -89,6 +90,7 @@ private slots:
 
 private:
     StoreInfoWidget *m_pstoreWg;
+    MonitorUI *m_pmonitorui;
 signals:
     void httpRedReady(QString str);
     void dispatched();

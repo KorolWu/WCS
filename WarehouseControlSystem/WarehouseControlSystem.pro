@@ -65,7 +65,10 @@ SOURCES += main.cpp\
     ControlClass/dispatchcenter.cpp \
     ControlClass/AbstractClass/abstractorder.cpp \
     ControlClass/AbstractClass/rgvorder.cpp \
-    Forms/TaskForms/subtask.cpp
+    Forms/TaskForms/subtask.cpp \
+    MointorUI/storeitem.cpp \
+    MointorUI/monitorview.cpp \
+    MointorUI/monitorui.cpp
 
 
 
@@ -112,7 +115,10 @@ HEADERS  += mainwindow.h \
     ControlClass/dispatchcenter.h \
     ControlClass/AbstractClass/abstractorder.h \
     ControlClass/AbstractClass/rgvorder.h \
-    Forms/TaskForms/subtask.h
+    Forms/TaskForms/subtask.h \
+    MointorUI/storeitem.h \
+    MointorUI/monitorview.h \
+    MointorUI/monitorui.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

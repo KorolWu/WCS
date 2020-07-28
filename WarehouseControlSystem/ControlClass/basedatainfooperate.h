@@ -129,6 +129,40 @@ public:
         }
         return layers;
     }
+    ///
+    /// \brief GetXMaxValue
+    /// \return
+    ///
+    static double GetXMaxValue(){
+        QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
+        auto it = Myconfig::GetInstance()->m_storeinfoMap.begin();
+        double x = it.value().coordx;
+        for(;it != Myconfig::GetInstance()->m_storeinfoMap.end(); ++it)
+        {
+            if(it.value().coordx > x)
+            {
+                x= it.value().coordx;
+            }
+        }
+        return x;
+    }
+    ///
+    /// \brief GetYMaxValue
+    /// \return
+    ///
+    static double GetYMaxValue(){
+        QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
+        auto it = Myconfig::GetInstance()->m_storeinfoMap.begin();
+        double y = it.value().coordy;
+        for(;it != Myconfig::GetInstance()->m_storeinfoMap.end(); ++it)
+        {
+            if(it.value().coordy > y)
+            {
+                y= it.value().coordy;
+            }
+        }
+        return y;
+    }
 
     ///
     /// \brief GetWarehouselocationInfoForIn

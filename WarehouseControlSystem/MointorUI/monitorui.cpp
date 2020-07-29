@@ -14,7 +14,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     m_sizeH = 5;
     m_laycombox = new  QComboBox(this);
     // GetAllLayers();
-   QObject::connect(m_laycombox,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),this,&MonitorUI::SetCurLayUI);
+    QObject::connect(m_laycombox,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),this,&MonitorUI::SetCurLayUI);
     m_refreshbtn = new QPushButton("刷新",this);
     connect(m_refreshbtn,&QPushButton::clicked,this,&MonitorUI::updateUIbyData);
     QHBoxLayout *hbox = new QHBoxLayout();
@@ -59,6 +59,7 @@ MonitorUI::~MonitorUI()
 
 void MonitorUI::SetCurLayUI(int index)
 {
+    Q_UNUSED(index)
     //当前层数显示
     QString indexstr = m_laycombox->currentText();
     QString str = indexstr.mid(1,indexstr.size()-6);
@@ -77,7 +78,7 @@ void MonitorUI::updateUIbyData()
 {
     //内存数据进行重新分配item 计算画布数量 和 插入对应的画布场景
     //显示画布首页的状态
-
+    SetUIDataItem();
 
 
 }
@@ -209,8 +210,8 @@ void MonitorUI::SetUIDataItem()
     m_cursceneMap.clear();//数据删除 重新更
     int roadwidth = ROADWIDTH; //预留过道的高度
     GetstoreposSize();
-   double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
-   layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
+    double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
+    layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
     for(int i =0; i <m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
@@ -249,7 +250,7 @@ void MonitorUI::SetUIDataItem()
             item->SetStoreSate(it.value().storestat);
             curlay->addItem(item);
         }
-       m_cursceneMap.insert(z,curlay);
+        m_cursceneMap.insert(z,curlay);
     }
 }
 ///

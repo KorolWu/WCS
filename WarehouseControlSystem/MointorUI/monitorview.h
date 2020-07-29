@@ -19,10 +19,10 @@ public:
     int GetRotate() const;
 signals:
     void MousePress(int x, int y);
-//protected:
-//    void wheelEvent(QWheelEvent *event);
-//    void mousePressEvent(QMouseEvent *event);
-//    void keyReleaseEvent(QKeyEvent *event);
+protected:
+    void wheelEvent(QWheelEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
 private:
     double m_Zoom;
     int m_Rotate;

@@ -4,16 +4,17 @@
 #include <QSplitter>
 #include <QGridLayout>
 #include <QScrollBar>
+#define ROADWIDTH 30
 
 MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 {
-   this->resize(parent->width(),parent->height());
+    this->resize(parent->width(),parent->height());
     m_cursceneMap.clear();
     m_sizeW = 5;
     m_sizeH = 5;
-    m_laycombox = new  QComboBox();
-   // GetAllLayers();
-  //
+    m_laycombox = new  QComboBox(this);
+    // GetAllLayers();
+   QObject::connect(m_laycombox,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),this,&MonitorUI::SetCurLayUI);
     m_refreshbtn = new QPushButton("刷新",this);
     connect(m_refreshbtn,&QPushButton::clicked,this,&MonitorUI::updateUIbyData);
     QHBoxLayout *hbox = new QHBoxLayout();
@@ -26,28 +27,11 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     m_pview = new MonitorView(this);
     m_pview->setFixedSize(parent->width()-40,parent->height()-60);
     m_curscene = new QGraphicsScene;
-    //    int sizew = 60;
-    //    int sizeh = 30;
-    //    m_curscene->setSceneRect(-30,-30,parent->width()-40,parent->height()-60);
-    //    m_curscene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    //    StoreItem *item = new StoreItem(0,0,0+sizew,0+sizeh);
-    //    item->SetText(tr("仓位编号00"));
-    //    m_curscene->addItem(item);
-    //    item = new StoreItem(sizew+10,0,sizew*2+10,sizeh);
-    //    item->SetText(tr("仓位编号01"));
-    //    m_curscene->addItem(item);
-    //    for(int i = 3; i < 26;++i)
-    //    {
-    //        StoreItem *  itemtest = new StoreItem(sizew*(i-1)+10,0,sizew*i+10,sizeh);
-    //        itemtest->SetText(QString(tr("仓位编号%1").arg(i)));
-    //        m_curscene->addItem(itemtest);
-    //    }
-    //获取场景map的数据信息
-    SetSceneMapData();
+    SetUIDataItem();
     m_laycombox->setCurrentIndex(0);
     if(m_cursceneMap.size() > 0)
     {
-        SetCurLayUI();
+        SetCurLayUI(0);
     }
     // m_pview->setScene(m_curscene);
     vboxlay->addWidget(m_pview);
@@ -55,7 +39,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 
     //增加刷新当前数据的timer
     m_timer = new QTimer();
-   connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
+    connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
     m_timer->start(200);
 }
 
@@ -73,7 +57,7 @@ MonitorUI::~MonitorUI()
     }
 }
 
-void MonitorUI::SetCurLayUI()
+void MonitorUI::SetCurLayUI(int index)
 {
     //当前层数显示
     QString indexstr = m_laycombox->currentText();
@@ -112,13 +96,13 @@ void MonitorUI::updateCurSceneData()
         QGraphicsScene *Scene =  m_cursceneMap[z];
         if(Scene)
         {
-             foreach(QGraphicsItem *mGraphicsItem, Scene-> items())
-          {
+            foreach(QGraphicsItem *mGraphicsItem, Scene-> items())
+            {
                 StoreItem *FindItem = dynamic_cast<StoreItem *>(mGraphicsItem);
                 if(!FindItem)
                     continue;
                 QString id = FindItem->GetIndexID();
-             //  qDebug()<<"idnbr"<<id;
+                //  qDebug()<<"idnbr"<<id;
                 if( Myconfig::GetInstance()->m_storeinfoMap.contains(id)&& id != "")
                 {
                     QString text = "";
@@ -134,7 +118,7 @@ void MonitorUI::updateCurSceneData()
                         FindItem->SetStoreSate(state);
                     }
                 }
-           }
+            }
         }
     }
 }
@@ -162,7 +146,7 @@ void MonitorUI::SetSceneMapData()
 { 
     GetAllLayers();//得到所有的层数
     m_cursceneMap.clear();//数据删除 重新更
-    int roadwidth = 30; //预留过道的高度
+    int roadwidth = ROADWIDTH; //预留过道的高度
     GetstoreposSize();
     for(int i =0; i <m_laylist.size(); ++i )
     {
@@ -189,13 +173,13 @@ void MonitorUI::SetSceneMapData()
                     continue;
                 }
                 double startx= x*m_sizeW;
-                double starty = y*m_sizeH*2+roadwidth*y;
+                double starty = this->height()-60-40-(y*m_sizeH*2+roadwidth*y);
                 double stopx =x*m_sizeW+m_sizeW;
-                double stopy =y*m_sizeH*2+roadwidth*y+m_sizeH;
+                double stopy =starty-m_sizeH;
                 StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
-              //  qDebug()<<"0pos坐标位置"<<z<<startx<< starty<<stopx<<stopy;
-                    item->SetIndexID(id);
-               // text =
+                //qDebug()<<"0pos坐标位置"<<z<<startx<< starty<<stopx<<stopy;
+                item->SetIndexID(id);
+                // text =
                 item->SetText(text);
                 item->SetStoreSate(state);
                 curlay->addItem(item);
@@ -206,7 +190,7 @@ void MonitorUI::SetSceneMapData()
                     continue;
                 }
                 item = new StoreItem(startx,stopy+roadwidth ,stopx,stopy+roadwidth+m_sizeH);
-             //  qDebug()<<"1pos坐标位置"<<z<<startx <<stopy+roadwidth<<stopx<<stopy+roadwidth+m_sizeH;
+                //  qDebug()<<"1pos坐标位置"<<z<<startx <<stopy+roadwidth<<stopx<<stopy+roadwidth+m_sizeH;
                 item->SetIndexID(id);
                 item->SetText(text);
                 item->SetStoreSate(state);
@@ -214,6 +198,58 @@ void MonitorUI::SetSceneMapData()
             }
         }
         m_cursceneMap.insert(z,curlay);
+    }
+}
+///
+/// \brief MonitorUI::SetUIDataItem
+///  seco nd method create  item data 2020/07/29
+void MonitorUI::SetUIDataItem()
+{
+    GetAllLayers();//得到所有的层数
+    m_cursceneMap.clear();//数据删除 重新更
+    int roadwidth = ROADWIDTH; //预留过道的高度
+    GetstoreposSize();
+   double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
+   layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
+    for(int i =0; i <m_laylist.size(); ++i )
+    {
+        QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
+        //得到当前层数
+        double z = str.toDouble() ;
+        //获得本层数据结构体
+        QMap<QString, StorePosInfoStru>  laymap = BaseDataInfoOperate::GetStorePosInfoMapByLayer\
+                (z,Myconfig::GetInstance()->m_storeinfoMap);
+        QGraphicsScene *curlay = new QGraphicsScene;
+        curlay->setSceneRect(-30,-30,this->width()-40,this->height()-60);
+        curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
+
+        QList<double> startxlist;
+        QList<double> startylist;
+
+        for(auto it = laymap.begin(); it != laymap.end();++it)
+        {
+            double startx= it.value().coordx*m_sizeW;
+
+            double starty = layh-(it.value().coordy*m_sizeH*2+roadwidth*it.value().coordy);
+            double stopx =it.value().coordx*m_sizeW+m_sizeW;
+            double stopy = starty-m_sizeH;
+            if(it.value().directionstate == 1)
+            {
+                starty = stopy-roadwidth;
+                stopy =  stopy-roadwidth-m_sizeH;
+            }
+            StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
+            //qDebug()<<"0pos坐标位置"<<startx<< starty<<stopx<<stopy;
+            if(startxlist.contains(startx)&& startylist.contains(starty))
+            {
+                qDebug()<<"idnbr"<<it.key();
+            }
+            item->SetIndexID(it.value().idnbr);
+            item->SetText(it.value().boxnbr);
+            item->SetStoreSate(it.value().storestat);
+            curlay->addItem(item);
+        }
+       m_cursceneMap.insert(z,curlay);
     }
 }
 ///
@@ -258,10 +294,10 @@ void MonitorUI::GetstoreposSize()
 {
     double x= BaseDataInfoOperate::GetXMaxValue();
     double y = BaseDataInfoOperate::GetYMaxValue();
-    if(x > 0 && y > 0)
+    if(x >= 0 && y >= 0)
     {
-        double w  =(this->size().width() -40)/x/2;//同一个坐标对应两个仓位编号
-        double h = (this->size().width() -60)/y/3;//同一个坐标对应两个仓位编号 小车过道的位置预留出
+        double w  =(this->size().width() -40)/(x+1)/2;//同一个坐标对应两个仓位编号
+        double h = (this->size().width() -60)/(y+1)/3;//同一个坐标对应两个仓位编号 小车过道的位置预留出
         m_X = x;
         m_Y = y;
         m_sizeW = w;

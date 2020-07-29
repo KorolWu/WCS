@@ -31,14 +31,15 @@ private:
     double m_Y;
     QTimer *m_timer;
 public slots:
-    void SetCurLayUI();
+    void SetCurLayUI(int index);
     void updateUIbyData();
     void updateCurSceneData();
 private:
     void GetAllLayers();
     void GetstoreposSize();
     void SetSceneMapData();
-    QString FindStorePos(char &state,QString &text, QMap<QString, StorePosInfoStru>  laymap,char direction ,double x,double y);
+    void SetUIDataItem();
+    QString FindStorePos(char &state,QString &text, QMap<QString, StorePosInfoStru> laymap,char direction ,double x,double y);
 };
 
 #endif // MONITORUI_H

@@ -73,16 +73,16 @@ void StoreItem::SetStoreSate(char state)//
     m_state = state;
     switch (m_state) {
     case 0://空
-        m_BackGroundColor = QColor(0,180,0);
+        m_BackGroundColor = QColor(160,160,160);
         break;
     case 1://占用
-        m_BackGroundColor = QColor(150,0,0);
+        m_BackGroundColor = QColor(0,200,0);
         break;
     case 2://锁定
-        m_BackGroundColor = QColor(200,200,0);
+        m_BackGroundColor = QColor(200,0,0);
         break;
     case 3://未定义
-        m_BackGroundColor = QColor(180,180,180);
+        m_BackGroundColor = QColor(34,180,180);
         break;
     default:
         break;

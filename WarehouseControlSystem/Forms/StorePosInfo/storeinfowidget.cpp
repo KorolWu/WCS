@@ -171,12 +171,12 @@ void StoreInfoWidget::slotquenbrinfo()
 {
     QString text  = m_pnbrlineEdit->text();
     emit signalfindinfo(text,1);
-//    if(m_pagewg->m_totalRecrodCount <=0)
-//        return;
-//    m_pagewg->m_totalRecrodCount = m_ptableview->m_findtotalnum;//更新记录数目更新界面数据
-//    m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();//总页数计算更新
-//    m_pagewg->updateParam();
-//    m_ptableview->GetStoretablemodel()->SetCurPage(0);
+    //    if(m_pagewg->m_totalRecrodCount <=0)
+    //        return;
+    //    m_pagewg->m_totalRecrodCount = m_ptableview->m_findtotalnum;//更新记录数目更新界面数据
+    //    m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();//总页数计算更新
+    //    m_pagewg->updateParam();
+    //    m_ptableview->GetStoretablemodel()->SetCurPage(0);
 }
 ///
 /// \brief StoreInfoWidget::slotImportnbrinfo
@@ -222,7 +222,7 @@ void StoreInfoWidget::slotImportnbrinfo()
             stru.directionstate = listrow[5].toInt();
             stru.storestat = listrow[7].toInt();
             stru.storepri = listrow[8].toInt();
-             stru.unused = listrow[9];
+            stru.unused = listrow[9];
             if(!datamap.contains(listrow[0]))
             {
                 datamap.insert(listrow[0],stru);
@@ -334,6 +334,61 @@ void StoreInfoWidget::Dataselectfromdatabase()
 {
     //读数据库表格
     m_stroreposmap.storeposInfoMap.clear();//添加 数据库的内容映射到结构体中
+//    QString msg;
+//    // write test
+//    QMap<QString,StorePosInfoStru> datamap;
+//    int k = 20;
+//    for(int y = 0; y < 3;++y)
+//    {
+//        int sizex = 28;
+//        if(y == 2)
+//        {
+//            sizex = 42;
+//        }
+
+//        for(int x = 0; x < sizex;++x)
+//        {
+//            if(x==26 )
+//            {
+//                continue;
+//            }
+//            k++;
+//            StorePosInfoStru stru;
+//            QString strid = QString("idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+//            memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+//            stru.coordx = x;
+//            stru.coordy = y;
+//            stru.storepri = k;
+//            stru.coordz =0;
+//            stru.directionstate = 0;
+//            QString box;
+//             box = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
+//            memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+//                    stru.storestat = 1;
+//            datamap.insert(strid,stru);
+//            StorePosInfoStru stru1;
+//            stru1.directionstate = 1;
+//            stru1.coordx = x;
+//            stru1.coordy = y;
+//            stru1.coordz = 0;
+//            k++;
+//            stru1.storepri = k;
+//              QString strid1;
+//              QString box1;
+//            strid1 = QString("idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+//             memcpy(stru1.idnbr,strid1.toStdString().c_str(),strid1.size());
+//            box1 = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
+//             memcpy(stru1.boxnbr,box1.toStdString().c_str(),box1.size());
+//                       stru1.storestat = 2;
+//            datamap.insert(strid1,stru1);
+//        }
+//    }
+
+//    if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
+//    {
+//        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+//        return ;
+//    }
     m_databaseopob.ReadStoreposinfoDataBase();
     QList<QStringList> list;
     m_stroreposmap.storeposInfoMap =  Myconfig::GetInstance()->m_storeinfoMap;

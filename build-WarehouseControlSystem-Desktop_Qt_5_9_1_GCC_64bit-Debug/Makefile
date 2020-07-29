@@ -1285,6 +1285,22 @@ moc_mainwindow.cpp: /opt/QT/5.9.1/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/QT/5.9.1/gcc_64/include/QtCore/QRunnable \
 		../WarehouseControlSystem/ControlClass/AbstractClass/rgvorder.h \
 		../WarehouseControlSystem/ControlClass/basedatainfooperate.h \
+		../WarehouseControlSystem/MointorUI/monitorui.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsView \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/qpainter.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qscrollarea.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsScene \
+		../WarehouseControlSystem/MointorUI/monitorview.h \
+		../WarehouseControlSystem/MointorUI/storeitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPen \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextBlockFormat \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextCursor \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QStyleOptionGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPainter \
 		../WarehouseControlSystem/mainwindow.h \
 		moc_predefs.h \
 		/opt/QT/5.9.1/gcc_64/bin/moc
@@ -6409,6 +6425,22 @@ main.o: ../WarehouseControlSystem/main.cpp ../WarehouseControlSystem/mainwindow.
 		/opt/QT/5.9.1/gcc_64/include/QtCore/QRunnable \
 		../WarehouseControlSystem/ControlClass/AbstractClass/rgvorder.h \
 		../WarehouseControlSystem/ControlClass/basedatainfooperate.h \
+		../WarehouseControlSystem/MointorUI/monitorui.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsView \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/qpainter.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qscrollarea.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsScene \
+		../WarehouseControlSystem/MointorUI/monitorview.h \
+		../WarehouseControlSystem/MointorUI/storeitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPen \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextBlockFormat \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextCursor \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QStyleOptionGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPainter \
 		/opt/QT/5.9.1/gcc_64/include/QtCore/QTextCodec \
 		/opt/QT/5.9.1/gcc_64/include/QtCore/qtextcodec.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../WarehouseControlSystem/main.cpp
@@ -6721,6 +6753,22 @@ mainwindow.o: ../WarehouseControlSystem/mainwindow.cpp ../WarehouseControlSystem
 		/opt/QT/5.9.1/gcc_64/include/QtCore/QRunnable \
 		../WarehouseControlSystem/ControlClass/AbstractClass/rgvorder.h \
 		../WarehouseControlSystem/ControlClass/basedatainfooperate.h \
+		../WarehouseControlSystem/MointorUI/monitorui.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsView \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsview.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/qpainter.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qscrollarea.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsscene.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsScene \
+		../WarehouseControlSystem/MointorUI/monitorview.h \
+		../WarehouseControlSystem/MointorUI/storeitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qgraphicsitem.h \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPen \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextBlockFormat \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QTextCursor \
+		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QStyleOptionGraphicsItem \
+		/opt/QT/5.9.1/gcc_64/include/QtGui/QPainter \
 		ui_mainwindow.h \
 		/opt/QT/5.9.1/gcc_64/include/QtWidgets/QAction \
 		/opt/QT/5.9.1/gcc_64/include/QtWidgets/qaction.h \

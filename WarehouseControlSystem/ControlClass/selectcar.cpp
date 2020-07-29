@@ -88,7 +88,7 @@ void SelectCar::change_status(QString carIp)
 {
     Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.isLocking = true;
     Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.status = 2;
-    qDebug()<<"select car change car status"+carIp;
+    //qDebug()<<"select car change car status"+carIp;
 }
 ///
 /// \brief SelectCar::hasUseCar

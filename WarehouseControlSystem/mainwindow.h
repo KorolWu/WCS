@@ -34,6 +34,7 @@
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
 #include "ControlClass/dispatchcenter.h"
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;

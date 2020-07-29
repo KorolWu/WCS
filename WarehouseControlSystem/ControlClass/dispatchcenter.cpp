@@ -3,17 +3,22 @@
 DispatchCenter::DispatchCenter()
 {
     m_pSelectCar = new SelectCar();
+     m_count_text = 1;
 }
 
 void DispatchCenter::dispatchTaskThread()
 {
-    while(true)
+    while(Myconfig::GetInstance()->m_flag == true)
     {
         while(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
         {
             if(m_pSelectCar->hasUseCar())
             {
                 m_task =  Myconfig::GetInstance()->m_taskQueue.dequeue();
+                if(Myconfig::GetInstance()->m_taskMap.contains(m_task.taskNum))
+                {
+                    Myconfig::GetInstance()->m_taskMap.remove(m_task.taskNum);
+                }
                 KPosition task_p;//根据料箱号返回料箱所在坐标
                 QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(m_task.boxNum,task_p);
                 if(result != "")
@@ -24,6 +29,8 @@ void DispatchCenter::dispatchTaskThread()
                     KDispatch *k = new KDispatch(task_p,m_car_ip,m_task);//完成的状态，完成的结果，写入数据库的时间??
                     m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+m_task.taskNum +" 分配给"+m_car_ip);
                     QThreadPool::globalInstance()->start(k);
+                    qDebug()<<m_car_ip<<" Task Number: "+QString::number(m_count_text);
+                    m_count_text++;
 
                 }
                 else
@@ -46,7 +53,7 @@ void DispatchCenter::dispatchTaskThread()
                     QString sql_err;
                     if(false == m_writeData.WriteAlarmInfo(arm,sql_err))
                         qDebug()<<"alarm insert failed!";
-                    CRUDBaseOperation::getInstance()->saveCompletedTask(m_task);
+                    //CRUDBaseOperation::getInstance()->saveCompletedTask(m_task);
 
                 }
             }

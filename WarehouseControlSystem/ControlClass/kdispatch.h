@@ -11,9 +11,11 @@
 #include "datastructure.h"
 #include "KDeviceSingleton.h"
 #include <QRunnable>
+#include "UnitClass/c_systemlogmng.h"
 #include "Myconfig.h"
 #include "AbstractClass/rgvorder.h"
 #include "MysqlDataBase/crudbaseoperation.h"
+#include <QThread>
 /**
  * @brief The KDispatch class
  * 扫描任务队列消费任务队列 拿到一个任务 并将其完成
@@ -23,6 +25,7 @@ class KDispatch : public QObject,public QRunnable
     Q_OBJECT
 public:
     KDispatch(KPosition task_P, QString &ip, const TaskInfoStru task );
+    ~KDispatch();
 private:
     TaskInfoStru m_task;
     KPosition m_task_p;

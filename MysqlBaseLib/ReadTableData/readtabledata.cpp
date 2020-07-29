@@ -54,7 +54,7 @@ void ReadTableData::readt_crrunt_task()
         t.end = query.value(6).toString();
         t.carNum = query.value(7).toString();
         t.creatTime = query.value(8).toDateTime();
-        qDebug()<<query.value(8).toString().replace("T"," ")<<" :time"<<t.creatTime.toString("yyyy-MM-dd hh:mm:ss");
+        //qDebug()<<query.value(8).toString().replace("T"," ")<<" :time"<<t.creatTime.toString("yyyy-MM-dd hh:mm:ss");
         Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
         Myconfig::GetInstance()->m_taskQueue.enqueue(t);
     }
@@ -104,7 +104,7 @@ void ReadTableData::ReadStoreposinfoDataBase()
 ///写数据库的内容 以更新方式进行
 bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QString &errorinfo)
 {
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QString tablename = "t_storeposinfo";
     QStringList names;
   names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
@@ -136,8 +136,9 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
 
 bool ReadTableData::WriteLoginfo(int level, QString from, QString log_info)
 {
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QString sql = QString("INSERT INTO `t_log` (`level`,`from`,`loginfo`) VALUES ('%1','%2','%3');").arg(level).arg(from).arg(log_info);
-    qDebug()<<sql;
+    //qDebug()<<sql;
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
         return true;
     return false;
@@ -193,7 +194,7 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
      values.append(list);
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
     {
         return true;

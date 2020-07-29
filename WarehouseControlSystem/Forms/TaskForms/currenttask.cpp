@@ -78,9 +78,10 @@ void CurrentTask::initTableView()
 //save to crruntTask table
 bool CurrentTask::saveTaskToDB(TaskInfoStru taskStru)
 {
-    if(!CRUDBaseOperation::getInstance()->saveCrruntTask(taskStru))
+    QString err = "";
+    if(!CRUDBaseOperation::getInstance()->saveCrruntTask(taskStru,err))
     {
-        GetSystemLogObj()->writeLog("insert current task fail!",3);
+        GetSystemLogObj()->writeLog(err,3);
         return false;
     }
     return true;
@@ -95,7 +96,7 @@ void CurrentTask::handelHttpTask(QString reply)
     {
         list[i] = QString(list[i]).mid(QString(list[i]).indexOf("=")+1);
     }
-    qDebug()<<list;
+    //qDebug()<<list;
     TaskInfoStru t;
     if(list.size() != 8)
         return;

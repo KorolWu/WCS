@@ -250,7 +250,7 @@ bool CRUDBaseOperation::ExcBatchDeleteDB(const QString &table, QString keyname, 
        {
            sql = QString("delete from %1 Where %2 = '%3'").arg(table).arg(keyname).arg(keys[i].toString());
        }
-       else if(keyType.contains("int")){
+       else if(keyType.contains("int")|| keyType.contains("double")){
 
            sql = QString("delete from %1 Where %2 = %3").arg(table).arg(keyname).arg(keys[i].toString());
        }

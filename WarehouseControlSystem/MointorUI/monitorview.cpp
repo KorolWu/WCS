@@ -12,9 +12,10 @@ MonitorView::MonitorView(QWidget *parent)
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setRenderHint(QPainter::Antialiasing);//指定Render标签，抗锯齿
-    setStyleSheet("background: transparent;");
+   // setStyleSheet("background: transparent;");
     m_Zoom = 0;
     m_Rotate = 0;
+    setStyleSheet("background: transparent;background-color: rgba(18, 62, 111, 40);border:0px");
 }
 void MonitorView::wheelEvent(QWheelEvent *event)
 {

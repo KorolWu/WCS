@@ -8,7 +8,7 @@ StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, c
     m_StartX = StartX;
     m_StartY = StartY;
     m_StopX =StopX;
-   m_StopY =StopY;
+    m_StopY =StopY;
     m_state = 0;
     m_BackGroundColor= BackColor;
     m_text = tr("");
@@ -26,8 +26,8 @@ StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, c
     m_font.setFamily("宋体"); //设置字体样式
     textItem = new QGraphicsTextItem(this);
     m_Timer = new QTimer();
-  //  connect(m_Timer,&QTimer::timeout,this,&StoreItem::UpdateState);
-   // m_Timer->start(500);
+    //  connect(m_Timer,&QTimer::timeout,this,&StoreItem::UpdateState);
+    // m_Timer->start(500);
 }
 
 StoreItem::~StoreItem()
@@ -149,7 +149,7 @@ void StoreItem::UpdateState()
     else  if(m_state == 3){
         SetStoreSate(0);
     }
-     //*************测试
+    //*************测试
     //update();
 }
 

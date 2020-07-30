@@ -138,10 +138,10 @@ void SpiltPagesByQSqlTableModel::SetShowTableRecord(int limitdex)
      QString szQuery;
      if(m_sqlstr == "")
      {
-         szQuery =  QString("select * from (%1) limit %2,%3").arg(tablename).arg(limitdex).arg(m_PageRecordCount);
+         szQuery =  QString("select * from (%1)  ORDER BY ID DESC limit %2,%3").arg(tablename).arg(limitdex).arg(m_PageRecordCount);
      }
      else{
-         szQuery =  QString("select * from (%1) as a_table limit %2,%3").arg(m_sqlstr).arg(limitdex).arg(m_PageRecordCount);
+         szQuery =  QString("select * from (%1) as a_table ORDER BY ID DESC limit %2,%3").arg(m_sqlstr).arg(limitdex).arg(m_PageRecordCount);
      }
      //qDebug()<<"szQuery"<<szQuery;
     // szQuery =  "select * from (select * from t_alarmInfo where DeviceID LIKE '%' AND Operatestate = '1' AND Alarmlevel LIKE '%' AND ErrorType LIKE '%') as a_table limit 0,25";

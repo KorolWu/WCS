@@ -4,25 +4,87 @@
 #include <QSplitter>
 #include <QGridLayout>
 #include <QScrollBar>
+#include <QLabel>
 #define ROADWIDTH 30
 
 MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 {
     this->resize(parent->width(),parent->height());
+    this->setStyleSheet("QLabel{font:13px;}");
     m_cursceneMap.clear();
     m_sizeW = 5;
     m_sizeH = 5;
     m_laycombox = new  QComboBox(this);
-    // GetAllLayers();
+    m_laycombox->setFixedHeight(28);
     QObject::connect(m_laycombox,static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),this,&MonitorUI::SetCurLayUI);
     m_refreshbtn = new QPushButton("刷新",this);
+    // m_refreshbtn->setIcon(QIcon(":/resouse/Image/Refresh.png"));
+    m_refreshbtn->setStyleSheet("QPushButton{font:12px;background-color: rgba(18, 80, 155, 255);color:rgb(230, 230, 230);}");
+    m_laycombox->setStyleSheet("QComboBox{font:12px;}");
     connect(m_refreshbtn,&QPushButton::clicked,this,&MonitorUI::updateUIbyData);
     QHBoxLayout *hbox = new QHBoxLayout();
     hbox->addWidget(m_laycombox);
+    hbox->setSpacing(20);
     hbox->addWidget(m_refreshbtn);
-    hbox->addWidget(new QSplitter);
+   // hbox->addWidget(new QSplitter);
+
+   // QHBoxLayout *hlabel = new QHBoxLayout();
+
+    QLabel *label= new QLabel(tr("仓位状态空:"));
+    QLabel *emptylabel= new QLabel();
+
+   label->setFixedSize(70,15);
+    emptylabel->setObjectName("emptyrect");
+    emptylabel->setFixedSize(15,15);
+    emptylabel->setStyleSheet("#emptyrect{font:12px;background-color: rgb(164, 160, 160);}");
+
+    hbox->addWidget(label,Qt::AlignLeft);
+    hbox->addWidget(emptylabel,Qt::AlignLeft);
+
+    QLabel *labelf= new QLabel(tr("仓位状态满:"));
+    labelf->setFixedSize(70,15);
+    QLabel *fulllabel= new QLabel();
+    fulllabel->setObjectName("fullrect");
+    fulllabel->setFixedSize(15,15);
+    fulllabel->setStyleSheet("#fullrect{font:12px;background-color: rgb(0, 160, 0);}");
+
+    hbox->addWidget(labelf,Qt::AlignLeft);
+    hbox->addWidget(fulllabel,Qt::AlignLeft);
+
+    QLabel *labellock= new QLabel(tr("仓位状态锁定:"));
+    labellock->setFixedSize(80,15);
+    QLabel *locklabel= new QLabel();
+    locklabel->setObjectName("lockrect");
+    locklabel->setFixedSize(15,15);
+    locklabel->setStyleSheet("#lockrect{font:12px;background-color: rgb(200, 0, 0);}");
+
+    hbox->addWidget(labellock,Qt::AlignLeft);
+    hbox->addWidget(locklabel,Qt::AlignLeft);
+
+
+    QLabel *labelun= new QLabel(tr("仓位状态未定义:"));
+    labelun->setFixedSize(100,15);
+    QLabel *unlabel= new QLabel();
+    unlabel->setObjectName("unrect");
+    unlabel->setFixedSize(15,15);
+    unlabel->setStyleSheet("#unrect{font:12px;background-color: rgb(34, 180, 180);}");
+
+    hbox->addWidget(labelun,Qt::AlignLeft);
+    hbox->addWidget(unlabel,Qt::AlignLeft);
+
+
+
+    //QSplitter *spil = new QSplitter;
+   // hlabel->addWidget(spil);
+     hbox->addWidget(new QSplitter);
+
+
     QVBoxLayout *vboxlay = new QVBoxLayout;
     vboxlay->addLayout(hbox);
+
+    vboxlay->setSpacing(20);
+
+  //  vboxlay->addLayout(hlabel);
     //显示当前的界面数据信息
     m_pview = new MonitorView(this);
     m_pview->setFixedSize(parent->width()-40,parent->height()-60);
@@ -36,7 +98,6 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     // m_pview->setScene(m_curscene);
     vboxlay->addWidget(m_pview);
     this->setLayout(vboxlay);
-
     //增加刷新当前数据的timer
     m_timer = new QTimer();
     connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
@@ -79,8 +140,6 @@ void MonitorUI::updateUIbyData()
     //内存数据进行重新分配item 计算画布数量 和 插入对应的画布场景
     //显示画布首页的状态
     SetUIDataItem();
-
-
 }
 ///
 /// \brief MonitorUI::updateCurSceneData
@@ -158,7 +217,7 @@ void MonitorUI::SetSceneMapData()
         QMap<QString, StorePosInfoStru>  laymap = BaseDataInfoOperate::GetStorePosInfoMapByLayer\
                 (z,Myconfig::GetInstance()->m_storeinfoMap);
         QGraphicsScene *curlay = new QGraphicsScene;
-        curlay->setSceneRect(-30,-30,this->width()-40,this->height()-60);
+        curlay->setSceneRect(-300,-300,this->width()-40+300,this->height()-60+300);
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
         for(double y = 0; y <= m_Y; ++y)
         {
@@ -206,6 +265,7 @@ void MonitorUI::SetSceneMapData()
 ///  seco nd method create  item data 2020/07/29
 void MonitorUI::SetUIDataItem()
 {
+
     GetAllLayers();//得到所有的层数
     m_cursceneMap.clear();//数据删除 重新更
     int roadwidth = ROADWIDTH; //预留过道的高度
@@ -224,9 +284,6 @@ void MonitorUI::SetUIDataItem()
         curlay->setSceneRect(-30,-30,this->width()-40,this->height()-60);
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
 
-        QList<double> startxlist;
-        QList<double> startylist;
-
         for(auto it = laymap.begin(); it != laymap.end();++it)
         {
             double startx= it.value().coordx*m_sizeW;
@@ -240,11 +297,7 @@ void MonitorUI::SetUIDataItem()
                 stopy =  stopy-roadwidth-m_sizeH;
             }
             StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
-            //qDebug()<<"0pos坐标位置"<<startx<< starty<<stopx<<stopy;
-            if(startxlist.contains(startx)&& startylist.contains(starty))
-            {
-                qDebug()<<"idnbr"<<it.key();
-            }
+            //qDebug()<<"0pos坐标位置"<<startx<< starty;
             item->SetIndexID(it.value().idnbr);
             item->SetText(it.value().boxnbr);
             item->SetStoreSate(it.value().storestat);

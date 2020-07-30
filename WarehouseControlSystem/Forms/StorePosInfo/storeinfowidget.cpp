@@ -334,10 +334,10 @@ void StoreInfoWidget::Dataselectfromdatabase()
 {
     //读数据库表格
     m_stroreposmap.storeposInfoMap.clear();//添加 数据库的内容映射到结构体中
-//    QString msg;
+//   QString msg;
 //    // write test
 //    QMap<QString,StorePosInfoStru> datamap;
-//    int k = 20;
+//    int k = 0;
 //    for(int y = 0; y < 3;++y)
 //    {
 //        int sizex = 28;
@@ -354,32 +354,32 @@ void StoreInfoWidget::Dataselectfromdatabase()
 //            }
 //            k++;
 //            StorePosInfoStru stru;
-//            QString strid = QString("idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+//            QString strid = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
 //            memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
 //            stru.coordx = x;
 //            stru.coordy = y;
 //            stru.storepri = k;
-//            stru.coordz =0;
+//            stru.coordz = 8;
 //            stru.directionstate = 0;
 //            QString box;
 //             box = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
 //            memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
-//                    stru.storestat = 1;
+//                    stru.storestat = 3;
 //            datamap.insert(strid,stru);
 //            StorePosInfoStru stru1;
 //            stru1.directionstate = 1;
 //            stru1.coordx = x;
 //            stru1.coordy = y;
-//            stru1.coordz = 0;
+//            stru1.coordz = 8;
 //            k++;
 //            stru1.storepri = k;
 //              QString strid1;
 //              QString box1;
-//            strid1 = QString("idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+//            strid1 = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
 //             memcpy(stru1.idnbr,strid1.toStdString().c_str(),strid1.size());
 //            box1 = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
 //             memcpy(stru1.boxnbr,box1.toStdString().c_str(),box1.size());
-//                       stru1.storestat = 2;
+//                       stru1.storestat = 0;
 //            datamap.insert(strid1,stru1);
 //        }
 //    }
@@ -389,6 +389,11 @@ void StoreInfoWidget::Dataselectfromdatabase()
 //        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
 //        return ;
 //    }
+//    if(!m_databaseopob.DelStoreposinfotoDataBaseByLayer(1,msg))
+//        {
+//            QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+//            return ;
+//        }
     m_databaseopob.ReadStoreposinfoDataBase();
     QList<QStringList> list;
     m_stroreposmap.storeposInfoMap =  Myconfig::GetInstance()->m_storeinfoMap;

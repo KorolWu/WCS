@@ -2,8 +2,8 @@
 #define READTABLEDATA_H
 
 #include "readtabledata_global.h"
-#include "datastructure.h"
-#include "Myconfig.h"
+#include <datastructure.h>
+#include <Myconfig.h>
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QMutex>
 #include <QMutexLocker>
@@ -24,6 +24,7 @@ public:
     bool WriteLoginfo(int level,QString from,QString log_info);
     bool WriteUpdateInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QVector<QVariant> keyvalue,QString &errorinfo);
     bool WriteAlarmInfo(ALARMINFOSTRU alarmstru ,QString &error);
+    bool DelStoreposinfotoDataBaseByLayer(double z,QString &error);
 private:
     QMutex m_mutex;
 

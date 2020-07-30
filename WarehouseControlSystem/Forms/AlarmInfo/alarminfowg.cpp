@@ -93,7 +93,9 @@ void AlarmInfoWg::InitTableViewUI()
     m_sqltablemodel = new MySqlTableModel();
     m_sqltablemodel->setTable("t_alarmInfo");
      m_sqltablemodel->insertColumn(0);
+      m_sqltablemodel->setSort(0,Qt ::AscendingOrder);
     m_sqltableview->setModel(m_sqltablemodel);
+
     m_sqltablemodel->select();
 
     //page ob 功能实现方式

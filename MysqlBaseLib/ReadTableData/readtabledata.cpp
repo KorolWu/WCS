@@ -65,7 +65,7 @@ void ReadTableData::readt_crrunt_task()
 void ReadTableData::ReadStoreposinfoDataBase()
 {
     QString tablename = "t_storeposinfo";
-   QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     Myconfig::GetInstance()->m_storeinfoMap.clear();
     QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
     while (query.next()) {
@@ -90,8 +90,8 @@ void ReadTableData::ReadStoreposinfoDataBase()
         bytearrayid= query.value("storestat").toByteArray();
         stru.storestat =bytearrayid.toInt();
         bytearrayid = query.value("storepri").toByteArray();
-        stru.storepri = bytearrayid.toInt(); 
-         bytearrayid=  query.value("unused").toByteArray();
+        stru.storepri = bytearrayid.toInt();
+        bytearrayid=  query.value("unused").toByteArray();
         stru.unused = QString(bytearrayid);
         Myconfig::GetInstance()->m_storeinfoMap.insert(QString(stru.idnbr),stru);
     }
@@ -107,7 +107,7 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     QString tablename = "t_storeposinfo";
     QStringList names;
-  names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
+    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
     QList<QVariantList> values;
     for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
     {
@@ -192,9 +192,30 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
     list<<alarmstru.alarmlevel<<alarmstru.deviceid<<alarmstru.errortype<<alarmstru.errorcode<<alarmstru.Operatestate<<alarmstru.cartaskid\
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
-     values.append(list);
+    values.append(list);
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
+    {
+        return true;
+    }
+    else{
+        qDebug()<<"error:"<<error;
+        return false;
+    }
+}
+///
+/// \brief ReadTableData::DelStoreposinfotoDataBaseByLayer
+/// \param z
+/// \return
+/// deldatabyinfo
+bool ReadTableData::DelStoreposinfotoDataBaseByLayer(double z,QString &error)
+{
+    QString tablename = "t_storeposinfo";
+    QString name = "coordz";
+    QList<QVariant> values;
+    values.append(z);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    if(CRUDBaseOperation::getInstance()->ExcBatchDeleteDB(tablename,name,values,error))
     {
         return true;
     }

@@ -28,7 +28,7 @@ EditStorenbrinfoDialog::EditStorenbrinfoDialog(const QStringList &list, QString 
         m_edit_list[5]->setMaxLength(1);
         m_edit_list[6]->setMaxLength(64);
         m_edit_list[7]->setMaxLength(1);
-        m_edit_list[8]->setMaxLength(1);
+       // m_edit_list[8]->setMaxLength(1);
     }
 }
 ///

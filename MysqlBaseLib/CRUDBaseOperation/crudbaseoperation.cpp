@@ -334,6 +334,7 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
         query.addBindValue(list);
     }
     if(!query.execBatch()){
+
     }//进行批处理操作保证顺序一样
     if(!data_base.commit())
     {

@@ -44,6 +44,12 @@ void SubTask::initTableView()
     model->query();
     m_table_view->setModel(model);
     //model->select();
+    //page ob 功能实现方式
+    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg->SetParam(model,"t_sub_taskInfo",25);
+    m_pagewg->InitpagefunWg();
+    m_pagewg->move(m_width/2-2*m_pagewg->width(),m_height-60);
+
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegateV1 *l1 = new LabelDelegateV1();
@@ -55,6 +61,14 @@ void SubTask::initTableView()
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
+    m_table_view->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+    SetTableviewsetColumnWidth();
+    m_table_view->horizontalHeader()->setMinimumHeight(40);
+    m_table_view->setFont(QFont("宋体",12)); //设置字体
+}
+
+void SubTask::SetTableviewsetColumnWidth()
+{
     m_table_view->setColumnWidth(0,m_width/20*1);
     m_table_view->setColumnWidth(1,m_width/20*2);
     m_table_view->setColumnWidth(2,m_width/20*2);
@@ -66,14 +80,25 @@ void SubTask::initTableView()
     m_table_view->setColumnWidth(7,m_width/20*1);
     m_table_view->setColumnWidth(8,m_width/20*3);
     m_table_view->setColumnWidth(9,m_width/20*3);
-    m_table_view->horizontalHeader()->setMinimumHeight(40);
-    m_table_view->setFont(QFont("宋体",12)); //设置字体
 }
 
 void SubTask::selectTask()
 {
     QString taskNum = m_task_edit->text();
-    model->setQuery(QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum));
-    qDebug()<<QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum);
+    QString sql = QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum);
+    model->setQuery(sql);
     model->query();
+    //根据条件查询选择
+    int total =  model->rowCount();
+    sql.chop(1);
+    if(taskNum == "")
+    {
+        sql = "";
+        model->setQuery("select * from t_sub_taskInfo");
+        model->query();
+        total = model->rowCount();
+    }
+    //  qDebug()<<sql << total;
+    m_pagewg->updateParam(total,sql);
+    SetTableviewsetColumnWidth();
 }

@@ -67,6 +67,7 @@ private:
     ReadTableData m_databaseopob;
     int m_editrow ;
     TablepagebyabstractWg *m_pagewg;
+    WatingDialogWg m_waitwg;
 };
 
 

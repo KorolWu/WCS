@@ -46,6 +46,13 @@ void AllTask::initTableView()
     model->setTable("t_all_task");
     m_table_view->setModel(model);
     model->select();
+
+    //page ob 功能实现方式
+    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg->SetParam(model,"t_all_task",25);
+    m_pagewg->InitpagefunWg();
+    m_pagewg->move(m_width/2-2*m_pagewg->width(),m_height-60);
+
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegateV1 *l1 = new LabelDelegateV1();

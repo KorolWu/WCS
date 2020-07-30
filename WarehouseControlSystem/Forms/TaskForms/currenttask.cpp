@@ -115,5 +115,6 @@ void CurrentTask::handelHttpTask(QString reply)
     if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t,errMsg))
         GetSystemLogObj()->writeLog("save current to dbbase failed! ->"+errMsg,2);
     setTableViewValue();
+    qDebug()<<reply;
 
 }

@@ -194,7 +194,6 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
      values.append(list);
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
     {
         return true;

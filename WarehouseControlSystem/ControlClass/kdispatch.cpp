@@ -184,6 +184,7 @@ bool KDispatch::runSubTask()
     while(false == m_taskQueue.isEmpty())
     {
         OrderStru o = m_taskQueue.dequeue();
+        int sequnce = 1;
         struct timeval tpStart,tpEnd;
         float timeUse = 0;
         gettimeofday(&tpStart,NULL);
@@ -196,6 +197,9 @@ bool KDispatch::runSubTask()
                 loop.exec();
                 break;
             }
+            //test if sub task over
+            QString sqlErr = "";
+            CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
             //time out return function,change car status Err isLocking
             gettimeofday(&tpEnd,NULL);
             timeUse = 1000 *(tpEnd.tv_sec - tpStart.tv_sec) + 0.001*(tpEnd.tv_usec - tpStart.tv_usec);
@@ -273,8 +277,9 @@ void KDispatch::run()
     //保存当前任务完成的状态，完成 未完成，或者报警日志
     m_task.status = "已完成";
     QString err = "";
-//    if(!CRUDBaseOperation::getInstance()->saveCompletedTask(m_task,err))
-//        GetSystemLogObj()->writeLog("完成任务保存失败!-->"+err,2);
-//    if(!CRUDBaseOperation::getInstance()->removeCrruntTask(m_task))
-//       GetSystemLogObj()->writeLog("移除执行完成任务失败!",3);
+    if(!CRUDBaseOperation::getInstance()->saveCompletedTask(m_task,err))
+        GetSystemLogObj()->writeLog("完成任务保存失败!-->"+err,2);
+    err = "";
+    if(!CRUDBaseOperation::getInstance()->removeCrruntTask(m_task,err))
+       GetSystemLogObj()->writeLog("移除执行完成任务失败!-->"+err,3);
 }

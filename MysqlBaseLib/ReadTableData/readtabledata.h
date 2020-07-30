@@ -2,8 +2,8 @@
 #define READTABLEDATA_H
 
 #include "readtabledata_global.h"
-#include "datastructure.h"
-#include "Myconfig.h"
+#include <datastructure.h>
+#include <Myconfig.h>
 #include <MysqlDataBase/crudbaseoperation.h>
 #include <QMutex>
 #include <QMutexLocker>

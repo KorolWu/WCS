@@ -150,7 +150,7 @@ void BaseDevice::onDisconnected()
     QString err;
     mysql.WriteAlarmInfo(arm,err);
     noticeObserver();
-    m_pTimer->start(1000);
+    m_pTimer->start(3000);
 }
 ///
 /// \brief BaseDevice::write

@@ -239,7 +239,7 @@ typedef struct  _StorePosInfoStru{
     double coordz;//仓位的z坐标信息
     char boxnbr[64];//仓位对应料箱信息编号
     char storestat; //0 未使用   1  有 使用中  2 锁定状态 针对维修的情况  3
-    char storepri; //仓位优先级
+    int storepri; //仓位优先级
     uint8_t directionstate = 0; //  新增 方向状态字段
     QString unused ="";//  新增 备用字段
     _StorePosInfoStru(){

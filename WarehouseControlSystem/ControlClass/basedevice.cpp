@@ -150,7 +150,7 @@ void BaseDevice::onDisconnected()
     QString err;
     mysql.WriteAlarmInfo(arm,err);
     noticeObserver();
-    m_pTimer->start(1000);
+    m_pTimer->start(3000);
 }
 ///
 /// \brief BaseDevice::write
@@ -196,8 +196,7 @@ void BaseDevice::noticeObserver()
 
 void BaseDevice::handelOrder(OrderStru o)
 {
-    static int i =0;
-    qDebug()<<"handel"<<i++;
+    //qDebug()<<"handel";
     //在预计时间类完成Order
     if(o.order == Order::X)
         write(m_pOrderStrategy->move_x(20));

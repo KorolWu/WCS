@@ -43,5 +43,7 @@ public:
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;
+    //
+    QMutex m_mutex_sqlwrite;
 };
 #endif

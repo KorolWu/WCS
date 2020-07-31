@@ -27,6 +27,7 @@ private:
     TaskInfoStru m_task;
     ReadTableData m_writeData;
     QString m_car_ip;
+    int m_count_text;
 };
 
 #endif // DISPATCHCENTER_H

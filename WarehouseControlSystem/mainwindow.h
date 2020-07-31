@@ -35,6 +35,7 @@
 #include "Forms/AlarmInfo/alarminfowg.h"
 #include "ControlClass/dispatchcenter.h"
 #include "MointorUI/monitorui.h"
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;

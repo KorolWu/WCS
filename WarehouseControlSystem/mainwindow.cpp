@@ -12,7 +12,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setWindowFlags(Qt::FramelessWindowHint);
 
     getConfigParameter();
-    CRUDBaseOperation::getInstance()->openDB();
+    QString sql_open_err;
+    CRUDBaseOperation::getInstance()->openDB(sql_open_err);
+    if(sql_open_err != "")
+        GetSystemLogObj()->writeLog(sql_open_err,2);
     getParameterFromDB();
     GetSystemLogObj()->writeLog("WCS initialization ...",0);
     initUI();
@@ -57,10 +60,29 @@ MainWindow::~MainWindow()
 void MainWindow::closeWcs()
 {
     //check the task isn`t over,get user dialog
-    CRUDBaseOperation::getInstance()->closeDB();
-    Myconfig::GetInstance()->m_flag = false;
-    if(m_pHttpServer != nullptr)
-        m_pHttpServer->deleteLater();
+    if(Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)
+    {
+        QMessageBox msgBox;
+        msgBox.setText("The queue task has not completed.");
+        msgBox.setInformativeText("Do you really want to turn off?");
+        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox.setDefaultButton(QMessageBox::No);
+        int ret = msgBox.exec();
+        switch (ret) {
+        case QMessageBox::Yes:
+            CRUDBaseOperation::getInstance()->closeDB();
+            Myconfig::GetInstance()->m_flag = false;
+            if(m_pHttpServer != nullptr)
+                m_pHttpServer->deleteLater();
+            break;
+        case QMessageBox::No:
+            return;
+            break;
+        default:
+            // should never be reached
+            break;
+        }
+    }
     this->close();
 }
 
@@ -213,7 +235,7 @@ void MainWindow::getParameterFromDB()
     r.readt_device_info();
     r.readt_elevator();
     r.readt_crrunt_task();
-    qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
+    //qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 
 void MainWindow::getConfigParameter()
@@ -231,7 +253,6 @@ void MainWindow::getConfigParameter()
     Myconfig::GetInstance()->m_databaseInfo.port = f.Get("DataBase","port").toInt();
     Myconfig::GetInstance()->m_databaseInfo.sqlName = f.Get("DataBase","sqlName").toString();
     Myconfig::GetInstance()->m_databaseInfo.userName = f.Get("DataBase","userName").toString();
-    qDebug()<<"Myconfig::GetInstance()->m_databaseInfo";
 }
 
 void MainWindow::delay_msc(int msc)
@@ -300,8 +321,8 @@ void MainWindow::slotlogin()
 
 void MainWindow::onReplyReady(QString str)
 {
-
-    qDebug()<<"in Warehouse Control System"<<str;
+    static int i = 1;
+    qDebug()<<"in Warehouse Control System"<<QString::number(i);
+    i++;
     emit httpRedReady(str);
-
 }

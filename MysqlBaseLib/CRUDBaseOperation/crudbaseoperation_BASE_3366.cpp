@@ -1,14 +1,12 @@
 #include "crudbaseoperation.h"
-#include <QDebug>
 
 CRUDBaseOperation *CRUDBaseOperation::Instance = new CRUDBaseOperation();
 CRUDBaseOperation::CRUDBaseOperation()
 {
 }
 
-bool CRUDBaseOperation::openDB(QString &err_msg)
+bool CRUDBaseOperation::openDB()
 {
-    err_msg = "";
     data_base = QSqlDatabase::addDatabase(Myconfig::GetInstance()->m_databaseInfo.databaseName);
     data_base.setHostName(Myconfig::GetInstance()->m_databaseInfo.ip);
     data_base.setPort(Myconfig::GetInstance()->m_databaseInfo.port);
@@ -17,12 +15,12 @@ bool CRUDBaseOperation::openDB(QString &err_msg)
     data_base.setPassword(Myconfig::GetInstance()->m_databaseInfo.passWord);
     if(data_base.isOpen())
     {
-        err_msg = "The database is already open";
+        qDebug()<<"sb";
         return true;
     }
    if(!data_base.open())
     {
-        err_msg = "open database fail";
+        qDebug()<<"open database fail";
         return true;
     }
    return false;
@@ -55,10 +53,8 @@ bool CRUDBaseOperation::queryUseStr(const QString &sqlStr)
     return query.exec(sqlStr);
 }
 
-bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru, QString &err)
+bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru)
 {
-     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
-    err = "";
     if(data_base.isOpen())
     {
         QString sql =QString("INSERT t_crrunt_task SET taskNum=%1,taskStatus='%2',"
@@ -66,46 +62,25 @@ bool CRUDBaseOperation::saveCrruntTask(TaskInfoStru taskStru, QString &err)
                              "target='%6',carNum='%7';") .arg(taskStru.taskNum).arg(taskStru.status).arg(taskStru.boxNum)\
                                 .arg(taskStru.pripty).arg(taskStru.from).arg(taskStru.end).arg(taskStru.carNum);
         QSqlQuery query(data_base);
-        if(query.exec(sql))
-       {
-           return true;
-       }
-        else
-        {
-            err = query.lastError().text();
-            return false;
-        }
+        return query.exec(sql);
 
     }
-    err = "database is not open !";
     return false;
-
 }
 ///
 /// \brief CRUDBaseOperation::removeCrruntTask 已完成的任务，从当前任务里删除掉
 /// \param taskStru
 /// \return
 ///
-bool CRUDBaseOperation::removeCrruntTask(TaskInfoStru taskStru, QString &err)
+bool CRUDBaseOperation::removeCrruntTask(TaskInfoStru taskStru)
 {
-     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
-    err = "";
     if(data_base.isOpen())
     {
         QString sql =QString("DELETE FROM t_crrunt_task WHERE taskNum=%1;").arg(taskStru.taskNum);
         QSqlQuery query(data_base);
-        if(query.exec(sql))
-       {
-           return true;
-       }
-        else
-        {
-            err = query.lastError().text();
-            return false;
-        }
+        return query.exec(sql);
 
     }
-    err = "database is not open !";
     return false;
 }
 ///
@@ -113,10 +88,8 @@ bool CRUDBaseOperation::removeCrruntTask(TaskInfoStru taskStru, QString &err)
 /// \param taskStru
 /// \return
 ///
-bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru, QString &err)
+bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru)
 {
-     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
-    err = "";
     if(data_base.isOpen())
     {
         QString sql =QString("INSERT t_all_task SET taskNum=%1,taskStatus='%2',"
@@ -124,38 +97,10 @@ bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru, QString &err)
                              "target='%6',carNum='%7',beginTime = '%8';") .arg(taskStru.taskNum).arg(taskStru.status).arg(taskStru.boxNum)\
                                 .arg(taskStru.pripty).arg(taskStru.from).arg(taskStru.end).arg(taskStru.carNum).arg(taskStru.creatTime.toString("yyyy-MM-dd hh:mm:ss"));
         QSqlQuery query(data_base);
-
-         if(query.exec(sql))
-        {
-            return true;
-        }
-         else
-         {
-             err = query.lastError().text();
-             return false;
-         }
+        return query.exec(sql);
 
     }
-    err = "database is not open !";
     return false;
-}
-///
-/// \brief CRUDBaseOperation::changeSubtaskStatus 用来修改子任务的状态
-/// \param taskNum 任务号
-/// \param status  想改变成的状态
-/// \param sequnce 任务顺序
-/// \param err     sql报错
-/// \return
-///
-bool CRUDBaseOperation::changeSubtaskStatus(const QString &taskNum, const QString &status, int sequnce, QString &err)
-{
-    err = "";
-    QString sql = QString("UPDATE t_sub_taskInfo SET state = '%1' WHERE taskNum ='%2' AND sequence = %3;").arg(status).arg(taskNum).arg(sequnce);
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
-    QSqlQuery query(data_base);
-    bool result = query.exec(sql);
-    err = query.lastError().text();
-    return result;
 }
 ///
 /// \brief CRUDBaseOperation::saveKBaseStruct 处理 KBaseStruct 派生类的保存
@@ -165,7 +110,6 @@ bool CRUDBaseOperation::changeSubtaskStatus(const QString &taskNum, const QStrin
 ///
 bool CRUDBaseOperation::saveKBaseStruct(const QString &tableName, KBaseStruct &s, QString &errMessage)
 {
-     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     if(s.getNameList().size() != s.getValueList().size())
         return false;
     QString sql = "INSERT "+tableName+" SET ";
@@ -276,7 +220,6 @@ bool CRUDBaseOperation::ExcBatchDeleteDB(const QString &table, QString keyname, 
 ///对重复的主键替换，新增的删除
 bool CRUDBaseOperation::ExcBatchUpdateDB(const QString &table, QStringList &names, QVector<QVariantList> &valuesvec, QString keyname, QVector<QVariant> keyvalue, QString &sqlerror)
 {
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QSqlQuery query(data_base);
    data_base.transaction();//启动事务
    QString updatesql = QString("update %1 set ").arg(table);//更新整个表格还是某些行
@@ -365,7 +308,6 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
             return false;
         }
     }
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QSqlQuery query(data_base);
     data_base.transaction();//启动事务
     QString insertsql = QString("replace into %1(").arg(table);//直接使用占位符方式
@@ -391,23 +333,13 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
         }
         query.addBindValue(list);
     }
-    if(false == data_base.isOpen())
-    {
-        if(false == data_base.open())
-        {
-            sqlerror = "数据库重新打开失败";
-            return false;
-        }
-    }
     if(!query.execBatch()){
-        sqlerror = query.lastError().text();
-        qDebug()<<"in execBatch: " << sqlerror<<endl;
     }//进行批处理操作保证顺序一样
     if(!data_base.commit())
     {
         sqlerror = query.lastError().text();
         data_base.rollback();
-        qDebug()<<"info" << sqlerror<<endl;
+        qDebug()<<"info" << sqlerror;
         return false;
     }
     return true;
@@ -415,7 +347,6 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
 
 bool CRUDBaseOperation::ExcBatchInsertDb(const QString &table, QStringList &names, QList<QVariantList> &values,QString &errorinfo)
 {
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     for(int i = 0 ; i < values.size();++i )
     {
         if(names.size() != values[i].size() )

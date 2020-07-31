@@ -400,8 +400,12 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
         }
     }
     if(!query.execBatch()){
+<<<<<<< HEAD
+
+=======
         sqlerror = query.lastError().text();
         qDebug()<<"in execBatch: " << sqlerror<<endl;
+>>>>>>> d48110c94ce05e716f78bacad3796bcae9905d25
     }//进行批处理操作保证顺序一样
     if(!data_base.commit())
     {

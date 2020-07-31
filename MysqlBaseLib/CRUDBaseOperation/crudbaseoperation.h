@@ -13,14 +13,15 @@ class CRUDBASEOPERATIONSHARED_EXPORT CRUDBaseOperation
 private:
     CRUDBaseOperation();
 public:
-    bool openDB();
+    bool openDB(QString &err_msg);
     void closeDB();
     void createTable(const QString &creatTableSql);
     QSqlQuery queryDb(const QString &querySql);
     bool queryUseStr(const QString &sqlStr);  
-    bool saveCrruntTask(TaskInfoStru taskStru);
-    bool removeCrruntTask(TaskInfoStru taskStru);
-    bool saveCompletedTask(TaskInfoStru taskStru);
+    bool saveCrruntTask(TaskInfoStru taskStru, QString &err);
+    bool removeCrruntTask(TaskInfoStru taskStru, QString &err);
+    bool saveCompletedTask(TaskInfoStru taskStru, QString &err);
+    bool changeSubtaskStatus(const QString &taskNum,const QString &status, int sequnce, QString &err);
     // KBaseStruct SubClass CRUD
     bool saveKBaseStruct(const QString &tableName, KBaseStruct &s, QString &errMessage);
    public:

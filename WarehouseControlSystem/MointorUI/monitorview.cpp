@@ -15,7 +15,16 @@ MonitorView::MonitorView(QWidget *parent)
    // setStyleSheet("background: transparent;");
     m_Zoom = 0;
     m_Rotate = 0;
-    setStyleSheet("background: transparent;background-color: rgba(18, 62, 111, 40);border:0px");
+    setCursor(Qt::BusyCursor);
+    setStyleSheet("background: transparent;background-color: rgba(18, 62, 111, 40);border:0px;"
+                  "QToolTip{"
+                             "background-color: rgb(255,255,255);"
+                             "font: 12px 微软雅黑;"
+                             "color: rgb(87,87,87);"
+                             "border-radius: 0px;"
+                             "border:0px solid rgb(0,0,0);"
+                             "outline:none; "
+                             "}");
 }
 void MonitorView::wheelEvent(QWheelEvent *event)
 {

@@ -356,7 +356,6 @@ QSqlQuery CRUDBaseOperation::ExcBatchSelectDB(const QString table)
 bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &names, QList<QVariantList> &values,QString &sqlerror)
 {
     QString msg;
-
     for(int i = 0 ; i < values.size();++i )
     {
         if(names.size() != values[i].size() )
@@ -366,7 +365,7 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
             return false;
         }
     }
-    //QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QSqlQuery query(data_base);
     data_base.transaction();//启动事务
     QString insertsql = QString("replace into %1(").arg(table);//直接使用占位符方式
@@ -402,9 +401,7 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
     }
     if(!query.execBatch()){
         sqlerror = query.lastError().text();
-        qDebug()<<"in execBatch 失败: " << sqlerror<<endl;
-         return false;
-
+        qDebug()<<"in execBatch: " << sqlerror<<endl;
     }//进行批处理操作保证顺序一样
     if(!data_base.commit())
     {

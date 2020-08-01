@@ -22,11 +22,17 @@ WatingDialogWg::WatingDialogWg(QWidget *parent):QDialog(parent)
     m_pTimer = new QTimer(this);
     m_pTimer->setSingleShot(true);
     connect(m_pTimer, &QTimer::timeout, this, [=](){this->close();});
-    m_pTimer->start(3000);
+    m_pTimer->start(10000);
 }
 
 WatingDialogWg::~WatingDialogWg()
 {
     delete m_plabel;
     delete  m_pmovie;
+}
+
+void WatingDialogWg::CloseDialag()
+{
+    this->close();
+
 }

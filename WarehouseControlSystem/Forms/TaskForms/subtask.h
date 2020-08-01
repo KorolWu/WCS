@@ -38,6 +38,8 @@ public:
     void initTableView();
     int m_width;
     int m_height;
+private:
+    void SetTableviewsetColumnWidth();
 signals:
 
 public slots:

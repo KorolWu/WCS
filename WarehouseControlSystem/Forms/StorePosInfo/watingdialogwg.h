@@ -13,12 +13,16 @@ class WatingDialogWg :public QDialog
 {
     Q_OBJECT
 public:
-   explicit  WatingDialogWg(QWidget *parent = 0);
+    explicit  WatingDialogWg(QWidget *parent = 0);
     ~WatingDialogWg();
+
 private:
     QMovie *m_pmovie;
     QLabel *m_plabel;
-   QTimer  *m_pTimer;
+    QTimer  *m_pTimer;
+
+public slots:
+    void CloseDialag();
 };
 
 #endif // WATINGDIALOGWG_H

@@ -26,6 +26,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     m_stroreposmap.storeposInfoMap.clear();
     m_editrow = 0;
     //读取数据库的内容映射到内存中
+
     //Init UI
     QVBoxLayout *pmainlayout = new QVBoxLayout;
     setLayout(pmainlayout);
@@ -334,69 +335,106 @@ void StoreInfoWidget::Dataselectfromdatabase()
 {
     //读数据库表格
     m_stroreposmap.storeposInfoMap.clear();//添加 数据库的内容映射到结构体中
-//   QString msg;
-//    // write test
-//    QMap<QString,StorePosInfoStru> datamap;
-//    int k = 0;
-//    for(int y = 0; y < 3;++y)
-//    {
-//        int sizex = 28;
-//        if(y == 2)
-//        {
-//            sizex = 42;
-//        }
+    QString msg;
+    //    // write test
+    //    QMap<QString,StorePosInfoStru> datamap;
+    //    int k = 0;
+    //    for(int y = 0; y < 3;++y)
+    //    {
+    //        int sizex = 28;
+    //        if(y == 2)
+    //        {
+    //            sizex = 42;
+    //        }
 
-//        for(int x = 0; x < sizex;++x)
-//        {
-//            if(x==26 )
-//            {
-//                continue;
-//            }
-//            k++;
-//            StorePosInfoStru stru;
-//            QString strid = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
-//            memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
-//            stru.coordx = x;
-//            stru.coordy = y;
-//            stru.storepri = k;
-//            stru.coordz = 8;
-//            stru.directionstate = 0;
-//            QString box;
-//             box = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
-//            memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
-//                    stru.storestat = 3;
-//            datamap.insert(strid,stru);
-//            StorePosInfoStru stru1;
-//            stru1.directionstate = 1;
-//            stru1.coordx = x;
-//            stru1.coordy = y;
-//            stru1.coordz = 8;
-//            k++;
-//            stru1.storepri = k;
-//              QString strid1;
-//              QString box1;
-//            strid1 = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
-//             memcpy(stru1.idnbr,strid1.toStdString().c_str(),strid1.size());
-//            box1 = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
-//             memcpy(stru1.boxnbr,box1.toStdString().c_str(),box1.size());
-//                       stru1.storestat = 0;
-//            datamap.insert(strid1,stru1);
-//        }
-//    }
+    //        for(int x = 0; x < sizex;++x)
+    //        {
+    //            if(x==26 )
+    //            {
+    //                continue;
+    //            }
+    //            k++;
+    //            StorePosInfoStru stru;
+    //            QString strid = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+    //            memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+    //            stru.coordx = x;
+    //            stru.coordy = y;
+    //            stru.storepri = k;
+    //            stru.coordz = 8;
+    //            stru.directionstate = 0;
+    //            QString box;
+    //             box = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
+    //            memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+    //                    stru.storestat = 3;
+    //            datamap.insert(strid,stru);
+    //            StorePosInfoStru stru1;
+    //            stru1.directionstate = 1;
+    //            stru1.coordx = x;
+    //            stru1.coordy = y;
+    //            stru1.coordz = 8;
+    //            k++;
+    //            stru1.storepri = k;
+    //              QString strid1;
+    //              QString box1;
+    //            strid1 = QString("z_8idbbr%1 %2 %3").arg(x).arg(y).arg(k);
+    //             memcpy(stru1.idnbr,strid1.toStdString().c_str(),strid1.size());
+    //            box1 = QString("boxnbr%1 %2 %3").arg(x).arg(y).arg(k);
+    //             memcpy(stru1.boxnbr,box1.toStdString().c_str(),box1.size());
+    //                       stru1.storestat = 0;
+    //            datamap.insert(strid1,stru1);
+    //        }
+    //    }
 
-//    if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
-//    {
-//        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
-//        return ;
-//    }
-//    if(!m_databaseopob.DelStoreposinfotoDataBaseByLayer(1,msg))
-//        {
-//            QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
-//            return ;
-//        }
+
+
+  //  QString msg;
+      //    // write test
+   QMap<QString,StorePosInfoStru> datamap;
+    StorePosInfoStru stru;
+    QString strid = QString("z_-1idbbrbatch%1%2%3").arg(0).arg(0).arg(-9);
+    memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+    stru.coordx = 0;
+    stru.coordy = 0;
+    stru.storepri = 8888;
+    stru.coordz = -1;
+    stru.directionstate = 2;
+    QString box;
+    box = QString("boxnbrbatch%1%2%3").arg(0).arg(0).arg(-1);
+    memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+    stru.storestat = 2;
+    datamap.insert(strid,stru);
+   strid = QString("z_-1idbbrbatch%1%2%3").arg(0).arg(0).arg(-19);
+   memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+    stru.directionstate = 4;
+    stru.storepri = 122;
+   box = QString("boxnbrbatch%1%2%3").arg(0).arg(0).arg(-2);
+   memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+   datamap.insert(strid,stru);
+
+    if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
+    {
+        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+        return ;
+    }
+    //    if(!m_databaseopob.DelStoreposinfotoDataBaseByLayer(1,msg))
+    //        {
+    //            QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+    //            return ;
+    //        }
     m_databaseopob.ReadStoreposinfoDataBase();
     QList<QStringList> list;
     m_stroreposmap.storeposInfoMap =  Myconfig::GetInstance()->m_storeinfoMap;
+    //    for(auto it = Myconfig::GetInstance()->m_storeinfoMap.begin(); it != Myconfig::GetInstance()->m_storeinfoMap.end();++it)
+    //    {
+    //        QString boxnbr = QString::fromUtf8(it.value().boxnbr);
+
+    //        QString str = boxnbr;
+    //       str =  str.remove(QRegExp("\\s"));
+    //       boxnbr.replace(" ","_");
+    //        memcpy( it.value().boxnbr,boxnbr.toStdString().c_str(),boxnbr.size());
+    //       qDebug()<<"str"<< boxnbr << str;
+    //    }
+
     list =  GetdatalistFromstru(m_stroreposmap.storeposInfoMap);
     QStringList rowlist;
     rowlist<<"0"<<"nbr001"<<"1"<<"345"<<"678.0"<<"0"<<"444"<<"1"<<"2"<<"5"<<"未使用";

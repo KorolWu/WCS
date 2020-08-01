@@ -1,5 +1,7 @@
 #include "storeitem.h"
 #include <QDebug>
+#include <QEvent>
+#include <QHelpEvent>
 #define MIN(x,y)    ((x) < (y) ? (x) : (y))
 StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, const Qt::PenStyle &LineStyle, \
                      const int LineWidth, const QColor &LineColor, const QColor &BackColor):\
@@ -10,13 +12,13 @@ StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, c
     m_StopX =StopX;
     m_StopY =StopY;
     m_state = 0;
-    m_BackGroundColor= BackColor;
+    m_BackGroundColor = BackColor;
     m_text = tr("");
     m_FontColor =QColor(255,255,255);
     // 画笔 - 边框色
-    p.setWidth(1);
-    p.setColor(QColor(0,0,0));
-    setPen(p);
+    p.setWidth(LineWidth);
+    p.setStyle(LineStyle);
+    p.setColor(LineColor);
     // 画刷 - 背景色
     setBrush(QColor(255,0,0));
     // 可选择
@@ -26,8 +28,10 @@ StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, c
     m_font.setFamily("宋体"); //设置字体样式
     textItem = new QGraphicsTextItem(this);
     m_Timer = new QTimer();
-    //  connect(m_Timer,&QTimer::timeout,this,&StoreItem::UpdateState);
-    // m_Timer->start(500);
+    connect(m_Timer,&QTimer::timeout,this,&StoreItem::UpdateState);
+    m_Timer->start(200);
+    setToolTip(m_text);
+    setCursor(Qt::OpenHandCursor);    //改变光标形状,光标变为了手型
 }
 
 StoreItem::~StoreItem()
@@ -53,7 +57,7 @@ void StoreItem::AddTextItem(QString text)
     cursor.clearSelection();
     textItem->setTextCursor(cursor);
     //设置item放置位置
-    QPointF p =this->pos();
+   // QPointF p =this->pos();
     QPointF pos(100,100);
     // qDebug()<<pos.rx() <<pos.ry() << p.rx() << p.ry() <<this->boundingRect().height() <<this->boundingRect().width() ;
     textItem->setPos(pos);
@@ -63,6 +67,7 @@ void StoreItem::AddTextItem(QString text)
 void StoreItem::SetText(QString text)
 {
     m_text = text;
+   setToolTip(m_text);
 }
 ///
 /// \brief StoreItem::SetStoreSate
@@ -110,6 +115,13 @@ char StoreItem::GetState()
 }
 
 void StoreItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+
+    //设置画笔 边框颜色和背景色
+    painter->setPen(p);
+    painter->setBrush(m_BackGroundColor);
+    painter->setRenderHint(QPainter::Antialiasing, true);
+   //绘制图形
+    Q_UNUSED(option);
     QStyleOptionGraphicsItem op;
     op.initFrom(widget);
     double Width = m_StopX - m_StartX;        // 绘图区域的宽度
@@ -130,27 +142,26 @@ void StoreItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setPen(QPen(QBrush(m_FontColor),2.0));
     painter->setFont(m_font);
     painter->drawText(m_StartX, m_StartY, Width, Height, Qt::AlignVCenter | Qt::AlignHCenter |Qt::TextWordWrap, m_text);
-    update();
 }
 
 void StoreItem::UpdateState()
 {
-    //*************测试
-    if(m_state == 0)
-    {
-        SetStoreSate(1);
-    }
-    else  if(m_state == 1){
-        SetStoreSate(2);
-    }
-    else  if(m_state == 2){
-        SetStoreSate(3);
-    }
-    else  if(m_state == 3){
-        SetStoreSate(0);
-    }
-    //*************测试
-    //update();
+    //    //*************测试
+    //    if(m_state == 0)
+    //    {
+    //        SetStoreSate(1);
+    //    }
+    //    else  if(m_state == 1){
+    //        SetStoreSate(2);
+    //    }
+    //    else  if(m_state == 2){
+    //        SetStoreSate(3);
+    //    }
+    //    else  if(m_state == 3){
+    //        SetStoreSate(0);
+    //    }
+    //    //*************测试
+    update();
 }
 
 QColor StoreItem::GetNewColor(const QColor &Source, int Value)
@@ -186,7 +197,6 @@ QColor StoreItem::GetNewColor(const QColor &Source, int Value)
     {
         b = 0;
     }
-
 
     return QColor(r, g, b, a);
 }

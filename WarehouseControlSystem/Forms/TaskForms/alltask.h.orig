@@ -30,7 +30,10 @@ public:
     QTableView  *m_table_view;
     QSqlTableModel *model;
     SpiltPagesByQSqlTableModel *m_pagewg;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0bd2082aca12c6ac47e98cd5dbc378ab9d703c0e
     void initTableView();
     int m_width;
     int m_height;

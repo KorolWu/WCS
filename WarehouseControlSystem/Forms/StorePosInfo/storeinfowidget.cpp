@@ -385,11 +385,37 @@ void StoreInfoWidget::Dataselectfromdatabase()
     //        }
     //    }
 
-    //    if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
-    //    {
-    //        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
-    //        return ;
-    //    }
+
+
+  //  QString msg;
+      //    // write test
+   QMap<QString,StorePosInfoStru> datamap;
+    StorePosInfoStru stru;
+    QString strid = QString("z_-1idbbrbatch%1%2%3").arg(0).arg(0).arg(-9);
+    memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+    stru.coordx = 0;
+    stru.coordy = 0;
+    stru.storepri = 8888;
+    stru.coordz = -1;
+    stru.directionstate = 2;
+    QString box;
+    box = QString("boxnbrbatch%1%2%3").arg(0).arg(0).arg(-1);
+    memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+    stru.storestat = 2;
+    datamap.insert(strid,stru);
+   strid = QString("z_-1idbbrbatch%1%2%3").arg(0).arg(0).arg(-19);
+   memcpy(stru.idnbr,strid.toStdString().c_str(),strid.size());
+    stru.directionstate = 4;
+    stru.storepri = 122;
+   box = QString("boxnbrbatch%1%2%3").arg(0).arg(0).arg(-2);
+   memcpy(stru.boxnbr,box.toStdString().c_str(),box.size());
+   datamap.insert(strid,stru);
+
+    if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
+    {
+        QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
+        return ;
+    }
     //    if(!m_databaseopob.DelStoreposinfotoDataBaseByLayer(1,msg))
     //        {
     //            QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));

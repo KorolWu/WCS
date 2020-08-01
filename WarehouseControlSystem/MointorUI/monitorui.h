@@ -12,7 +12,6 @@
 #include "storeitem.h"
 #include <QTimer>
 using namespace StoreInfo;
-
 class MonitorUI:public QWidget
 {
 public:

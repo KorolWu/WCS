@@ -208,7 +208,7 @@ void MonitorUI::SetSceneMapData()
     m_cursceneMap.clear();//数据删除 重新更
     int roadwidth = ROADWIDTH; //预留过道的高度
     GetstoreposSize();
-    for(int i =0; i <m_laylist.size(); ++i )
+    for(int i = 0; i <m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
         //得到当前层数
@@ -282,6 +282,7 @@ void MonitorUI::SetUIDataItem()
                 (z,Myconfig::GetInstance()->m_storeinfoMap);
         QGraphicsScene *curlay = new QGraphicsScene;
         curlay->setSceneRect(-30,-30,this->width()-40,this->height()-60);
+
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
 
         for(auto it = laymap.begin(); it != laymap.end();++it)

@@ -34,6 +34,9 @@ private:
     double m_StopY;
     QColor m_BackGroundColor;
     QColor m_FontColor;
+    //    QColor m_LineColor;
+    //   Qt::PenStyle  m_LineStyle;
+    //   int m_LineWidth;
     QString m_text;
     char m_state;
     QGraphicsTextItem *textItem;
@@ -51,6 +54,8 @@ private slots:
     //    item->setGraphicsEffect(shadow_effect); //给item设置阴影
     //    item->setGraphicsEffect(NULL); //去除item设置阴影
     QColor GetNewColor(const QColor &Source, int Value);
+protected:
+    // bool event(QEvent *event);
 
 };
 

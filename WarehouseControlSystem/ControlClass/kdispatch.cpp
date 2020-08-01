@@ -208,6 +208,7 @@ bool KDispatch::runSubTask()
             QApplication::processEvents(QEventLoop::AllEvents,50);
         }
     }
+    QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isLocking = false;
     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.status = 1;
     //delete crrunt task

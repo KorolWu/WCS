@@ -15,6 +15,7 @@
 #include <QSqlTableModel>
 #include "labeldelegateV1.h"
 #include "../basefrom.h"
+#include "UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h"
 /**
  * @brief The SubTask class
  * @date  2020/7/25
@@ -32,6 +33,7 @@ public:
     QPushButton *m_query_btn;
     QTableView  *m_table_view;
     QSqlQueryModel *model;
+    SpiltPagesByQSqlTableModel *m_pagewg;
 
     void initTableView();
     int m_width;

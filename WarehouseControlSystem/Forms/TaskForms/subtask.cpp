@@ -44,6 +44,10 @@ void SubTask::initTableView()
     model->query();
     m_table_view->setModel(model);
     //model->select();
+    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg->SetParam(model,"t_sub_taskInfo",25);
+    m_pagewg->InitpagefunWg();
+    m_pagewg->move(580,900);
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegateV1 *l1 = new LabelDelegateV1();

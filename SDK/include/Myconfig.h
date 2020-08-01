@@ -31,6 +31,7 @@ public:
 public:
     //carinfo <car_ip,car_info>
     QMap<QString, CarInfoStru> m_CarMap;
+    QMutex m_carMap_mutex;
     QMap<QString, ElevatorInfoStru> m_elevatorMap;
     //QMap<QString, BaseDevice *> m_carCommnicationMap;
     QMutex m_mutex;
@@ -40,6 +41,7 @@ public:
     QMap<QString, TaskInfoStru> m_taskMap;
     //task queue
     QQueue<TaskInfoStru> m_taskQueue;
+    QMutex m_task_mutex;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;

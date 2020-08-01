@@ -136,6 +136,7 @@ bool ReadTableData::WriteStoreposinfotoDataBase(QMap<QString, StorePosInfoStru> 
 
 bool ReadTableData::WriteLoginfo(int level, QString from, QString log_info)
 {
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QString sql = QString("INSERT INTO `t_log` (`level`,`from`,`loginfo`) VALUES ('%1','%2','%3');").arg(level).arg(from).arg(log_info);
     qDebug()<<sql;
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
@@ -193,7 +194,6 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
      values.append(list);
-    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
     {
         return true;

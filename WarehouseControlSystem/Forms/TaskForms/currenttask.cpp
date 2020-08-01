@@ -109,6 +109,7 @@ void CurrentTask::handelHttpTask(QString reply)
     t.carNum = list[6];
     t.creatTime = QDateTime::currentDateTime();
     //saveTaskToDB(t);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
     Myconfig::GetInstance()->m_taskQueue.enqueue(t);
     QString errMsg = "";

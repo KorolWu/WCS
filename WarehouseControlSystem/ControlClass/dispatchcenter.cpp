@@ -14,6 +14,7 @@ void DispatchCenter::dispatchTaskThread()
         {
             if(m_pSelectCar->hasUseCar())
             {
+                QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
                 m_task =  Myconfig::GetInstance()->m_taskQueue.dequeue();
                 if(Myconfig::GetInstance()->m_taskMap.contains(m_task.taskNum))
                 {

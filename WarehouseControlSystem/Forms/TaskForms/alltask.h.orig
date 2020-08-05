@@ -1,0 +1,42 @@
+#ifndef ALLTASK_H
+#define ALLTASK_H
+
+#include <QObject>
+#include <QWidget>
+#include <QPushButton>
+#include <QLineEdit>
+#include <QDateEdit>
+#include <QLabel>
+#include <QHeaderView>
+#include <QTableView>
+#include <QStandardItemModel>
+#include <QSqlQueryModel>
+#include <QSqlTableModel>
+#include "labeldelegateV1.h"
+#include "../basefrom.h"
+#include "UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h"
+
+class AllTask : public BaseFrom
+{
+    Q_OBJECT
+public:
+    AllTask(int width,int height,QWidget *parent);
+    QPushButton *m_in_btn;
+    QPushButton *m_out_btn;
+    QPushButton *m_all_btn;
+    QDateEdit   *m_start_date;
+    QDateEdit   *m_end_date;
+    QPushButton *m_query_btn;
+    QTableView  *m_table_view;
+    QSqlTableModel *model;
+    SpiltPagesByQSqlTableModel *m_pagewg;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0bd2082aca12c6ac47e98cd5dbc378ab9d703c0e
+    void initTableView();
+    int m_width;
+    int m_height;
+};
+
+#endif // ALLTASK_H

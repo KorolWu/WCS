@@ -44,12 +44,19 @@ void SubTask::initTableView()
     model->query();
     m_table_view->setModel(model);
     //model->select();
+<<<<<<< HEAD
+    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg->SetParam(model,"t_sub_taskInfo",25);
+    m_pagewg->InitpagefunWg();
+    m_pagewg->move(580,900);
+=======
     //page ob 功能实现方式
     m_pagewg = new SpiltPagesByQSqlTableModel(this);
     m_pagewg->SetParam(model,"t_sub_taskInfo",25);
     m_pagewg->InitpagefunWg();
     m_pagewg->move(m_width/2-2*m_pagewg->width(),m_height-60);
 
+>>>>>>> 0bd2082aca12c6ac47e98cd5dbc378ab9d703c0e
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegateV1 *l1 = new LabelDelegateV1();
@@ -80,8 +87,6 @@ void SubTask::SetTableviewsetColumnWidth()
     m_table_view->setColumnWidth(7,m_width/20*1);
     m_table_view->setColumnWidth(8,m_width/20*3);
     m_table_view->setColumnWidth(9,m_width/20*3);
-    m_table_view->horizontalHeader()->setMinimumHeight(40);
-    m_table_view->setFont(QFont("宋体",12)); //设置字体
 }
 
 void SubTask::selectTask()

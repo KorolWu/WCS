@@ -33,6 +33,7 @@
 #include "datastructure.h"
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
+#include "Forms/Runner/runerform.h"
 #include "ControlClass/dispatchcenter.h"
 #include "MointorUI/monitorui.h"
 #include <QMessageBox>
@@ -58,6 +59,7 @@ private:
     QStandardItem *p_userItem;
     QStandardItem *p_agvItem;
     QStandardItem *p_elevator;
+    QStandardItem *p_runer;
     QStandardItem *p_all_tasks;
     QStandardItem *p_current_tasks;
     QStandardItem *p_sub_tasks;
@@ -72,6 +74,7 @@ private:
     AllTask       *m_pTaskAll;
     SubTask       *m_pSubTask;
     ElevatorFrom  *p_mElevator;
+    RunerForm     *p_mRunerForm;
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
     JQHttpServer::TcpServerManage *m_pHttpServer;

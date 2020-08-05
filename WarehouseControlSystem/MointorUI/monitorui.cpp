@@ -102,7 +102,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     //增加刷新当前数据的timer
     m_timer = new QTimer();
     connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
-    m_timer->start(200);
+    //m_timer->start(200);
 }
 
 MonitorUI::~MonitorUI()

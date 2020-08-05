@@ -119,6 +119,8 @@ void MainWindow::initUI()
     m_pSubTask = new SubTask(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     m_pLog = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mElevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    p_mRunerForm = new RunerForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    p_mRunerForm->setParameter(Myconfig::GetInstance()->m_runer);
     p_treeView = new QTreeView(treewidget);
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
                                                                      "QTreeView::item {height: 40px;border-radius: 2px;"
@@ -150,6 +152,9 @@ void MainWindow::initUI()
     p_elevator = new QStandardItem("电梯管理");
     p_elevator->setIcon(QIcon(":/resouse/Image/elevator.png"));
     p_standarItem->appendRow(p_elevator);
+    p_runer = new QStandardItem("流道管理");
+    p_runer->setIcon(QIcon(":/resouse/Image/elevator.png"));
+    p_standarItem->appendRow(p_runer);
 
     p_treeStandarModel->appendRow(p_standarItem);
     p_standarItem = new QStandardItem("货架管理");
@@ -226,6 +231,7 @@ void MainWindow::deleteChildrenList()
     m_palarmWg->hide();
     m_pSubTask->hide();
     m_pmonitorui->hide();
+    p_mRunerForm->hide();
 
 }
 
@@ -235,6 +241,7 @@ void MainWindow::getParameterFromDB()
     r.readt_device_info();
     r.readt_elevator();
     r.readt_crrunt_task();
+    r.readt_runerInfo();
     //qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 
@@ -289,6 +296,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "电梯管理")
     {
         p_mElevator->show();
+    }
+    else if(row_name == "流道管理")
+    {
+        p_mRunerForm->show();
     }
     else if(row_name == "当前任务")
     {

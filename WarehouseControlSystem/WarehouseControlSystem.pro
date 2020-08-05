@@ -68,7 +68,8 @@ SOURCES += main.cpp\
     Forms/TaskForms/subtask.cpp \
     MointorUI/storeitem.cpp \
     MointorUI/monitorview.cpp \
-    MointorUI/monitorui.cpp
+    MointorUI/monitorui.cpp \
+    Forms/Runner/runerform.cpp
 
 
 
@@ -118,7 +119,8 @@ HEADERS  += mainwindow.h \
     Forms/TaskForms/subtask.h \
     MointorUI/storeitem.h \
     MointorUI/monitorview.h \
-    MointorUI/monitorui.h
+    MointorUI/monitorui.h \
+    Forms/Runner/runerform.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

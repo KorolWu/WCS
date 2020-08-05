@@ -19,6 +19,7 @@ public:
     void readt_device_info();
     void readt_elevator();
     void readt_crrunt_task();
+    void readt_runerInfo();
     void ReadStoreposinfoDataBase();
     bool WriteStoreposinfotoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
     bool WriteLoginfo(int level,QString from,QString log_info);

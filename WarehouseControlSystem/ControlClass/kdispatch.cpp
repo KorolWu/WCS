@@ -181,10 +181,10 @@ void KDispatch::outElevator()
 bool KDispatch::runSubTask()
 {
     qDebug()<<QThread::currentThreadId();
+    int sequnce = 1;
     while(false == m_taskQueue.isEmpty())
     {
         OrderStru o = m_taskQueue.dequeue();
-        int sequnce = 1;
         struct timeval tpStart,tpEnd;
         float timeUse = 0;
         gettimeofday(&tpStart,NULL);

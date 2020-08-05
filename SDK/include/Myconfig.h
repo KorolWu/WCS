@@ -47,5 +47,8 @@ public:
     QQueue<LogInfoStru> m_logQue;
     //
     QMutex m_mutex_sqlwrite;
+
+    //runer
+    RunerStru m_runer;
 };
 #endif

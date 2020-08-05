@@ -3,6 +3,7 @@
 
 ReadTableData::ReadTableData()
 {
+
 }
 
 void ReadTableData::readt_device_info()
@@ -57,6 +58,26 @@ void ReadTableData::readt_crrunt_task()
         //qDebug()<<query.value(8).toString().replace("T"," ")<<" :time"<<t.creatTime.toString("yyyy-MM-dd hh:mm:ss");
         Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
         Myconfig::GetInstance()->m_taskQueue.enqueue(t);
+    }
+}
+
+void ReadTableData::readt_runerInfo()
+{
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QString sql = "SELECT * FROM t_runerInfo;";
+    QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
+    while (query.next()) {
+        RunerStru runer_info_stru;
+        runer_info_stru.deviceNum = query.value(1).toString();
+        runer_info_stru.deviceIp = query.value(2).toString();
+        runer_info_stru.port = query.value(3).toInt();
+        runer_info_stru.cache_in = query.value(4).toInt();
+        runer_info_stru.cache_out = query.value(5).toInt();
+        runer_info_stru.request_in = query.value(6).toString();
+        runer_info_stru.response_in = query.value(7).toString();
+        runer_info_stru.request_out = query.value(8).toString();
+        runer_info_stru.response_out = query.value(8).toString();
+        Myconfig::GetInstance()->m_runer = runer_info_stru;
     }
 }
 ///

@@ -184,6 +184,32 @@ public:
         return list;
     }
 }TaskInfoStru;
+
+//流道
+typedef struct _RunerStru
+{
+    QString deviceNum = "";
+    QString deviceIp = "";
+    int port = 0;
+    int cache_in = 0;
+    int cache_out = 0;
+    QString request_in = "";
+    QString response_in = "";
+    QString request_out = "";
+    QString response_out = "";
+     _RunerStru& operator = (const _RunerStru &other)
+     {
+          deviceNum = other.deviceNum;
+          deviceIp = other.deviceIp;
+          port = other.port;
+          cache_in = other.cache_in;
+          cache_out = other.cache_out;
+          request_in = other.request_in;
+          response_in = other.response_in;
+          request_out = other.request_out;
+          response_out = other.response_out;
+     }
+}RunerStru;
 // Data Union
 union Kint64
 {

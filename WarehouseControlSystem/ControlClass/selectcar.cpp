@@ -59,7 +59,7 @@ QString SelectCar::getCarIp_in(const KPosition &p)
     for(auto it= Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
         //小车的状态由自己来做标记，同一个任务需要多次向小车发送命令,在未完成之前都是doing状态
-        if(it.value().deveceStatus.isLocking = false && it.value().deveceStatus.status == 1&& it.value().deveceStatus.isOnline)
+        if(it.value().deveceStatus.isLocking == false && it.value().deveceStatus.status == 1&& it.value().deveceStatus.isOnline)
         {
             if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {

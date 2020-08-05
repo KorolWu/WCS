@@ -195,11 +195,11 @@ bool KDispatch::runSubTask()
             {   QEventLoop loop;
                 QTimer::singleShot(1000,&loop,SLOT(quit()));
                 loop.exec();
+                QString sqlErr = "";
+                CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
                 break;
             }
             //test if sub task over
-            QString sqlErr = "";
-            CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
             //time out return function,change car status Err isLocking
             gettimeofday(&tpEnd,NULL);
             timeUse = 1000 *(tpEnd.tv_sec - tpStart.tv_sec) + 0.001*(tpEnd.tv_usec - tpStart.tv_usec);

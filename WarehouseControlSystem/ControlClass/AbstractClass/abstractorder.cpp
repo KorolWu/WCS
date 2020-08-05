@@ -1,48 +1,44 @@
 #include "abstractorder.h"
-
+#define BASE_RETURN "empty string"
 AbstractOrder::AbstractOrder()
 {
-
+    m_arry = "empty string";
 }
 
 char* AbstractOrder::move_x(const int &value)
 {
-    char c = 'a';
-    return &c;
+    Q_UNUSED(value);
+    return m_arry.data();
 }
 
 char* AbstractOrder::move_y(const int &value)
 {
-     char c = 'a';
-    return &c;
+    Q_UNUSED(value);
+    return m_arry.data();
 }
 
 char* AbstractOrder::right_get()
 {
-     char c = 'a';
-    return &c;
+    return m_arry.data();
 }
 
 char* AbstractOrder::left_get()
 {
-     char c = 'a';
-    return &c;
+    return m_arry.data();
 }
 
 char* AbstractOrder::changeWhell()
 {
-     char c = 'a';
-    return &c;
+    return m_arry.data();
 }
 
 char* AbstractOrder::move_ElevatorNear()
 {
-     char c = 'a';
-    return &c;
+    return m_arry.data();
 }
 
 char *AbstractOrder::call_Elevator(const int layer)
 {
-     char c = 'a';
-    return &c;
+    Q_UNUSED(layer);
+    return m_arry.data();
 }

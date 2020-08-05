@@ -18,6 +18,8 @@ public:
     virtual char* changeWhell();
     virtual char* move_ElevatorNear();
     virtual char* call_Elevator(const int layer);
+private:
+    QByteArray m_arry;
 };
 
 #endif // ABSTRACTORDER_H

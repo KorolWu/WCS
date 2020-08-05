@@ -10,6 +10,7 @@
 typedef struct KBaseStruct_{
     virtual QStringList getNameList(){QStringList list;list.clear();return list;}
     virtual QList<QVariant> getValueList(){QList<QVariant> list;list.clear();return list;}
+    virtual ~KBaseStruct_(){ }
 }KBaseStruct;
 typedef struct KPosition_{
     double x;
@@ -208,6 +209,7 @@ typedef struct _RunerStru
           response_in = other.response_in;
           request_out = other.request_out;
           response_out = other.response_out;
+          return *this;
      }
 }RunerStru;
 // Data Union

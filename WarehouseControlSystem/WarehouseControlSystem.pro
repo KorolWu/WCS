@@ -76,7 +76,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/c_systemlogmng.h \
-    datastructure.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
     Forms/CarForms/adddevice.h \

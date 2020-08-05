@@ -1,30 +1,24 @@
 #include "monitorview.h"
 #include <QtGui>
 #include <cmath>
+#include <QToolTip>
 
 
-MonitorView::MonitorView(QWidget *parent)
+MonitorView::MonitorView(QWidget *parent):QGraphicsView(parent)
 {
     setFrameStyle(Sunken | StyledPanel);
-   // setDragMode(QGraphicsView::RubberBandDrag);//拖动模式，鼠标可拖动
-   setCacheMode(QGraphicsView::CacheBackground);//缓存模式
+    // setDragMode(QGraphicsView::RubberBandDrag);//拖动模式，鼠标可拖动
+    setCacheMode(QGraphicsView::CacheBackground);//缓存模式
     setOptimizationFlags(QGraphicsView::DontSavePainterState);
     setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
     setRenderHint(QPainter::Antialiasing);//指定Render标签，抗锯齿
-   // setStyleSheet("background: transparent;");
+    setMouseTracking(true);
     m_Zoom = 0;
     m_Rotate = 0;
     setCursor(Qt::BusyCursor);
-    setStyleSheet("background: transparent;background-color: rgba(18, 62, 111, 40);border:0px;"
-                  "QToolTip{"
-                             "background-color: rgb(255,255,255);"
-                             "font: 12px 微软雅黑;"
-                             "color: rgb(87,87,87);"
-                             "border-radius: 0px;"
-                             "border:0px solid rgb(0,0,0);"
-                             "outline:none; "
-                             "}");
+    setStyleSheet("QGraphicsView{background: transparent;background-color: rgba(18, 62, 111, 40);border:0px;font: 10px 微软雅黑;color: rgb(255,255,255);}"
+                  "QToolTip{border:1px solid rgb(118, 118, 118); background-color: #ffffff; color:#484848; font-size:12px;}" );
 }
 void MonitorView::wheelEvent(QWheelEvent *event)
 {
@@ -87,12 +81,14 @@ void MonitorView::keyReleaseEvent(QKeyEvent *event)
     QGraphicsView::keyReleaseEvent(event);
 }
 
+
+
 void MonitorView::Zoom(double _Multiple)
 {
     if(_Multiple < -100)
         _Multiple = -100;
     if(_Multiple > 150)
-         _Multiple = 150;
+        _Multiple = 150;
     m_Zoom = _Multiple;
     qreal scale = qPow(qreal(2), (m_Zoom) / qreal(50));
 
@@ -106,7 +102,7 @@ void MonitorView::Zoom(double _Multiple)
 
 void MonitorView::SetZoom(double _Zoom)
 {
-       Zoom(_Zoom);
+    Zoom(_Zoom);
 }
 
 double MonitorView::GetZoom() const

@@ -36,14 +36,16 @@ private:
     QColor m_FontColor;
     //    QColor m_LineColor;
     //   Qt::PenStyle  m_LineStyle;
-    //   int m_LineWidth;
+    int m_LineWidth;
     QString m_text;
     char m_state;
     QGraphicsTextItem *textItem;
     QPen p;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     QFont m_font;
     QTimer *m_Timer;
+protected:
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QRectF boundingRect() const;
 private slots:
     void  UpdateState();
     //添加阴影
@@ -53,10 +55,14 @@ private slots:
     //    shadow_effect->setBlurRadius(20); //阴影半径
     //    item->setGraphicsEffect(shadow_effect); //给item设置阴影
     //    item->setGraphicsEffect(NULL); //去除item设置阴影
+private:
     QColor GetNewColor(const QColor &Source, int Value);
-protected:
-    // bool event(QEvent *event);
-
+//protected:
+    //    bool event(QEvent *event);
+    // QGraphicsItem interface
+//protected:
+    //    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    //    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
 };
 
 #endif // STOREITEM_H

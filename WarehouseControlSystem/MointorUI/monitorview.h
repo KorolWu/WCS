@@ -26,6 +26,9 @@ protected:
 private:
     double m_Zoom;
     int m_Rotate;
+protected:
+//    void enterEvent(QEvent *event);
+//    void leaveEvent(QEvent *event);
 };
 
 #endif // MONITORVIEW_H

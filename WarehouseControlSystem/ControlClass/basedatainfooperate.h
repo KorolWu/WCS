@@ -5,6 +5,7 @@
 #include<Myconfig.h>
 #include <datastructure.h>
 #include <QList>
+using namespace std;
 ///
 ///出库入库信息 出库的时候需要找到料箱所在的位置
 ///主要关于基础信息的操作，包含从内存数据中提取各种信息
@@ -176,7 +177,7 @@ public:
     static void  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
     {
         //从低层筛选层数取值范围
-        qSort(layers.begin(), layers.end());
+        std::sort(layers.begin(), layers.end());
         for(int i = 0; i < layers.size(); ++i)
         {
             QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);

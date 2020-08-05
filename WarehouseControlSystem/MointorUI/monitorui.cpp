@@ -6,6 +6,7 @@
 #include <QScrollBar>
 #include <QLabel>
 #define ROADWIDTH 30
+using namespace std;
 
 MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 {
@@ -26,14 +27,14 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     hbox->addWidget(m_laycombox);
     hbox->setSpacing(20);
     hbox->addWidget(m_refreshbtn);
-   // hbox->addWidget(new QSplitter);
+    // hbox->addWidget(new QSplitter);
 
-   // QHBoxLayout *hlabel = new QHBoxLayout();
+    // QHBoxLayout *hlabel = new QHBoxLayout();
 
     QLabel *label= new QLabel(tr("仓位状态空:"));
     QLabel *emptylabel= new QLabel();
 
-   label->setFixedSize(70,15);
+    label->setFixedSize(70,15);
     emptylabel->setObjectName("emptyrect");
     emptylabel->setFixedSize(15,15);
     emptylabel->setStyleSheet("#emptyrect{font:12px;background-color: rgb(164, 160, 160);}");
@@ -75,8 +76,8 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 
 
     //QSplitter *spil = new QSplitter;
-   // hlabel->addWidget(spil);
-     hbox->addWidget(new QSplitter);
+    // hlabel->addWidget(spil);
+    hbox->addWidget(new QSplitter);
 
 
     QVBoxLayout *vboxlay = new QVBoxLayout;
@@ -84,7 +85,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
 
     vboxlay->setSpacing(20);
 
-  //  vboxlay->addLayout(hlabel);
+    //  vboxlay->addLayout(hlabel);
     //显示当前的界面数据信息
     m_pview = new MonitorView(this);
     m_pview->setFixedSize(parent->width()-40,parent->height()-60);
@@ -190,7 +191,7 @@ void  MonitorUI::GetAllLayers()
 {
     m_laylist.clear();
     QList<double> layvalues = BaseDataInfoOperate::GetLayersFromStorePosInfo();
-    qSort(layvalues.begin(), layvalues.end());
+    std::sort(layvalues.begin(), layvalues.end());
     for(int i = 0; i < layvalues.size();++i)
     {
         m_laylist.append(QString("第%1层区域画面").arg(layvalues[i]));
@@ -219,7 +220,7 @@ void MonitorUI::SetSceneMapData()
         QGraphicsScene *curlay = new QGraphicsScene;
         curlay->setSceneRect(-300,-300,this->width()-40+300,this->height()-60+300);
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
-        for(double y = 0; y <= m_Y; ++y)
+        for(double y = 0; y <= 1; ++y)
         {
             for(double x = 0; x <= m_X;++x)
             {
@@ -272,7 +273,7 @@ void MonitorUI::SetUIDataItem()
     GetstoreposSize();
     double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
     layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
-    for(int i =0; i <m_laylist.size(); ++i )
+    for(int i =0; i < m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
         //得到当前层数
@@ -281,14 +282,13 @@ void MonitorUI::SetUIDataItem()
         QMap<QString, StorePosInfoStru>  laymap = BaseDataInfoOperate::GetStorePosInfoMapByLayer\
                 (z,Myconfig::GetInstance()->m_storeinfoMap);
         QGraphicsScene *curlay = new QGraphicsScene;
-        curlay->setSceneRect(-30,-30,this->width()-40,this->height()-60);
+        curlay->setSceneRect(-30,-60,this->width()-40,this->height()-60);
 
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
 
         for(auto it = laymap.begin(); it != laymap.end();++it)
         {
             double startx= it.value().coordx*m_sizeW;
-
             double starty = layh-(it.value().coordy*m_sizeH*2+roadwidth*it.value().coordy);
             double stopx =it.value().coordx*m_sizeW+m_sizeW;
             double stopy = starty-m_sizeH;
@@ -297,10 +297,12 @@ void MonitorUI::SetUIDataItem()
                 starty = stopy-roadwidth;
                 stopy =  stopy-roadwidth-m_sizeH;
             }
-            StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
-            //qDebug()<<"0pos坐标位置"<<startx<< starty;
-            item->SetIndexID(it.value().idnbr);
-            item->SetText(it.value().boxnbr);
+            StoreItem *item = new StoreItem(startx,stopy ,stopx,starty);
+
+            item->SetIndexID(QString(it.value().idnbr));
+            QString text = QString::fromUtf8(it.value().boxnbr);
+            //qDebug()<<"坐标位置"<<stopy<< starty  << startx<< stopx <<text ;
+            item->SetText(text);
             item->SetStoreSate(it.value().storestat);
             curlay->addItem(item);
         }

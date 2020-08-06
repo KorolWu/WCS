@@ -267,13 +267,13 @@ void KDispatch::pickUp()
     o.value = m_elevator_workBin_x - m_isYTrack;
     m_taskQueue.enqueue(o);
 
-    o.order = Order::Call_WorkBin;
+    o.order = Order::Call_WorkBin_Out;
     o.value = m_task_p.z;
     m_taskQueue.enqueue(o);
     //chu huo so fangzai zuobian
     o.order = Order::Left_WorkBin;
     m_taskQueue.enqueue(o);
-    o.order = Order::Call_WorkBin;
+    o.order = Order::Call_WorkBin_Out;
     o.value = 1;
     m_taskQueue.enqueue(o);
     //发送缓存去库位号给流道

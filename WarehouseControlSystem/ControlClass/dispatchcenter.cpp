@@ -10,6 +10,23 @@ void DispatchCenter::dispatchTaskThread()
 {
     while(Myconfig::GetInstance()->m_flag == true)
     {
+        //扫描预定队列，如果里面有小车空闲，则安排她完成接下来的任务
+        for(auto it = Myconfig::GetInstance()->m_appointMap.begin();it != Myconfig::GetInstance()->m_appointMap.end();it++)
+        {
+            QString ip = it.key();
+            if(Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isLocking == false)
+            {
+                TaskInfoStru t = it.value().dequeue();
+                KPosition task_p;//根据料箱号返回料箱所在坐标
+                QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
+                if(result != "")
+                {
+                    KDispatch *k = new KDispatch(task_p,ip,t);//完成的状态，完成的结果，写入数据库的时间??
+                    m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+ip);
+                    QThreadPool::globalInstance()->start(k);
+                }
+            }
+        }
         if(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
         {
             if(m_pSelectCar->hasUseCar())
@@ -30,9 +47,15 @@ void DispatchCenter::dispatchTaskThread()
                         //将此任务分配给这个小车
                         //将这个车辆锁住（任务锁，意味着这辆车不可以被调到其他层）
                         //然后将这个任务放在一个集合里面，然后在大循环里面扫描这个集合，分配任务 Map<ip,queue<task>>
+                        QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
+                        Myconfig::GetInstance()->m_appointMap[ip].enqueue(m_task);
+                        Myconfig::GetInstance()->m_CarMap[ip].isLockByTask = true;
+                        continue;
                     }
                     //根据坐标返回分配小车的坐标
                     m_car_ip = m_pSelectCar->getCarIp_out(task_p);
+                    //所动小车即将到达的层
+                    Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked = true;
                     // carP   boxP   elevatorP  in or out?
                     KDispatch *k = new KDispatch(task_p,m_car_ip,m_task);//完成的状态，完成的结果，写入数据库的时间??
                     m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+m_task.taskNum +" 分配给"+m_car_ip);

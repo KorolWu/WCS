@@ -52,5 +52,7 @@ public:
     RunerStru m_runer;
     //判断当前层是否锁住
     QMap<int,LayerStru> m_layerStatusMap;
+    //指定小车任务的集合
+    QMap<QString, QQueue<TaskInfoStru>> m_appointMap;
 };
 #endif

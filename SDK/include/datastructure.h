@@ -72,6 +72,8 @@ typedef struct _CarInfoStru
     int port = 0;
     QString deviceType = "";
     QString remarks = "";
+    //被任务预定，锁定不被其他任务分配
+    bool isLockByTask = false;
     Car_status deveceStatus;
 
     _CarInfoStru& operator = (const _CarInfoStru &other)

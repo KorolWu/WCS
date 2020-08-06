@@ -50,7 +50,13 @@ enum Order{
     Left = 3,
     Right = 4,
     Call = 5,
-    Elevator_Near = 6
+    Elevator_Near = 6,
+    Elevator_In = 7,
+    Elevator_Out = 8,
+    Left_WorkBin = 9,
+    Right_WorkBin = 10,
+    Call_WorkBin_Out = 11,
+    Call_WorkBin_In = 12
 };
 //子任务的结构 任务类型，值
 typedef struct _OrderStru
@@ -212,6 +218,13 @@ typedef struct _RunerStru
           return *this;
      }
 }RunerStru;
+// 关于层的一个结构体，用来判断当前层是否锁住，以及锁定的小车的ip
+typedef struct _LayerStru
+{
+    bool isLocked = false;
+    QString CarIP = "";
+
+}LayerStru;
 // Data Union
 union Kint64
 {

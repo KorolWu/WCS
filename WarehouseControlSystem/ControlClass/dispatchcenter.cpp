@@ -10,7 +10,7 @@ void DispatchCenter::dispatchTaskThread()
 {
     while(Myconfig::GetInstance()->m_flag == true)
     {
-        while(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
+        if(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
         {
             if(m_pSelectCar->hasUseCar())
             {
@@ -24,7 +24,14 @@ void DispatchCenter::dispatchTaskThread()
                 QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(m_task.boxNum,task_p);
                 if(result != "")
                 {
-                    //根据坐标返回分配小车的坐标 会有个无车可用的情况
+                    //先判断目标层是否有车
+                    if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked)
+                    {
+                        //将此任务分配给这个小车
+                        //将这个车辆锁住（任务锁，意味着这辆车不可以被调到其他层）
+                        //然后将这个任务放在一个集合里面，然后在大循环里面扫描这个集合，分配任务 Map<ip,queue<task>>
+                    }
+                    //根据坐标返回分配小车的坐标
                     m_car_ip = m_pSelectCar->getCarIp_out(task_p);
                     // carP   boxP   elevatorP  in or out?
                     KDispatch *k = new KDispatch(task_p,m_car_ip,m_task);//完成的状态，完成的结果，写入数据库的时间??

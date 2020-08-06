@@ -67,24 +67,28 @@ void KDispatch::getTrajectory()
 void KDispatch::getTrajectory_out()
 {
     OrderStru o;
-    KPosition p2 = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion;
+    p2 = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion;
     // same layer
     if(p2.z == m_task_p.z)
     {
         if(p2.x == m_isYTrack)// same y track  判断是否在Y巷道上，如果不在移动到料箱相同的Y
         {
-             o.order = Order::Y;
-             o.value = m_task_p.y - p2.y;
-             m_taskQueue.enqueue(o);
+            o.order = Order::Y;
+            o.value = m_task_p.y - p2.y;
+            if(o.value != 0)
+                m_taskQueue.enqueue(o);
         }
         else
         {
-            o.order = Order::X;
-            o.value = m_isYTrack - p2.x;
-            m_taskQueue.enqueue(o);
-            o.order = Order::Y;
-            o.value = m_task_p.y - p2.y;
-            m_taskQueue.enqueue(o);
+            if(p2.y != m_task_p.y)
+            {
+                o.order = Order::X;
+                o.value = m_isYTrack - p2.x;
+                m_taskQueue.enqueue(o);
+                o.order = Order::Y;
+                o.value = m_task_p.y - p2.y;
+                m_taskQueue.enqueue(o);
+            }
         }
     }
     else
@@ -105,13 +109,16 @@ void KDispatch::getTrajectory_out()
         }
         else
         {
-            o.order = Order::X;
-            o.value = m_isYTrack - p2.x;
-            m_taskQueue.enqueue(o);
+            if(p2.y != m_elevatorY)
+            {
+                o.order = Order::X;
+                o.value = m_isYTrack - p2.x;
+                m_taskQueue.enqueue(o);
 
-            o.order = Order::Y;
-            o.value = m_elevatorY - p2.y;
-            m_taskQueue.enqueue(o);
+                o.order = Order::Y;
+                o.value = m_elevatorY - p2.y;
+                m_taskQueue.enqueue(o);
+            }
             inElevator();
         }
         o.order = Order::Call;
@@ -120,7 +127,8 @@ void KDispatch::getTrajectory_out()
         outElevator();
         o.order = Order::Y;
         o.value = m_task_p.y - m_elevatorY;
-        m_taskQueue.enqueue(o);
+        if(o.value != 0)
+            m_taskQueue.enqueue(o);
     }
     pickUp();
 }
@@ -135,47 +143,59 @@ void KDispatch::getTrajectory_in()
 /// 将轨迹产生的子任务保存到数据库里面
 bool KDispatch::saveSubTaskInfo()
 {
-     QQueue<OrderStru> sub_task;
-     sub_task = m_taskQueue;
-     QStringList field;
+    QQueue<OrderStru> sub_task;
+    sub_task = m_taskQueue;
+    QStringList field;
 
-     field<<"taskNum"<<"taskType"<<"subTaskNum"<<"sequence" << "state"<<"storeNum"<<"deviceIp"<<"commandData";
-     QString taskType = "";
-     int sequence = 1;
-     if(m_task.taskNum.contains("L"))
+    field<<"taskNum"<<"taskType"<<"subTaskNum"<<"sequence" << "state"<<"storeNum"<<"deviceIp"<<"commandData";
+    QString taskType = "";
+    int sequence = 1;
+    if(m_task.taskNum.contains("L"))
         taskType = "出库";
-     else
-         taskType = "入库";
-     QList<QVariantList> values;
-     while(sub_task.isEmpty() == false)
-     {
-         OrderStru o = sub_task.dequeue();
-         QVariantList value;
-         value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"Created"<<m_task.boxNum<<m_ip<<"commandDate";
-         values.append(value);
-         sequence ++;
-     }
-     QString errorInfo;
-     if(CRUDBaseOperation::getInstance()->ExcBatchReplaceDB("t_sub_taskInfo",field,values,errorInfo))
-     {
-         return true;
-     }
-     else{
-         qDebug()<<"errorinfo:"<<errorInfo<<endl;
-         return false;
-     }
-     return true;
+    else
+        taskType = "入库";
+    QList<QVariantList> values;
+    while(sub_task.isEmpty() == false)
+    {
+        OrderStru o = sub_task.dequeue();
+        QVariantList value;
+        value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"Created"<<m_task.boxNum<<m_ip<<"commandDate";
+        values.append(value);
+        sequence ++;
+    }
+    QString errorInfo;
+    if(CRUDBaseOperation::getInstance()->ExcBatchReplaceDB("t_sub_taskInfo",field,values,errorInfo))
+    {
+        return true;
+    }
+    else{
+        qDebug()<<"errorinfo:"<<errorInfo<<endl;
+        return false;
+    }
+    return true;
 
 }
-
+//这里是一个流程，从电梯口相等的y到电梯口,到进电梯；
 void KDispatch::inElevator()
 {
-
+    //先呼叫电梯，然后行走，到电梯口等待电梯到位 然后进电梯
+    OrderStru o;
+    o.order = Order::X;
+    o.value =m_elevatorX - p2.x;
+    m_taskQueue.enqueue(o);
+    o.order = Elevator_In;
+    m_taskQueue.enqueue(o);
+    //x_move in elevator
 }
-
+//出电梯，1电梯到位 2，走到换向道上
 void KDispatch::outElevator()
 {
-
+    OrderStru o;
+    o.order = Order::Elevator_Out;
+    m_taskQueue.enqueue(o);
+    o.order = Order::X;
+    o.value =m_elevatorX - p2.x;
+    m_taskQueue.enqueue(o);
 }
 
 bool KDispatch::runSubTask()
@@ -227,46 +247,56 @@ void KDispatch::pickUp()
     m_taskQueue.enqueue(o);
     if(m_task.taskNum == "L")
     {
-         o.order = Order::Left;
+        o.order = Order::Left;
     }
     else
     {
         o.order = Order::Right;
     }
-     m_taskQueue.enqueue(o);
-     o.order = Order::X;
-     o.value = m_isYTrack - m_task_p.x ;
-     m_taskQueue.enqueue(o);
+    m_taskQueue.enqueue(o);
+    o.order = Order::X;
+    o.value = m_isYTrack - m_task_p.x ;
+    m_taskQueue.enqueue(o);
 
-     //qudianti
-     o.order = Order::Y;
-     o.value = m_elevatorY - m_task_p.y;
-     m_taskQueue.enqueue(o);
-     o.order = Order::Call;
-     o.value = m_task_p.z;
-     //?
-     inElevator();
-     //发送缓存去库位号给流道
-     //function
+    //qudianti
+    o.order = Order::Y;
+    o.value = m_elevator_workBin_y - m_task_p.y;
+    if(o.value != 0)
+        m_taskQueue.enqueue(o);
+    o.order = Order::X;
+    o.value = m_elevator_workBin_x - m_isYTrack;
+    m_taskQueue.enqueue(o);
+
+    o.order = Order::Call_WorkBin;
+    o.value = m_task_p.z;
+    m_taskQueue.enqueue(o);
+    //chu huo so fangzai zuobian
+    o.order = Order::Left_WorkBin;
+    m_taskQueue.enqueue(o);
+    o.order = Order::Call_WorkBin;
+    o.value = 1;
+    m_taskQueue.enqueue(o);
+    //发送缓存去库位号给流道
+    //function
 
 }
 
 QString KDispatch::transformationOrder(int i)
 {
     if(i == 0)
-     return "横移车辆";
+        return "横移车辆";
     else if(i == 1)
         return "竖移车辆";
     else if(i == 3)
-       return "左取货";
+        return "左取货";
     else if(i == 4)
         return " 右取货";
     else if(i == 5)
         return "呼叫电梯";
     else if(i == 6)
         return "进电梯";
-     else if(i == 7)
-       return "出电梯";
+    else if(i == 7)
+        return "出电梯";
     return "unknow Order";
 }
 
@@ -282,5 +312,5 @@ void KDispatch::run()
         GetSystemLogObj()->writeLog("完成任务保存失败!-->"+err,2);
     err = "";
     if(!CRUDBaseOperation::getInstance()->removeCrruntTask(m_task,err))
-       GetSystemLogObj()->writeLog("移除执行完成任务失败!-->"+err,3);
+        GetSystemLogObj()->writeLog("移除执行完成任务失败!-->"+err,3);
 }

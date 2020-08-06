@@ -46,7 +46,9 @@ private:
     const double m_isYTrack = 1000;
     const double m_elevatorX = 1000;
     const double m_elevatorY = 2000;
-
+    KPosition p2;
+    const double m_elevator_workBin_x = 2323;
+    const double m_elevator_workBin_y = 32323;
 
     // QRunnable interface
 public:

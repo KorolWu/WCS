@@ -12,7 +12,7 @@ class Myconfig
 private:
     Myconfig()
     {
-
+        //m_layerIsLocked<<false<<false<<false<<false<<false<<false<<false<<false<<false;
     }
 public:
     static Myconfig* GetInstance()
@@ -50,5 +50,7 @@ public:
 
     //runer
     RunerStru m_runer;
+    //判断当前层是否锁住
+    QMap<int,LayerStru> m_layerStatusMap;
 };
 #endif

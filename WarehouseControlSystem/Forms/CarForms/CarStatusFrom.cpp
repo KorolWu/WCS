@@ -92,8 +92,8 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
     item = new QTableWidgetItem ("当前位置");
     table->setItem(2, 0, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carCurrentPosion.x).arg(carStatus.deveceStatus.carCurrentPosion.y));
-    table->setItem(2, 1, item);
+    m_crunt_item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carCurrentPosion.x).arg(carStatus.deveceStatus.carCurrentPosion.y));
+    table->setItem(2, 1, m_crunt_item);
     item = new QTableWidgetItem ("目标位置");
     table->setItem(2, 2, item);
     item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carEndPosion.x).arg(carStatus.deveceStatus.carEndPosion.y));
@@ -165,6 +165,8 @@ void CarStatusFrom::updateStatusOnBase()
          table->setItem(0, 3, item);
          item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.enable? "enable" : "disable");
          table->setItem(3, 1, item);
+
+         m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.y));
     }
 }
 

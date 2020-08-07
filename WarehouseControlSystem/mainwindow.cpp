@@ -196,6 +196,7 @@ void MainWindow::initUI()
 
 void MainWindow::initDeviceClient()
 {
+    Myconfig::GetInstance()->m_appointMap.clear();
     for(auto it = Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
          BaseDevice *b = new BaseDevice(it.value().deviceIp,it.value().port,this);
@@ -210,6 +211,10 @@ void MainWindow::initDeviceClient()
              qDebug()<<it.value().deviceIp+" connect failed!";
              GetSystemLogObj()->writeLog(it.value().deviceIp+" connect failed!",2);
          }
+         QQueue<TaskInfoStru>q;
+         q.clear();
+         Myconfig::GetInstance()->m_appointMap.insert(it.value().deviceIp,q);
+
     }
 }
 

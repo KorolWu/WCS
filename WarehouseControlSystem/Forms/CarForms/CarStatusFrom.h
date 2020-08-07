@@ -59,6 +59,7 @@ private:
 
 
     QPushButton *closeBtn;
+    QTableWidgetItem *m_crunt_item;
     QString m_ip;
     //QTimer* timer;
 

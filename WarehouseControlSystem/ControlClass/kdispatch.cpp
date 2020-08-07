@@ -302,7 +302,7 @@ QString KDispatch::transformationOrder(int i)
 
 void KDispatch::run()
 {
-    getTrajectory();
+    getTrajectory_out();
     saveSubTaskInfo();
     runSubTask();
     //保存当前任务完成的状态，完成 未完成，或者报警日志

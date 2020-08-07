@@ -193,7 +193,6 @@ void BaseDevice::noticeObserver()
        m_ObserverVec[i]->updateStatusOnBase();
     }
 }
-
 void BaseDevice::handelOrder(OrderStru o)
 {
     //qDebug()<<"handel";
@@ -201,15 +200,29 @@ void BaseDevice::handelOrder(OrderStru o)
     if(o.order == Order::X)
         write(m_pOrderStrategy->move_x(20));
     else if(o.order == Order::Y)
-        write(m_pOrderStrategy->move_x(20));
+        write(m_pOrderStrategy->move_y(20));
     else if(o.order == Order::ChangeWhell)
         write(m_pOrderStrategy->changeWhell());
     else if(o.order == Order::Left)
         write(m_pOrderStrategy->left_get());
+    else if(o.order == Order::Right)
+        write(m_pOrderStrategy->right_get());
     else if(o.order == Order::Elevator_Near)
         write(m_pOrderStrategy->move_ElevatorNear());
     else if(o.order == Order::Call)
         write(m_pOrderStrategy->call_Elevator(2));
+    else if(o.order == Order::Elevator_In)
+        write(m_pOrderStrategy->in_elevator());
+    else if(o.order == Order::Elevator_Out)
+        write(m_pOrderStrategy->out_elevator());
+    else if(o.order == Order::Left_WorkBin)
+        write(m_pOrderStrategy->left_workbin());
+    else if(o.order == Order::Right_WorkBin)
+        write(m_pOrderStrategy->right_workbin());
+    else if(o.order == Order::Call_WorkBin_Out)
+        write(m_pOrderStrategy->call_elevator_work_out(2));
+    else if(o.order == Order::Call_WorkBin_In)
+        write(m_pOrderStrategy->call_elevator_work_in(3));
 
 }
 

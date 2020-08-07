@@ -392,14 +392,14 @@ bool CRUDBaseOperation::ExcBatchReplaceDB(const QString &table, QStringList &nam
         }
         query.addBindValue(list);
     }
-    if(false == data_base.isOpen())
-    {
-        if(false == data_base.open())
-        {
-            sqlerror = "数据库重新打开失败";
-            return false;
-        }
-    }
+//    if(false == data_base.isOpen())
+//    {
+//        if(false == data_base.open())
+//        {
+//            sqlerror = "数据库重新打开失败";
+//            return false;
+//        }
+//    }
     if(!query.execBatch()){
         sqlerror = query.lastError().text();
         qDebug()<<"in execBatch 失败: " << sqlerror<<endl;

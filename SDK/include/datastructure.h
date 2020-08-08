@@ -61,6 +61,8 @@ enum Order{
 //子任务的结构 任务类型，值
 typedef struct _OrderStru
 {
+    //order type car elevator runer
+    QString type = "";
     Order order;
     double value;
 }OrderStru;

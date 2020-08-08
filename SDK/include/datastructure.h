@@ -56,7 +56,8 @@ enum Order{
     Left_WorkBin = 9,
     Right_WorkBin = 10,
     Call_WorkBin_Out = 11,
-    Call_WorkBin_In = 12
+    Call_WorkBin_In = 12 ,
+    call_Runner_Putbox = 13
 };
 //子任务的结构 任务类型，值
 typedef struct _OrderStru

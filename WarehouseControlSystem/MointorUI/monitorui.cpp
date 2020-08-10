@@ -369,5 +369,5 @@ void MonitorUI::GetstoreposSize()
         m_sizeH = 5;//设置最小尺寸5
     }
     m_sizeH = 20;
-    m_sizeW =30;
+    m_sizeW = 30;
 }

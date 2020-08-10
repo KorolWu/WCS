@@ -74,8 +74,8 @@ void ReadTableData::readt_runerInfo()
         runer_info_stru.deviceNum = query.value(1).toString();
         runer_info_stru.deviceIp = query.value(2).toString();
         runer_info_stru.port = query.value(3).toInt();
-        runer_info_stru.cache_in = query.value(4).toInt();
-        runer_info_stru.cache_out = query.value(5).toInt();
+        runer_info_stru.cache_in_max = query.value(4).toInt();
+        runer_info_stru.cache_out_max = query.value(5).toInt();
         runer_info_stru.request_in = query.value(6).toString();
         runer_info_stru.response_in = query.value(7).toString();
         runer_info_stru.request_out = query.value(8).toString();

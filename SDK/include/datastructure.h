@@ -47,8 +47,8 @@ enum Order{
     X = 0,                  //向X方向移动
     Y = 1,                  //向Y方向移动
     ChangeWhell = 2,        //换轮子
-    Left = 3,               //左取货
-    Right = 4,              //右取货
+    Left_Pickup = 3,        //左取货
+    Right_Pickup = 4,       //右取货
     Call = 5,               //呼叫换层电梯
     Elevator_Near = 6,      //电梯临近点
     Elevator_In = 7,        //小车进换层电梯
@@ -57,7 +57,9 @@ enum Order{
     Right_WorkBin = 10,     //把料箱从入库口电梯取出
     Call_WorkBin_Out = 11,  //呼叫出库电梯
     Call_WorkBin_In = 12 ,  //呼叫入库电梯
-    call_Runner_Putbox = 13
+    call_Runner_Putbox = 13, //呼叫流道放货到入库电梯
+    Left_Putinto = 14,       //左放货
+    Right_Putinto = 15,      //右放货
 };
 //子任务的结构 任务类型，值
 typedef struct _OrderStru

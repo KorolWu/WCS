@@ -142,7 +142,10 @@ void MainWindow::initUI()
     p_standarItem = new QStandardItem("用户管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/user.png"));
     p_userItem = new QStandardItem("权限管理");
+    p_ordersItem = new QStandardItem("生成任务");
+
     p_standarItem->appendRow(p_userItem);
+     p_standarItem->appendRow(p_ordersItem);
     p_treeStandarModel->appendRow(p_standarItem);
     p_standarItem = new QStandardItem("设备管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/devices.png"));

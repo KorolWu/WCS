@@ -29,16 +29,13 @@ class GenerateInputWarehousingOrders:public QObject
 public:
     GenerateInputWarehousingOrders();
     ~GenerateInputWarehousingOrders();
-    void SetPathParam(KPosition task_P, /*KPosition carPosion*/ QString carid);
-    QQueue<OrderStru> GetInputWarehousingOrders(){
-        return m_taskQueue;
-    }
+    void SetPathParam(KPosition task_P, KPosition curcarPosion);
+    QQueue<OrderStru> GetInputWarehousingOrders();
 private:
     QQueue<OrderStru> m_taskQueue;
     KPosition m_trapos;
     KPosition m_carPos;
-    QString m_carid;
-    InputCurConfig m_InPutBoxElevatorstru;//入库电梯的坐标 代表当前的信息状态
+    //InputCurConfig m_InPutBoxElevatorstru;//入库电梯的坐标 代表当前的信息状态
     InputCurConfig m_pickupBoxElevatorstru;//小车去入库电梯取货的坐标 代表当前的信息状态
     InputCurConfig m_changeoverRoadstru;//换向巷道坐标 代表当前的信息状态
     InputCurConfig m_carwaitElevatorstru;//等待电梯点坐标位置 代表当前的信息状态
@@ -52,6 +49,9 @@ private:
     void GetCarElevatorToBoxlayOrders();
     void GetCarfromCarElevatortopickupBoxElevatorders();
     void GetfrompickupBoxElevatortoTraposorders();
+    void GetfromCarElevatochangeroadorders();
+
+    QString GetorderNameByValue(int value);
 };
 
 #endif // GENERATEINPUTWAREHOUSINGORDERS_H

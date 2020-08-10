@@ -48,7 +48,7 @@ void KDispatch::getTrajectory()
         o.order = Order::X;
         o.value = m_task_p.x;
         m_taskQueue.enqueue(o);
-        o.order = Order::Left;
+        o.order = Order::Left_Pickup;
         m_taskQueue.enqueue(o);
         o.order = Order::X;
         o.value = 0 - m_task_p.x;
@@ -247,11 +247,11 @@ void KDispatch::pickUp()
     m_taskQueue.enqueue(o);
     if(m_task.taskNum == "L")
     {
-        o.order = Order::Left;
+        o.order = Order::Left_Pickup;
     }
     else
     {
-        o.order = Order::Right;
+        o.order = Order::Right_Pickup;
     }
     m_taskQueue.enqueue(o);
     o.order = Order::X;

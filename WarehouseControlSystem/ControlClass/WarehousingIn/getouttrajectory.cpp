@@ -117,11 +117,11 @@ void GetOutTrajectory::pickUp()
     m_taskQueue.enqueue(o);
     if(m_task.taskNum == "L")
     {
-        o.order = Order::Left;
+        o.order = Order::Left_Pickup;
     }
     else
     {
-        o.order = Order::Right;
+        o.order = Order::Right_Pickup;
     }
     m_taskQueue.enqueue(o);
     o.order = Order::X;

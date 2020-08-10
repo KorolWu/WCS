@@ -203,9 +203,9 @@ void BaseDevice::handelOrder(OrderStru o)
         write(m_pOrderStrategy->move_y(20));
     else if(o.order == Order::ChangeWhell)
         write(m_pOrderStrategy->changeWhell());
-    else if(o.order == Order::Left)
+    else if(o.order == Order::Left_Pickup)
         write(m_pOrderStrategy->left_get());
-    else if(o.order == Order::Right)
+    else if(o.order == Order::Right_Pickup)
         write(m_pOrderStrategy->right_get());
     else if(o.order == Order::Elevator_Near)
         write(m_pOrderStrategy->move_ElevatorNear());

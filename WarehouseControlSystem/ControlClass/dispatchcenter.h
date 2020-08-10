@@ -28,6 +28,8 @@ private:
     ReadTableData m_writeData;
     QString m_car_ip;
     int m_count_text;
+    int m_in_cache_max;
+    int m_out_cahce_max;
     void lock_layer(int layer,QString lock_car_ip);
     void lock_car(QString car_ip);
 };

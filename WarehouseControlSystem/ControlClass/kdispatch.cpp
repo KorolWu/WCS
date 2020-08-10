@@ -19,7 +19,6 @@ KDispatch::KDispatch(KPosition task_P, QString &ip, const TaskInfoStru task)
         m_pCom = nullptr;
     }
     //test
-
 }
 
 KDispatch::~KDispatch()
@@ -27,116 +26,7 @@ KDispatch::~KDispatch()
     m_pCom = nullptr;
     delete m_pCom;
 }
-//规划轨迹，生成子任务组，并将其保存在数据库里面
-void KDispatch::getTrajectory()
-{
 
-    KPosition p2 = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion;
-    if(p2.y != m_task_p.y)//p2.z != m_task_p.z
-    {
-        OrderStru o;
-        o.order = Order::X;
-        o.value = p2.x - 0;
-        m_taskQueue.enqueue(o);
-        o.order = Order::ChangeWhell;
-        m_taskQueue.enqueue(o);
-        o.order = Order::Y;
-        o.value = p2.y - m_task_p.y;
-        m_taskQueue.enqueue(o);
-        o.order = Order::ChangeWhell;
-        m_taskQueue.enqueue(o);
-        o.order = Order::X;
-        o.value = m_task_p.x;
-        m_taskQueue.enqueue(o);
-        o.order = Order::Left;
-        m_taskQueue.enqueue(o);
-        o.order = Order::X;
-        o.value = 0 - m_task_p.x;
-        m_taskQueue.enqueue(o);
-        o.order = Order::ChangeWhell;
-        m_taskQueue.enqueue(o);
-        // get elevator
-        o.order = Order::Call;
-        m_taskQueue.enqueue(o);
-        //elevator near position y
-        o.order = Order::Elevator_Near;
-        m_taskQueue.enqueue(o);
-    }
-}
-
-void KDispatch::getTrajectory_out()
-{
-    OrderStru o;
-    p2 = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion;
-    // same layer
-    if(p2.z == m_task_p.z)
-    {
-        if(p2.x == m_isYTrack)// same y track  判断是否在Y巷道上，如果不在移动到料箱相同的Y
-        {
-            o.order = Order::Y;
-            o.value = m_task_p.y - p2.y;
-            if(o.value != 0)
-                m_taskQueue.enqueue(o);
-        }
-        else
-        {
-            if(p2.y != m_task_p.y)
-            {
-                o.order = Order::X;
-                o.value = m_isYTrack - p2.x;
-                m_taskQueue.enqueue(o);
-                o.order = Order::Y;
-                o.value = m_task_p.y - p2.y;
-                m_taskQueue.enqueue(o);
-            }
-        }
-    }
-    else
-    {
-        if(p2.x == m_isYTrack) // car at y track 判断是否在Y巷道上，如果不在移动到料箱相同的Y 然后进电梯 出电梯
-        {
-            if(p2.y == m_elevatorY)
-            {
-                inElevator();
-            }
-            else
-            {
-                o.order = Order::Y;
-                o.value = m_elevatorY - p2.y;
-                m_taskQueue.enqueue(o);
-                inElevator();
-            }
-        }
-        else
-        {
-            if(p2.y != m_elevatorY)
-            {
-                o.order = Order::X;
-                o.value = m_isYTrack - p2.x;
-                m_taskQueue.enqueue(o);
-
-                o.order = Order::Y;
-                o.value = m_elevatorY - p2.y;
-                m_taskQueue.enqueue(o);
-            }
-            inElevator();
-        }
-        o.order = Order::Call;
-        o.value = m_task_p.z;
-        m_taskQueue.enqueue(o);
-        outElevator();
-        o.order = Order::Y;
-        o.value = m_task_p.y - m_elevatorY;
-        if(o.value != 0)
-            m_taskQueue.enqueue(o);
-    }
-    pickUp();
-}
-
-void KDispatch::getTrajectory_in()
-{
-
-}
 ///
 /// \brief KDispatch::saveSubTaskInfo
 /// \return
@@ -174,28 +64,6 @@ bool KDispatch::saveSubTaskInfo()
     }
     return true;
 
-}
-//这里是一个流程，从电梯口相等的y到电梯口,到进电梯；
-void KDispatch::inElevator()
-{
-    //先呼叫电梯，然后行走，到电梯口等待电梯到位 然后进电梯
-    OrderStru o;
-    o.order = Order::X;
-    o.value =m_elevatorX - p2.x;
-    m_taskQueue.enqueue(o);
-    o.order = Elevator_In;
-    m_taskQueue.enqueue(o);
-    //x_move in elevator
-}
-//出电梯，1电梯到位 2，走到换向道上
-void KDispatch::outElevator()
-{
-    OrderStru o;
-    o.order = Order::Elevator_Out;
-    m_taskQueue.enqueue(o);
-    o.order = Order::X;
-    o.value =m_elevatorX - p2.x;
-    m_taskQueue.enqueue(o);
 }
 
 bool KDispatch::runSubTask()
@@ -235,51 +103,6 @@ bool KDispatch::runSubTask()
 
     return false;
 }
-///
-/// \brief KDispatch::pickUp
-///小车从料箱所在的巷道，移动去取货
-///
-void KDispatch::pickUp()
-{
-    OrderStru o;
-    o.order = Order::X;
-    o.value = m_task_p.x - m_isYTrack ;
-    m_taskQueue.enqueue(o);
-    if(m_task.taskNum == "L")
-    {
-        o.order = Order::Left;
-    }
-    else
-    {
-        o.order = Order::Right;
-    }
-    m_taskQueue.enqueue(o);
-    o.order = Order::X;
-    o.value = m_isYTrack - m_task_p.x ;
-    m_taskQueue.enqueue(o);
-
-    //qudianti
-    o.order = Order::Y;
-    o.value = m_elevator_workBin_y - m_task_p.y;
-    if(o.value != 0)
-        m_taskQueue.enqueue(o);
-    o.order = Order::X;
-    o.value = m_elevator_workBin_x - m_isYTrack;
-    m_taskQueue.enqueue(o);
-
-    o.order = Order::Call_WorkBin_Out;
-    o.value = m_task_p.z;
-    m_taskQueue.enqueue(o);
-    //chu huo so fangzai zuobian
-    o.order = Order::Left_WorkBin;
-    m_taskQueue.enqueue(o);
-    o.order = Order::Call_WorkBin_Out;
-    o.value = 1;
-    m_taskQueue.enqueue(o);
-    //发送缓存去库位号给流道
-    //function
-
-}
 
 QString KDispatch::transformationOrder(int i)
 {
@@ -302,7 +125,16 @@ QString KDispatch::transformationOrder(int i)
 
 void KDispatch::run()
 {
-    getTrajectory_out();
+    if(m_task.taskNum.contains("出库"))// 入库
+    {
+        GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_ip,m_task);
+        m_taskQueue = t->getTrajectory();
+    }
+    else
+    {
+        //GenerateInputWarehousingOrders t = new GenerateInputWarehousingOrders();
+    }
+//    getTrajectory_out();
     saveSubTaskInfo();
     runSubTask();
     //保存当前任务完成的状态，完成 未完成，或者报警日志

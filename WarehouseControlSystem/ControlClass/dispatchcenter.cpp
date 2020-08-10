@@ -96,7 +96,7 @@ void DispatchCenter::dispatchTaskThread()
 
                 }
             }
-            else
+            else // no car use
             {
                 QThread::msleep(10);
             }

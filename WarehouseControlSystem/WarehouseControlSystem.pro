@@ -70,7 +70,8 @@ SOURCES += main.cpp\
     MointorUI/monitorview.cpp \
     MointorUI/monitorui.cpp \
     Forms/Runner/runerform.cpp \
-    ControlClass/WarehousingIn/generateinputwarehousingorders.cpp
+    ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
+    ControlClass/WarehousingIn/getouttrajectory.cpp
 
 
 
@@ -121,7 +122,8 @@ HEADERS  += mainwindow.h \
     MointorUI/monitorview.h \
     MointorUI/monitorui.h \
     Forms/Runner/runerform.h \
-    ControlClass/WarehousingIn/generateinputwarehousingorders.h
+    ControlClass/WarehousingIn/generateinputwarehousingorders.h \
+    ControlClass/WarehousingIn/getouttrajectory.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

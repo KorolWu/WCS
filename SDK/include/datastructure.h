@@ -44,19 +44,19 @@ typedef struct _Car_status
 
 }Car_status;
 enum Order{
-    X = 0,
-    Y = 1,
-    ChangeWhell = 2,
-    Left = 3,
-    Right = 4,
-    Call = 5,
-    Elevator_Near = 6,
-    Elevator_In = 7,
-    Elevator_Out = 8,
-    Left_WorkBin = 9,
-    Right_WorkBin = 10,
-    Call_WorkBin_Out = 11,
-    Call_WorkBin_In = 12 ,
+    X = 0,                  //向X方向移动
+    Y = 1,                  //向Y方向移动
+    ChangeWhell = 2,        //换轮子
+    Left = 3,               //左取货
+    Right = 4,              //右取货
+    Call = 5,               //呼叫换层电梯
+    Elevator_Near = 6,      //电梯临近点
+    Elevator_In = 7,        //小车进换层电梯
+    Elevator_Out = 8,       //小车出换层电梯
+    Left_WorkBin = 9,       //把料箱放在出货口电梯
+    Right_WorkBin = 10,     //把料箱从入库口电梯取出
+    Call_WorkBin_Out = 11,  //呼叫出库电梯
+    Call_WorkBin_In = 12 ,  //呼叫入库电梯
     call_Runner_Putbox = 13
 };
 //子任务的结构 任务类型，值

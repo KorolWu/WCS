@@ -42,6 +42,9 @@ public:
     //task queue
     QQueue<TaskInfoStru> m_taskQueue;
     QMutex m_task_mutex;
+    //in_task queue
+    QQueue<TaskInfoStru> m_in_taskQueue;
+    QMutex m_in_task_mutex;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;
     QQueue<LogInfoStru> m_logQue;

@@ -13,8 +13,8 @@ void RunerForm::setParameter(RunerStru s)
     m_pIp->setText(s.deviceIp);
     m_pPort->setText(QString("%1").arg(s.port));
     m_prunerName->setText(s.deviceNum);
-    m_pinCache->setText(QString("%1").arg(s.cache_in));
-    m_poutCache->setText(QString("%1").arg(s.cache_out));
+    m_pinCache->setText(QString("%1").arg(s.cache_in_max));
+    m_poutCache->setText(QString("%1").arg(s.cache_out_max));
     m_porderIn->setText(s.request_in);
     m_preplyin->setText(s.response_in);
     m_porderOut->setText(s.request_out);

@@ -36,10 +36,21 @@ QQueue<OrderStru> GenerateInputWarehousingOrders::GetInputWarehousingOrders(){
     Generationinstruction();
     for(int i = 0; i < m_taskQueue.size();++i)
     {
-        //qDebug()<<"指令名字:"<<m_taskQueue.at(i).order << "指令参数:"<<m_taskQueue.at(i).value;
+        qDebug()<<"入库指令名字:"<<GetorderNameByValue(m_taskQueue.at(i).order)<< "指令参数:"<<m_taskQueue.at(i).value;
     }
 
     return m_taskQueue;
+}
+
+void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pickupy, double changeover, double carwaitElevatorx, double carwaitElevatory, double carElevatorx, double carElevatory)
+{
+    m_pickupBoxElevatorstru.x = pickupx;
+    m_pickupBoxElevatorstru.y = pickupy;
+    m_changeoverRoadstru.x = changeover;//换向位置坐标
+    m_carwaitElevatorstru.x = carwaitElevatorx; //小车每层等待点的坐标
+    m_carwaitElevatorstru.y = carwaitElevatory;
+    m_carElevatorstru.x = carElevatorx;//小车进电梯位置信息
+    m_carElevatorstru.y = carElevatory;
 }
 ///
 /// \brief GenerateInputWarehousingOrders::Generationinstruction
@@ -245,7 +256,7 @@ void GenerateInputWarehousingOrders::GetfromCarElevatochangeroadorders()
     }
 }
 
-QString GenerateInputWarehousingOrders::GetorderNameByValue(int value)
+QString GenerateInputWarehousingOrders::GetorderNameByValue(Order value)
 {
     QString name;
     switch (value) {
@@ -303,3 +314,4 @@ QString GenerateInputWarehousingOrders::GetorderNameByValue(int value)
     }
     return name;
 }
+

@@ -132,7 +132,9 @@ void KDispatch::run()
     }
     else
     {
-        //GenerateInputWarehousingOrders t = new GenerateInputWarehousingOrders();
+        GenerateInputWarehousingOrders *t = new GenerateInputWarehousingOrders();
+        t->SetPathParam(m_task_p,Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion);
+        m_taskQueue = t->GetInputWarehousingOrders();
     }
 //    getTrajectory_out();
     saveSubTaskInfo();

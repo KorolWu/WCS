@@ -36,7 +36,7 @@ QQueue<OrderStru> GenerateInputWarehousingOrders::GetInputWarehousingOrders(){
     Generationinstruction();
     for(int i = 0; i < m_taskQueue.size();++i)
     {
-        qDebug()<<"指令名字:"<<m_taskQueue.at(i).order << "指令参数:"<<m_taskQueue.at(i).value;
+        //qDebug()<<"指令名字:"<<m_taskQueue.at(i).order << "指令参数:"<<m_taskQueue.at(i).value;
     }
 
     return m_taskQueue;

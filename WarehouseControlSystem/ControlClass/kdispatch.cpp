@@ -125,16 +125,18 @@ QString KDispatch::transformationOrder(int i)
 
 void KDispatch::run()
 {
-    if(m_task.taskNum.contains("出库"))// 入库
+    if(m_task.taskNum.contains("O"))// 入库
     {
         GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_ip,m_task);
         m_taskQueue = t->getTrajectory();
+        qDebug()<<"正在执行出库任务";
     }
     else
     {
         GenerateInputWarehousingOrders *t = new GenerateInputWarehousingOrders();
         t->SetPathParam(m_task_p,Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion);
         m_taskQueue = t->GetInputWarehousingOrders();
+        qDebug()<<"正在执行入库任务";
     }
 //    getTrajectory_out();
     saveSubTaskInfo();

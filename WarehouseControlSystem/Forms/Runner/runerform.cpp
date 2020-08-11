@@ -1,5 +1,5 @@
 #include "runerform.h"
-
+#include "Myconfig.h"
 RunerForm::RunerForm(int width, int height, QWidget *parent) : QWidget(parent)
 {
     initUi();
@@ -19,6 +19,17 @@ void RunerForm::setParameter(RunerStru s)
     m_preplyin->setText(s.response_in);
     m_porderOut->setText(s.request_out);
     m_preplyOut->setText(s.response_out);
+}
+
+void RunerForm::yesBtnClicked()
+{
+    QString in = m_pinCache->text();
+    QString out = m_poutCache->text();
+    QString camera = m_porderIn->text();
+    Myconfig::GetInstance()->m_runer.cache_in_current = in.toInt();
+    Myconfig::GetInstance()->m_runer.cache_out_current = out.toInt();
+    Myconfig::GetInstance()->m_boxNum_in = camera;
+    qDebug()<<"in "<<in.toInt()<<"; out "<<out.toInt()<<"; box_num "<<camera;
 }
 
 void RunerForm::initUi()
@@ -96,6 +107,7 @@ void RunerForm::initUi()
     m_pvBox->addWidget(m_preplyInfo);
 
     m_pYesBtn = new QPushButton("确定", this);
+    connect(m_pYesBtn,&QPushButton::clicked,this,&RunerForm::yesBtnClicked);
     m_pNoBtn = new QPushButton("取消",this);
     QHBoxLayout *h = new QHBoxLayout();
     h->addWidget(m_pYesBtn);

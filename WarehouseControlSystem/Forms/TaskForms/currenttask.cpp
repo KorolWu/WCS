@@ -109,9 +109,19 @@ void CurrentTask::handelHttpTask(QString reply)
     t.carNum = list[6];
     t.creatTime = QDateTime::currentDateTime();
     //saveTaskToDB(t);
-    QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
+    if(t.taskNum.contains("O"))
+    {
+        QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
+        Myconfig::GetInstance()->m_taskQueue.enqueue(t);
+    }
+    else
+    {
+         QMutexLocker(&Myconfig::GetInstance()->m_in_task_mutex);
+         Myconfig::GetInstance()->m_in_taskMap.insert(t.boxNum,t);
+         qDebug()<<"添加入库任务";
+    }
+    QMutexLocker(&Myconfig::GetInstance()->m_mutex_taskMap);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
-    Myconfig::GetInstance()->m_taskQueue.enqueue(t);
     QString errMsg = "";
     if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t,errMsg))
         GetSystemLogObj()->writeLog("save current to dbbase failed! ->"+errMsg,2);

@@ -51,7 +51,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
     }
-    p_table_view->setColumnWidth(0,width/20*1);
+    p_table_view->setColumnWidth(0,width/20*2);
     p_table_view->setColumnWidth(1,width/20*2);
     p_table_view->setColumnWidth(2,width/20*3);
     p_table_view->setColumnWidth(3,width/20*2);

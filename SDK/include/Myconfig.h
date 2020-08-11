@@ -39,6 +39,7 @@ public:
     QMutex m_rmutex;
     //taskNum,task
     QMap<QString, TaskInfoStru> m_taskMap;
+    QMutex m_mutex_taskMap;
     //task queue
     QQueue<TaskInfoStru> m_taskQueue;
     QMutex m_task_mutex;

@@ -147,6 +147,10 @@ typedef struct _ElevatorInfoStru
     QString elevatorNearPos;
     QString elevatorPos;
     QString remarks;
+    double  near_x;
+    double  near_y;
+    double  elevator_x;
+    double  elevator_y;
     _ElevatorInfoStru()
     {
         elevatorNum = "";

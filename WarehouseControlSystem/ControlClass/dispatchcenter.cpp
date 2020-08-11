@@ -6,6 +6,7 @@ DispatchCenter::DispatchCenter()
     m_count_text = 1;
     m_in_cache_max = Myconfig::GetInstance()->m_runer.cache_in_max;
     m_out_cahce_max = Myconfig::GetInstance()->m_runer.cache_out_max;
+    qDebug()<<"max"<<m_in_cache_max<<"out"<<m_out_cahce_max;
 }
 
 void DispatchCenter::dispatchTaskThread()
@@ -37,18 +38,17 @@ void DispatchCenter::dispatchTaskThread()
             }
         }
         m_car_ip = "";
+        //qDebug()<<Myconfig::GetInstance()->m_runer.cache_in_current<<"-"<<Myconfig::GetInstance()->m_runer.cache_out_current;
         if(Myconfig::GetInstance()->m_runer.cache_in_current < m_in_cache_max*0.75 && Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max)
         {
+            qDebug()<<"out";
             if(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
             {
                 if(m_pSelectCar->hasUseCar())
                 {
                     QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
                     m_task =  Myconfig::GetInstance()->m_taskQueue.dequeue();
-                    if(Myconfig::GetInstance()->m_taskMap.contains(m_task.taskNum))
-                    {
-                        Myconfig::GetInstance()->m_taskMap.remove(m_task.taskNum);
-                    }
+                    remove_task_from(m_task.taskNum);
                     KPosition task_p;//根据料箱号返回料箱所在坐标
                     QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(m_task.boxNum,task_p);
                     if(result != "")
@@ -62,7 +62,7 @@ void DispatchCenter::dispatchTaskThread()
                             //然后将这个任务放在一个集合里面，然后在大循环里面扫描这个集合，分配任务 Map<ip,queue<task>>
                             Myconfig::GetInstance()->m_appointMap[ip].enqueue(m_task);
                             Myconfig::GetInstance()->m_CarMap[ip].isLockByTask = true;
-                            qDebug()<<"当前层有车，且忙碌，将此任务提前分配给此小车";
+                            qDebug()<<"正在执行出库任务,当前层有车，且忙碌，将此任务提前分配给此小车";
                             continue;
                         }
                         //根据坐标返回分配小车的坐标
@@ -94,12 +94,13 @@ void DispatchCenter::dispatchTaskThread()
             }
         }
         else // 分配入库
-        {
+        {qDebug()<<"in";
             if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
             {
                 if(m_pSelectCar->hasUseCar())
                 {
                     QString frist_in_boxNum = Myconfig::GetInstance()->m_boxNum_in;
+                    qDebug()<<"box_num"<<frist_in_boxNum;
                     if(Myconfig::GetInstance()->m_in_taskMap.contains(frist_in_boxNum))
                     {
                         TaskInfoStru t = Myconfig::GetInstance()->m_in_taskMap[frist_in_boxNum];
@@ -107,17 +108,16 @@ void DispatchCenter::dispatchTaskThread()
                         QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
                         if(result != "")
                         {
-
+                            remove_task_from(t.taskNum);
                             QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
                             //先判断目标层是否有车
                             if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked )//&& Myconfig::GetInstance()->m_CarMap[ip].deveceStatus.isLocking
                             {
-                                //将此任务分配给这个小车
-                                //将这个车辆锁住（任务锁，意味着这辆车不可以被调到其他层）
-                                //然后将这个任务放在一个集合里面，然后在大循环里面扫描这个集合，分配任务 Map<ip,queue<task>>
                                 Myconfig::GetInstance()->m_appointMap[ip].enqueue(t);
                                 Myconfig::GetInstance()->m_CarMap[ip].isLockByTask = true;
-                                qDebug()<<"当前层有车，且忙碌，将入库任务提前分配给此小车";
+                                qDebug()<<"正在执行入库任务,当前层有车，且忙碌，将入库任务提前分配给此小车";
+                                QMutexLocker locker(&Myconfig::GetInstance()->m_in_task_mutex);
+                                Myconfig::GetInstance()->m_in_taskMap.remove(frist_in_boxNum);
                                 continue;
                             }
                             //根据坐标返回分配小车的坐标
@@ -131,6 +131,7 @@ void DispatchCenter::dispatchTaskThread()
                             qDebug()<<m_car_ip<<" runing in Task Number: "+QString::number(m_count_text);
                             QMutexLocker locker(&Myconfig::GetInstance()->m_in_task_mutex);
                             Myconfig::GetInstance()->m_in_taskMap.remove(frist_in_boxNum);
+                            qDebug()<<"in size "<<Myconfig::GetInstance()->m_in_taskMap.size();
                         }
                         else
                         {
@@ -188,5 +189,15 @@ void DispatchCenter::Task_execution_failed(TaskInfoStru &t)
     if(false == m_writeData.WriteAlarmInfo(arm,sql_err))
         qDebug()<<"alarm insert failed!";
     //CRUDBaseOperation::getInstance()->saveCompletedTask(m_task);
+
+}
+
+void DispatchCenter::remove_task_from(QString task_num)
+{
+    if(Myconfig::GetInstance()->m_taskMap.contains(task_num))
+    {
+       QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_taskMap);
+        Myconfig::GetInstance()->m_taskMap.remove(task_num);
+    }
 
 }

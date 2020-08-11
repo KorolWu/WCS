@@ -20,6 +20,7 @@ public:
 signals:
 
 public slots:
+    void yesBtnClicked();
 private:
     QGroupBox *m_pgboxSocketInfo;
     QLineEdit *m_pIp;

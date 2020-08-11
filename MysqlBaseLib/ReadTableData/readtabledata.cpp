@@ -35,10 +35,15 @@ void ReadTableData::readt_elevator()
         elevator_stru.elevatorType = query.value(2).toString();
         elevator_stru.elevatorIp = query.value(3).toString();
         elevator_stru.elevatorPort = query.value(4).toInt();
-        elevator_stru.elevatorNearPos = query.value(5).toString();
-        elevator_stru.elevatorPos = query.value(6).toString();
+
         elevator_stru.remarks = query.value(7).toString();
-        Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorIp,elevator_stru);
+        elevator_stru.near_x = query.value(8).toDouble();
+        elevator_stru.near_y = query.value(9).toDouble();
+        elevator_stru.elevatorNearPos = QString("%1,%2").arg(elevator_stru.near_x).arg(elevator_stru.near_y);
+        elevator_stru.elevator_x = query.value(10).toDouble();
+        elevator_stru.elevator_y = query.value(11).toDouble();
+        elevator_stru.elevatorPos = QString("%1,%2").arg(elevator_stru.elevator_x).arg(elevator_stru.elevator_y);
+        Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorNum,elevator_stru);
     }
 }
 

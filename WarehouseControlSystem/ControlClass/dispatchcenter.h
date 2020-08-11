@@ -33,6 +33,7 @@ private:
     void lock_layer(int layer,QString lock_car_ip);
     void lock_car(QString car_ip);
     void Task_execution_failed(TaskInfoStru &t);
+    void remove_task_from(QString task_num);
 };
 
 #endif // DISPATCHCENTER_H

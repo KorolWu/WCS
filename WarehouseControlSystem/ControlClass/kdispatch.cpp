@@ -27,11 +27,8 @@ KDispatch::~KDispatch()
     m_pCom = nullptr;
     delete m_pCom;
 }
-//规划轨迹，生成子任务组，并将其保存在数据库里面
-void KDispatch::getTrajectory()
-{
 
-    
+
 /// \brief KDispatch::saveSubTaskInfo
 /// \return
 /// 将轨迹产生的子任务保存到数据库里面

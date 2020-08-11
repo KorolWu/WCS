@@ -24,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pstoreWg = new StoreInfoWidget(p_main_widget);
     m_palarmWg = new AlarmInfoWg(p_main_widget);
     m_pmonitorui = new MonitorUI(p_main_widget);
+    m_testorders = new TestcreateOrdersPath(p_main_widget);
     deleteChildrenList();
     m_pHttpServer = new  JQHttpServer::TcpServerManage(2);
     connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
@@ -240,6 +241,7 @@ void MainWindow::deleteChildrenList()
     m_pSubTask->hide();
     m_pmonitorui->hide();
     p_mRunerForm->hide();
+    m_testorders->hide();
 
 }
 
@@ -286,6 +288,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         //qDebug()<<"handle 权限管理...";
         m_pmonitorui->show();
 
+    }
+    else if(row_name == "生成任务")
+    {
+        m_testorders->show();
     }
     else if(row_name == "报警管理")
     {

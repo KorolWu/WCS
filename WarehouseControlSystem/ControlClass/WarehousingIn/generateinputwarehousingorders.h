@@ -31,6 +31,9 @@ public:
     ~GenerateInputWarehousingOrders();
     void SetPathParam(KPosition task_P, KPosition curcarPosion);
     QQueue<OrderStru> GetInputWarehousingOrders();
+    //test
+    void SetHWConfigData(double pickupx,double pickupy,double changeover,double carwaitElevatorx,\
+                         double carwaitElevatory,double carElevatorx,double carElevatory );
 private:
     QQueue<OrderStru> m_taskQueue;
     KPosition m_trapos;
@@ -51,7 +54,7 @@ private:
     void GetfrompickupBoxElevatortoTraposorders();
     void GetfromCarElevatochangeroadorders();
 
-    QString GetorderNameByValue(int value);
+    QString GetorderNameByValue(Order value);
 };
 
 #endif // GENERATEINPUTWAREHOUSINGORDERS_H

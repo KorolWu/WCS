@@ -17,7 +17,7 @@
 #include "MysqlDataBase/crudbaseoperation.h"
 #include <QThread>
 #include "WarehousingIn/getouttrajectory.h"
-#include "WarehousingIn/generateinputwarehousingorders.h"s
+#include "WarehousingIn/generateinputwarehousingorders.h"
 /**
  * @brief The KDispatch class
  * 扫描任务队列消费任务队列 拿到一个任务 并将其完成

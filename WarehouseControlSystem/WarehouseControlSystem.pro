@@ -71,7 +71,8 @@ SOURCES += main.cpp\
     MointorUI/monitorui.cpp \
     Forms/Runner/runerform.cpp \
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
-    ControlClass/WarehousingIn/getouttrajectory.cpp
+    ControlClass/WarehousingIn/getouttrajectory.cpp \
+    SimulationgenerationtaskUI/testcreateorderspath.cpp
 
 
 
@@ -123,7 +124,8 @@ HEADERS  += mainwindow.h \
     MointorUI/monitorui.h \
     Forms/Runner/runerform.h \
     ControlClass/WarehousingIn/generateinputwarehousingorders.h \
-    ControlClass/WarehousingIn/getouttrajectory.h
+    ControlClass/WarehousingIn/getouttrajectory.h \
+    SimulationgenerationtaskUI/testcreateorderspath.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

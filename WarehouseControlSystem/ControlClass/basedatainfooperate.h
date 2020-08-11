@@ -34,6 +34,7 @@ public:
                 posstru.x = it.value().coordx;
                 posstru.y = it.value().coordy;
                 posstru.z = it.value().coordz;
+                posstru.state = it.value().directionstate;
                 WlocInfo = it.key();
                 break;
             }
@@ -193,6 +194,7 @@ public:
                     posstru.x = pristru.coordx;
                     posstru.y = pristru.coordy;
                     posstru.z = pristru.coordz;
+                    posstru.state = pristru.directionstate;
                     boxinfo = pristru.idnbr;
                     break;
                 }

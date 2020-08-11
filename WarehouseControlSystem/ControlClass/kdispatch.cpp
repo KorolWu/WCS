@@ -27,8 +27,7 @@ KDispatch::~KDispatch()
     m_pCom = nullptr;
     delete m_pCom;
 }
-
-
+    
 /// \brief KDispatch::saveSubTaskInfo
 /// \return
 /// 将轨迹产生的子任务保存到数据库里面
@@ -133,7 +132,9 @@ void KDispatch::run()
     }
     else
     {
-        //GenerateInputWarehousingOrders t = new GenerateInputWarehousingOrders();
+        GenerateInputWarehousingOrders *t = new GenerateInputWarehousingOrders();
+        t->SetPathParam(m_task_p,Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion);
+        m_taskQueue = t->GetInputWarehousingOrders();
     }
 //    getTrajectory_out();
     saveSubTaskInfo();

@@ -41,7 +41,7 @@ void DispatchCenter::dispatchTaskThread()
         //qDebug()<<Myconfig::GetInstance()->m_runer.cache_in_current<<"-"<<Myconfig::GetInstance()->m_runer.cache_out_current;
         if(Myconfig::GetInstance()->m_runer.cache_in_current < m_in_cache_max*0.75 && Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max)
         {
-            qDebug()<<"out";
+           // qDebug()<<"out";
             if(!Myconfig::GetInstance()->m_taskQueue.isEmpty())
             {
                 if(m_pSelectCar->hasUseCar())
@@ -94,7 +94,7 @@ void DispatchCenter::dispatchTaskThread()
             }
         }
         else // 分配入库
-        {qDebug()<<"in";
+        {//qDebug()<<"in";
             if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
             {
                 if(m_pSelectCar->hasUseCar())

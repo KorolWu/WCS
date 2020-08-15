@@ -26,6 +26,7 @@ public:
     bool WriteUpdateInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QVector<QVariant> keyvalue,QString &errorinfo);
     bool WriteAlarmInfo(ALARMINFOSTRU alarmstru ,QString &error);
     bool DelStoreposinfotoDataBaseByLayer(double z,QString &error);
+    bool WriteInsertInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
 private:
     QMutex m_mutex;
 

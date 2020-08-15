@@ -20,6 +20,7 @@ const QString stylestr =  "QPushButton{font:12px;}"
                           "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
                           "QTableView{font:12px;selection-background-color:rgba(68,69,71,100);alternate-background-color: rgb(220, 220, 220);}"
                           "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
+#include <QTextCodec>
 StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 {
     //Init data
@@ -208,10 +209,13 @@ void StoreInfoWidget::slotImportnbrinfo()
         QStringList listrow =listdata[i] ;
         if(listrow.size() >= 9)
         {
-            if(boxnbr.contains(listrow[5]))
+            if(listrow[6]!= "")
             {
-                datatype = false;
-                break;
+                if(boxnbr.contains(listrow[6]))
+                {
+                    datatype = false;
+                    break;
+                }
             }
             boxnbr.append(listrow[6]);
             StorePosInfoStru stru;
@@ -235,9 +239,9 @@ void StoreInfoWidget::slotImportnbrinfo()
     }
     if(datamap.size() > 0 && datatype)
     {
-        //数据写入数据库
+        //数据库插入内容
         QString msg;
-        if(!m_databaseopob.WriteStoreposinfotoDataBase(datamap,msg))
+        if(!m_databaseopob.WriteInsertInfoDataBase(datamap,msg))
         {
             QMessageBox::warning(this, tr("数据警告"),msg, tr("确定"));
             return ;

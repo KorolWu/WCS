@@ -72,8 +72,8 @@ SOURCES += main.cpp\
     Forms/Runner/runerform.cpp \
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
-    SimulationgenerationtaskUI/testcreateorderspath.cpp
-
+    SimulationgenerationtaskUI/testcreateorderspath.cpp \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp
 
 
 
@@ -125,7 +125,9 @@ HEADERS  += mainwindow.h \
     Forms/Runner/runerform.h \
     ControlClass/WarehousingIn/generateinputwarehousingorders.h \
     ControlClass/WarehousingIn/getouttrajectory.h \
-    SimulationgenerationtaskUI/testcreateorderspath.h
+    SimulationgenerationtaskUI/testcreateorderspath.h \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
+    ControlClass/externcommuincation/definitioncomdataframe.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

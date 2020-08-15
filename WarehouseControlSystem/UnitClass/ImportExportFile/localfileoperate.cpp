@@ -26,11 +26,11 @@ QList<QStringList> LocalFileOperate::ReadFileData(QString filename)
          QStringList tempbar = tempOption.at(i).split(",");//一行中的单元格以，区分
          if(tempbar.size() >=2)
         {
-             if(tempbar.contains(""))
-             {
-                 listdata.clear();
-                 return listdata;
-             }
+//             if(tempbar.contains(""))
+//             {
+//                 listdata.clear();
+//                 return listdata;
+//             }
              listdata.append(tempbar);
          }
     }

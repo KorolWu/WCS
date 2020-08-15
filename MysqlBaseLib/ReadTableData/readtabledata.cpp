@@ -253,4 +253,40 @@ bool ReadTableData::DelStoreposinfotoDataBaseByLayer(double z,QString &error)
         return false;
     }
 }
+///
+/// \brief ReadTableData::WriteInsertInfoDataBase
+/// \param storeposInfoMap
+/// \param errorinfo
+/// \return  插入数据写入到数据库中
+///
+bool ReadTableData::WriteInsertInfoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QString &errorinfo)
+{
+    QString tablename = "t_storeposinfo";
+    QStringList names;
+    names<<"idNbr"<<"type"<<"coordx"<<"coordy"<<"coordz" << "directionstate"<<"boxnbr"<<"storestat"<<"storepri"<<"unused";
+    QList<QVariantList> values;
+    for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
+    {
+        QVariantList list;
+        list.append(QString::fromUtf8(it.value().idnbr));
+        list.append(it.value().type);
+        list.append(it.value().coordx);
+        list.append(it.value().coordy);
+        list.append(it.value().coordz);
+        list.append(it.value().directionstate);
+        list.append(QString::fromUtf8(it.value().boxnbr));
+        list.append(it.value().storestat);
+        list.append(it.value().storepri);
+        list.append(it.value().unused);
+        values.append(list);
+    }
+    if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,errorinfo))
+    {
+        return true;
+    }
+    else{
+        qDebug()<<"errorinfo:"<<errorinfo;
+        return false;
+    }
+}
 

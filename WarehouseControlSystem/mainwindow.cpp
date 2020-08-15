@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString sql_open_err;
     CRUDBaseOperation::getInstance()->openDB(sql_open_err);
     if(sql_open_err != "")
-        GetSystemLogObj()->writeLog(sql_open_err,2);
+       GetSystemLogObj()->writeLog(sql_open_err,2);
     getParameterFromDB();
     GetSystemLogObj()->writeLog("WCS initialization ...",0);
     initUI();

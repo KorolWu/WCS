@@ -175,8 +175,10 @@ public:
     /// 1.筛选出每层的仓位
     /// 2.筛选出空的仓位
     /// 3.筛选出优先级别最高的
-    static void  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
+    static bool  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
     {
+        if(BaseDataInfoOperate::CheckBoxnbronWarehouselocation(boxinfo))
+            return false;
         //从低层筛选层数取值范围
         std::sort(layers.begin(), layers.end());
         for(int i = 0; i < layers.size(); ++i)
@@ -200,6 +202,27 @@ public:
                 }
             }
         }
+        return true;
+    }
+    ///
+    /// \brief CheckBoxnbronWarehouselocation
+    /// \param boxinfo 料箱号
+    /// \return true 已有料箱 false 无料箱在仓库
+    ///
+    static bool CheckBoxnbronWarehouselocation(QString boxinfo)
+    {
+         QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
+
+         auto it = Myconfig::GetInstance()->m_storeinfoMap.begin();
+         for(;it !=Myconfig::GetInstance()->m_storeinfoMap.end(); ++it)
+         {
+             QString str = QString::fromUtf8(it.value().boxnbr);
+             if(str ==boxinfo )
+             {
+                return true;
+             }
+         }
+         return false;
     }
 };
 }

@@ -460,7 +460,9 @@ bool CRUDBaseOperation::ExcBatchInsertDb(const QString &table, QStringList &name
         query.addBindValue(listvec[i]);
     }
     if(!query.execBatch()){
-        // qDebug()<<"eeror:"<<query.lastError().text();
+       qDebug()<<"eeror:"<<query.lastError().text();
+         errorinfo =  query.lastError().text();
+         return false;
     }//进行批处理操作保证顺序一样
     if(!data_base.commit())
     {

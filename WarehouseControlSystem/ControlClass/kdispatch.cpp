@@ -54,7 +54,7 @@ bool KDispatch::saveSubTaskInfo()
         sequence ++;
     }
     QString errorInfo;
-    if(CRUDBaseOperation::getInstance()->ExcBatchReplaceDB("t_sub_taskInfo",field,values,errorInfo))
+    if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb("t_sub_taskInfo",field,values,errorInfo))
     {
         return true;
     }
@@ -84,7 +84,10 @@ bool KDispatch::runSubTask()
                 QTimer::singleShot(1000,&loop,SLOT(quit()));
                 loop.exec();
                 QString sqlErr = "";
-                CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
+                //CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
+                //qDebug()<<"subtask"<<sqlErr;
+                if(sqlErr != "")
+                    GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlErr,2);
                 break;
             }
             //test if sub task over

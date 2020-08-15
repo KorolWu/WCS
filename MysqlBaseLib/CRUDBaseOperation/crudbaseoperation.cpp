@@ -115,16 +115,15 @@ bool CRUDBaseOperation::removeCrruntTask(TaskInfoStru taskStru, QString &err)
 ///
 bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru, QString &err)
 {
-     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     err = "";
     if(data_base.isOpen())
     {
-        QString sql =QString("INSERT t_all_task SET taskNum=%1,taskStatus='%2',"
+        QString sql =QString("INSERT t_all_task SET taskNum='%1',taskStatus='%2',"
                              "boxNum='%3',priority='%4',origin='%5',"
                              "target='%6',carNum='%7',beginTime = '%8';") .arg(taskStru.taskNum).arg(taskStru.status).arg(taskStru.boxNum)\
                                 .arg(taskStru.pripty).arg(taskStru.from).arg(taskStru.end).arg(taskStru.carNum).arg(taskStru.creatTime.toString("yyyy-MM-dd hh:mm:ss"));
         QSqlQuery query(data_base);
-
+        QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
          if(query.exec(sql))
         {
             return true;

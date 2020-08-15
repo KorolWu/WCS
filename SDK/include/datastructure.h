@@ -80,6 +80,8 @@ typedef struct _CarInfoStru
     //被任务预定，锁定不被其他任务分配
     bool isLockByTask = false;
     Car_status deveceStatus;
+    //记录正在执行的任务
+    KPosition task_position;
 
     _CarInfoStru& operator = (const _CarInfoStru &other)
     {

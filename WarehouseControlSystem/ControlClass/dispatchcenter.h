@@ -31,9 +31,14 @@ private:
     int m_in_cache_max;
     int m_out_cahce_max;
     void lock_layer(int layer,QString lock_car_ip);
+    void set_car_task_position(const KPosition &p, const QString &ip);
     void lock_car(QString car_ip);
-    void Task_execution_failed(TaskInfoStru &t);
+    void Task_execution_failed(const TaskInfoStru &t);
     void remove_task_from(QString task_num);
+    void handle_out_task(const TaskInfoStru &t);
+    void handle_in_task(const TaskInfoStru &t, QString frist_in_boxNum);
+    void remove_out_task();
+    void remove_in_task(const QString &frist_in_boxNum);
 };
 
 #endif // DISPATCHCENTER_H

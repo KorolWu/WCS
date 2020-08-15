@@ -123,8 +123,8 @@ void CurrentTask::handelHttpTask(QString reply)
     QMutexLocker(&Myconfig::GetInstance()->m_mutex_taskMap);
     Myconfig::GetInstance()->m_taskMap.insert(t.taskNum,t);
     QString errMsg = "";
-    if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t,errMsg))
-        GetSystemLogObj()->writeLog("save current to dbbase failed! ->"+errMsg,2);
+//    if(!CRUDBaseOperation::getInstance()->saveKBaseStruct("t_crrunt_task",t,errMsg))
+//        GetSystemLogObj()->writeLog("save current to dbbase failed! ->"+errMsg,2);
     setTableViewValue();
     qDebug()<<reply;
 

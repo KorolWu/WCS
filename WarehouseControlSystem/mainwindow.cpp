@@ -270,6 +270,7 @@ void MainWindow::getConfigParameter()
     Myconfig::GetInstance()->m_databaseInfo.port = f.Get("DataBase","port").toInt();
     Myconfig::GetInstance()->m_databaseInfo.sqlName = f.Get("DataBase","sqlName").toString();
     Myconfig::GetInstance()->m_databaseInfo.userName = f.Get("DataBase","userName").toString();
+    qDebug()<<Myconfig::GetInstance()->m_databaseInfo.ip <<Myconfig::GetInstance()->m_databaseInfo.port;
 }
 
 void MainWindow::delay_msc(int msc)

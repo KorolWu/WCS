@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include <QByteArray>
+#include <definitioncomdataframe.h>
+#include <QMetaType>
+
 ///
 /// \brief The HWdeviceabstractInterface class
 ///为所有通讯统一接口类
@@ -10,20 +13,15 @@ class HWdeviceabstractInterface:public QObject
 {
      Q_OBJECT
 public:
-    HWdeviceabstractInterface();
-    ~HWdeviceabstractInterface();
-    virtual void SetNameID(QString id);
-    virtual void SetHWtype(int hwtype);
-    virtual void SetHWprotype(int protype);
-    virtual void GetNameID();
-    virtual void GetHWtype();
-    virtual void GetHWprotype();
-    virtual int WriteHWdeviceData(QByteArray data);
-    virtual QByteArray ReadHWdeviceData();
-private:
-    QString m_nameId;
-    int m_hwtype;
-    int m_protype;
+    virtual void SetCommParam(ComConfigStru paramstru) = 0;
+    virtual QString GetNameID(){return "";}
+    virtual int GetHWtype(){return 0;}
+    virtual int GetHWprotype(){ return 0 ;}
+    virtual void CloseComm() = 0;
+signals:
+     void ReadHWdeviceData(QString ID,int hwtype,QByteArray dataValue);
+     void SendHWdeviceData(QByteArray  sendData);
+
 };
 
 #endif // HWDEVICEABSTRACTINTERFACE_H

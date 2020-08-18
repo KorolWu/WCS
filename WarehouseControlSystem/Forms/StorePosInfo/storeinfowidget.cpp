@@ -71,6 +71,11 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
     pbtnLayout->addWidget(m_pExportBtn);
     connect(m_pExportBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotExportnbrinfo);
     pbtnLayout->addStretch();
+    m_pRefreshBtn = new QPushButton(tr("刷新"),this);
+    m_pRefreshBtn->setIcon(QIcon(":/resouse/Image/Refresh.png"));
+    pbtnLayout->addWidget(m_pRefreshBtn);
+    connect(m_pRefreshBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotRefreshDataBase);
+    //pbtnLayout->addStretch();
 
     //添加table表头
     m_ptableview = new StorenbrTableView();
@@ -127,6 +132,7 @@ StoreInfoWidget::~StoreInfoWidget()
         delete m_pExportBtn;
         delete m_ptableview;
         delete m_pagewg;
+        delete m_pRefreshBtn;
     }
 }
 ///
@@ -331,6 +337,12 @@ void StoreInfoWidget::slotSetCurPageData(int ipage)
     m_pagewg->m_totalRecrodCount = m_ptableview->GetStoretablemodel()->GetRowCount();//更新记录数目
     m_pagewg->m_totalPage = m_ptableview->GetStoretablemodel()->GetPageSize();//总页数计算更新
     m_ptableview->GetStoretablemodel()->SetCurPage(ipage);
+}
+
+void StoreInfoWidget::slotRefreshDataBase()
+{
+    Dataselectfromdatabase();//读数据库 刷新表格
+    SlotupdatePageUI(m_ptableview->GetStoretablemodel()->GetRowCount());
 }
 ///
 /// \brief StoreInfoWidget::Dataselectfromdatabase

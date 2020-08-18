@@ -7,6 +7,7 @@
 #include <QQueue>
 #include <datastructure.h>
 
+
 class Myconfig
 {
 private:
@@ -60,5 +61,7 @@ public:
     QMap<int,LayerStru> m_layerStatusMap;
     //指定小车任务的集合
     QMap<QString, QQueue<TaskInfoStru>> m_appointMap;
+    //硬件通讯配置的数据结构体,从数据库中读出来的数据内容
+    HWComallconfigStru m_hwcommstru;
 };
 #endif

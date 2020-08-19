@@ -10,7 +10,8 @@ HWCommFactoryOb::HWCommFactoryOb()
 HWdeviceabstractInterface *HWCommFactoryOb::CreatorHWCommFactoryOb(int protype)
 {
     HWdeviceabstractInterface *ob = NULL;
-    switch (protype) {
+    switch (protype)
+    {
     case HWDEVICEPROTYPE::Tcpserver:
         ob = new TCommTCPserver();
         break;

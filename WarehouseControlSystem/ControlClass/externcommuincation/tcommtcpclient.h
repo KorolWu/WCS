@@ -34,6 +34,7 @@ private:
     TcpStru m_config;
 signals:
     void clientDisconnect(QString ID,int hwtype);
+    void signalClientconnectserver();
 };
 
 #endif // TCOMMTCPCLIENT_H

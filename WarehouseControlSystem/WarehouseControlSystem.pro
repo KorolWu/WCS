@@ -75,7 +75,8 @@ SOURCES += main.cpp\
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
     ControlClass/externcommuincation/tcommtcpserver.cpp \
     ControlClass/externcommuincation/tcommtcpclient.cpp \
-    ControlClass/externcommuincation/hwcommfactoryob.cpp
+    ControlClass/externcommuincation/hwcommfactoryob.cpp \
+    ControlClass/externcommuincation/tcommtransceivermanager.cpp
 
 
 
@@ -131,7 +132,8 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/hwdeviceabstractinterface.h \
     ControlClass/externcommuincation/tcommtcpserver.h \
     ControlClass/externcommuincation/tcommtcpclient.h \
-    ControlClass/externcommuincation/hwcommfactoryob.h
+    ControlClass/externcommuincation/hwcommfactoryob.h \
+    ControlClass/externcommuincation/tcommtransceivermanager.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

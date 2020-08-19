@@ -4,7 +4,7 @@ TCommTCPserver::TCommTCPserver()
 {
     tcpserver = nullptr;
     socket = nullptr;
-    connect(this,&TCommTCPserver::SendHWdeviceData,this,&TCommTCPserver::writeData);
+    connect(this,&TCommTCPserver::signalSendHWdeviceData,this,&TCommTCPserver::writeData);
 
 }
 
@@ -25,6 +25,7 @@ TCommTCPserver::~TCommTCPserver()
 void TCommTCPserver::SetCommParam(ComConfigStru paramstru)
 {
   m_config = paramstru.hwTcpstru;
+  creatTcpserver();
 }
 
 QString TCommTCPserver::GetNameID()
@@ -77,7 +78,7 @@ bool TCommTCPserver::creatTcpserver()
                 [=]()
         {
             QByteArray array = socket->readAll();
-            emit ReadHWdeviceData(m_config.ID,m_config.hwtype,array);
+            emit signalReadHWdeviceData(m_config.ID,m_config.hwtype,array);
         }
         );
     }

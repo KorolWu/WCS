@@ -76,7 +76,8 @@ SOURCES += main.cpp\
     ControlClass/externcommuincation/tcommtcpserver.cpp \
     ControlClass/externcommuincation/tcommtcpclient.cpp \
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
-    ControlClass/externcommuincation/tcommtransceivermanager.cpp
+    ControlClass/externcommuincation/tcommtransceivermanager.cpp \
+    ControlClass/externcommuincation/tcommmodbustcpclient.cpp
 
 
 
@@ -133,7 +134,8 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/tcommtcpserver.h \
     ControlClass/externcommuincation/tcommtcpclient.h \
     ControlClass/externcommuincation/hwcommfactoryob.h \
-    ControlClass/externcommuincation/tcommtransceivermanager.h
+    ControlClass/externcommuincation/tcommtransceivermanager.h \
+    ControlClass/externcommuincation/tcommmodbustcpclient.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

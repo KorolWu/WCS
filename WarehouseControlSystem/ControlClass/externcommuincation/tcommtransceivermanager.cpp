@@ -22,7 +22,19 @@ void TCommtransceivermanager::InitHWcommob()
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwTcpMap,KTcpClient);
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap,KModbusTcpClient);
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap,KSerialPort);
-    m_heartTimer->start(500);
+    //m_heartTimer->start(500);
+}
+///
+/// \brief TCommtransceivermanager::SendcommandByExtern
+/// \param cmd
+/// \param Id
+///外部传入参数进行处理 小车 流道 电梯指令 等
+void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, QString Id)
+{
+    //先解析小车部分数据内容
+
+
+
 }
 ///
 /// \brief TCommtransceivermanager::sendDataToHWob
@@ -48,6 +60,13 @@ void TCommtransceivermanager::sendDataToHWob(QByteArray datavalue,QString id)
                 emit tob->signalSendHWdeviceData(datavalue);
                 break;
             }
+            case HWDEVICEPROTYPE::KModbusTcpClient:// 地址 类型 字节 值
+            {
+                //字节结构转换
+                TCommModbusTcpClient *tob = dynamic_cast<TCommModbusTcpClient *>(it.value());
+                emit tob->signalSendHWdeviceData(datavalue);
+                break;
+            }
             default:
                 break;
             }
@@ -63,7 +82,11 @@ void TCommtransceivermanager::sendDataToHWob(QByteArray datavalue,QString id)
 ///接收硬件发过来的数据进行处理
 void TCommtransceivermanager::ReceDataFromHWob(QString ID, int hwtype, QByteArray data)
 {
-   //根据各个对象进行包解析 更新数据内容
+    //根据各个对象进行包解析 更新数据内容
+    QByteArray  tempData;
+    memcpy(tempData.data(),data.data(),data.size());//
+
+
 
 }
 
@@ -94,15 +117,20 @@ void TCommtransceivermanager::UpdateState()
 ///通讯断开的信号
 void TCommtransceivermanager::Slotconnectstate(QString ID, int type,bool state)
 {
-    //接收到掉线信号自动重新连接
+    //接收到掉线信号自动重新连接 设备状态更新
     switch (type)
     {
     case HWDEVICEPROTYPE::KTcpClient:
     {
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
-        if(!state) //断开连接了
+        if(tob->GetHWtype() == RGVCAR)
         {
-            emit tob->signalClientconnectserver();
+            //小车状态更新
+            if(state)
+            {
+
+            }
+            emit SignalCarStatusUpdate();
         }
         break;
     }

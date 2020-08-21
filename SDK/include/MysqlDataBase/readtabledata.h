@@ -27,6 +27,7 @@ public:
     bool WriteAlarmInfo(ALARMINFOSTRU alarmstru ,QString &error);
     bool DelStoreposinfotoDataBaseByLayer(double z,QString &error);
     bool WriteInsertInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
+    void Readt_hwcomm_infotable();
 private:
     QMutex m_mutex;
 

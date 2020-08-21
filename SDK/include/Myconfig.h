@@ -7,7 +7,6 @@
 #include <QQueue>
 #include <datastructure.h>
 
-
 class Myconfig
 {
 private:

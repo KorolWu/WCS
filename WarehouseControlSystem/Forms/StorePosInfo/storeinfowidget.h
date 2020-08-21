@@ -25,6 +25,7 @@ private:
     QPushButton *m_pquenbrBtn;
     QPushButton *m_pImportBtn;
     QPushButton *m_pExportBtn;
+    QPushButton *m_pRefreshBtn;
 private slots:
     void slotaddnbrinfo();
     void  slotBatchDelnbrinfo();
@@ -34,6 +35,7 @@ private slots:
     void slotEditData(QStringList datalist);
     void slottableeditbtn(QString ,int row);
     void  slotSetCurPageData(int ipage);
+    void slotRefreshDataBase();
 private:
     void  Dataselectfromdatabase();
     bool  DelDataBaseInfo( QList<QVariant> nbrlist);

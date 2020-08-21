@@ -1,6 +1,7 @@
 #ifndef DEFINITIONCOMDATAFRAME_H
 #define DEFINITIONCOMDATAFRAME_H
 #include <QString>
+#include <QMap>
 //硬件类型 小车 流道 入库电梯 出库电梯  小车电梯 WMS
 enum HWDEVICETYPE{
     RGVCAR = 1,
@@ -20,10 +21,14 @@ enum HWDEVICEPROTYPE{
 };
 //通讯参数配置部分结构体
 struct  TcpStru{
+    QString ID;
+    int hwtype;
     int port = 0;
     QString ip = "";
 };
 struct SerialPortstru{
+     QString ID;
+     int hwtype;
     QString name = "";
     int BaudRate = 0;
     int DataBits = 0;
@@ -31,6 +36,8 @@ struct SerialPortstru{
     int StopBits =0;
 };
 struct ModbusTcpClientstru{
+     int hwtype;
+     QString ID;
     QString url_str;
 };
 
@@ -39,6 +46,15 @@ struct ComConfigStru{
     SerialPortstru hwserialstru;
     ModbusTcpClientstru hwmodbustcpclistru;
 };
+///
+/// \brief The HWComallconfigStru struct
+///所有的通讯硬件相关的配置参数的内容部分
+struct HWComallconfigStru{
+    QMap<QString,TcpStru> hwTcpMap;
+    QMap<QString,SerialPortstru> hwSerialPortMap;
+    QMap<QString,ModbusTcpClientstru> hwmodbustcpcliMap;
+};
+
 //通讯数据包帧格式的定义
 struct FrameBaseStru{
     int hwdevice;//操作的设备类型

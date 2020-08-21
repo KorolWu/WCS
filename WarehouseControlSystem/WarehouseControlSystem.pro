@@ -73,6 +73,11 @@ SOURCES += main.cpp\
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
+    ControlClass/externcommuincation/tcommtcpserver.cpp \
+    ControlClass/externcommuincation/tcommtcpclient.cpp \
+    ControlClass/externcommuincation/hwcommfactoryob.cpp \
+    ControlClass/externcommuincation/tcommtransceivermanager.cpp \
+    ControlClass/externcommuincation/tcommmodbustcpclient.cpp\
     ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
@@ -129,6 +134,12 @@ HEADERS  += mainwindow.h \
     ControlClass/WarehousingIn/generateinputwarehousingorders.h \
     ControlClass/WarehousingIn/getouttrajectory.h \
     SimulationgenerationtaskUI/testcreateorderspath.h \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
+    ControlClass/externcommuincation/tcommtcpserver.h \
+    ControlClass/externcommuincation/tcommtcpclient.h \
+    ControlClass/externcommuincation/hwcommfactoryob.h \
+    ControlClass/externcommuincation/tcommtransceivermanager.h \
+    ControlClass/externcommuincation/tcommmodbustcpclient.h \
     ControlClass/externcommuincation/hwdeviceabstractinterface.h \
     ControlClass/externcommuincation/definitioncomdataframe.h \
     ControlClass/Instructions/abstructinstruction.h \

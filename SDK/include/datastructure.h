@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QDebug>
 #include <QDateTime>
+#include <definitioncomdataframe.h>
 typedef struct KBaseStruct_{
     virtual QStringList getNameList(){QStringList list;list.clear();return list;}
     virtual QList<QVariant> getValueList(){QList<QVariant> list;list.clear();return list;}

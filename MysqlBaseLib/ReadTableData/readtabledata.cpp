@@ -94,7 +94,7 @@ void ReadTableData::readt_runerInfo()
 void ReadTableData::ReadStoreposinfoDataBase()
 {
     QString tablename = "t_storeposinfo";
-   QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     Myconfig::GetInstance()->m_storeinfoMap.clear();
     QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
     while (query.next()) {
@@ -173,7 +173,7 @@ bool ReadTableData::WriteLoginfo(int level, QString from, QString log_info)
     return false;
 }
 
-bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QVector<QVariant> keyvalue,QString &errorinfo)
+bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> storeposInfoMap, QVector<QVariant> keyvalue,QString &errorinfo,bool updatestru)
 {
     QString tablename = "t_storeposinfo";
     QStringList names;
@@ -195,10 +195,22 @@ bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> stor
         values.append(list);
     }
     QString idname = "idNbr";
-    QVector<QVariantList> valueVec =values.toVector() ;
+    QVector<QVariantList> valueVec = values.toVector() ;
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchUpdateDB(tablename,names,valueVec,idname,keyvalue,errorinfo))
     {
+        //内存更新
+        if(updatestru)
+        {
+            for(auto  it = storeposInfoMap.begin(); it != storeposInfoMap.end();++it)
+            {
+                if(Myconfig::GetInstance()->m_storeinfoMap.contains(it.key()))
+                {
+                    Myconfig::GetInstance()->m_storeinfoMap[it.key()] = it.value();
+
+                }
+            }
+        }
         return true;
     }
     else{
@@ -222,7 +234,7 @@ bool ReadTableData::WriteAlarmInfo(ALARMINFOSTRU alarmstru, QString &error)
     list<<alarmstru.alarmlevel<<alarmstru.deviceid<<alarmstru.errortype<<alarmstru.errorcode<<alarmstru.Operatestate<<alarmstru.cartaskid\
        <<alarmstru.wmsTaskid<<alarmstru.boxnumber<<alarmstru.alarminfo<<alarmstru.carcoordx<<alarmstru.carcoordy\
       <<alarmstru.carcoordz;
-     values.append(list);
+    values.append(list);
     if(CRUDBaseOperation::getInstance()->ExcBatchInsertDb(tablename,names,values,error))
     {
         return true;
@@ -287,6 +299,88 @@ bool ReadTableData::WriteInsertInfoDataBase(QMap<QString, StorePosInfoStru> stor
     else{
         qDebug()<<"errorinfo:"<<errorinfo;
         return false;
+    }
+}
+///
+/// \brief ReadTableData::Readt_hwcomm_infotable
+/// \return
+///读通讯配置表格的内容
+void ReadTableData::Readt_hwcomm_infotable()
+{
+    QString tablename = "t_hwcomm_info";
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);//内存锁
+    Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.clear();
+    Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap.clear();
+    Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.clear();
+    QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
+    while (query.next()) {
+        QString  Id;
+        Id = query.value("ID").toString();
+        int type =  query.value("type").toInt();
+        int protype =  query.value("protype").toInt();
+        int childtype = query.value("childtype").toInt();
+        QString unused = query.value("unused").toString();
+        QString name = query.value("name").toString();
+        switch (protype) {
+        case HWDEVICEPROTYPE::Tcpserver:
+        case HWDEVICEPROTYPE::KTcpClient:
+        {
+            TcpStru stru;
+            stru.hwtype = type;
+            stru.protype = protype;
+            stru.ID = Id;
+            stru.name = name;
+            stru.childtype = childtype;
+            stru.unused = unused;
+            stru.port = query.value("port").toInt();
+            Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.insert(Id,stru);
+            break;
+        }
+        case HWDEVICEPROTYPE::KSerialPort:
+        {
+            SerialPortstru stru;
+            stru.hwtype = type;
+            stru.protype = protype;
+            stru.ID = Id;
+            stru.name = name;
+            stru.childtype = childtype;
+            stru.unused = unused;
+            stru.BaudRate =  query.value("BaudRate").toInt();
+            stru.DataBits = query.value("DataBits").toInt();
+            stru.Parity = query.value("Parity").toInt();
+            stru.StopBits = query.value("StopBits").toInt();
+            Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap.insert(Id,stru);
+            break;
+        }
+        case HWDEVICEPROTYPE::KModbusTcpClient:
+        {
+            ModbusTcpClientstru stru;
+            stru.hwtype = type;
+            stru.protype = protype;
+            stru.ID = Id;
+            stru.name = name;
+            stru.childtype = childtype;
+            stru.unused = unused;
+            stru.url_str = name;
+            Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.insert(Id,stru);
+            break;
+        }
+        case HWDEVICEPROTYPE::KHttpServer:
+        {
+            HttpServerStru stru;
+            stru.hwtype = type;
+            stru.protype = protype;
+            stru.ID = Id;
+            stru.name = name;
+            stru.childtype = childtype;
+            stru.unused = unused;
+             Myconfig::GetInstance()->m_hwcommstru.hwhttpserverMap.insert(Id,stru);
+            break;
+        }
+        default:
+            break;
+        }
+
     }
 }
 

@@ -4,6 +4,7 @@
 #include <QIcon>
 #include "UnitClass/logininfowg.h"
 #include "UnitClass/myIniconfig.h"
+#include "ControlClass/externcommuincation/tcommtransceivermanager.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -26,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pmonitorui = new MonitorUI(p_main_widget);
     m_testorders = new TestcreateOrdersPath(p_main_widget);
     deleteChildrenList();
+    TCommtransceivermanager::GetInstance()->InitHWcommob(); //所有数据通讯对象创建
     m_pHttpServer = new  JQHttpServer::TcpServerManage(2);
     connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
     m_pHttpServer->setHttpAcceptedCallback( []( const QPointer< JQHttpServer::Session > &session )
@@ -252,6 +254,7 @@ void MainWindow::getParameterFromDB()
     r.readt_elevator();
     r.readt_crrunt_task();
     r.readt_runerInfo();
+    r.Readt_hwcomm_infotable();
     //qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 

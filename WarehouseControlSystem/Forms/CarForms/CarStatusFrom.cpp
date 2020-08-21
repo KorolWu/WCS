@@ -1,5 +1,6 @@
 #include "CarStatusFrom.h"
 #include <QDebug>
+#include "ControlClass/externcommuincation/tcommtransceivermanager.h"
 CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(parent)
 {
     desktop =  QApplication::desktop()->availableGeometry();
@@ -143,6 +144,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }
+    connect(TCommtransceivermanager::GetInstance(),&TCommtransceivermanager::SignalCarStatusUpdate,this,&CarStatusFrom::updateStatusOnBase);
 }
 
 void CarStatusFrom::fromClose()

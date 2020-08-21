@@ -26,6 +26,9 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
     connect(m_query_btn,&QPushButton::clicked,this,&SubTask::selectTask);
     m_query_btn->move(m_width/2.11,height_fristLine);
     m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
+
+//    m_refresh_btn = new QPushButton("Refresh",this);
+//    connect(m_refresh_btn,&QPushButton::clicked,this,&SubTask::onRefresh);
     this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}");
     initTableView();
 }
@@ -74,11 +77,11 @@ void SubTask::SetTableviewsetColumnWidth()
     m_table_view->setColumnWidth(2,m_width/20*2);
     m_table_view->setColumnWidth(3,m_width/20*2);
 
-    m_table_view->setColumnWidth(4,m_width/20*2);
+    m_table_view->setColumnWidth(4,m_width/20*1);
     m_table_view->setColumnWidth(5,m_width/20*2);
     m_table_view->setColumnWidth(6,m_width/20*2);
     m_table_view->setColumnWidth(7,m_width/20*1);
-    m_table_view->setColumnWidth(8,m_width/20*3);
+    m_table_view->setColumnWidth(8,m_width/20*4);
     m_table_view->setColumnWidth(9,m_width/20*3);
     m_table_view->horizontalHeader()->setMinimumHeight(40);
     m_table_view->setFont(QFont("宋体",12)); //设置字体
@@ -96,11 +99,22 @@ void SubTask::selectTask()
     if(taskNum == "")
     {
         sql = "";
-        model->setQuery("select * from t_sub_taskInfo");
+        //model->setQuery("select * from t_sub_taskInfo");
+        model->setQuery("select * from t_sub_taskInfo ORDER BY id DESC LIMIT 300;");
         model->query();
         total = model->rowCount();
     }
     //  qDebug()<<sql << total;
+    m_pagewg->updateParam(total,sql);
+    SetTableviewsetColumnWidth();
+}
+
+void SubTask::onRefresh()
+{
+    QString sql = "select * from t_sub_taskInfo ORDER BY id DESC LIMIT 300;";
+    int total = 300;
+    model->setQuery(sql);
+    model->query();
     m_pagewg->updateParam(total,sql);
     SetTableviewsetColumnWidth();
 }

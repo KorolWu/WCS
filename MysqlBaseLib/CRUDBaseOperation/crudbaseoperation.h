@@ -21,7 +21,7 @@ public:
     bool saveCrruntTask(TaskInfoStru taskStru, QString &err);
     bool removeCrruntTask(TaskInfoStru taskStru, QString &err);
     bool saveCompletedTask(TaskInfoStru taskStru, QString &err);
-    bool changeSubtaskStatus(const QString &taskNum,const QString &status, int sequnce, QString &err);
+    bool changeSubtaskStatus(const QString &taskNum, const QString &status, const QString &data, int sequnce, QString &err);
     //KBaseStruct SubClass CRUD
     bool saveKBaseStruct(const QString &tableName, KBaseStruct &s, QString &errMessage);
    public:

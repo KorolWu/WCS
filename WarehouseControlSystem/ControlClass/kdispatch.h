@@ -18,6 +18,9 @@
 #include <QThread>
 #include "WarehousingIn/getouttrajectory.h"
 #include "WarehousingIn/generateinputwarehousingorders.h"
+#include "Instructions/abstructinstruction.h"
+#include "Instructions/carelevatorinstruction.h"
+#include "Instructions/carinstruction.h"
 /**
  * @brief The KDispatch class
  * 扫描任务队列消费任务队列 拿到一个任务 并将其完成
@@ -36,9 +39,13 @@ private:
     bool saveSubTaskInfo();
     bool runSubTask();
     QString transformationOrder(int i);
+    bool runInstrucation(const OrderStru &o, QString &id);
+    void saveErrMassage(const QString &message);
     BaseDevice *m_pCom;
     QQueue<OrderStru> m_taskQueue;
     bool m_inp = false;
+    AbstructInstruction *m_pAbstructInstruction;
+    ReadTableData m_writeData;
     // QRunnable interface
 public:
     void run();

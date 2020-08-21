@@ -52,7 +52,7 @@ enum Order{
     Call = 5,               //呼叫换层电梯
     Elevator_Near = 6,      //电梯临近点
     Elevator_In = 7,        //小车进换层电梯
-    Elevator_Out = 8,       //小车出换层电梯
+    Elevator_Out = 8,       //小车出换层电梯  unlock_elevator
     Left_WorkBin = 9,       //把料箱放在出货口电梯
     Right_WorkBin = 10,     //把料箱从入库口电梯取出
     Call_WorkBin_Out = 11,  //呼叫出库电梯
@@ -60,6 +60,7 @@ enum Order{
     call_Runner_Putbox = 13, //呼叫流道放货到入库电梯
     Left_Putinto = 14,       //左放货
     Right_Putinto = 15,      //右放货
+    Unlock_layer = 16        //将小车锁定的层解锁（小车进电梯时）
 };
 //子任务的结构 任务类型，值
 typedef struct _OrderStru
@@ -139,9 +140,18 @@ typedef struct _LogInfoStru
         info = "";
     }
 }LogInfoStru;
+typedef struct _ElevatorStatus
+{
+    int curruntLayer;
+    bool isLock;
+    //是否可以呼叫
+    bool usable;
+    bool hasCar;
+}ElevatorStatus;
 typedef struct _ElevatorInfoStru
 {
     //"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"remarks"
+    ElevatorStatus status;
     QString elevatorNum;
     QString elevatorType;
     QString elevatorIp;

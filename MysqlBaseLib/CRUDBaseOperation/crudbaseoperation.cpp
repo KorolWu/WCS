@@ -146,10 +146,10 @@ bool CRUDBaseOperation::saveCompletedTask(TaskInfoStru taskStru, QString &err)
 /// \param err     sql报错
 /// \return
 ///
-bool CRUDBaseOperation::changeSubtaskStatus(const QString &taskNum, const QString &status, int sequnce, QString &err)
+bool CRUDBaseOperation::changeSubtaskStatus(const QString &taskNum, const QString &status, const QString &data,int sequnce, QString &err)
 {
     err = "";
-    QString sql = QString("UPDATE t_sub_taskInfo SET state = '%1' WHERE taskNum ='%2' AND sequence = %3;").arg(status).arg(taskNum).arg(sequnce);
+    QString sql = QString("UPDATE t_sub_taskInfo SET state = '%1',commandData = '%2' WHERE taskNum ='%3' AND sequence = %4;").arg(status).arg(data).arg(taskNum).arg(sequnce);
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     QSqlQuery query(data_base);
     bool result = query.exec(sql);

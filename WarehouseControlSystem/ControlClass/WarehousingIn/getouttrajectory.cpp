@@ -92,6 +92,11 @@ void GetOutTrajectory::inElevator()
     m_taskQueue.enqueue(o);
     o.order = Elevator_In;
     m_taskQueue.enqueue(o);
+    //将本层解锁
+    o.order = Unlock_layer;
+    o.value = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z;
+    Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z = m_task_p.z;
+    m_taskQueue.enqueue(o);
     //x_move in elevator
 }
 

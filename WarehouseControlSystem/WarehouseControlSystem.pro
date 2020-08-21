@@ -73,7 +73,10 @@ SOURCES += main.cpp\
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
-    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp
+    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
+    ControlClass/Instructions/abstructinstruction.cpp \
+    ControlClass/Instructions/carinstruction.cpp \
+    ControlClass/Instructions/carelevatorinstruction.cpp
 
 
 
@@ -127,7 +130,10 @@ HEADERS  += mainwindow.h \
     ControlClass/WarehousingIn/getouttrajectory.h \
     SimulationgenerationtaskUI/testcreateorderspath.h \
     ControlClass/externcommuincation/hwdeviceabstractinterface.h \
-    ControlClass/externcommuincation/definitioncomdataframe.h
+    ControlClass/externcommuincation/definitioncomdataframe.h \
+    ControlClass/Instructions/abstructinstruction.h \
+    ControlClass/Instructions/carinstruction.h \
+    ControlClass/Instructions/carelevatorinstruction.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

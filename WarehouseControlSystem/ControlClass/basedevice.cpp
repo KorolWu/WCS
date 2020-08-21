@@ -193,6 +193,15 @@ void BaseDevice::noticeObserver()
        m_ObserverVec[i]->updateStatusOnBase();
     }
 }
+
+void BaseDevice::unLockLayer(int layer)
+{
+    if(Myconfig::GetInstance()->m_layerStatusMap.contains(layer))
+    {
+        Myconfig::GetInstance()->m_layerStatusMap[layer].isLocked = false;
+    }
+
+}
 void BaseDevice::handelOrder(OrderStru o)
 {
     //qDebug()<<"handel";
@@ -223,6 +232,10 @@ void BaseDevice::handelOrder(OrderStru o)
         write(m_pOrderStrategy->call_elevator_work_out(2));
     else if(o.order == Order::Call_WorkBin_In)
         write(m_pOrderStrategy->call_elevator_work_in(3));
+    else if(o.order == Order::Unlock_layer)
+    {
+        unLockLayer(o.value);
+    }
 
 }
 

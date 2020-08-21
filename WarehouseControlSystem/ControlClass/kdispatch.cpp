@@ -19,7 +19,7 @@ KDispatch::KDispatch(KPosition task_P, QString &ip, const TaskInfoStru task)
         m_pCom = nullptr;
     }
     //test
-
+    m_pAbstructInstruction = nullptr;
 }
 
 KDispatch::~KDispatch()
@@ -84,7 +84,7 @@ bool KDispatch::runSubTask()
                 QTimer::singleShot(1000,&loop,SLOT(quit()));
                 loop.exec();
                 QString sqlErr = "";
-                //CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--",sequnce,sqlErr);
+                CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,"--","commamd",sequnce,sqlErr);
                 //qDebug()<<"subtask"<<sqlErr;
                 if(sqlErr != "")
                     GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlErr,2);
@@ -98,6 +98,7 @@ bool KDispatch::runSubTask()
                 break;
             QApplication::processEvents(QEventLoop::AllEvents,50);
         }
+        sequnce++;
     }
     QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
     Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isLocking = false;
@@ -124,6 +125,49 @@ QString KDispatch::transformationOrder(int i)
     else if(i == 7)
         return "出电梯";
     return "unknow Order";
+}
+
+bool KDispatch::runInstrucation(const OrderStru &o, QString &id)
+{
+    if(o.order == 0||o.order == 1||o.order == 3 ||o.order == 4 ||o.order == 9 ||o.order == 10)
+    {
+        m_pAbstructInstruction = new CarInstruction();
+    }
+    else if(o.order == 5)
+    {
+        m_pAbstructInstruction = new CarElevatorInstruction();
+    }
+    if(m_pAbstructInstruction != nullptr)
+    {
+        m_pAbstructInstruction->setParameter(o,id);
+        m_pAbstructInstruction->runInstruction();
+        QString exeResult = "";
+        if(m_pAbstructInstruction->getResult(exeResult) != 0)
+        {
+            saveErrMassage(exeResult);
+            return false;
+        }
+    }
+    return true;
+}
+
+void KDispatch::saveErrMassage(const QString &message )
+{
+    ALARMINFOSTRU arm;
+    arm.alarminfo = message;
+    arm.alarmlevel = 4;
+    arm.boxnumber = m_task.boxNum;
+    arm.carcoordx = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.x;
+    arm.carcoordy = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.y;
+    arm.carcoordz = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z;
+    arm.deviceid = m_ip;
+    arm.errorcode = 006;
+    arm.errortype = 1;
+    arm.Operatestate = 1;
+    arm.wmsTaskid = m_task.taskNum;
+    QString sql_err;
+    if(false == m_writeData.WriteAlarmInfo(arm,sql_err))
+        qDebug()<<"alarm insert failed!";
 }
 
 void KDispatch::run()

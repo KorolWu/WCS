@@ -58,10 +58,10 @@ struct ComConfigStru{
 /// \brief The HWComallconfigStru struct
 ///所有的通讯硬件相关的配置参数的内容部分
 struct HWComallconfigStru{
-    QMap<QString,TcpStru> hwTcpMap;
-    QMap<QString,SerialPortstru> hwSerialPortMap;
-    QMap<QString,ModbusTcpClientstru> hwmodbustcpcliMap;
-    QMap<QString,HttpServerStru> hwhttpserverMap;
+    QMap<int,TcpStru> hwTcpMap;
+    QMap<int,SerialPortstru> hwSerialPortMap;
+    QMap<int,ModbusTcpClientstru> hwmodbustcpcliMap;
+    QMap<int,HttpServerStru> hwhttpserverMap;
 };
 #pragma pack(1)
 //  WCS发送给小车的指令长度 40个长度

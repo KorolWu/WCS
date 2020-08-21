@@ -32,7 +32,7 @@ private:
     ~TCommtransceivermanager();
 public:
     void InitHWcommob();
-    void SendcommandByExtern(OrderStru cmd,QString Id);
+    void SendcommandByExtern(OrderStru cmd,int Id);
     static TCommtransceivermanager* GetInstance()
     {
         static TCommtransceivermanager Instance;
@@ -50,7 +50,7 @@ private slots:
     void Slotconnectstate(QString ID,int type,bool state);
 private:
     QTimer *m_heartTimer;
-    QMap<QString,HWdeviceabstractInterface *> m_HWdeviceMap;
+    QMap<int,HWdeviceabstractInterface *> m_HWdeviceMap;
     QMutex m_TCommMutex; //通讯对象部分数据读写锁
     int16_t m_wcstocarFramnbr;
 private://模板函数

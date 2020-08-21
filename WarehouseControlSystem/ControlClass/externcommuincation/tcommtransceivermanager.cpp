@@ -30,7 +30,7 @@ void TCommtransceivermanager::InitHWcommob()
 /// \param cmd
 /// \param Id
 ///外部传入参数进行处理 小车 流道 电梯指令 等
-void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, QString Id)
+void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
 {
     //先解析小车部分数据 发送帧格式内容
     if(m_HWdeviceMap.contains(Id))
@@ -39,20 +39,24 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, QString Id)
         switch (hwtype) {
         case HWDEVICETYPE::RGVCAR://需要发送的是AGV小车的内容
         {
-//            switch (control) {
-//            case value:
-
-//                break;
-//            default:
-//                break;
-//            }
-            SendCarCmdFrame wcssendframestru;
-            wcssendframestru.cmdnbr = m_wcstocarFramnbr;//指令编号:识别不同报文的唯一编号,该序号由WCS提供。
-
-
-
-
-
+            int16_t childtype = 0;
+            childtype = cmd.childtype;
+            switch (childtype) {
+            case 5: // 请求详细数据类型
+            {
+                SendCarCmdFrame wcssendframestru;
+                wcssendframestru.cmdnbr = m_wcstocarFramnbr;//指令编号:识别不同报文的唯一编号,该序号由WCS提供。
+                break;
+            }
+            case 6://简易数据类型
+             {
+               SendCarCmdReqestFrame simplestru;
+                simplestru.carnbr = Id;
+                break;
+            }
+            default:
+                break;
+            }
             break;
         }
         default:

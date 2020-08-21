@@ -78,7 +78,6 @@ SOURCES += main.cpp\
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
     ControlClass/externcommuincation/tcommtransceivermanager.cpp \
     ControlClass/externcommuincation/tcommmodbustcpclient.cpp\
-    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
     ControlClass/Instructions/carelevatorinstruction.cpp

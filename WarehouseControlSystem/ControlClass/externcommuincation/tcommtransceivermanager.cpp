@@ -4,6 +4,7 @@ TCommtransceivermanager::TCommtransceivermanager()
 {
     m_heartTimer = new QTimer;
     connect(m_heartTimer,&QTimer::timeout,this,&TCommtransceivermanager::UpdateState);
+    m_wcstocarFramnbr = 0;
 }
 
 TCommtransceivermanager::~TCommtransceivermanager()
@@ -31,7 +32,34 @@ void TCommtransceivermanager::InitHWcommob()
 ///外部传入参数进行处理 小车 流道 电梯指令 等
 void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, QString Id)
 {
-    //先解析小车部分数据内容
+    //先解析小车部分数据 发送帧格式内容
+    if(m_HWdeviceMap.contains(Id))
+    {
+        int hwtype = m_HWdeviceMap[Id]->GetHWtype();
+        switch (hwtype) {
+        case HWDEVICETYPE::RGVCAR://需要发送的是AGV小车的内容
+        {
+//            switch (control) {
+//            case value:
+
+//                break;
+//            default:
+//                break;
+//            }
+            SendCarCmdFrame wcssendframestru;
+            wcssendframestru.cmdnbr = m_wcstocarFramnbr;//指令编号:识别不同报文的唯一编号,该序号由WCS提供。
+
+
+
+
+
+            break;
+        }
+        default:
+            break;
+        }
+    }
+
 
 
 

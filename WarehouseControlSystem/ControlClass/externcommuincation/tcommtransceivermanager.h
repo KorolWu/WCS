@@ -52,6 +52,7 @@ private:
     QTimer *m_heartTimer;
     QMap<QString,HWdeviceabstractInterface *> m_HWdeviceMap;
     QMutex m_TCommMutex; //通讯对象部分数据读写锁
+    int16_t m_wcstocarFramnbr;
 private://模板函数
     template<typename T1>
     void CreatObbyHWconfigData(QMap<QString,T1> datamap ,HWDEVICEPROTYPE type)

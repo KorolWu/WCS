@@ -24,8 +24,6 @@ uint16_t value;
 int64_t data;
 };
 
-
-
 class TCommtransceivermanager:public QObject
 {
     Q_OBJECT

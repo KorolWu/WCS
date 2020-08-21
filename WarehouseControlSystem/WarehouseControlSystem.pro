@@ -73,12 +73,12 @@ SOURCES += main.cpp\
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
     ControlClass/externcommuincation/tcommtcpserver.cpp \
     ControlClass/externcommuincation/tcommtcpclient.cpp \
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
     ControlClass/externcommuincation/tcommtransceivermanager.cpp \
     ControlClass/externcommuincation/tcommmodbustcpclient.cpp\
-    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
     ControlClass/Instructions/carelevatorinstruction.cpp

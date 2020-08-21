@@ -42,6 +42,7 @@ private:
     QVector< ObserverBase *> m_ObserverVec;
     void reConnected();
     void noticeObserver();
+    void unLockLayer(int layer);
     union Rint16
     {
         qint16 v;

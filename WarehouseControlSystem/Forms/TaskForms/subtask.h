@@ -29,6 +29,7 @@ public:
     QPushButton *m_in_btn;
     QPushButton *m_out_btn;
     QPushButton *m_all_btn;
+    //QPushButton *m_refresh_btn;
     QLineEdit   *m_task_edit;
     QPushButton *m_query_btn;
     QTableView  *m_table_view;
@@ -44,6 +45,7 @@ signals:
 
 public slots:
     void selectTask();
+    void onRefresh();
 };
 
 #endif // SUBTASK_H

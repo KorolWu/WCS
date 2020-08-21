@@ -176,7 +176,7 @@ void DispatchCenter::lock_car(QString car_ip)
 void DispatchCenter::Task_execution_failed(const TaskInfoStru &t)
 {
     //任务执行失败，没有找到目标库位
-    //t.status = "执行失败";\
+    //t.status = "执行失败";
     qDebug()<<"执行失败";
     ALARMINFOSTRU arm;
     arm.alarminfo = "没有查到料箱对应的库位";
@@ -256,8 +256,9 @@ void DispatchCenter::handle_out_task(const TaskInfoStru &t)
         QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
         int car_task_z = Myconfig::GetInstance()->m_CarMap[ip].task_position.z;
         //先判断目标层是否有车
-        if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked  )//&& Myconfig::GetInstance()->m_CarMap[ip].deveceStatus.isLocking
+        if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked)//&& Myconfig::GetInstance()->m_CarMap[ip].deveceStatus.isLocking
         {
+            //小车正在执行的任务的Z 是否和本次任务的z相等
             if(car_task_z == task_p.z)
             {
                 Myconfig::GetInstance()->m_appointMap[ip].enqueue(t);

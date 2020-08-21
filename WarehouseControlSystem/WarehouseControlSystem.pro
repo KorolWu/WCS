@@ -77,7 +77,11 @@ SOURCES += main.cpp\
     ControlClass/externcommuincation/tcommtcpclient.cpp \
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
     ControlClass/externcommuincation/tcommtransceivermanager.cpp \
-    ControlClass/externcommuincation/tcommmodbustcpclient.cpp
+    ControlClass/externcommuincation/tcommmodbustcpclient.cpp\
+    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
+    ControlClass/Instructions/abstructinstruction.cpp \
+    ControlClass/Instructions/carinstruction.cpp \
+    ControlClass/Instructions/carelevatorinstruction.cpp
 
 
 
@@ -135,7 +139,12 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/tcommtcpclient.h \
     ControlClass/externcommuincation/hwcommfactoryob.h \
     ControlClass/externcommuincation/tcommtransceivermanager.h \
-    ControlClass/externcommuincation/tcommmodbustcpclient.h
+    ControlClass/externcommuincation/tcommmodbustcpclient.h \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
+    ControlClass/externcommuincation/definitioncomdataframe.h \
+    ControlClass/Instructions/abstructinstruction.h \
+    ControlClass/Instructions/carinstruction.h \
+    ControlClass/Instructions/carelevatorinstruction.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

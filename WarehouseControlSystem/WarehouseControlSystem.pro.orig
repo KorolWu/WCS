@@ -13,12 +13,11 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = WarehouseControlSystem
 TEMPLATE = app
 
-
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
- DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS
 
 # You can also make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -65,15 +64,33 @@ SOURCES += main.cpp\
     ControlClass/kdispatch.cpp \
     ControlClass/dispatchcenter.cpp \
     ControlClass/AbstractClass/abstractorder.cpp \
-    ControlClass/AbstractClass/rgvorder.cpp
-
+    ControlClass/AbstractClass/rgvorder.cpp \
+    Forms/TaskForms/subtask.cpp \
+    MointorUI/storeitem.cpp \
+    MointorUI/monitorview.cpp \
+    MointorUI/monitorui.cpp \
+    Forms/Runner/runerform.cpp \
+    ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
+    ControlClass/WarehousingIn/getouttrajectory.cpp \
+    SimulationgenerationtaskUI/testcreateorderspath.cpp \
+<<<<<<< HEAD
+    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
+    ControlClass/Instructions/abstructinstruction.cpp \
+    ControlClass/Instructions/carinstruction.cpp \
+    ControlClass/Instructions/carelevatorinstruction.cpp
+=======
+    ControlClass/externcommuincation/tcommtcpserver.cpp \
+    ControlClass/externcommuincation/tcommtcpclient.cpp \
+    ControlClass/externcommuincation/hwcommfactoryob.cpp \
+    ControlClass/externcommuincation/tcommtransceivermanager.cpp \
+    ControlClass/externcommuincation/tcommmodbustcpclient.cpp
+>>>>>>> 9135c37b744923bea14a7433071da76b003b918b
 
 
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
     UnitClass/c_systemlogmng.h \
-    datastructure.h \
     UnitClass/logininfowg.h \
     Forms/basefrom.h \
     Forms/CarForms/adddevice.h \
@@ -104,7 +121,6 @@ HEADERS  += mainwindow.h \
     Forms/CarForms/carlistform.h \
     ControlClass/observerbase.h \
     ControlClass/selectcar.h \
-<<<<<<< HEAD
     Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
     UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
     Forms/AlarmInfo/alarminfowg.h\
@@ -112,16 +128,28 @@ HEADERS  += mainwindow.h \
     ControlClass/basedatainfooperate.h \
     ControlClass/dispatchcenter.h \
     ControlClass/AbstractClass/abstractorder.h \
-    ControlClass/AbstractClass/rgvorder.h
+    ControlClass/AbstractClass/rgvorder.h \
+    Forms/TaskForms/subtask.h \
+    MointorUI/storeitem.h \
+    MointorUI/monitorview.h \
+    MointorUI/monitorui.h \
+    Forms/Runner/runerform.h \
+    ControlClass/WarehousingIn/generateinputwarehousingorders.h \
+    ControlClass/WarehousingIn/getouttrajectory.h \
+    SimulationgenerationtaskUI/testcreateorderspath.h \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
+<<<<<<< HEAD
+    ControlClass/externcommuincation/definitioncomdataframe.h \
+    ControlClass/Instructions/abstructinstruction.h \
+    ControlClass/Instructions/carinstruction.h \
+    ControlClass/Instructions/carelevatorinstruction.h
 =======
-    ControlClass/AbstractClass/abstructdevice.h\
- Forms/StorePosInfo/pagewg/tablepagebyabstractwg.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
- UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h\
- ControlClass/kdispatch.h \
-    ControlClass/basedatainfooperate.h \
-    Forms/AlarmInfo/alarminfowg.h
->>>>>>> dab3cf22194a8d0dce96db30b052b18f5be6d8fe
+    ControlClass/externcommuincation/tcommtcpserver.h \
+    ControlClass/externcommuincation/tcommtcpclient.h \
+    ControlClass/externcommuincation/hwcommfactoryob.h \
+    ControlClass/externcommuincation/tcommtransceivermanager.h \
+    ControlClass/externcommuincation/tcommmodbustcpclient.h
+>>>>>>> 9135c37b744923bea14a7433071da76b003b918b
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

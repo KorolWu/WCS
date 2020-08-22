@@ -195,6 +195,103 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
     }
     return index;
 }
+
+bool TCommtransceivermanager::ModifyCarReceFrameIndex(int ID, int wcsnbr)
+{
+    //删除响应结束的编号帧的数据编号
+    if(m_Wcstocarframeindex.contains(ID))
+    {
+        int index  = m_Wcstocarframeindex[ID].indexOf(wcsnbr);
+        if(index >= 0)
+        {
+            m_Wcstocarframeindex[ID].removeAt(index);
+            return true;
+        }
+    }
+    return false;
+}
+///
+/// \brief TCommtransceivermanager::AnaysisCarFrame
+/// \param dataframe
+/// \param ID
+///
+void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
+{
+    if(m_HWdeviceMap.contains(ID))
+    {
+        if(m_HWdeviceMap[ID])
+        {
+            if(tempData.size() >= 10)
+            {
+                //分析报文类型
+                int16_t nbr;//指令编号
+                int16_t carnbr;//小车编号
+                atoi16 nbrvalue;
+                memcpy(nbrvalue.a,tempData.data(),2);
+                nbr = nbrvalue.x;
+                atoi16 carrvalue;
+                memcpy(carrvalue.a,tempData.data()+2,2);
+                carnbr = carrvalue.x;
+                if(ID == carnbr)
+                {
+                    if(nbr== 2000 && tempData[4] == 'R' && tempData[5] == 'B')//RB报文
+                    {
+                        ReceCarRBFrame RBstru;//复位报文
+                        memcpy((char*)&RBstru,tempData.data(),10);
+                        qDebug()<<"RB报文:"<< RBstru.carnbr << RBstru.posinfo;
+                    }
+                    else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
+                    {
+                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                        {
+                            //解析详细数据内容
+                            ReceCarDetailFrame detailstru;//详细数据报文
+                            memcpy((char*)&detailstru,tempData.data(),74);
+                            qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
+                        }
+                    }
+                    else if(tempData[4] == 'S' && tempData[5] == 'T')
+                    {
+                        //简易数据报文
+                        ReceCarcmdsimFrame simstru;
+                        memcpy((char*)&simstru,tempData.data(),10);
+                        qDebug()<<"简易数据报文:"<< simstru.carnbr << simstru.carstate << simstru.info.carinfo;
+                        if(nbr == 1000)
+                        {
+                            //不是回应指令动作
+                            qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
+                        }
+                    }
+                    else
+                    {
+                        if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
+                        {
+                            ReceCarcmdActionFrame actionstru;//动作指令报文
+                            memcpy((char*)&actionstru,tempData.data(),10);
+                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;
+                            switch (actionstru.cmdstate)
+                            {
+                            case 1://指令状态正在执行
+
+                                break;
+                            case 2://异常
+
+                                break;
+                            case 3://指令完成
+
+                                break;
+                            default:
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+}
 ///
 /// \brief TCommtransceivermanager::ReceDataFromHWob
 /// \param ID
@@ -210,27 +307,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
-        if(m_HWdeviceMap.contains(ID))
-        {
-            if(m_HWdeviceMap[ID])
-            {
-                if(tempData.size() >= 10)
-                {
-
-                    int16_t nbr;
-                    int16_t carnbr;
-
-
-                    int16_t indexnbr = -1;
-                    if(m_Wcstocarframeindex.contains(ID))
-                    {
-                        int index  = m_Wcstocarframeindex[ID].indexOf(indexnbr);
-                        m_Wcstocarframeindex[ID].removeAt(index);
-                    }
-                }
-            }
-        }
-
+        AnalysisCarFrame(tempData,  ID);
         break;
     }
     default:

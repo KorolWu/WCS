@@ -18,11 +18,11 @@
 ///所有通讯收发的数据窗口管理器
 ///
 struct ModbusStru{
-int type;
-int bit;
-int address;
-uint16_t value;
-int64_t data;
+    int type;
+    int bit;
+    int address;
+    uint16_t value;
+    int64_t data;
 };
 
 class TCommtransceivermanager:public QObject
@@ -47,7 +47,9 @@ private:
     void sendDataToHWob(QByteArray data ,int id);
     void AnalysisDataFrame(QByteArray dataframe);//解析帧内容
     int16_t GetWCStocarFrameIndex(int hwId);
+    bool ModifyCarReceFrameIndex(int ID,int wcsnbr);
     void  UpdateCarStatus();
+    void  AnalysisCarFrame(QByteArray dataframe ,int ID);
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);

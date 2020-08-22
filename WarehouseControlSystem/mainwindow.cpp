@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
    p_mCarList->move(1200,3);
    p_mCarList->show();
+   m_listIsShow = true;
+   connect(p_mCarList,&CarListForm::minimize,this,&MainWindow::showCarList);
    p_mDispatchThread = new QThread();
    DispatchCenter *m_dispatchCenter = new DispatchCenter;
    m_dispatchCenter->moveToThread(p_mDispatchThread);
@@ -106,6 +108,11 @@ void MainWindow::initUI()
     info_lab->setFont(QFont("宋体",20));
     info_lab->move(160,70);
     info_lab->resize(600,30);
+    m_list_lab = new QLabel(this);
+    m_list_lab->resize(300,7);
+    m_list_lab->setStyleSheet("background-color:rgb(24, 24, 72)");
+    m_list_lab->move(desk_rect.width() - 310,1);
+    m_list_lab->hide();
     treewidget = new QWidget(this);
     treewidget->setStyleSheet("background-color:rgb(150,150,150)");
     treewidget->resize(desk_rect.width()/7,desk_rect.height()/10*9);
@@ -354,4 +361,21 @@ void MainWindow::onReplyReady(QString str)
     qDebug()<<"in Warehouse Control System"<<QString::number(i);
     i++;
     emit httpRedReady(str);
+}
+
+void MainWindow::showCarList()
+{
+    m_list_lab->show();
+    m_listIsShow = !m_listIsShow;
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+
+    if(event->pos().x() >= desk_rect.width()*0.85 && event->pos().y() <= 4)
+    {
+        m_list_lab->hide();
+        p_mCarList->show();
+    }
+    QWidget::mouseMoveEvent(event);
 }

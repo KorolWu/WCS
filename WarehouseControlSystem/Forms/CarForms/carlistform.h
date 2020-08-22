@@ -57,6 +57,7 @@ private:
     QLabel *m_pHeadLabel;
     QLabel *m_pInfoLabel;
     QVector<QLabel *> m_InfoVec;
+    QPushButton *m_pMinBtn;
     int m_width;
     int m_height;
     bool m_pressflag;
@@ -71,8 +72,9 @@ private:
     QList<CarStatusWidget *> list;
 signals:
     void updateList();
+    void minimize();
 public slots:
-
+    void onMinimize();
     // QWidget interface
 protected:
     void mousePressEvent(QMouseEvent *event);

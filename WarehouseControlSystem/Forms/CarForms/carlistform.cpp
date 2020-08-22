@@ -28,6 +28,13 @@ void CarListForm::initUi()
     m_pInfoLabel->setFont(m_font);
     m_pInfoLabel->setAttribute(Qt::WA_TranslucentBackground, true);
     m_pInfoLabel->move(10,10);
+    m_pMinBtn = new QPushButton(this);
+    m_pMinBtn->setText("-");
+    m_pMinBtn->setFont(m_font);
+    m_pMinBtn->resize(45,30);
+    m_pMinBtn->setStyleSheet("background-color:rgb(24, 24, 72);color:white");
+    m_pMinBtn->move(m_width*0.85,10);
+    connect(m_pMinBtn,&QPushButton::clicked,this,&CarListForm::onMinimize);
      QStringList list;
      list<<"全部"<<"在线"<<"离线"<<"异常"<<"维修";
     int interval = 65;
@@ -124,6 +131,12 @@ void CarListForm::updateCarListHeader()
     m_InfoVec.at(0)->setText(QString("%1").arg(m_totalNum));
     m_InfoVec.at(1)->setText(QString("%1").arg(m_onLineNum));
     m_InfoVec.at(2)->setText(QString("%1").arg(m_disonLineNum));
+}
+
+void CarListForm::onMinimize()
+{
+    this->hide();
+    emit minimize();
 }
 
 void CarListForm::mousePressEvent(QMouseEvent *event)

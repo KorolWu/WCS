@@ -73,7 +73,6 @@ SOURCES += main.cpp\
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
-    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
     ControlClass/externcommuincation/tcommtcpserver.cpp \
     ControlClass/externcommuincation/tcommtcpclient.cpp \
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
@@ -82,8 +81,6 @@ SOURCES += main.cpp\
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
     ControlClass/Instructions/carelevatorinstruction.cpp
-
-
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \

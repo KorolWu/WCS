@@ -68,6 +68,7 @@ private:
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;
+    QLabel        *m_list_lab;
     QWidget       *p_main_widget;
     CurrentTask   *t;
     AlarmInfoWg *m_palarmWg;
@@ -80,6 +81,7 @@ private:
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
     JQHttpServer::TcpServerManage *m_pHttpServer;
+    bool           m_listIsShow;
 
     void closeWcs();
     void initUI();
@@ -92,6 +94,7 @@ private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void slotlogin();
     void onReplyReady(QString str);
+    void showCarList();
 
 
 private:
@@ -102,6 +105,10 @@ private:
 signals:
     void httpRedReady(QString str);
     void dispatched();
+
+    // QWidget interface
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // MAINWINDOW_H

@@ -21,7 +21,7 @@ enum HWDEVICEPROTYPE{
 };
 //通讯参数配置部分结构体
 struct hwcomBasestru{
-    QString ID = "";
+    int ID = -1;
     int hwtype = 0;
     int childtype = 0;
     int protype =0;
@@ -63,10 +63,40 @@ struct HWComallconfigStru{
     QMap<int,ModbusTcpClientstru> hwmodbustcpcliMap;
     QMap<int,HttpServerStru> hwhttpserverMap;
 };
+union atoi64
+{
+    int8_t a[8];
+    int64_t x;
+};
+union atoi32
+{
+    int8_t a[4];
+    int32_t x;
+};
+union atou32
+{
+    int8_t a[4];
+    uint x;
+};
+union atoi16
+{
+    int8_t a[2];
+    int16_t x;
+};
+union atou16
+{
+    int8_t a[2];
+    ushort x;
+};
+union atoi8
+{
+    int8_t a;
+    int8_t x;
+};
 #pragma pack(1)
 //  WCS发送给小车的指令长度 40个长度
 struct SendCarCmdFrame{
-    int16_t cmdnbr;// 指令编号
+    int16_t cmdnbr;// 指令编号 WCS提供
     int16_t carnbr;//小车编号
     int16_t cmdname;//命令1 = 直行2 = 横行 3 = 取货 4 = 放货
     int16_t backup1;//预留1
@@ -139,7 +169,7 @@ struct ReceCarDetailFrame{
 
 //wcs主动接收小车发送帧格式部分数据 简易数据报文 10个字节信息
 struct ReceCarcmdsimFrame{
-     int16_t cmdnbr;// 指令编号
+     int16_t cmdnbr;// 指令编号， 分为主动为1000 或者 为WCS编号
      int16_t carnbr;//小车编号穿梭车的唯一编号。
      char cmdname[2];//命令ST(唯一)
      int16_t carstate; // 小车状态显示穿梭车当前是处于手动状态还是自动状态 1 = 手动 2 = 自动

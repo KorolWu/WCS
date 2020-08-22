@@ -16,7 +16,7 @@ public:
     // HWdeviceabstractInterface interface
 public:
     void SetCommParam(ComConfigStru paramstru);
-    QString GetNameID();
+    int GetNameID();
     int GetHWtype();
     int GetHWprotype();
     void CloseComm();
@@ -33,7 +33,7 @@ private:
     qint16 m_port;
     TcpStru m_config;
 signals:
-    void clientDisconnect(QString ID,int hwtype);
+    void clientDisconnect(int ID,int hwtype);
     void signalClientconnectserver();
 };
 

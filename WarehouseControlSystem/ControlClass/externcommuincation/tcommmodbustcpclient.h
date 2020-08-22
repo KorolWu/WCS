@@ -17,7 +17,7 @@ public:
     // HWdeviceabstractInterface interface
 public:
     void SetCommParam(ComConfigStru paramstru);
-    QString GetNameID();
+    int GetNameID();
     int GetHWtype();
     int GetHWprotype();
     void CloseComm();

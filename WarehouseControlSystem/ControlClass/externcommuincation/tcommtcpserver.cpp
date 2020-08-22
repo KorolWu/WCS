@@ -28,7 +28,7 @@ void TCommTCPserver::SetCommParam(ComConfigStru paramstru)
   creatTcpserver();
 }
 
-QString TCommTCPserver::GetNameID()
+int TCommTCPserver::GetNameID()
 {
     return m_config.ID;
 }

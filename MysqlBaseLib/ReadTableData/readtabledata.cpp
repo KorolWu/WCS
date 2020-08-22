@@ -314,8 +314,8 @@ void ReadTableData::Readt_hwcomm_infotable()
     Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.clear();
     QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
     while (query.next()) {
-        QString  Id;
-        Id = query.value("ID").toString();
+        int  Id;
+        Id = query.value("ID").toInt();
         int type =  query.value("type").toInt();
         int protype =  query.value("protype").toInt();
         int childtype = query.value("childtype").toInt();

@@ -14,7 +14,7 @@ void TCommModbusTcpClient::SetCommParam(ComConfigStru paramstru)
 
 }
 
-QString TCommModbusTcpClient::GetNameID()
+int TCommModbusTcpClient::GetNameID()
 {
     return m_configstru.ID;
 }

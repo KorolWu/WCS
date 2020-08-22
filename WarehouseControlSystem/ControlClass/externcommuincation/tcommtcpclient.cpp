@@ -23,7 +23,7 @@ void TCommTCPclient::SetCommParam(ComConfigStru paramstru)
     creadTcpClient();
 }
 
-QString TCommTCPclient::GetNameID()
+int TCommTCPclient::GetNameID()
 {
     return m_config.ID;
 }

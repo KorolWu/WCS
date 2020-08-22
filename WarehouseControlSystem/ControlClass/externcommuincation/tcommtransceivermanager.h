@@ -11,6 +11,7 @@
 #include "tcommmodbustcpclient.h"
 #include <QMutexLocker>
 #include <QMutex>
+#include <QMap>
 
 ///
 /// \brief The TCommtransceivermanager class
@@ -32,7 +33,7 @@ private:
     ~TCommtransceivermanager();
 public:
     void InitHWcommob();
-    void SendcommandByExtern(OrderStru cmd,QString Id);
+    void SendcommandByExtern(OrderStru cmd,int Id);
     static TCommtransceivermanager* GetInstance()
     {
         static TCommtransceivermanager Instance;
@@ -41,21 +42,23 @@ public:
 signals:
     void SignalCarStatusUpdate();
 public slots:
-    void ReceDataFromHWob(QString ID,int hwtype,QByteArray data);//数据接收内容
+    void ReceDataFromHWob(int ID,int hwtype,QByteArray data);//数据接收内容
 private:
-    void sendDataToHWob(QByteArray data ,QString id);
+    void sendDataToHWob(QByteArray data ,int id);
     void AnalysisDataFrame(QByteArray dataframe);//解析帧内容
+    int16_t GetWCStocarFrameIndex(int hwId);
+    void  UpdateCarStatus();
 private slots:
     void UpdateState();
-    void Slotconnectstate(QString ID,int type,bool state);
+    void Slotconnectstate(int ID,int type,bool state);
 private:
     QTimer *m_heartTimer;
-    QMap<QString,HWdeviceabstractInterface *> m_HWdeviceMap;
+    QMap<int,HWdeviceabstractInterface *> m_HWdeviceMap;
     QMutex m_TCommMutex; //通讯对象部分数据读写锁
-    int16_t m_wcstocarFramnbr;
+    QMap<int16_t,QList<int16_t>> m_Wcstocarframeindex; // 小车的id 和对应的报文的索引值
 private://模板函数
     template<typename T1>
-    void CreatObbyHWconfigData(QMap<QString,T1> datamap ,HWDEVICEPROTYPE type)
+    void CreatObbyHWconfigData(QMap<int,T1> datamap ,HWDEVICEPROTYPE type)
     {
         for(auto it = datamap.begin();\
             it!= datamap.end();++it)

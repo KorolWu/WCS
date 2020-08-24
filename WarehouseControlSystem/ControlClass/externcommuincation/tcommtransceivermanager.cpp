@@ -195,6 +195,153 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
     }
     return index;
 }
+
+bool TCommtransceivermanager::ModifyCarReceFrameIndex(int ID, int wcsnbr)
+{
+    //删除响应结束的编号帧的数据编号
+    if(m_Wcstocarframeindex.contains(ID))
+    {
+        int index  = m_Wcstocarframeindex[ID].indexOf(wcsnbr);
+        if(index >= 0)
+        {
+            m_Wcstocarframeindex[ID].removeAt(index);
+            return true;
+        }
+    }
+    return false;
+}
+///
+/// \brief TCommtransceivermanager::AnaysisCarFrame
+/// \param dataframe
+/// \param ID
+///
+void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
+{
+    if(m_HWdeviceMap.contains(ID))
+    {
+        if(m_HWdeviceMap[ID])
+        {
+            if(tempData.size() >= 10)
+            {
+                //分析报文类型
+                int16_t nbr;//指令编号
+                int16_t carnbr;//小车编号
+                atoi16 nbrvalue;
+                memcpy(nbrvalue.a,tempData.data(),2);
+                nbr = nbrvalue.x;
+                atoi16 carrvalue;
+                memcpy(carrvalue.a,tempData.data()+2,2);
+                carnbr = carrvalue.x;
+                if(ID == carnbr)
+                {
+                    if(nbr== 2000 && tempData[4] == 'R' && tempData[5] == 'B')//RB报文
+                    {
+                        ReceCarRBFrame RBstru;//复位报文
+                        memcpy((char*)&RBstru,tempData.data(),10);
+                        qDebug()<<"RB报文:"<< RBstru.carnbr << RBstru.posinfo;
+
+                    }
+                    else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
+                    {
+                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                        {
+                            //解析详细数据内容
+                            ReceCarDetailFrame detailstru;//详细数据报文
+                            memcpy((char*)&detailstru,tempData.data(),74);
+                            qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
+                            UpdateCarStatus(ID,Opermode,detailstru.state);//自动 / 手动
+                            UpdateCarStatus(ID,exestatus,detailstru.info.carinfo);// 电量 校准  就绪 等状态变化
+                            UpdateCarStatus(ID,sensorstat,detailstru.statepic.goodsstate.carsensorstat);//货物状态变化情况
+                        }
+                    }
+                    else if(tempData[4] == 'S' && tempData[5] == 'T')
+                    {
+                        //简易数据报文
+                        ReceCarcmdsimFrame simstru;
+                        memcpy((char*)&simstru,tempData.data(),10);
+                        UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
+                        UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
+                        qDebug()<<"简易数据报文 小车的自动和手动状态:"<< simstru.carnbr << simstru.carstate << simstru.info.carinfo;
+                        if(nbr == 1000)
+                        {
+                            //不是回应指令动作 编号的
+                            qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
+                        }
+                    }
+                    else
+                    {
+                        if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
+                        {
+                            ReceCarcmdActionFrame actionstru;//动作指令报文
+                            memcpy((char*)&actionstru,tempData.data(),10);
+                            UpdateCarStatus(ID,actioninfo,actionstru.cmdstate);
+                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;                        
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+//////更新小车内存中相关的状态内容
+/// \brief TCommtransceivermanager::UpdateCarStatus
+/// \param carID
+/// \param role
+/// \param value
+///
+void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
+{
+    QString ID;
+    if(Myconfig::GetInstance()->m_CarMap.contains(ID))
+    {
+        switch (role) {
+        case CarStatusrole::RBposinfo:
+            break;
+        case CarStatusrole::Opermode:
+        {
+            //1:手动 2：自动
+            if(Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.model != value)
+            {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.model = value;
+            }
+            break;
+        }
+        case CarStatusrole::sensorstat://传感器sensor状态
+        {
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat;
+            if(curvalue != value)
+            {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat = value;
+            }
+            break;
+        }
+        case CarStatusrole::exestatus: //包含了状态信息 故障等信息
+        {
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo;
+            if(curvalue !=value )
+           {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo = value;
+            }
+            break;
+        }
+        case CarStatusrole::actioninfo://指令完成动作赋值
+        {
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status;
+            if(curvalue !=value)
+            {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status = value;
+            }
+        }
+        default:
+            break;
+        }
+    }
+}
+///
+/// \brief TCommtransceivermanager::UpdateCarStatus
+/// \param carID
+
+
 ///
 /// \brief TCommtransceivermanager::ReceDataFromHWob
 /// \param ID
@@ -210,27 +357,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
-        if(m_HWdeviceMap.contains(ID))
-        {
-            if(m_HWdeviceMap[ID])
-            {
-                if(tempData.size() >= 10)
-                {
-
-                    int16_t nbr;
-                    int16_t carnbr;
-
-
-                    int16_t indexnbr = -1;
-                    if(m_Wcstocarframeindex.contains(ID))
-                    {
-                        int index  = m_Wcstocarframeindex[ID].indexOf(indexnbr);
-                        m_Wcstocarframeindex[ID].removeAt(index);
-                    }
-                }
-            }
-        }
-
+        AnalysisCarFrame(tempData,  ID);
         break;
     }
     default:

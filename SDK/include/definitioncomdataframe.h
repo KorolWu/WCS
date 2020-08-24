@@ -125,7 +125,7 @@ typedef union
             bruning:1, //bit3 值“1”穿梭车正在执行指令中
             bunready:1,//bit4值“1”未就绪
             bcalibrating:1,//bit5 值“1”自校准中
-            bundefined:10;//6-15未定义的
+            bundefined:10;//6-15 未定义的
     };
     int16_t carinfo;
 }ReceCarinfostru;//小车信息结构体
@@ -135,7 +135,7 @@ typedef union
     struct {
         int8_t
             bLhavegoods:1, // bit0 0位 = 值“1”穿梭车左侧有货
-            bRhavegoods:1, // bit1 穿梭车右侧有货
+            bRhavegoods:1, // bit1   穿梭车右侧有货
             bloaplathavegoods:1;//bit2 值“ 1穿梭车载货台内有货
     };
     int8_t carsensorstat;

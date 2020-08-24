@@ -18,11 +18,20 @@
 ///所有通讯收发的数据窗口管理器
 ///
 struct ModbusStru{
-int type;
-int bit;
-int address;
-uint16_t value;
-int64_t data;
+    int type;
+    int bit;
+    int address;
+    uint16_t value;
+    int64_t data;
+};
+enum CarStatusrole
+{
+    RBposinfo =1,//条码位置信息
+    Opermode =2,//自动/手动
+    sensorstat  = 3,//左侧有货 右侧有货
+    exestatus = 4,//穿梭车电量低 小车 自动状态下发生了故障 自动校准中 就绪中
+    errorinfo = 5,// 故障信息图
+    actioninfo = 6 // 动作指令反馈信息
 };
 
 class TCommtransceivermanager:public QObject
@@ -47,7 +56,9 @@ private:
     void sendDataToHWob(QByteArray data ,int id);
     void AnalysisDataFrame(QByteArray dataframe);//解析帧内容
     int16_t GetWCStocarFrameIndex(int hwId);
-    void  UpdateCarStatus();
+    bool ModifyCarReceFrameIndex(int ID,int wcsnbr);
+    void  AnalysisCarFrame(QByteArray dataframe ,int ID);
+    void  UpdateCarStatus(int carID,int role,int value);
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);

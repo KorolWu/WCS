@@ -385,6 +385,7 @@ void ReadTableData::Readt_hwcomm_infotable()
         if(type == HWDEVICETYPE::RGVCAR)
         {
             CarInfoStru stru;
+            stru.carId = Id;
             stru.deviceIp = name;
             stru.port = query.value("port").toInt();
             if(Myconfig::GetInstance()->m_CarMap.contains(Id))

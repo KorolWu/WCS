@@ -239,6 +239,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         ReceCarRBFrame RBstru;//复位报文
                         memcpy((char*)&RBstru,tempData.data(),10);
                         qDebug()<<"RB报文:"<< RBstru.carnbr << RBstru.posinfo;
+
                     }
                     else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
                     {
@@ -248,6 +249,9 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                             ReceCarDetailFrame detailstru;//详细数据报文
                             memcpy((char*)&detailstru,tempData.data(),74);
                             qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
+                            UpdateCarStatus(ID,Opermode,detailstru.state);//自动 / 手动
+                            UpdateCarStatus(ID,exestatus,detailstru.info.carinfo);// 电量 校准  就绪 等状态变化
+                            UpdateCarStatus(ID,sensorstat,detailstru.statepic.goodsstate.carsensorstat);//货物状态变化情况
                         }
                     }
                     else if(tempData[4] == 'S' && tempData[5] == 'T')
@@ -255,10 +259,12 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         //简易数据报文
                         ReceCarcmdsimFrame simstru;
                         memcpy((char*)&simstru,tempData.data(),10);
+                        UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
+                        UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
                         qDebug()<<"简易数据报文 小车的自动和手动状态:"<< simstru.carnbr << simstru.carstate << simstru.info.carinfo;
                         if(nbr == 1000)
                         {
-                            //不是回应指令动作
+                            //不是回应指令动作 编号的
                             qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
                         }
                     }
@@ -268,26 +274,11 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         {
                             ReceCarcmdActionFrame actionstru;//动作指令报文
                             memcpy((char*)&actionstru,tempData.data(),10);
-                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;
-                            switch (actionstru.cmdstate)
-                            {
-                            case 1://指令状态正在执行
-
-                                break;
-                            case 2://异常
-
-                                break;
-                            case 3://指令完成
-
-                                break;
-                            default:
-                                break;
-                            }
+                            UpdateCarStatus(ID,actioninfo,actionstru.cmdstate);
+                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;                        
                         }
                     }
-
                 }
-
             }
         }
     }
@@ -305,7 +296,6 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
     {
         switch (role) {
         case CarStatusrole::RBposinfo:
-
             break;
         case CarStatusrole::Opermode:
         {
@@ -316,72 +306,35 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
             }
             break;
         }
-        case CarStatusrole::sensorstat:
+        case CarStatusrole::sensorstat://传感器sensor状态
         {
-            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.box_status;
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat;
             if(curvalue != value)
             {
-                ReceCaSensorgoodsinfo senstru;
-                senstru.carsensorstat = value;
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.box_status = value;
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat = value;
             }
             break;
         }
-        case CarStatusrole::exestatus:
+        case CarStatusrole::exestatus: //包含了状态信息 故障等信息
         {
-            ReceCarinfostru infostru;
-            infostru.carinfo = value;
-            if(infostru.bcalibrating == 1) //自动校准中
-            {
-
-            }
-            if(infostru.bunready == 1) //未准备好
-            {
-
-            }
-            if(infostru.belectricity == 1) //电量低
-            {
-
-            }
-            if(infostru.bready == 1) //可接受指令
-            {
-
-            }
-            if(infostru.bruning == 1) //指令执行中
-            {
-
-            }
-            if(infostru.berror == 1) //自动运行中发生了故障
-            {
-
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo;
+            if(curvalue !=value )
+           {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo = value;
             }
             break;
         }
-        case CarStatusrole::errorinfo:
+        case CarStatusrole::actioninfo://指令完成动作赋值
         {
-            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.err_code;
-            if(curvalue != value)
+            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status;
+            if(curvalue !=value)
             {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.err_code = value;
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status = value;
             }
-            break;
-        }
-        case CarStatusrole::actioninfo:
-        {
-            intcurvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.inp;
-            if(value == 3) //1 2 代表未完成 或者异常
-            {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.inp = true;
-            }
-            else{
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.inp = false;
-            }
-            break;
         }
         default:
             break;
         }
-       // Myconfig::GetInstance()->m_CarMap[ID].deveceStatus
     }
 }
 ///

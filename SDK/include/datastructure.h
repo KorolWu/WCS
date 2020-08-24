@@ -19,15 +19,42 @@ typedef struct KPosition_{
     double z;
     int state = 0;
 }KPosition;
+typedef union
+{
+    struct {
+        int8_t
+            berror:1, // bit0 值“1”穿梭车在自动状态下发生故障
+            belectricity:1, // bit1 值“1”穿梭车电量低
+            bready:1,//bit2 值“1”穿梭车就绪,可以接收指令
+            bruning:1, //bit3 值“1”穿梭车正在执行指令中
+            bunready:1,//bit4值“1”未就绪
+            bcalibrating:1,//bit5 值“1”自校准中
+            bundefined:2;//6-15 未定义的
+    };
+    int8_t carstatusinfo;
+}CarstatusInfostru;//小车信息结构体
+//传感器状态信息
+typedef union
+{
+    struct {
+        int8_t
+        bLhavegoods:1, // bit0 0位 = 值“1”穿梭车左侧有货
+            bRhavegoods:1, // bit1   穿梭车右侧有货
+            bloadhavegoods:1,//bit2 值“ 1穿梭车载货台内有货
+            undefined:5;//bit3-bit7 值“ 未定义
+    };
+    int8_t carsensorstat;
+}CarSensorgoodsInfostru;//小车货传感器货物信息
+
 typedef struct _Car_status
 {
     //电量
-    int batter = 20;
+    int batter = 20;//值是1 代表电量低 0 代表电量状态正常
     KPosition carCurrentPosion;
     //是否启用 int working warrn online  disonline
     bool enable = false;
     // 1 stand by, 2 working,
-    int status = 1;
+    int status = 1; //1 正在执行 2 异常 3 指令完成 小车的动作指令状态 2020/08/24解释状态
     //locking 在执行多段任务过程中需要锁定小车
     bool isLocking = false;
     //error
@@ -42,7 +69,9 @@ typedef struct _Car_status
     bool isOnline = false;
     //目标坐标
     KPosition carEndPosion;
-
+    //新增数据结构状态信息状态 和 传感器状态信息的结构体2020 08 24
+    CarstatusInfostru statusinfodstru;
+    CarSensorgoodsInfostru senorgoodsstru;
 }Car_status;
 enum Order{
     X = 0,                  //向X方向移动
@@ -231,19 +260,19 @@ typedef struct _RunerStru
     QString response_in = "";
     QString request_out = "";
     QString response_out = "";
-     _RunerStru& operator = (const _RunerStru &other)
-     {
-          deviceNum = other.deviceNum;
-          deviceIp = other.deviceIp;
-          port = other.port;
-          cache_in_max = other.cache_in_max;
-          cache_out_max = other.cache_out_max;
-          request_in = other.request_in;
-          response_in = other.response_in;
-          request_out = other.request_out;
-          response_out = other.response_out;
-          return *this;
-     }
+    _RunerStru& operator = (const _RunerStru &other)
+    {
+        deviceNum = other.deviceNum;
+        deviceIp = other.deviceIp;
+        port = other.port;
+        cache_in_max = other.cache_in_max;
+        cache_out_max = other.cache_out_max;
+        request_in = other.request_in;
+        response_in = other.response_in;
+        request_out = other.request_out;
+        response_out = other.response_out;
+        return *this;
+    }
 }RunerStru;
 // 关于层的一个结构体，用来判断当前层是否锁住，以及锁定的小车的ip
 typedef struct _LayerStru

@@ -104,6 +104,7 @@ typedef struct _OrderStru
 typedef struct _CarInfoStru
 {
     //小车编号
+    int carId = -1;
     QString deviceNum = "";
     QString deviceIp = "";
     int port = 0;

@@ -31,6 +31,7 @@ private:
     CarStatusFrom *m_pCar;
     CarInfoStru m_car;
     QString m_ip;
+    int     m_carNum;
     QLabel *numLab;
     QLabel *staLab;
     QLabel *taskLab;

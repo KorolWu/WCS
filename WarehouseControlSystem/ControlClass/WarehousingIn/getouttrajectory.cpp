@@ -1,9 +1,9 @@
 #include "getouttrajectory.h"
 
-GetOutTrajectory::GetOutTrajectory(KPosition task_p, QString car_ip, const TaskInfoStru task)
+GetOutTrajectory::GetOutTrajectory(KPosition task_p, int car_id, const TaskInfoStru task)
 {
     this->m_task_p = task_p;
-    this->m_ip = car_ip;
+    this->m_id = car_id;
     this->m_task = task;
 }
 
@@ -16,7 +16,7 @@ QQueue<OrderStru> GetOutTrajectory::getTrajectory()
 void GetOutTrajectory::getTrajectory_out()
 {
     OrderStru o;
-    m_carBeginPosition = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion;
+    m_carBeginPosition = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion;
     // same layer
     if(m_carBeginPosition.z == m_task_p.z)
     {
@@ -94,8 +94,8 @@ void GetOutTrajectory::inElevator()
     m_taskQueue.enqueue(o);
     //将本层解锁
     o.order = Unlock_layer;
-    o.value = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z;
-    Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z = m_task_p.z;
+    o.value = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.z;
+    Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.z = m_task_p.z;
     m_taskQueue.enqueue(o);
     //x_move in elevator
 }

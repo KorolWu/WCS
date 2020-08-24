@@ -10,7 +10,7 @@ class AbstructInstruction
 public:
     AbstructInstruction();
     virtual ~AbstructInstruction();
-    virtual void setParameter(OrderStru o, QString device_id);
+    virtual void setParameter(OrderStru o, int device_id);
     virtual int getResult(QString exeMsg);
     virtual void runInstruction();
 

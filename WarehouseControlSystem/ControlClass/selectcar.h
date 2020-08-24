@@ -15,9 +15,9 @@ class SelectCar : public QObject
     Q_OBJECT
 public:
     explicit SelectCar(QObject *parent = 0);
-    QString getCarIp_out(const KPosition &p);
-    QString getCarIp_in(const KPosition &p);
-    void change_status(QString carIp);
+    int getCarIp_out(const KPosition &p);
+    int getCarIp_in(const KPosition &p);
+    void change_status(int carIp);
     //判断是否有可用车辆
     bool hasUseCar();
 

@@ -169,6 +169,7 @@ CarStatusWidget::CarStatusWidget(int width, CarInfoStru c, BaseDevice *o, QWidge
     m_pCar = nullptr;
     o->registObserver(this);
     m_ip = c.deviceIp;
+    m_carNum = c.carId;
     QWidget *w = new QWidget(this);
     this->m_car = c;
     int interval = 50;
@@ -217,9 +218,9 @@ void CarStatusWidget::mouseDoubleClickEvent(QMouseEvent *event)
 ///
 void CarStatusWidget::updateStatusOnBase()
 {
-    if(Myconfig::GetInstance()->m_CarMap.contains(m_ip))
+    if(Myconfig::GetInstance()->m_CarMap.contains(m_carNum))
     {
-        m_car = Myconfig::GetInstance()->m_CarMap[m_ip];
+        m_car = Myconfig::GetInstance()->m_CarMap[m_carNum];
         numLab->setText(m_car.deviceNum);
         staLab->setText(m_car.deveceStatus.isOnline? "在线":"离线");
         taskLab->setText("---");

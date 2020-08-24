@@ -7,6 +7,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_ip = carStatus.deviceIp;
+    m_carNum = carStatus.carId;
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
     back_lab->resize(PAD_X,PAD_Y);
@@ -158,17 +159,17 @@ void CarStatusFrom::fromClose()
 // batter status enable online? position
 void CarStatusFrom::updateStatusOnBase()
 {
-    if(Myconfig::GetInstance()->m_CarMap.contains(m_ip))
+    if(Myconfig::GetInstance()->m_CarMap.contains(m_carNum))
     {
-         online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-         online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isOnline?"在线":"离线");
-         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.batter)+"%");
-         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isLocking == true? "待命中" : "工作中");
+         online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isOnline?"在线":"离线");
+         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.batter)+"%");
+         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isLocking == true? "待命中" : "工作中");
          table->setItem(0, 3, item);
-         item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.enable? "enable" : "disable");
+         item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.enable? "enable" : "disable");
          table->setItem(3, 1, item);
 
-         m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.y));
+         m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.y));
     }
 }
 

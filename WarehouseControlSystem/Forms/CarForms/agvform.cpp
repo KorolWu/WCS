@@ -158,16 +158,16 @@ void AgvForm::onDeleteClicked()
     QString str_ip = data.toString();
     QString sql_str = QString("DELETE FROM t_device_info WHERE deviceIp = '%1'").arg(str_ip);
     bool result = CRUDBaseOperation::getInstance()->queryUseStr(sql_str);
-    QString key_ip = model->data(model->index(row_index,2)).toString();
-    qDebug()<<key_ip;
-    if(Myconfig::GetInstance()->m_CarMap.contains(key_ip))
+    int car_num = model->data(model->index(row_index,2)).toInt();
+    qDebug()<<car_num;
+    if(Myconfig::GetInstance()->m_CarMap.contains(car_num))
     {
-        Myconfig::GetInstance()->m_CarMap.remove(key_ip);
+        Myconfig::GetInstance()->m_CarMap.remove(car_num);
         model->removeRows(0,model->rowCount());
         setTableViewValue();
     }
 
-    qDebug()<<"crrunt id is:"<<key_ip<< "query result :"<<result;
+    //qDebug()<<"crrunt id is:"<<key_ip<< "query result :"<<result;
 }
 
 void AgvForm::tableRowClicked()
@@ -189,8 +189,8 @@ void AgvForm::tableRowClicked()
     device_stru.carNum = data.toString()*/;
     QModelIndex index = model->index(row_index,2);
     QVariant data = model->data(index);
-    if(Myconfig::GetInstance()->m_CarMap.contains(data.toString()))
-        device_stru = Myconfig::GetInstance()->m_CarMap[data.toString()];
+    if(Myconfig::GetInstance()->m_CarMap.contains(data.toInt()))
+        device_stru = Myconfig::GetInstance()->m_CarMap[data.toInt()];
     device_stru.deviceIp = data.toString();
 
 //    index = model->index(row_index,5);

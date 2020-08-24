@@ -28,6 +28,7 @@ public:
     void removeObserver(ObserverBase *o);
     //check the readBuff is currunt data
     bool m_rflag;
+    int m_carNum;
     virtual void onResived(QByteArray array);
     virtual void onDisconnected();
     virtual void clearAlarm(QByteArray data);

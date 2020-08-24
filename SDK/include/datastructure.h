@@ -280,6 +280,7 @@ typedef struct _LayerStru
 {
     bool isLocked = false;
     QString CarIP = "";
+    int     carId = 9999;
 
 }LayerStru;
 // Data Union

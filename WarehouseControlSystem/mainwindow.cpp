@@ -226,7 +226,7 @@ void MainWindow::initDeviceClient()
          }
          QQueue<TaskInfoStru>q;
          q.clear();
-         Myconfig::GetInstance()->m_appointMap.insert(it.value().deviceIp,q);
+         Myconfig::GetInstance()->m_appointMap.insert(it.value().carId,q);
 
     }
 }

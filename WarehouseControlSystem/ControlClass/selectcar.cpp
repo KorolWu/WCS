@@ -10,9 +10,9 @@ SelectCar::SelectCar(QObject *parent) : QObject(parent)
  *        出库时根据料箱号来选择小车
  * @return 返回小车的ip NoCarUse:表示所有的小车都在做任务
  */
-QString SelectCar::getCarIp_out(const KPosition &p)
+int SelectCar::getCarIp_out(const KPosition &p)
 {
-    QMap<int,QString> socker_map;
+    QMap<int,int> socker_map;
     socker_map.clear();
     for(auto it= Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
@@ -21,19 +21,19 @@ QString SelectCar::getCarIp_out(const KPosition &p)
         {
             if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {
-                change_status(it.value().deviceIp);
-                return it.value().deviceIp;
+                change_status(it.value().carId);
+                return it.value().carId;
             }
             else if(qAbs(it.value().deveceStatus.carCurrentPosion.z - p.z) == 1)
             {
-                change_status(it.value().deviceIp);
-                return it.value().deviceIp;
+                change_status(it.value().carId);
+                return it.value().carId;
             }
-            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().deviceIp);
+            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().carId);
         }
     }
     if(socker_map.size() == 0)
-        return "NoCarUse";
+        return -999;
     else
     {
         int key = 99;
@@ -51,10 +51,10 @@ QString SelectCar::getCarIp_out(const KPosition &p)
  * @param p 入库时料想的坐标
  * @return 返回小车的ip
  */
-QString SelectCar::getCarIp_in(const KPosition &p)
+int SelectCar::getCarIp_in(const KPosition &p)
 {
     //小车Z的差值，小车的ip
-    QMap<int,QString> socker_map;
+    QMap<int,int> socker_map;
     socker_map.clear();
     for(auto it= Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
@@ -63,13 +63,13 @@ QString SelectCar::getCarIp_in(const KPosition &p)
         {
             if(it.value().deveceStatus.carCurrentPosion.z == p.z)
             {
-                return it.value().deviceIp;
+                return it.value().carId;
             }
             else if(qAbs(it.value().deveceStatus.carCurrentPosion.z - p.z) == 1)
             {
-                return it.value().deviceIp;
+                return it.value().carId;
             }
-            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().deviceIp);
+            socker_map.insert(qAbs(it.value().deveceStatus.carCurrentPosion.z-p.z),it.value().carId);
         }
     }
     int key = 99;
@@ -84,7 +84,7 @@ QString SelectCar::getCarIp_in(const KPosition &p)
 
 }
 
-void SelectCar::change_status(QString carIp)
+void SelectCar::change_status(int carIp)
 {
     Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.isLocking = true;
     Myconfig::GetInstance()->m_CarMap[carIp].deveceStatus.status = 2;

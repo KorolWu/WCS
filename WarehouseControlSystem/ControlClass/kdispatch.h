@@ -29,17 +29,18 @@ class KDispatch : public QObject,public QRunnable
 {
     Q_OBJECT
 public:
-    KDispatch(KPosition task_P, QString &ip, const TaskInfoStru task );
+    KDispatch(KPosition task_P, QString &ip, int carId, const TaskInfoStru task );
     ~KDispatch();
 private:
     TaskInfoStru m_task;
     KPosition m_task_p;
     const int TIMEOUT = 1000;
     QString  m_ip;
+    int      m_carId;
     bool saveSubTaskInfo();
     bool runSubTask();
     QString transformationOrder(int i);
-    bool runInstrucation(const OrderStru &o, QString &id);
+    bool runInstrucation(const OrderStru &o, int &id);
     void saveErrMassage(const QString &message);
     BaseDevice *m_pCom;
     QQueue<OrderStru> m_taskQueue;

@@ -26,13 +26,14 @@ private:
     SelectCar *m_pSelectCar;
     TaskInfoStru m_task;
     ReadTableData m_writeData;
-    QString m_car_ip;
+    int m_car_ip;
+    int     m_car_id;
     int m_count_text;
     int m_in_cache_max;
     int m_out_cahce_max;
-    void lock_layer(int layer,QString lock_car_ip);
-    void set_car_task_position(const KPosition &p, const QString &ip);
-    void lock_car(QString car_ip);
+    void lock_layer(int layer, int lock_car_id);
+    void set_car_task_position(const KPosition &p, const int &carId);
+    void lock_car(int carId);
     void Task_execution_failed(const TaskInfoStru &t);
     void remove_task_from(QString task_num);
     void handle_out_task(const TaskInfoStru &t);

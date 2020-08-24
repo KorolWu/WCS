@@ -10,7 +10,7 @@ AbstructInstruction::~AbstructInstruction()
 
 }
 
-void AbstructInstruction::setParameter(OrderStru o, QString device_id)
+void AbstructInstruction::setParameter(OrderStru o, int device_id)
 {
     Q_UNUSED(o)
     Q_UNUSED(device_id)

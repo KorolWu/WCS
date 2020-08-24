@@ -10,6 +10,7 @@
 #include <ctime>
 #include <time.h>
 #include <sys/time.h>
+#include "../externcommuincation/tcommtransceivermanager.h"
 /**
  * @brief The CarInstruction class
  * @author korol
@@ -20,7 +21,7 @@ class CarInstruction : public AbstructInstruction
 public:
     CarInstruction();
 private:
-    QString m_ip;
+    int m_id;
     OrderStru   m_order;
     int     m_result;
 
@@ -28,7 +29,7 @@ private:
 public:
     void runInstruction();
     int getResult(QString exeMsg);
-    void setParameter(OrderStru o, QString device_id);
+    void setParameter(OrderStru o, int device_id);
 };
 
 #endif // CARINSTRUCTION_H

@@ -11,7 +11,7 @@
 class GetOutTrajectory
 {
 public:
-    GetOutTrajectory(KPosition task_p, QString car_ip, const TaskInfoStru task);
+    GetOutTrajectory(KPosition task_p, int car_id, const TaskInfoStru task);
     QQueue<OrderStru> getTrajectory();
 private:
 
@@ -22,7 +22,7 @@ private:
      QQueue<OrderStru> m_taskQueue;
      KPosition m_carBeginPosition;
      KPosition m_task_p;
-     QString   m_ip;
+     int   m_id;
      TaskInfoStru m_task;
      const double m_isYTrack = 1000;
      const double m_elevatorX = 1000;

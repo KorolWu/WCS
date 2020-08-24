@@ -17,12 +17,12 @@ void AddCar::onYesBtnClicked()
     deviceStruct.deviceNum =  list[0];
     if(m_sql_flag == "Update")
     {
-        if(!Myconfig::GetInstance()->m_CarMap.contains(list[1]))
+        if(!Myconfig::GetInstance()->m_CarMap.contains(QString(list[1]).toInt()))
         {
             m_err_lab->setText("不允许在线修改IP");
             return;
         }
-       deviceStruct.deviceIp = Myconfig::GetInstance()->m_CarMap[list[1]].deviceIp;
+       deviceStruct.deviceIp = Myconfig::GetInstance()->m_CarMap[QString(list[1]).toInt()].deviceIp;
     }
     deviceStruct.deviceIp = list[1];
     deviceStruct.port = QString(list[2]).toInt();
@@ -42,17 +42,17 @@ void AddCar::onYesBtnClicked()
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
     {
         // the same id,same ip
-        if(m_sql_flag == "Insert")
-            Myconfig::GetInstance()->m_CarMap.insert(deviceStruct.deviceIp,deviceStruct);
-        else if(m_sql_flag == "Update")
-        {
-             if(Myconfig::GetInstance()->m_CarMap.contains(deviceStruct.deviceIp))
-             {
-                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceNum = deviceStruct.deviceNum;
-                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].port = deviceStruct.port;
-                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceType = deviceStruct.deviceType;
-             }
-        }
+//        if(m_sql_flag == "Insert")
+//            Myconfig::GetInstance()->m_CarMap.insert(deviceStruct.deviceIp,deviceStruct);
+//        else if(m_sql_flag == "Update")
+//        {
+//             if(Myconfig::GetInstance()->m_CarMap.contains(deviceStruct.deviceIp))
+//             {
+//                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceNum = deviceStruct.deviceNum;
+//                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].port = deviceStruct.port;
+//                 Myconfig::GetInstance()->m_CarMap[deviceStruct.deviceIp].deviceType = deviceStruct.deviceType;
+//             }
+//        }
         emit insert_emit();
         this->hide();
         this->deleteLater();

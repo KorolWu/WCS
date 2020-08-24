@@ -61,6 +61,7 @@ private:
     QPushButton *closeBtn;
     QTableWidgetItem *m_crunt_item;
     QString m_ip;
+    int     m_carNum;
     //QTimer* timer;
 
     // ObserverBase interface

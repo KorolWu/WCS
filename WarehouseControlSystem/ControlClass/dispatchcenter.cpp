@@ -21,7 +21,9 @@ void DispatchCenter::dispatchTaskThread()
                 Myconfig::GetInstance()->m_CarMap[it.key()].isLockByTask = false;
                 continue;
             }
-            QString ip = it.key();
+            //QString ip = it.key();
+            QString ip = "it.key()";
+            int carId = it.key();
             if(Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isLocking == false)
             {
                 TaskInfoStru t = it.value().dequeue();
@@ -29,16 +31,16 @@ void DispatchCenter::dispatchTaskThread()
                 QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
                 if(result != "")
                 {
-                    lock_car(ip);
-                    set_car_task_position(task_p,ip);
-                    KDispatch *k = new KDispatch(task_p,ip,t);//完成的状态，完成的结果，写入数据库的时间??
+                    lock_car(carId);
+                    set_car_task_position(task_p,carId);
+                    KDispatch *k = new KDispatch(task_p,ip,carId,t);//完成的状态，完成的结果，写入数据库的时间??
                     m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+ip);
                     QThreadPool::globalInstance()->start(k);
                     qDebug()<<"正在执行预约任务";
                 }
             }
         }
-        m_car_ip = "";
+        m_car_ip = -999;
         if(Myconfig::GetInstance()->m_runer.cache_in_current < m_in_cache_max*0.75 && Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max && Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)
         {
                 if(m_pSelectCar->hasUseCar())
@@ -147,30 +149,30 @@ void DispatchCenter::dispatchTaskThread()
     }
 }
 
-void DispatchCenter::lock_layer(int layer, QString lock_car_ip)
+void DispatchCenter::lock_layer(int layer, int lock_car_id)
 {
     if(Myconfig::GetInstance()->m_layerStatusMap.contains(layer))
     {
         Myconfig::GetInstance()->m_layerStatusMap[layer].isLocked = true;
-        Myconfig::GetInstance()->m_layerStatusMap[layer].CarIP = lock_car_ip;
+        Myconfig::GetInstance()->m_layerStatusMap[layer].carId = lock_car_id;
     }
     else
     {
         LayerStru v;
-        v.CarIP = lock_car_ip;
+        v.carId = lock_car_id;
         v.isLocked = true;
         Myconfig::GetInstance()->m_layerStatusMap.insert(layer,v);
     }
 }
 
-void DispatchCenter::set_car_task_position(const KPosition &p, const QString &ip)
+void DispatchCenter::set_car_task_position(const KPosition &p, const int &carId)
 {
-    Myconfig::GetInstance()->m_CarMap[ip].task_position = p;
+    Myconfig::GetInstance()->m_CarMap[carId].task_position = p;
 }
 
-void DispatchCenter::lock_car(QString car_ip)
+void DispatchCenter::lock_car(int carId)
 {
-    Myconfig::GetInstance()->m_CarMap[car_ip].deveceStatus.isLocking = true;
+    Myconfig::GetInstance()->m_CarMap[carId].deveceStatus.isLocking = true;
 }
 
 void DispatchCenter::Task_execution_failed(const TaskInfoStru &t)
@@ -215,14 +217,15 @@ void DispatchCenter::handle_in_task(const TaskInfoStru &t, QString frist_in_boxN
     {
         remove_task_from(t.taskNum);
         QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
-        int car_task_z = Myconfig::GetInstance()->m_CarMap[ip].task_position.z;
+        int car_num = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].carId;
+        int car_task_z = Myconfig::GetInstance()->m_CarMap[car_num].task_position.z;
         //先判断目标层是否有车
         if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked)//&& Myconfig::GetInstance()->m_CarMap[ip].deveceStatus.isLocking
         {
             if(car_task_z == task_p.z)
             {
-                Myconfig::GetInstance()->m_appointMap[ip].enqueue(t);
-                Myconfig::GetInstance()->m_CarMap[ip].isLockByTask = true;
+                Myconfig::GetInstance()->m_appointMap[car_num].enqueue(t);
+                Myconfig::GetInstance()->m_CarMap[car_num].isLockByTask = true;
                 qDebug()<<"正在执行入库任务,当前层有车，且忙碌，将入库任务提前分配给此小车";
                 remove_in_task(frist_in_boxNum);
             }
@@ -235,7 +238,7 @@ void DispatchCenter::handle_in_task(const TaskInfoStru &t, QString frist_in_boxN
         //记录小车任务
         set_car_task_position(task_p,m_car_ip);
         // carP   boxP   elevatorP  in or out?
-        KDispatch *k = new KDispatch(task_p,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
+        KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
         m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
         QThreadPool::globalInstance()->start(k);
         qDebug()<<m_car_ip<<" runing in Task Number: "+QString::number(m_count_text);
@@ -254,15 +257,16 @@ void DispatchCenter::handle_out_task(const TaskInfoStru &t)
     if(result != "")
     {
         QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
-        int car_task_z = Myconfig::GetInstance()->m_CarMap[ip].task_position.z;
+        int car_id = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].carId;
+        int car_task_z = Myconfig::GetInstance()->m_CarMap[car_id].task_position.z;
         //先判断目标层是否有车
         if(true == Myconfig::GetInstance()->m_layerStatusMap[task_p.z].isLocked)//&& Myconfig::GetInstance()->m_CarMap[ip].deveceStatus.isLocking
         {
             //小车正在执行的任务的Z 是否和本次任务的z相等
             if(car_task_z == task_p.z)
             {
-                Myconfig::GetInstance()->m_appointMap[ip].enqueue(t);
-                Myconfig::GetInstance()->m_CarMap[ip].isLockByTask = true;
+                Myconfig::GetInstance()->m_appointMap[car_id].enqueue(t);
+                Myconfig::GetInstance()->m_CarMap[car_id].isLockByTask = true;
                 //将此任务分配给这个小车
                 //将这个车辆锁住（任务锁，意味着这辆车不可以被调到其他层）
                 //然后将这个任务放在一个集合里面，然后在大循环里面扫描这个集合，分配任务 Map<ip,queue<task>>
@@ -278,7 +282,7 @@ void DispatchCenter::handle_out_task(const TaskInfoStru &t)
         set_car_task_position(task_p,m_car_ip);
         remove_out_task();
         // carP   boxP   elevatorP  in or out?
-        KDispatch *k = new KDispatch(task_p,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
+        KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
         m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
         QThreadPool::globalInstance()->start(k);
         qDebug()<<m_car_ip<<" Task Number: "+QString::number(m_count_text);

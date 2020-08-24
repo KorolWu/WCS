@@ -1,11 +1,12 @@
 #include "kdispatch.h"
 
-KDispatch::KDispatch(KPosition task_P, QString &ip, const TaskInfoStru task)
+KDispatch::KDispatch(KPosition task_P, QString &ip, int carId, const TaskInfoStru task)
 {
     qRegisterMetaType<OrderStru>("OrderStru");
     this->m_task_p = task_P;
     this->m_ip = ip;
     this->m_task = task;
+    this->m_carId = carId;
     //这里还有通讯和流道
     if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(ip))
     {
@@ -101,8 +102,8 @@ bool KDispatch::runSubTask()
         sequnce++;
     }
     QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
-    Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.isLocking = false;
-    Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.status = 1;
+    Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.isLocking = false;
+    Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.status = 1;
     //delete crrunt task
 
     return false;
@@ -127,7 +128,7 @@ QString KDispatch::transformationOrder(int i)
     return "unknow Order";
 }
 
-bool KDispatch::runInstrucation(const OrderStru &o, QString &id)
+bool KDispatch::runInstrucation(const OrderStru &o, int &id)
 {
     if(o.order == 0||o.order == 1||o.order == 3 ||o.order == 4 ||o.order == 9 ||o.order == 10)
     {
@@ -157,9 +158,9 @@ void KDispatch::saveErrMassage(const QString &message )
     arm.alarminfo = message;
     arm.alarmlevel = 4;
     arm.boxnumber = m_task.boxNum;
-    arm.carcoordx = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.x;
-    arm.carcoordy = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.y;
-    arm.carcoordz = Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion.z;
+    arm.carcoordx = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.x;
+    arm.carcoordy = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.y;
+    arm.carcoordz = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.z;
     arm.deviceid = m_ip;
     arm.errorcode = 006;
     arm.errortype = 1;
@@ -174,14 +175,14 @@ void KDispatch::run()
 {
     if(m_task.taskNum.contains("O"))// 入库
     {
-        GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_ip,m_task);
+        GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_carId,m_task);
         m_taskQueue = t->getTrajectory();
         qDebug()<<"正在执行出库任务";
     }
     else
     {
         GenerateInputWarehousingOrders *t = new GenerateInputWarehousingOrders();
-        t->SetPathParam(m_task_p,Myconfig::GetInstance()->m_CarMap[m_ip].deveceStatus.carCurrentPosion);
+        t->SetPathParam(m_task_p,Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion);
         m_taskQueue = t->GetInputWarehousingOrders();
         qDebug()<<"正在执行入库任务";
     }

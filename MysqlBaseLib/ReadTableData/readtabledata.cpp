@@ -312,7 +312,9 @@ void ReadTableData::Readt_hwcomm_infotable()
     Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.clear();
     Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap.clear();
     Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.clear();
+    Myconfig::GetInstance()->m_CarMap.clear();
     QSqlQuery query = CRUDBaseOperation::getInstance()->ExcBatchSelectDB(tablename);
+
     while (query.next()) {
         int  Id;
         Id = query.value("ID").toInt();
@@ -374,11 +376,24 @@ void ReadTableData::Readt_hwcomm_infotable()
             stru.name = name;
             stru.childtype = childtype;
             stru.unused = unused;
-             Myconfig::GetInstance()->m_hwcommstru.hwhttpserverMap.insert(Id,stru);
+            Myconfig::GetInstance()->m_hwcommstru.hwhttpserverMap.insert(Id,stru);
             break;
         }
         default:
             break;
+        }
+        if(type == HWDEVICETYPE::RGVCAR)
+        {
+            CarInfoStru stru;
+            stru.deviceIp = name;
+            stru.port = query.value("port").toInt();
+            if(Myconfig::GetInstance()->m_CarMap.contains(Id))
+            {
+                Myconfig::GetInstance()->m_CarMap[Id]= stru;
+            }
+            else{
+                Myconfig::GetInstance()->m_CarMap.insert(Id,stru);
+            }
         }
 
     }

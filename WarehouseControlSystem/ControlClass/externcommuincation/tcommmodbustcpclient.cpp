@@ -11,7 +11,6 @@ void TCommModbusTcpClient::SetCommParam(ComConfigStru paramstru)
 {
     m_configstru = paramstru.hwmodbustcpclistru;
     GetConnect(m_configstru.url_str);
-
 }
 
 int TCommModbusTcpClient::GetNameID()

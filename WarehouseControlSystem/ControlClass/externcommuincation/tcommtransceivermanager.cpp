@@ -239,7 +239,6 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         ReceCarRBFrame RBstru;//复位报文
                         memcpy((char*)&RBstru,tempData.data(),10);
                         qDebug()<<"RB报文:"<< RBstru.carnbr << RBstru.posinfo;
-
                     }
                     else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
                     {
@@ -259,14 +258,22 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         //简易数据报文
                         ReceCarcmdsimFrame simstru;
                         memcpy((char*)&simstru,tempData.data(),10);
-                        UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
-                        UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
-                        qDebug()<<"简易数据报文 小车的自动和手动状态:"<< simstru.carnbr << simstru.carstate << simstru.info.carinfo;
-                        if(nbr == 1000)
+                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
-                            //不是回应指令动作 编号的
-                            qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
+                            UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
+                            UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
                         }
+                        else
+                        {
+                            if(nbr == 1000)
+                            {
+                                //不是回应指令动作
+                                qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
+                                UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
+                                UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
+                            }
+                        }
+                        qDebug()<<"简易数据报文 小车的自动和手动状态:"<< simstru.carnbr << simstru.carstate << simstru.info.carinfo;
                     }
                     else
                     {
@@ -275,7 +282,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                             ReceCarcmdActionFrame actionstru;//动作指令报文
                             memcpy((char*)&actionstru,tempData.data(),10);
                             UpdateCarStatus(ID,actioninfo,actionstru.cmdstate);
-                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;                        
+                            qDebug()<<"动作指令报文:"<< actionstru.carnbr <<actionstru.cmdname<<  actionstru.cmdstate<<actionstru.cmdnbr;
                         }
                     }
                 }
@@ -291,8 +298,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
 ///
 void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
 {
-    QString ID;
-    if(Myconfig::GetInstance()->m_CarMap.contains(ID))
+    if(Myconfig::GetInstance()->m_CarMap.contains(carID))
     {
         switch (role) {
         case CarStatusrole::RBposinfo:
@@ -300,36 +306,36 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
         case CarStatusrole::Opermode:
         {
             //1:手动 2：自动
-            if(Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.model != value)
+            if(Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model != value)
             {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.model = value;
+                Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model = value;
             }
             break;
         }
         case CarStatusrole::sensorstat://传感器sensor状态
         {
-            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat;
+            int curvalue = Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.senorgoodsstru.carsensorstat;
             if(curvalue != value)
             {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.senorgoodsstru.carsensorstat = value;
+                Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.senorgoodsstru.carsensorstat = value;
             }
             break;
         }
         case CarStatusrole::exestatus: //包含了状态信息 故障等信息
         {
-            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo;
+            int curvalue = Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.statusinfodstru.carstatusinfo;
             if(curvalue !=value )
-           {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.statusinfodstru.carstatusinfo = value;
+            {
+                Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.statusinfodstru.carstatusinfo = value;
             }
             break;
         }
         case CarStatusrole::actioninfo://指令完成动作赋值
         {
-            int curvalue = Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status;
+            int curvalue = Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.status;
             if(curvalue !=value)
             {
-                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.status = value;
+                Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.status = value;
             }
         }
         default:
@@ -357,7 +363,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
-        AnalysisCarFrame(tempData,  ID);
+        AnalysisCarFrame(tempData,ID);
         break;
     }
     default:
@@ -370,20 +376,8 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
 ///更新数据内容
 void TCommtransceivermanager::UpdateState()
 {
-    for(auto it = m_HWdeviceMap.begin();it!= m_HWdeviceMap.end();++it)
-    {
-        switch (it.value()->GetHWprotype())
-        {
-        case HWDEVICEPROTYPE::KTcpClient:
-        {
-            // TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(it.value());
 
-            //  break;
-        }
-        default:
-            break;
-        }
-    }
+
 }
 ///
 /// \brief TCommtransceivermanager::Slotdisconnect
@@ -400,12 +394,7 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWtype() == RGVCAR)
         {
-            //小车状态更新
-            if(state)
-            {
-
-            }
-            emit SignalCarStatusUpdate();
+           Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.enable = state;
         }
         break;
     }

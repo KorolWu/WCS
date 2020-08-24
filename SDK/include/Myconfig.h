@@ -29,8 +29,8 @@ public:
         m_logQue.append(l);
     }
 public:
-    //carinfo <car_ip,car_info>
-    QMap<QString, CarInfoStru> m_CarMap;
+    //carinfo < 小车编号,car_info>
+    QMap<int, CarInfoStru> m_CarMap;
     QMutex m_carMap_mutex;
     QMap<QString, ElevatorInfoStru> m_elevatorMap;
     //QMap<QString, BaseDevice *> m_carCommnicationMap;

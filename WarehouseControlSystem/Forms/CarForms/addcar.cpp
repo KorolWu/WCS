@@ -29,15 +29,15 @@ void AddCar::onYesBtnClicked()
     deviceStruct.deviceType = list[3];
     deviceStruct.remarks = list[4];
     QString sql;
-    if(m_sql_flag == "Insert")
+    if(m_sql_flag == "Insert") //protype = 1,mean device is car
     {
-         sql = QString("INSERT t_device_info SET deviceNum = '%1',deviceIp = '%2',devicePort = '%3',deviceType = '%4',remarks = '%5';")
-            .arg(deviceStruct.deviceNum).arg(deviceStruct.deviceIp).arg(deviceStruct.port).arg(deviceStruct.deviceType).arg(deviceStruct.remarks);
+         sql = QString("INSERT t_hwcomm_info SET ID = '%1',type = 'RGV',protype = 1, port = '%2',name = '%3';")
+            .arg(deviceStruct.deviceNum.toInt()).arg(deviceStruct.port).arg(deviceStruct.deviceIp);
     }
     else
     {
-        sql = QString("UPDATE t_device_info SET deviceNum = '%1',devicePort = '%2',deviceType = '%3',remarks = '%4' WHERE deviceIp = '%5';")
-           .arg(deviceStruct.deviceNum).arg(deviceStruct.port).arg(deviceStruct.deviceType).arg(deviceStruct.remarks).arg(deviceStruct.deviceIp);
+        sql = QString("UPDATE t_hwcomm_info SET name = '%1', port = '%2',WHERE ID = '%5';")
+           .arg(deviceStruct.deviceIp).arg(deviceStruct.port).arg(deviceStruct.deviceNum.toInt());
     }
     if(CRUDBaseOperation::getInstance()->queryUseStr(sql))
     {

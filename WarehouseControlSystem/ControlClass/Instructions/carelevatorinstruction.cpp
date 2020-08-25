@@ -5,9 +5,9 @@ CarElevatorInstruction::CarElevatorInstruction()
     m_result = 0;
 }
 
-void CarElevatorInstruction::setParameter(OrderStru o, QString device_id)
+void CarElevatorInstruction::setParameter(OrderStru o, int device_id)
 {
-    m_ip = device_id;
+    m_id = device_id;
     m_order = o;
 }
 
@@ -24,9 +24,9 @@ void CarElevatorInstruction::runInstruction()
             return ;
         }
         //to check car status status 0--->1
-        if(Myconfig::GetInstance()->m_elevatorMap[m_ip].status.isLock == false)
+        if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock == false)
         {
-            Myconfig::GetInstance()->m_elevatorMap[m_ip].status.isLock == true;
+            Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
             //emit order to interface
             m_result = 0;
             return;

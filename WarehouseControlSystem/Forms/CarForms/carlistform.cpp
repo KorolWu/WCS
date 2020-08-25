@@ -101,14 +101,18 @@ void CarListForm::initStatusForms()
     auto it = Myconfig::GetInstance()->m_CarMap.begin();
     for(int i = 0;i < Myconfig::GetInstance()->m_CarMap.size();i++)
     {
-        if(KDeviceSingleton::getInstance()->m_DeviceMap[it.value().deviceIp])
-        {
-            BaseDevice *o = KDeviceSingleton::getInstance()->m_DeviceMap[it.value().deviceIp];
-            CarStatusWidget *f = new CarStatusWidget(m_width,it.value(),o,m_pMainWidget);
-            f->setObjectName("kStatusWidget");
-            f->move(5,m_height/5+i*60);
-            f->show();
-        }
+//        if(KDeviceSingleton::getInstance()->m_DeviceMap[it.value().deviceIp])
+//        {
+//            BaseDevice *o = KDeviceSingleton::getInstance()->m_DeviceMap[it.value().deviceIp];
+//            CarStatusWidget *f = new CarStatusWidget(m_width,it.value(),o,m_pMainWidget);
+//            f->setObjectName("kStatusWidget");
+//            f->move(5,m_height/5+i*60);
+//            f->show();
+//        }
+        CarStatusWidget *f = new CarStatusWidget(m_width,it.key(),m_pMainWidget);
+        f->setObjectName("kStatusWidget");
+        f->move(5,m_height/5+i*60);
+        f->show();
         it++;
     }
 }
@@ -164,44 +168,78 @@ void CarListForm::mouseMoveEvent(QMouseEvent *event)
 }
 
 
-CarStatusWidget::CarStatusWidget(int width, CarInfoStru c, BaseDevice *o, QWidget *parent) :QWidget(parent)
+CarStatusWidget::CarStatusWidget(int width, int carId, QWidget *parent) :QWidget(parent)
 {
     m_pCar = nullptr;
-    o->registObserver(this);
-    m_ip = c.deviceIp;
-    m_carNum = c.carId;
-    QWidget *w = new QWidget(this);
-    this->m_car = c;
-    int interval = 50;
-    int y = 10;
+    //o->registObserver(this);
+    //m_ip = carId.deviceIp;
+    m_carNum = carId;
+    w = new QWidget(this);
+    this->m_carNum = carId;
+    interval = 50;
+     y = 10;
     w->resize(width-10,40);
-    QFont font("Times", 9 ,QFont::Bold);
-    numLab = new QLabel(c.deviceNum,w);
-    numLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    numLab->setFont(font);
-    numLab->move(10,y);
+    updatUI();
+//    QFont font("Times", 9 ,QFont::Bold);
+//    numLab = new QLabel(QString("%1").arg(m_carNum),w);
+//    numLab->setAttribute(Qt::WA_TranslucentBackground, true);
+//    numLab->setFont(font);
+//    numLab->move(10,y);
 
-    staLab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",w);
-    staLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    staLab->move(interval*2,y);
-    taskLab = new QLabel("---",w);
-    taskLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    taskLab->move(interval*3+10,y);
-    QString status = "";
-    if(c.deveceStatus.status == 1)
-        status = " 待命中";
-    else if(c.deveceStatus.status == 2)
-        status  = "工作中";
-    else
-        status  = " 故障";
-    workLab = new QLabel(status,w);
-    workLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    workLab->move(interval*5-10,y);
-    QString batter = QString("%1%").arg(c.deveceStatus.batter);
-    batterLab = new QLabel(batter,w);
-    batterLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    batterLab->move(interval*6+20,y);
-    w->setStyleSheet("QWidget:hover{background-color:white; color: black;}QWidget:pressed{background-color:rgb(85, 170, 255);}");
+//    staLab = new QLabel(carId.deveceStatus.isOnline? "在线":"离线",w);
+//    staLab->setAttribute(Qt::WA_TranslucentBackground, true);
+//    staLab->move(interval*2,y);
+//    taskLab = new QLabel("---",w);
+//    taskLab->setAttribute(Qt::WA_TranslucentBackground, true);
+//    taskLab->move(interval*3+10,y);
+//    QString status = "";
+//    if(carId.deveceStatus.status == 1)
+//        status = " 待命中";
+//    else if(carId.deveceStatus.status == 2)
+//        status  = "工作中";
+//    else
+//        status  = " 故障";
+//    workLab = new QLabel(status,w);
+//    workLab->setAttribute(Qt::WA_TranslucentBackground, true);
+//    workLab->move(interval*5-10,y);
+//    QString batter = QString("%1%").arg(carId.deveceStatus.batter);
+//    batterLab = new QLabel(batter,w);
+//    batterLab->setAttribute(Qt::WA_TranslucentBackground, true);
+//    batterLab->move(interval*6+20,y);
+//    w->setStyleSheet("QWidget:hover{background-color:white; color: black;}QWidget:pressed{background-color:rgb(85, 170, 255);}");
+}
+
+void CarStatusWidget::updatUI()
+{
+   CarInfoStru c = Myconfig::GetInstance()->m_CarMap[m_carNum];
+
+   QFont font("Times", 9 ,QFont::Bold);
+   numLab = new QLabel(QString("%1").arg(m_carNum),w);
+   numLab->setAttribute(Qt::WA_TranslucentBackground, true);
+   numLab->setFont(font);
+   numLab->move(10,10);
+
+   staLab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",w);
+   staLab->setAttribute(Qt::WA_TranslucentBackground, true);
+   staLab->move(interval*2,10);
+   taskLab = new QLabel("---",w);
+   taskLab->setAttribute(Qt::WA_TranslucentBackground, true);
+   taskLab->move(interval*3+10,y);
+   QString status = "";
+   if(c.deveceStatus.status == 1)
+       status = " 待命中";
+   else if(c.deveceStatus.status == 2)
+       status  = "工作中";
+   else
+       status  = " 故障";
+   workLab = new QLabel(status,w);
+   workLab->setAttribute(Qt::WA_TranslucentBackground, true);
+   workLab->move(interval*5-10,y);
+   QString batter = QString("%1%").arg(c.deveceStatus.batter);
+   batterLab = new QLabel(batter,w);
+   batterLab->setAttribute(Qt::WA_TranslucentBackground, true);
+   batterLab->move(interval*6+20,y);
+   w->setStyleSheet("QWidget:hover{background-color:white; color: black;}QWidget:pressed{background-color:rgb(85, 170, 255);}");
 }
 
 void CarStatusWidget::mouseDoubleClickEvent(QMouseEvent *event)

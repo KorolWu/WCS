@@ -24,11 +24,11 @@ public:
 
     // AbstructInstruction interface
 public:
-    void setParameter(OrderStru o, QString device_id);
+    void setParameter(OrderStru o, int device_id);
     int getResult(QString exeMsg);
     void runInstruction();
 private:
-    QString m_ip;
+    int m_id;
     OrderStru   m_order;
     int     m_result;
 };

@@ -26,17 +26,22 @@
 class CarStatusWidget : public QWidget,ObserverBase
 {
 public:
-    CarStatusWidget(int width, CarInfoStru c,BaseDevice *o, QWidget *parent =0);
+    //CarStatusWidget(int width, CarInfoStru c,BaseDevice *o, QWidget *parent =0);
+    CarStatusWidget(int width, int carId, QWidget *parent =0);
 private:
     CarStatusFrom *m_pCar;
     CarInfoStru m_car;
+    QWidget *w;
+    int interval;
     QString m_ip;
+    int y;
     int     m_carNum;
     QLabel *numLab;
     QLabel *staLab;
     QLabel *taskLab;
     QLabel *workLab;
     QLabel *batterLab;
+    void updatUI();
     // QWidget interface
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);

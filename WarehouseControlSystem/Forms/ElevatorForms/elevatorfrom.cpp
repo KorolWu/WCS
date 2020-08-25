@@ -74,6 +74,19 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
 
 void ElevatorFrom::setTableViewValue()
 {
+
+//    for(auto au = Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.begin(); au != Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.end();au++ )
+//    {
+//        if(au.value().protype == 2)
+//        {
+//            ElevatorInfoStru e;
+//            e.elevatorIp = au.value().name;
+//            e.elevatorPort = au.value().port;
+//            e.elevatorType = "Elevator";
+//            e.elevatorNum = QString("%1").arg(au.value().ID);
+//            Myconfig::GetInstance()->m_elevatorMap.insert(au.value().ID,e);
+//        }
+//    }
     int row_count = Myconfig::GetInstance()->m_elevatorMap.size();
     for(int j = 0; j< 9 ;j++)
     {
@@ -162,9 +175,9 @@ void ElevatorFrom::onDeleteClicked()
     bool result = CRUDBaseOperation::getInstance()->queryUseStr(sql_str);
     QString key_ip = model->data(model->index(row_index,2)).toString();
     qDebug()<<key_ip;
-    if(Myconfig::GetInstance()->m_elevatorMap.contains(key_ip)&&result)
+    if(Myconfig::GetInstance()->m_elevatorMap.contains(key_ip.toInt())&&result)
     {
-        Myconfig::GetInstance()->m_elevatorMap.remove(key_ip);
+        Myconfig::GetInstance()->m_elevatorMap.remove(key_ip.toInt());
         model->removeRows(0,model->rowCount());
         setTableViewValue();
     }

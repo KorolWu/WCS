@@ -33,7 +33,7 @@ void CarInstruction::runInstruction()
                 if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.status == 1)
                 {
                     //发送指令
-                    TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,000000);
+                    TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
                     break;
                 }
 

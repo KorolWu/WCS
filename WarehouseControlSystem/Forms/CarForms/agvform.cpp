@@ -87,7 +87,7 @@ void AgvForm::setTableViewValue()
             if(j == 0)
                 model->setItem(i,j,new QStandardItem(QString("%1").arg(i)));
             else if(j == 1)
-                model->setItem(i,j,new QStandardItem(it.value().deviceNum));
+                model->setItem(i,j,new QStandardItem(it.value().carId));
             else if(j == 2)
                 model->setItem(i,j,new QStandardItem(it.value().deviceIp));
             else if(j == 3)

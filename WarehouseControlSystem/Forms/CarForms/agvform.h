@@ -51,7 +51,7 @@ private:
     QPushButton *p_export_btn;
     QPushButton *p_query_btn;
     QLineEdit *p_input_text;
-    CarStatusFrom *p_car_info;
+    //CarStatusFrom *p_car_info;
     QStandardItemModel *model;
     QPushButton *p_edit_btn;
     int m_width;

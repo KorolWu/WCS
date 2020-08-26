@@ -1,13 +1,14 @@
 #include "CarStatusFrom.h"
 #include <QDebug>
 #include "ControlClass/externcommuincation/tcommtransceivermanager.h"
-CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(parent)
+CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
 {
+    CarInfoStru c = Myconfig::GetInstance()->m_CarMap[carId];
     desktop =  QApplication::desktop()->availableGeometry();
     this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
-    m_ip = carStatus.deviceIp;
-    m_carNum = carStatus.carId;
+    m_carNum = c.carId;
+    m_id = carId;
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
     back_lab->resize(PAD_X,PAD_Y);
@@ -19,9 +20,9 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
     online_image = new QLabel(this);
     online_image->resize(15,15);
-    online_image->setStyleSheet(carStatus.deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    online_image->setStyleSheet(c.deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
     online_image->move(30,10);
-    online_lab = new QLabel(carStatus.deveceStatus.isOnline? "在线":"离线",this);
+    online_lab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",this);
     online_lab->move (60,10);
     online_lab->setStyleSheet("color:white");
 
@@ -39,7 +40,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     car_image->move(50,line1_y/2);
     car_number = new QLabel(this);
     car_number->resize(150,20);
-    car_number->setText(carStatus.deviceNum);
+    car_number->setText(c.deviceNum);
     car_number->move(70,line1_y-20);
     car_number->setFont(font);
     car_number->setAlignment(Qt::AlignCenter);
@@ -53,7 +54,7 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     battery_image->move(400,line1_y/2);
     battery_lab = new QLabel(this);
     battery_lab->resize(80,20);
-    battery_lab->setText(QString::number(carStatus.deveceStatus.batter)+"%");
+    battery_lab->setText(QString::number(c.deveceStatus.batter)+"%");
     battery_lab->move(450,line1_y-20);
     battery_lab->setFont(font);
     battery_lab->setStyleSheet("color:white");
@@ -77,15 +78,15 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
     QTableWidgetItem *item = new QTableWidgetItem ("设备IP");
     table->setItem(0, 0, item);
-    item = new QTableWidgetItem (carStatus.deviceIp);
+    item = new QTableWidgetItem (c.deviceIp);
     table->setItem(0, 1, item);
     item = new QTableWidgetItem ("执行状态");
     table->setItem(0, 2, item);
-    item = new QTableWidgetItem (carStatus.deveceStatus.enable? "enable" : "disable");
+    item = new QTableWidgetItem (c.deveceStatus.enable? "enable" : "disable");
     table->setItem(0, 3, item);
     item = new QTableWidgetItem ("设备名称");
     table->setItem(1, 0, item);
-    item = new QTableWidgetItem (carStatus.deviceNum);
+    item = new QTableWidgetItem (c.deviceNum);
     table->setItem(1, 1, item);
     item = new QTableWidgetItem ("货架名称");
     table->setItem(1, 2, item);
@@ -94,16 +95,16 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
     item = new QTableWidgetItem ("当前位置");
     table->setItem(2, 0, item);
-    m_crunt_item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carCurrentPosion.x).arg(carStatus.deveceStatus.carCurrentPosion.y));
+    m_crunt_item = new QTableWidgetItem (QString("%1,%2").arg(c.deveceStatus.carCurrentPosion.x).arg(c.deveceStatus.carCurrentPosion.y));
     table->setItem(2, 1, m_crunt_item);
     item = new QTableWidgetItem ("目标位置");
     table->setItem(2, 2, item);
-    item = new QTableWidgetItem (QString("%1,%2").arg(carStatus.deveceStatus.carEndPosion.x).arg(carStatus.deveceStatus.carEndPosion.y));
+    item = new QTableWidgetItem (QString("%1,%2").arg(c.deveceStatus.carEndPosion.x).arg(c.deveceStatus.carEndPosion.y));
     table->setItem(2, 3, item);
 
     item = new QTableWidgetItem ("是否可用");
     table->setItem(3, 0, item);
-    item = new QTableWidgetItem (carStatus.deveceStatus.enable? "enable" : "disable");
+    item = new QTableWidgetItem (c.deveceStatus.enable? "enable" : "disable");
     table->setItem(3, 1, item);
     item = new QTableWidgetItem ("任务编号");
     table->setItem(3, 2, item);
@@ -115,9 +116,9 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     delete_btn->move(10,242);
     canlen_btn = new QPushButton("取消任务",this);
     canlen_btn->move(10+interval*1,242);
-    up_btn = new QPushButton("举起",this);
+    up_btn = new QPushButton("左取货",this);
     up_btn->move(10+interval*2,242);
-    down_btn = new QPushButton("放下",this);
+    down_btn = new QPushButton("右取货",this);
     down_btn->move(10+interval*3,242);
     pause_btn = new QPushButton("暂停",this);
     pause_btn->move(10+interval*4,242);
@@ -138,9 +139,9 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
     move_btn->move(10+interval*5-70,interval_y);
 
     this->resize(550,PAD_Y);
-    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(carStatus.deviceIp))
+    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(c.deviceIp))
     {
-        KDeviceSingleton::getInstance()->m_DeviceMap[carStatus.deviceIp]->registObserver(this);
+        KDeviceSingleton::getInstance()->m_DeviceMap[c.deviceIp]->registObserver(this);
     }
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
@@ -150,26 +151,26 @@ CarStatusFrom::CarStatusFrom(CarInfoStru carStatus,QWidget *parent) : QWidget(pa
 
 void CarStatusFrom::fromClose()
 {
-    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(m_ip))
+    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains("m_id"))
     {
-        KDeviceSingleton::getInstance()->m_DeviceMap[m_ip]->removeObserver(this);
+        KDeviceSingleton::getInstance()->m_DeviceMap["m_ip"]->removeObserver(this);
     }
     this->close();
 }
 // batter status enable online? position
 void CarStatusFrom::updateStatusOnBase()
 {
-    if(Myconfig::GetInstance()->m_CarMap.contains(m_carNum))
+    if(Myconfig::GetInstance()->m_CarMap.contains(m_id))
     {
-         online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-         online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isOnline?"在线":"离线");
-         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.batter)+"%");
-         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.isLocking == true? "待命中" : "工作中");
+         online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline?"在线":"离线");
+         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.batter)+"%");
+         QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isLocking == true? "待命中" : "工作中");
          table->setItem(0, 3, item);
-         item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.enable? "enable" : "disable");
+         item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.enable? "enable" : "disable");
          table->setItem(3, 1, item);
 
-         m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.y));
+         m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.y));
     }
 }
 

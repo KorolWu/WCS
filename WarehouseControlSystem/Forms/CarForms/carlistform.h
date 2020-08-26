@@ -41,7 +41,9 @@ private:
     QLabel *taskLab;
     QLabel *workLab;
     QLabel *batterLab;
-    void updatUI();
+    QTimer *m_ptimer;
+    void initUI();
+    void onTimeoutUpdateUI();
     // QWidget interface
 protected:
     void mouseDoubleClickEvent(QMouseEvent *event);

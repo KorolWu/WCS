@@ -10,7 +10,7 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
     this->m_width = width;
     this->m_height = height;
     int heitht_fristLine = m_height/94;
-    p_car_info = nullptr;
+    //p_car_info = nullptr;
     p_add_btn = new QPushButton("添加",this);
     p_add_btn->setIcon(QIcon(":/resouse/Image/add.png"));
     connect(p_add_btn,&QPushButton::clicked,this,&AgvForm::onAddClicked);
@@ -172,36 +172,36 @@ void AgvForm::onDeleteClicked()
 
 void AgvForm::tableRowClicked()
 {
-    if(p_car_info!= nullptr)
-    {
-        p_car_info->hide();
-        p_car_info->deleteLater();
-        p_car_info = nullptr;
-    }
-    CarInfoStru device_stru;
-    int row_index = p_table_view->currentIndex().row();
-    QAbstractItemModel *model = p_table_view->model ();
+//    if(p_car_info!= nullptr)
+//    {
+//        p_car_info->hide();
+//        p_car_info->deleteLater();
+//        p_car_info = nullptr;
+//    }
+//    CarInfoStru device_stru;
+//    int row_index = p_table_view->currentIndex().row();
+//    QAbstractItemModel *model = p_table_view->model ();
 
 /*    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
     QVariant data = model->data(index);
     index = model->index(row_index,1);
     data = model->data(index);
     device_stru.carNum = data.toString()*/;
-    QModelIndex index = model->index(row_index,2);
-    QVariant data = model->data(index);
-    if(Myconfig::GetInstance()->m_CarMap.contains(data.toInt()))
-        device_stru = Myconfig::GetInstance()->m_CarMap[data.toInt()];
-    device_stru.deviceIp = data.toString();
+//    QModelIndex index = model->index(row_index,2);
+//    QVariant data = model->data(index);
+//    if(Myconfig::GetInstance()->m_CarMap.contains(data.toInt()))
+//        device_stru = Myconfig::GetInstance()->m_CarMap[data.toInt()];
+//    device_stru.deviceIp = data.toString();
 
 //    index = model->index(row_index,5);
 //    data = model->data(index);
 //    device_stru.status = data.toString();
     //base information to get other status of agv
-     p_car_info = new CarStatusFrom(device_stru,this);
-     QRect r = QApplication::desktop()->availableGeometry();
-     p_car_info->move(r.width()/2-p_car_info->width(),(r.height()-p_car_info->height())/2);
+     //p_car_info = new CarStatusFrom(device_stru,this);
+     //QRect r = QApplication::desktop()->availableGeometry();
+     //p_car_info->move(r.width()/2-p_car_info->width(),(r.height()-p_car_info->height())/2);
 
-     p_car_info->show();
+     //p_car_info->show();
 
 }
 

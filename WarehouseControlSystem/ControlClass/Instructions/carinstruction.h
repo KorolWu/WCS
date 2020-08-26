@@ -10,6 +10,7 @@
 #include <ctime>
 #include <time.h>
 #include <sys/time.h>
+#include <MysqlDataBase/crudbaseoperation.h>
 #include "../externcommuincation/tcommtransceivermanager.h"
 /**
  * @brief The CarInstruction class

@@ -25,7 +25,7 @@ class CarStatusFrom : public QWidget,ObserverBase
 {
     Q_OBJECT
 public:
-    explicit CarStatusFrom(CarInfoStru carStatus, QWidget *parent = 0);
+    explicit CarStatusFrom(int carId, QWidget *parent = 0);
 
 public slots:
     void fromClose();
@@ -60,7 +60,7 @@ private:
 
     QPushButton *closeBtn;
     QTableWidgetItem *m_crunt_item;
-    QString m_ip;
+    int m_id;
     int     m_carNum;
     //QTimer* timer;
 

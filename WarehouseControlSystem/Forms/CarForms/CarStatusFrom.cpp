@@ -6,7 +6,7 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     CarInfoStru c = Myconfig::GetInstance()->m_CarMap[carId];
     desktop =  QApplication::desktop()->availableGeometry();
     this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
-    this->setStyleSheet("QLabel{background:transparent}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+    this->setStyleSheet("QLabel{background:transparent;; color:white}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_carNum = c.carId;
     m_id = carId;
     QFont font("宋体",14);
@@ -25,6 +25,37 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     online_lab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",this);
     online_lab->move (60,10);
     online_lab->setStyleSheet("color:white");
+    int invacation =15;
+    int invacation_text = 10;
+    QLabel *e = new QLabel("故障",this);
+    e->move(120+5,10);
+    err_lab = new QLabel(this);
+    err_lab->resize(15,15);
+    err_lab->setStyleSheet(c.deveceStatus.statusinfodstru.berror?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    err_lab->move(105,10);
+
+    QLabel *r = new QLabel("就绪",this);
+    r->move(165+invacation_text*2,10);
+    ready_lab = new QLabel(this);
+    ready_lab->resize(15,15);
+    ready_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    ready_lab->move(150 +invacation,10);
+
+    QLabel *w = new QLabel("执行中",this);
+    w->move(210+invacation_text*4-3,10);
+    working_lab = new QLabel(this);
+    working_lab->resize(15,15);
+    working_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    working_lab->move(195+invacation*2,10);
+
+    QLabel *n = new QLabel("未就绪",this);
+    n->move(250+invacation_text*6+5,10);
+    notReady_lab = new QLabel(this);
+    notReady_lab->resize(15,15);
+    notReady_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bunready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    notReady_lab->move(245+invacation*3,10);
+
+
 
     closeBtn = new QPushButton(this);
     closeBtn->setStyleSheet("border-image:url(:/resouse/Image/close.png);background-color:rgb(24, 24, 72);");
@@ -146,7 +177,10 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }
-    connect(TCommtransceivermanager::GetInstance(),&TCommtransceivermanager::SignalCarStatusUpdate,this,&CarStatusFrom::updateStatusOnBase);
+    //connect(TCommtransceivermanager::GetInstance(),&TCommtransceivermanager::SignalCarStatusUpdate,this,&CarStatusFrom::updateStatusOnBase);
+    timer = new QTimer(this);
+    connect(timer,&QTimer::timeout,this,&CarStatusFrom::updateStatusOnBase);
+    timer->start(300);
 }
 
 void CarStatusFrom::fromClose()
@@ -171,6 +205,11 @@ void CarStatusFrom::updateStatusOnBase()
          table->setItem(3, 1, item);
 
          m_crunt_item->setText(QString("%1,%2").arg(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x).arg(Myconfig::GetInstance()->m_CarMap[m_carNum].deveceStatus.carCurrentPosion.y));
+         err_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         ready_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         working_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         working_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+
     }
 }
 

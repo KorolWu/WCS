@@ -157,6 +157,29 @@ bool CRUDBaseOperation::changeSubtaskStatus(const QString &taskNum, const QStrin
     return result;
 }
 ///
+/// \brief CRUDBaseOperation::updateCarPosition
+/// \param carId 小车的id
+/// \param axis  轴的名称
+/// \param value 要更改的值
+/// \return
+///
+bool CRUDBaseOperation::updateCarPosition(const int carId, QString axis, int value, QString sqlErr)
+{
+    axis = axis.toUpper();
+    if(axis == "X")
+        axis = "x";
+    else
+        axis = "y";
+
+    sqlErr = "";
+    QString sql = QString("UPDATE t_device_info SET '%1' = '%2' WHERE id ='%3;").arg(axis).arg(value).arg(carId);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
+    QSqlQuery query(data_base);
+    bool result = query.exec(sql);
+    sqlErr = query.lastError().text();
+    return result;
+}
+///
 /// \brief CRUDBaseOperation::saveKBaseStruct 处理 KBaseStruct 派生类的保存
 /// \param tableName
 /// \param s

@@ -43,7 +43,7 @@ void ReadTableData::readt_elevator()
         elevator_stru.elevator_x = query.value(10).toDouble();
         elevator_stru.elevator_y = query.value(11).toDouble();
         elevator_stru.elevatorPos = QString("%1,%2").arg(elevator_stru.elevator_x).arg(elevator_stru.elevator_y);
-        Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorNum,elevator_stru);
+        //Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorNum,elevator_stru);
     }
 }
 

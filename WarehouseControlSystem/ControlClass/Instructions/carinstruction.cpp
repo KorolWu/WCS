@@ -45,10 +45,28 @@ void CarInstruction::runInstruction()
                 QApplication::processEvents();
             }
         }
-        else   //normal move or get box on store
+        else if(m_order.order == 0)
         {
-
+            m_tempValue = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x;
+            m_tempValue += m_order.value;
+            if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"x",m_tempValue,m_instructMsg))
+                m_result = 2;
         }
+        else if(m_order.order == 1)
+        {
+            m_tempValue = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.y;
+            m_tempValue += m_order.value;
+            if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"y",m_tempValue,m_instructMsg))
+                m_result = 3;
+        }
+        else if(m_order.order == 8) //car out of elevator
+        {
+            m_tempValue = 1;
+            if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
+                m_result = 3;
+        }
+        //normal move or get box on store
+       TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
     }
     else
         m_result = 1;
@@ -75,6 +93,18 @@ int CarInstruction::getResult(QString exeMsg)
         //to check car status status 0--->1
         if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bunready != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == 1)
         {
+            if(m_order.order == 0)
+            {
+                Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x = m_tempValue;
+            }
+            else if(m_order.order == 1)
+            {
+                 Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.y = m_tempValue;
+            }
+            else if(m_order.order == 8)
+            {
+                 Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.z = m_tempValue;
+            }
             m_result = 0;
             break;
         }

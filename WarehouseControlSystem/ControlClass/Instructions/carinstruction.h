@@ -25,6 +25,8 @@ private:
     int m_id;
     OrderStru   m_order;
     int     m_result;
+    int     m_tempValue;
+    QString m_instructMsg;
 
     // AbstructInstruction interface
 public:

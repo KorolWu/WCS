@@ -42,6 +42,12 @@ private:
     QLabel *online_image;
     QLabel *online_lab;
     QLabel *l ;
+    QLabel *err_lab;
+    QLabel *ready_lab;
+    QLabel *working_lab;
+    QLabel *notReady_lab;
+    //QLabel *autoCalibration;
+
 
     QTableWidget *table;
     QPushButton *delete_btn;
@@ -62,7 +68,7 @@ private:
     QTableWidgetItem *m_crunt_item;
     int m_id;
     int     m_carNum;
-    //QTimer* timer;
+    QTimer* timer;
 
     // ObserverBase interface
 public:

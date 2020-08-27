@@ -18,9 +18,12 @@
 #include <QHeaderView>
 #include <QScrollBar>
 #include <QLineEdit>
+#include <QSpinBox>
 #include "../../ControlClass/observerbase.h"
 #include "KDeviceSingleton.h"
 #include "Myconfig.h"
+#include <ControlClass/Instructions/carinstruction.h>
+#include <ControlClass/Instructions/abstructinstruction.h>
 class CarStatusFrom : public QWidget,ObserverBase
 {
     Q_OBJECT
@@ -29,7 +32,8 @@ public:
 
 public slots:
     void fromClose();
-
+    void relative_move_x();
+    void relative_move_y();
 private:
      int PAD_X = 550;
      int PAD_Y = 320;
@@ -46,22 +50,19 @@ private:
     QLabel *ready_lab;
     QLabel *working_lab;
     QLabel *notReady_lab;
-    //QLabel *autoCalibration;
+    QLabel *m_pLeft_haveBox;
+    QLabel *m_pRight_haveBox;
+    QLabel *m_pTop_haveBox;
+    QSpinBox *m_pLineEdit_x;
+    QSpinBox *m_pLineEdit_y;
+    QPushButton *m_pMove_x;
+    QPushButton *m_pMove_y;
+    QLabel *autoCalibration;
 
 
     QTableWidget *table;
-    QPushButton *delete_btn;
-    QPushButton *canlen_btn;
     QPushButton *up_btn;
     QPushButton *down_btn;
-    QPushButton *pause_btn;
-    QPushButton *continue_btn;
-
-    QPushButton *add_battery_btn;
-    QPushButton *creat_fix_btn;
-    QPushButton *sleep_btn;
-    QLineEdit *position;
-    QPushButton *move_btn;
 
 
     QPushButton *closeBtn;

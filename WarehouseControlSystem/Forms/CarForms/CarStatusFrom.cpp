@@ -90,7 +90,7 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     table->setItem(0, 3, item);
     item = new QTableWidgetItem ("设备名称");
     table->setItem(1, 0, item);
-    item = new QTableWidgetItem (c.deviceNum);
+    item = new QTableWidgetItem (QString("%1").arg(c.carId));
     table->setItem(1, 1, item);
     item = new QTableWidgetItem ("货架名称");
     table->setItem(1, 2, item);
@@ -242,6 +242,16 @@ void CarStatusFrom::relative_move_y()
     o.value = value;
     c->setParameter(o,m_id);
     c->runInstruction();
+}
+
+void CarStatusFrom::left_pickup()
+{
+
+}
+
+void CarStatusFrom::right_pickup()
+{
+
 }
 // batter status enable online? position
 void CarStatusFrom::updateStatusOnBase()

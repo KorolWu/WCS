@@ -34,6 +34,8 @@ public slots:
     void fromClose();
     void relative_move_x();
     void relative_move_y();
+    void left_pickup();
+    void right_pickup();
 private:
      int PAD_X = 550;
      int PAD_Y = 320;

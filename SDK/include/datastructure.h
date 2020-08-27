@@ -118,6 +118,7 @@ typedef struct _CarInfoStru
 
     _CarInfoStru& operator = (const _CarInfoStru &other)
     {
+        carId = other.carId;
         deviceNum = other.deviceNum;
         deviceIp = other.deviceIp;
         port = other.port;

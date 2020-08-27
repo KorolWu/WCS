@@ -50,18 +50,21 @@ bool TCommTCPclient::creadTcpClient()
 {
     this->m_ip = m_config.name;
     this->m_port = m_config.port;
+    qDebug()<<"ip "<< m_config.name << m_config.port;
     socket = new QTcpSocket(this);
     connect(socket,&QTcpSocket::disconnected,this,&TCommTCPclient::onDisconnected);
     connect(socket,&QTcpSocket::connected,
             [=]()
     {
         m_connectStatus = true;
+         qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
         emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
     } );
     connect(socket,&QTcpSocket::readyRead,
             [=]()
     {
         QByteArray array=socket->readAll();
+         qDebug()<<"ip "<< m_config.name << m_config.port << array.toHex() << sizeof(array) ;
         emit signalReadHWdeviceData(m_config.ID,m_config.hwtype,array);
     });
     return connectServer(m_ip,m_port);

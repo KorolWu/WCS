@@ -83,7 +83,8 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                     wcssendframestru.Tradistance = cmd.value;
                 }
                 break;
-                memcpy(frameData.data(),(char*)(&wcssendframestru),40);
+                frameData.append(reinterpret_cast<char*>(&wcssendframestru),sizeof(SendCarCmdFrame));
+
             }
             case 6://简易数据类型
             {
@@ -91,7 +92,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                 simplestru.carnbr = hwId;
                 simplestru.cmdnbr = wcsindex;
                 simplestru.cmdname = cmd.value; // 请求指令数据 5 或者 6
-                memcpy(frameData.data(),(char*)(&simplestru),40);
+                 frameData.append(reinterpret_cast<char*>(&simplestru),sizeof(SendCarCmdReqestFrame));
                 break;
             }
             default:
@@ -242,7 +243,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                     }
                     else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
                     {
-                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                       // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
                             //解析详细数据内容
                             ReceCarDetailFrame detailstru;//详细数据报文
@@ -258,14 +259,14 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         //简易数据报文
                         ReceCarcmdsimFrame simstru;
                         memcpy((char*)&simstru,tempData.data(),10);
-                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                       // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
                             UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
                             UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
                         }
-                        else
+                       // else
                         {
-                            if(nbr == 1000)
+                           // if(nbr == 1000)
                             {
                                 //不是回应指令动作
                                 qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
@@ -277,7 +278,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                     }
                     else
                     {
-                        if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
+                       // if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
                         {
                             ReceCarcmdActionFrame actionstru;//动作指令报文
                             memcpy((char*)&actionstru,tempData.data(),10);
@@ -306,6 +307,7 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
         case CarStatusrole::Opermode:
         {
             //1:手动 2：自动
+            qDebug()<<"opmodel"<<value;
             if(Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model != value)
             {
                 Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model = value;
@@ -319,6 +321,7 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
             {
                 Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.senorgoodsstru.carsensorstat = value;
             }
+              qDebug()<<"sensorstat"<<value;
             break;
         }
         case CarStatusrole::exestatus: //包含了状态信息 故障等信息
@@ -359,10 +362,13 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     QMutexLocker locker(&m_TCommMutex);
     //根据各个对象进行包解析 更新数据内容
     QByteArray  tempData;
-    memcpy(tempData.data(),data.data(),data.size());//临时字节
+    tempData.append(data);
+   // memcpy(tempData.data(),data.data(),data.size());//临时字节
+  //  qDebug()<<"temdata"<<tempData.toHex() << data.toHex();
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
+        qDebug()<<"ID"<<ID << tempData.toHex();
         AnalysisCarFrame(tempData,ID);
         break;
     }
@@ -394,7 +400,7 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWtype() == RGVCAR)
         {
-           Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.enable = state;
+           Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
         }
         break;
     }

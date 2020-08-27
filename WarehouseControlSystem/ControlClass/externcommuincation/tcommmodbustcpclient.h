@@ -33,6 +33,7 @@ private:
 private:
     QModbusClient *modbusDevice;
     QMap<int,int> bit_map;
+
     ModbusTcpClientstru m_configstru;
 private slots:
     void SlotReadData(int type,int bit,int address);

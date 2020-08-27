@@ -9,6 +9,7 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     this->setStyleSheet("QLabel{background:transparent;; color:white}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_carNum = c.carId;
     m_id = carId;
+    qDebug()<<"carid"<<m_id;
     QFont font("宋体",14);
     QLabel *back_lab = new QLabel(this);
     back_lab->resize(PAD_X,PAD_Y);

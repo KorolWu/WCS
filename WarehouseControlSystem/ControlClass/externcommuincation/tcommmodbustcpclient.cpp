@@ -151,6 +151,7 @@ void TCommModbusTcpClient::readReady()
     if (reply->error() == QModbusDevice::NoError)
     {
         const QModbusDataUnit unit = reply->result();
+         qDebug()<<"收到数据类型结果"<<  unit.registerType();
         for (uint i = 0; i < unit.valueCount(); i++)
         {
             const QString entry = tr("Address: %1, Value: %2").arg(unit.startAddress() + i).arg(QString::number(unit.value(i),

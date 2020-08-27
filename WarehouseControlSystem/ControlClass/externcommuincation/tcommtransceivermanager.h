@@ -112,10 +112,11 @@ private://模板函数
                 default:
                     break;
                 }
-                ob->SetCommParam(stru);
                 m_HWdeviceMap.insert(it.key(),ob);
-                connect(ob,&HWdeviceabstractInterface::signalReadHWdeviceData,this,&TCommtransceivermanager::ReceDataFromHWob);
                 connect(ob,&HWdeviceabstractInterface::signalHWDisconnect,this,&TCommtransceivermanager::Slotconnectstate);
+                ob->SetCommParam(stru);
+                connect(ob,&HWdeviceabstractInterface::signalReadHWdeviceData,this,&TCommtransceivermanager::ReceDataFromHWob);
+
             }
         }
     }

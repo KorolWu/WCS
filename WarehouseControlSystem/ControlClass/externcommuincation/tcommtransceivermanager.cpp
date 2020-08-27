@@ -45,6 +45,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             QByteArray frameData;
             int16_t childtype = 0;
             childtype = cmd.childtype;
+            qDebug()<<"wcsindex:"<<wcsindex;
             switch (childtype) {
             case 5: // 请求详细数据类型
             {
@@ -82,8 +83,8 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                     wcssendframestru.cmdname = 2;//横行距离
                     wcssendframestru.Tradistance = cmd.value;
                 }
-                break;
                 frameData.append(reinterpret_cast<char*>(&wcssendframestru),sizeof(SendCarCmdFrame));
+                break;
 
             }
             case 6://简易数据类型
@@ -393,13 +394,16 @@ void TCommtransceivermanager::UpdateState()
 void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
 {
     //接收到掉线信号自动重新连接 设备状态更新
+    qDebug()<<"id"<<ID;
     switch (type)
     {
     case HWDEVICEPROTYPE::KTcpClient:
     {
+         qDebug()<<"id KTcpClient"<<state;
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWtype() == RGVCAR)
         {
+             qDebug()<<"id RGVCAR"<<state;
            Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
         }
         break;

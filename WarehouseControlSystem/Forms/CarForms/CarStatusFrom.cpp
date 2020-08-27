@@ -26,35 +26,8 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     online_lab = new QLabel(c.deveceStatus.isOnline? "在线":"离线",this);
     online_lab->move (60,10);
     online_lab->setStyleSheet("color:white");
-    int invacation =15;
     int invacation_text = 10;
-    QLabel *e = new QLabel("故障",this);
-    e->move(120+5,10);
-    err_lab = new QLabel(this);
-    err_lab->resize(15,15);
-    err_lab->setStyleSheet(c.deveceStatus.statusinfodstru.berror?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-    err_lab->move(105,10);
 
-    QLabel *r = new QLabel("就绪",this);
-    r->move(165+invacation_text*2,10);
-    ready_lab = new QLabel(this);
-    ready_lab->resize(15,15);
-    ready_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-    ready_lab->move(150 +invacation,10);
-
-    QLabel *w = new QLabel("执行中",this);
-    w->move(210+invacation_text*4-3,10);
-    working_lab = new QLabel(this);
-    working_lab->resize(15,15);
-    working_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-    working_lab->move(195+invacation*2,10);
-
-    QLabel *n = new QLabel("未就绪",this);
-    n->move(250+invacation_text*6+5,10);
-    notReady_lab = new QLabel(this);
-    notReady_lab->resize(15,15);
-    notReady_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bunready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-    notReady_lab->move(245+invacation*3,10);
 
 
 
@@ -144,37 +117,94 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     table->setItem(3, 3, item);
     table->setStyleSheet("background:#FFFFFF;border:none;font-size:14px;font-family:Microsoft YaHei;color:#666666;");
     int interval = 90;
-    delete_btn = new QPushButton("排除",this);
-    delete_btn->move(10,242);
-    canlen_btn = new QPushButton("取消任务",this);
-    canlen_btn->move(10+interval*1,242);
     up_btn = new QPushButton("左取货",this);
-    up_btn->move(10+interval*2,242);
+    up_btn->move(10,242);//10+interval*2,242
     down_btn = new QPushButton("右取货",this);
-    down_btn->move(10+interval*3,242);
-    pause_btn = new QPushButton("暂停",this);
-    pause_btn->move(10+interval*4,242);
-    continue_btn = new QPushButton("继续",this);
-    continue_btn->move(10+interval*5,242);
-    int interval_y = 280;
-    add_battery_btn = new QPushButton("去充电",this);
-    add_battery_btn->move(10,interval_y);
+    down_btn->move(10+interval*1,242);//10+interval*3,242
 
-    creat_fix_btn = new QPushButton("创建维修",this);
-    creat_fix_btn->move(10+interval,interval_y);
-    sleep_btn = new QPushButton("休眠",this);
-    sleep_btn->move(10+interval*2,interval_y);
-    position = new QLineEdit(this);
-    position->move(10+interval*3,interval_y);
-    position->setText("156212,85694");
-    move_btn = new QPushButton("移动",this);
-    move_btn->move(10+interval*5-70,interval_y);
+    m_pMove_x = new QPushButton("移动X",this);
+    connect(m_pMove_x,&QPushButton::clicked,this,&CarStatusFrom::relative_move_x);
+    m_pMove_x->move(10+interval*3,242);
+
+    m_pLineEdit_x = new QSpinBox(this);
+    m_pLineEdit_x->resize(80,27);
+    m_pLineEdit_x->move(10+interval*2,242);
+
+    m_pLineEdit_y = new QSpinBox(this);
+
+    m_pLineEdit_y->resize(80,27);
+    m_pLineEdit_y->move(10+interval*4,242);
+    m_pMove_y = new QPushButton("移动Y",this);
+    connect(m_pMove_y,&QPushButton::clicked,this,&CarStatusFrom::relative_move_y);
+    m_pMove_y->move(10+interval*5,242);
+
+    int interval_image = 65;
+    int interval_y = 288;
+    int interval_image_text = 32;
+    QLabel *ca = new QLabel("校准中",this);
+    ca->move(interval_image_text,interval_y);
+    autoCalibration = new QLabel(this);
+    autoCalibration->resize(15,15);
+    autoCalibration->move(15,interval_y);
+    autoCalibration->setStyleSheet(c.deveceStatus.statusinfodstru.bcalibrating?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+
+    QLabel *e = new QLabel("故障",this);
+    e->move(interval_image_text+interval_image,interval_y);
+    err_lab = new QLabel(this);
+    err_lab->resize(15,15);
+    err_lab->setStyleSheet(c.deveceStatus.statusinfodstru.berror?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    err_lab->move(15+interval_image,interval_y);
+
+    QLabel *r = new QLabel("就绪",this);
+    r->move(interval_image_text+interval_image*2,interval_y);
+    ready_lab = new QLabel(this);
+    ready_lab->resize(15,15);
+    ready_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    ready_lab->move(15+interval_image*2,interval_y);
+
+    QLabel *w = new QLabel("执行中",this);
+    w->move(interval_image_text+interval_image*3,interval_y);
+    working_lab = new QLabel(this);
+    working_lab->resize(15,15);
+    working_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    working_lab->move(15+interval_image*3,interval_y);
+
+    QLabel *n = new QLabel("未就绪",this);
+    n->move(interval_image_text+interval_image*4,interval_y);
+    notReady_lab = new QLabel(this);
+    notReady_lab->resize(15,15);
+    notReady_lab->setStyleSheet(c.deveceStatus.statusinfodstru.bunready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+    notReady_lab->move(15+interval_image*4,interval_y);
+
+
+    invacation_text += 7;
+    QLabel *l = new QLabel("左有货",this);
+    l->move(interval_image_text+interval_image*5,interval_y);
+    m_pLeft_haveBox = new QLabel(this);
+    m_pLeft_haveBox->resize(15,15);
+    m_pLeft_haveBox->move(15+interval_image*5,interval_y);
+    m_pLeft_haveBox->setStyleSheet(c.deveceStatus.statusinfodstru.bcalibrating?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+
+    QLabel *rb = new QLabel("右有货",this);
+    rb->move(interval_image_text+interval_image*6,interval_y);
+    m_pRight_haveBox = new QLabel(this);
+    m_pRight_haveBox->resize(15,15);
+    m_pRight_haveBox->move(15+interval_image*6,interval_y);
+    m_pRight_haveBox->setStyleSheet(c.deveceStatus.statusinfodstru.bcalibrating?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+
+    QLabel *t = new QLabel("上有货",this);
+    t->move(interval_image_text+interval_image*7,interval_y);
+    m_pTop_haveBox = new QLabel(this);
+    m_pTop_haveBox->resize(15,15);
+    m_pTop_haveBox->move(15+interval_image*7,interval_y);
+    m_pTop_haveBox->setStyleSheet(c.deveceStatus.statusinfodstru.bcalibrating?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+
 
     this->resize(550,PAD_Y);
-    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(c.deviceIp))
-    {
-        KDeviceSingleton::getInstance()->m_DeviceMap[c.deviceIp]->registObserver(this);
-    }
+//    if(KDeviceSingleton::getInstance()->m_DeviceMap.contains(c.deviceIp))
+//    {
+//        KDeviceSingleton::getInstance()->m_DeviceMap[c.deviceIp]->registObserver(this);
+//    }
 //    foreach (QPushButton *btn, this) {
 //        btn->setStyleSheet("border:5fix");
 //    }
@@ -192,6 +222,28 @@ void CarStatusFrom::fromClose()
     }
     this->close();
 }
+
+void CarStatusFrom::relative_move_x()
+{
+    int value = m_pLineEdit_x->value();
+    AbstructInstruction *c = new CarInstruction();
+    OrderStru o;
+    o.order = X;
+    o.value = value;
+    c->setParameter(o,m_id);
+    c->runInstruction();
+}
+
+void CarStatusFrom::relative_move_y()
+{
+    int value = m_pLineEdit_y->value();
+    AbstructInstruction *c = new CarInstruction();
+    OrderStru o;
+    o.order = Y;
+    o.value = value;
+    c->setParameter(o,m_id);
+    c->runInstruction();
+}
 // batter status enable online? position
 void CarStatusFrom::updateStatusOnBase()
 {
@@ -199,7 +251,7 @@ void CarStatusFrom::updateStatusOnBase()
     {
          online_image->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
          online_lab->setText(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline?"在线":"离线");
-         battery_lab->setText(QString::number(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.batter)+"%");
+         battery_lab->setText(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.belectricity? "20%" : "100%");
          QTableWidgetItem *item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isLocking == true? "待命中" : "工作中");
          table->setItem(0, 3, item);
          item = new QTableWidgetItem (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.enable? "enable" : "disable");
@@ -209,8 +261,19 @@ void CarStatusFrom::updateStatusOnBase()
          err_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
          ready_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
          working_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
-         working_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bruning?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         notReady_lab->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bunready?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         autoCalibration->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bcalibrating?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         m_pLeft_haveBox->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.senorgoodsstru.bLhavegoods?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         m_pRight_haveBox->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.senorgoodsstru.bRhavegoods?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
+         m_pTop_haveBox->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.senorgoodsstru.bloadhavegoods?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
 
     }
 }
+
+
+
+
+
+
+
 

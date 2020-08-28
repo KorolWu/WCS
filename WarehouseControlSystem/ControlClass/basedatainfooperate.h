@@ -206,6 +206,19 @@ public:
         return true;
     }
     ///
+    /// \brief GetWarehouselocationInfoForIn
+    /// \param boxinfo
+    /// \param posstru
+    /// \param id
+    /// \return
+    ///
+    static bool GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QString &id)
+    {
+        QList<double> layers = BaseDataInfoOperate::GetLayersFromStorePosInfo();
+        return BaseDataInfoOperate::GetWarehouselocationInfoForIn(boxinfo,posstru,layers,id);
+    }
+
+    ///
     /// \brief CheckBoxnbronWarehouselocation
     /// \param boxinfo 料箱号
     /// \return true 已有料箱 false 无料箱在仓库

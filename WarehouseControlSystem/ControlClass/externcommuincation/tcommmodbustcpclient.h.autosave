@@ -35,6 +35,8 @@ private:
     QMap<int,int> bit_map;
     //DiscreteInputs  Coils InputRegisters HoldingRegisters
     ModbusTcpClientstru m_configstru;
+    QModbusDataUnit readRequest(int type, int startAddress, int numberOfEntries) const;
+    QModbusDataUnit writeRequest(int type, int startAddress, int numberOfEntries) const;
 private slots:
     void SlotReadData(int type,int bit,int address);
     void SlotWriteValue(int type,int bit,int value,int address);

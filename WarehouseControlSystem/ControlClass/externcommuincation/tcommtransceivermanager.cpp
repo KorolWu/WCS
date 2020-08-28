@@ -193,6 +193,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
                 list.append(endvalue);
             }
         }
+        m_Wcstocarframeindex[hwId] = list;
         index = endvalue;
     }
     return index;
@@ -308,7 +309,6 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
         case CarStatusrole::Opermode:
         {
             //1:手动 2：自动
-            qDebug()<<"opmodel"<<value;
             if(Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model != value)
             {
                 Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.model = value;
@@ -322,7 +322,6 @@ void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
             {
                 Myconfig::GetInstance()->m_CarMap[carID].deveceStatus.senorgoodsstru.carsensorstat = value;
             }
-              qDebug()<<"sensorstat"<<value;
             break;
         }
         case CarStatusrole::exestatus: //包含了状态信息 故障等信息
@@ -394,16 +393,13 @@ void TCommtransceivermanager::UpdateState()
 void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
 {
     //接收到掉线信号自动重新连接 设备状态更新
-    qDebug()<<"id"<<ID;
     switch (type)
     {
-    case HWDEVICEPROTYPE::KTcpClient:
+    case HWDEVICETYPE::RGVCAR:
     {
-         qDebug()<<"id KTcpClient"<<state;
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
-        if(tob->GetHWtype() == RGVCAR)
+        if(tob->GetHWprotype() == KTcpClient)
         {
-             qDebug()<<"id RGVCAR"<<state;
            Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
         }
         break;

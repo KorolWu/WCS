@@ -15,7 +15,7 @@ void CarInstruction::runInstruction()
     Car_status s = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus;
     //小车可以接受指令(无故障，就绪，可以接受指令)
     //if((Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline) && (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror == false) && (s.statusinfodstru.bunready == true) && (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == false))
-    if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.carstatusinfo == 6)
+    if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.carstatusinfo == 4)
     {
         // get box on elevator,moust be wait elevator ready
         if(m_order.order == 9 || m_order.order == 10)

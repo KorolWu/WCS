@@ -345,6 +345,7 @@ typedef struct  _StorePosInfoStru{
     int storepri; //仓位优先级
     uint8_t directionstate = 0; //  新增 方向状态字段
     QString unused ="";//  新增 备用字段
+    bool update = false;
     _StorePosInfoStru(){
         memset(idnbr,0,64);
         type = 0;

@@ -69,7 +69,7 @@ bool TCommTCPclient::creadTcpClient()
     });
     bool connect =  connectServer(m_ip,m_port);
 
-     emit signalHWDisconnect(m_config.ID,KTcpClient,m_connectStatus);
+     emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
     return connect;
 }
 
@@ -93,7 +93,7 @@ bool TCommTCPclient::reConnection()
     m_connectStatus = connectServer(this->m_ip,this->m_port);
     if(m_connectStatus)//连接成功发出成功状态
     {
-        emit signalHWDisconnect(m_config.ID,KTcpClient,m_connectStatus);
+        emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
     }
     return m_connectStatus;
 }
@@ -109,5 +109,5 @@ void TCommTCPclient::onDisconnected()
 {
     m_connectStatus = false;
     emit clientDisconnect(m_config.ID,m_config.hwtype);
-    emit signalHWDisconnect(m_config.ID,KTcpClient,m_connectStatus);
+    emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
 }

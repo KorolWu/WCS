@@ -175,8 +175,9 @@ public:
     /// 1.筛选出每层的仓位
     /// 2.筛选出空的仓位
     /// 3.筛选出优先级别最高的
-    static bool  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers)
+    static bool  GetWarehouselocationInfoForIn(QString boxinfo,KPosition &posstru,QList<double> layers,QString &id)
     {
+        id = "";
         if(BaseDataInfoOperate::CheckBoxnbronWarehouselocation(boxinfo))
             return false;
         //从低层筛选层数取值范围
@@ -197,7 +198,7 @@ public:
                     posstru.y = pristru.coordy;
                     posstru.z = pristru.coordz;
                     posstru.state = pristru.directionstate;
-                    boxinfo = pristru.idnbr;
+                    id = pristru.idnbr;
                     break;
                 }
             }

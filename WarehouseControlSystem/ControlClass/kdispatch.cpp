@@ -168,7 +168,7 @@ void KDispatch::saveErrMassage(const QString &message )
     arm.wmsTaskid = m_task.taskNum;
     QString sql_err;
     if(false == m_writeData.WriteAlarmInfo(arm,sql_err))
-        qDebug()<<"alarm insert failed!";
+        GetSystemLogObj()->writeLog("在执行子任务时保存报错信息失败！message->"+message,2);
 }
 
 void KDispatch::run()
@@ -196,5 +196,5 @@ void KDispatch::run()
         GetSystemLogObj()->writeLog("完成任务保存失败!-->"+err,2);
     err = "";
     if(!CRUDBaseOperation::getInstance()->removeCrruntTask(m_task,err))
-        GetSystemLogObj()->writeLog("移除执行完成任务失败!-->"+err,3);
+        GetSystemLogObj()->writeLog("移除执行完成任务失败!-->"+err,2);
 }

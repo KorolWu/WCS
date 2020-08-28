@@ -74,11 +74,11 @@ typedef struct _Car_status
     CarSensorgoodsInfostru senorgoodsstru;
 }Car_status;
 enum Order{
-    X = 0,                  //向X方向移动
-    Y = 1,                  //向Y方向移动
+    X = 0,                  //向X方向移动0
+    Y = 1,                  //向Y方向移动0
     ChangeWhell = 2,        //换轮子
-    Left_Pickup = 3,        //左取货
-    Right_Pickup = 4,       //右取货
+    Left_Pickup = 3,        //左取货0
+    Right_Pickup = 4,       //右取货0
     Call = 5,               //呼叫换层电梯
     Elevator_Near = 6,      //电梯临近点
     Elevator_In = 7,        //小车进换层电梯
@@ -100,6 +100,9 @@ typedef struct _OrderStru
     int16_t childtype = 5 ;
     Order order;
     double value;
+    int layer_y;
+    QString box_num;
+    QString shelves;
 }OrderStru;
 typedef struct _CarInfoStru
 {

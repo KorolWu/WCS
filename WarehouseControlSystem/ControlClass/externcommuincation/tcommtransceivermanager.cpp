@@ -395,7 +395,7 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
     //接收到掉线信号自动重新连接 设备状态更新
     switch (type)
     {
-    case HWDEVICEPROTYPE::RGVCAR:
+    case HWDEVICETYPE::RGVCAR:
     {
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWprotype() == KTcpClient)

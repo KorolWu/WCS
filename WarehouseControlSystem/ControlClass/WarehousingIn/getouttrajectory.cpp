@@ -1,6 +1,6 @@
 #include "getouttrajectory.h"
 
-GetOutTrajectory::GetOutTrajectory(KPosition task_p, int car_id, const TaskInfoStru task)
+GetOutTrajectory::GetOutTrajectory(KPosition task_p, int car_id, const TaskInfoStru &task)
 {
     this->m_task_p = task_p;
     this->m_id = car_id;
@@ -107,7 +107,7 @@ void GetOutTrajectory::outElevator()
     o.order = Order::Elevator_Out;
     m_taskQueue.enqueue(o);
     o.order = Order::X;
-    o.value =m_elevatorX - m_carBeginPosition.x;
+    o.value = m_elevatorX - m_carBeginPosition.x;
     m_taskQueue.enqueue(o);
 }
 ///

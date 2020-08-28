@@ -106,6 +106,14 @@ int CarInstruction::getResult(QString exeMsg)
             {
                  Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.z = m_tempValue;
             }
+            else if(m_order.order == 4 ||  m_order.order == 3) //pick up (shelves,box_num)
+            {
+
+            }
+            else if(m_order.order == 14 || m_order.order == 15) //putinto
+            {
+
+            }
             m_result = 0;
             break;
         }

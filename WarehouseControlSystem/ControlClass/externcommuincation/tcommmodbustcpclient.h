@@ -33,6 +33,8 @@ private:
 private:
     QModbusClient *modbusDevice;
     QMap<int,int> bit_map;
+    //DiscreteInputs  Coils InputRegisters HoldingRegisters
+
 
     ModbusTcpClientstru m_configstru;
 private slots:

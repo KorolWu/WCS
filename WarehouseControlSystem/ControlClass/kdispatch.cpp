@@ -128,8 +128,11 @@ QString KDispatch::transformationOrder(int i)
     return "unknow Order";
 }
 
-bool KDispatch::runInstrucation(const OrderStru &o, int &id)
+bool KDispatch::runInstrucation(OrderStru o, int &id)
 {
+    o.box_num = m_task.boxNum;
+    o.shelves = m_task.shelves;
+    o.z = m_task_p.z;
     if(o.order == 0||o.order == 1||o.order == 3 ||o.order == 4 ||o.order == 9 ||o.order == 10)
     {
         m_pAbstructInstruction = new CarInstruction();

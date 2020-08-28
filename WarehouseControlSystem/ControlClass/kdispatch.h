@@ -40,7 +40,7 @@ private:
     bool saveSubTaskInfo();
     bool runSubTask();
     QString transformationOrder(int i);
-    bool runInstrucation(const OrderStru &o, int &id);
+    bool runInstrucation(OrderStru o, int &id);
     void saveErrMassage(const QString &message);
     BaseDevice *m_pCom;
     QQueue<OrderStru> m_taskQueue;

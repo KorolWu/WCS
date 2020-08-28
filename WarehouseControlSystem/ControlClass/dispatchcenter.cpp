@@ -31,6 +31,7 @@ void DispatchCenter::dispatchTaskThread()
                 QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
                 if(result != "")
                 {
+                    t.shelves = result;
                     lock_car(carId);
                     set_car_task_position(task_p,carId);
                     KDispatch *k = new KDispatch(task_p,ip,carId,t);//完成的状态，完成的结果，写入数据库的时间??
@@ -209,12 +210,14 @@ void DispatchCenter::remove_task_from(QString task_num)
 
 }
 
-void DispatchCenter::handle_in_task(const TaskInfoStru &t, QString frist_in_boxNum)
+void DispatchCenter::handle_in_task(TaskInfoStru &t, QString frist_in_boxNum)
 {
     KPosition task_p;//根据料箱号返回料箱所在坐标
-    QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
-    if(result != "")
+    QString shelves_name;
+    bool result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForIn(t.boxNum,task_p,shelves_name);
+    if(result && Myconfig::GetInstance()->m_storeinfoMap.contains(shelves_name))
     {
+        Myconfig::GetInstance()->m_storeinfoMap[shelves_name].storestat = 1; //lock shelves
         remove_task_from(t.taskNum);
         QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
         int car_num = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].carId;
@@ -238,6 +241,7 @@ void DispatchCenter::handle_in_task(const TaskInfoStru &t, QString frist_in_boxN
         //记录小车任务
         set_car_task_position(task_p,m_car_ip);
         // carP   boxP   elevatorP  in or out?
+        t.shelves = shelves_name;
         KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
         m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
         QThreadPool::globalInstance()->start(k);
@@ -250,12 +254,13 @@ void DispatchCenter::handle_in_task(const TaskInfoStru &t, QString frist_in_boxN
 
 }
 
-void DispatchCenter::handle_out_task(const TaskInfoStru &t)
+void DispatchCenter::handle_out_task(TaskInfoStru &t)
 {
     KPosition task_p;//根据料箱号返回料箱所在坐标
     QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
     if(result != "")
     {
+
         QString ip = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].CarIP;
         int car_id = Myconfig::GetInstance()->m_layerStatusMap[task_p.z].carId;
         int car_task_z = Myconfig::GetInstance()->m_CarMap[car_id].task_position.z;
@@ -282,6 +287,7 @@ void DispatchCenter::handle_out_task(const TaskInfoStru &t)
         set_car_task_position(task_p,m_car_ip);
         remove_out_task();
         // carP   boxP   elevatorP  in or out?
+        t.shelves = result;
         KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
         m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
         QThreadPool::globalInstance()->start(k);

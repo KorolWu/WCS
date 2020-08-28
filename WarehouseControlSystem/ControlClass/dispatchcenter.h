@@ -36,8 +36,8 @@ private:
     void lock_car(int carId);
     void Task_execution_failed(const TaskInfoStru &t);
     void remove_task_from(QString task_num);
-    void handle_out_task(const TaskInfoStru &t);
-    void handle_in_task(const TaskInfoStru &t, QString frist_in_boxNum);
+    void handle_out_task(TaskInfoStru &t);
+    void handle_in_task(TaskInfoStru &t, QString frist_in_boxNum);
     void remove_out_task();
     void remove_in_task(const QString &frist_in_boxNum);
 };

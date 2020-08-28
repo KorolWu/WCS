@@ -103,6 +103,7 @@ typedef struct _OrderStru
     int layer_y;
     QString box_num;
     QString shelves;
+    int z;
 }OrderStru;
 typedef struct _CarInfoStru
 {
@@ -215,6 +216,7 @@ typedef struct _ElevatorInfoStru
 typedef struct _TaskInfoStru : public KBaseStruct
 {
     QString taskNum;
+    QString shelves;
     QString status;
     QString boxNum;
     int pripty;

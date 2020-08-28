@@ -12,7 +12,6 @@ void CarInstruction::setParameter(OrderStru o, int device_id)
 }
 void CarInstruction::runInstruction()
 {
-    Car_status s = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus;
     //小车可以接受指令(无故障，就绪，可以接受指令)
     //if((Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline) && (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror == false) && (s.statusinfodstru.bunready == true) && (Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == false))
     if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.carstatusinfo == 4)
@@ -62,7 +61,7 @@ void CarInstruction::runInstruction()
         }
         else if(m_order.order == 8) //car out of elevator
         {
-            m_tempValue = 1;
+            m_tempValue = m_order.z;
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
                 m_result = 3;
         }
@@ -92,7 +91,8 @@ int CarInstruction::getResult(QString exeMsg)
             return m_result;
         }
         //to check car status status 0--->1
-        if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bunready != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == 1)
+        //if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bunready != 1 && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == 1)
+        if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.berror == false && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bunready == false && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.bready == false)
         {
             if(m_order.order == 0)
             {
@@ -108,11 +108,14 @@ int CarInstruction::getResult(QString exeMsg)
             }
             else if(m_order.order == 4 ||  m_order.order == 3) //pick up (shelves,box_num)
             {
-
+                QByteArray buff("");
+                memcpy(Myconfig::GetInstance()->m_storeinfoMap[m_order.shelves].boxnbr,buff,sizeof(buff));
+                Myconfig::GetInstance()->m_storeinfoMap[m_order.shelves].update = true;
             }
             else if(m_order.order == 14 || m_order.order == 15) //putinto
             {
-
+                memcpy(Myconfig::GetInstance()->m_storeinfoMap[m_order.shelves].boxnbr,m_order.box_num.toLocal8Bit(),sizeof(m_order.box_num));
+                Myconfig::GetInstance()->m_storeinfoMap[m_order.shelves].update = true;
             }
             m_result = 0;
             break;

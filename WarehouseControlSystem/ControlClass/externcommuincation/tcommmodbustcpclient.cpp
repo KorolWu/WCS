@@ -3,14 +3,14 @@
 TCommModbusTcpClient::TCommModbusTcpClient()
 {
     modbusDevice = nullptr;
-    connect(this,&TCommModbusTcpClient::signalReadData,this,&TCommModbusTcpClient::SlotReadData);
-    connect(this,&TCommModbusTcpClient::signalWriteValue,this,&TCommModbusTcpClient::SlotWriteValue);
+    connect(this,&TCommModbusTcpClient::signalReadData,this,&TCommModbusTcpClient::readDataRequest);
+    connect(this,&TCommModbusTcpClient::signaWrite,this,&TCommModbusTcpClient::on_writeData_request);
 }
 
 void TCommModbusTcpClient::SetCommParam(ComConfigStru paramstru)
 {
     m_configstru = paramstru.hwmodbustcpclistru;
-    GetConnect(m_configstru.url_str);
+    GetConnect(m_configstru.url_str); //创建主站连接信息
 }
 
 int TCommModbusTcpClient::GetNameID()
@@ -30,7 +30,10 @@ int TCommModbusTcpClient::GetHWprotype()
 
 void TCommModbusTcpClient::CloseComm()
 {
-
+    if(modbusDevice != nullptr)
+    {
+        modbusDevice->disconnectDevice();
+    }
 }
 ///
 /// \brief TCommModbusTcpClient::GetConnect
@@ -70,76 +73,6 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
     return true;
 }
 
-void TCommModbusTcpClient::write(int start_bit, int value, int address)
-{
-    if (!modbusDevice)
-        return;
-
-    QModbusDataUnit writeUnit(QModbusDataUnit::RegisterType::Coils,start_bit,1);
-    QModbusDataUnit::RegisterType table = writeUnit.registerType();
-    for (uint i = 0; i < writeUnit.valueCount(); i++) {
-        if (table == QModbusDataUnit::Coils)
-            writeUnit.setValue(i, value);
-        else
-            writeUnit.setValue(i, value);
-    }
-    if (auto *reply = modbusDevice->sendWriteRequest(writeUnit, address)) {
-        if (!reply->isFinished()) {
-            connect(reply, &QModbusReply::finished, this, [this, reply]() {
-                if (reply->error() == QModbusDevice::ProtocolError) {
-                    qDebug()<<(tr("Write response error: %1 (Mobus exception: 0x%2)")
-                               .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16),
-                               5000);
-                } else if (reply->error() != QModbusDevice::NoError) {
-                    qDebug()<<(tr("Write response error: %1 (code: 0x%2)").
-                               arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
-                }
-                reply->deleteLater();
-            });
-        } else {
-            // broadcast replies return immediately
-            reply->deleteLater();
-        }
-    } else {
-        qDebug()<<(tr("Write error: ") + modbusDevice->errorString(), 5000);
-    }
-}
-
-void TCommModbusTcpClient::readCoils(int start_bit, int addresscount)
-{
-    if (!modbusDevice)
-        return;
-    if (auto *reply = modbusDevice->sendReadRequest(QModbusDataUnit(QModbusDataUnit::RegisterType::Coils,start_bit,addresscount), m_configstru.serveraddress)) {
-        if (!reply->isFinished())
-        {
-            connect(reply, &QModbusReply::finished, this, &TCommModbusTcpClient::readReady);
-        }
-        else
-            delete reply; // broadcast replies return immediately
-    } else {
-        qDebug()<<(tr("Read error: ") + modbusDevice->errorString(), 5000);
-    }
-}
-
-void TCommModbusTcpClient::readAll()
-{
-
-}
-
-void TCommModbusTcpClient::readRegisters(int start_bit, int adress)
-{
-    if (!modbusDevice)
-        return;
-
-    if (auto *reply = modbusDevice->sendReadRequest(QModbusDataUnit(QModbusDataUnit::RegisterType::InputRegisters,start_bit,m_configstru.serveraddress), adress)) {
-        if (!reply->isFinished())
-            connect(reply, &QModbusReply::finished, this, &TCommModbusTcpClient::readReady);
-        else
-            delete reply; // broadcast replies return immediately
-    } else {
-        qDebug()<<(tr("Read error: ") + modbusDevice->errorString(), 5000);
-    }
-}
 ///
 /// \brief TCommModbusTcpClient::readReady
 ///请求之后接收到的数据的
@@ -151,28 +84,20 @@ void TCommModbusTcpClient::readReady()
     if (reply->error() == QModbusDevice::NoError)
     {
         const QModbusDataUnit unit = reply->result();
-         qDebug()<<"收到数据类型结果"<<  unit.registerType();
-            bit_map.clear();
+        qDebug()<<"收到数据类型结果"<<  unit.registerType();
+        QMap<int,int> address_value_map;
         for (uint i = 0; i < unit.valueCount(); i++)
         {
             const QString entry = tr("Address: %1, Value: %2").arg(unit.startAddress() + i).arg(QString::number(unit.value(i),
                                                                                                                 unit.registerType() <= QModbusDataUnit::Coils ? 10 : 16));
             qDebug()<<"datatype:"<<unit.registerType()<< entry;
-            if(!bit_map.contains(unit.startAddress()))
+            if(!address_value_map.contains(unit.startAddress()))
             {
-                bit_map.insert(unit.startAddress()+i,unit.value(i));
+                address_value_map.insert(unit.startAddress()+i,unit.value(i));
             }
             else
-                bit_map[unit.startAddress()+i] = unit.value(i);
-
-            //收到发过来的数据内容 前面四个字节代表地址 后边两个字节代表值
-             QByteArray Databytearray;
-             int bitaddr = unit.startAddress()+i;
-             uint16_t value = unit.value(i);
-             memcpy(Databytearray.data(),&bitaddr,4);
-             memcpy(Databytearray.data()+4,&value,2);
-     // emit signalReadHWdeviceData(m_configstru.ID,m_configstru.hwtype,Databytearray);
-             emit signalReadData(m_configstru.ID,m_configstru.hwtype,unit.registerType(),m_configstru.ID);
+                address_value_map[unit.startAddress()+i] = unit.value(i);
+            emit signalReceModbusHWdeviceData(m_configstru.ID,m_configstru.hwtype,unit.registerType(),address_value_map);
         }
     }
     else if (reply->error() == QModbusDevice::ProtocolError)
@@ -187,91 +112,82 @@ void TCommModbusTcpClient::readReady()
     reply->deleteLater();
 }
 
-int TCommModbusTcpClient::getBitValue(int start_bit)
+
+void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVector<int> values)
 {
-    if(bit_map.contains(start_bit))
-    {
-        return bit_map[start_bit];
+    int numberOfEntries = values.size();
+    if (!modbusDevice)
+        return;
+    QModbusDataUnit writeUnit = writeRequest(type,startAddress,numberOfEntries);
+    QModbusDataUnit::RegisterType table = writeUnit.registerType();
+    for (uint i = 0; i < writeUnit.valueCount(); i++) {
+        if (table == QModbusDataUnit::Coils)
+            writeUnit.setValue(i, values[i]);
+        else
+            writeUnit.setValue(i, values[i]);
     }
-    else
-        return -1;
+    if (auto *reply = modbusDevice->sendWriteRequest(writeUnit,m_configstru.serveraddress)) {
+        if (!reply->isFinished()) {
+            connect(reply, &QModbusReply::finished, this, [this, reply]() {
+                if (reply->error() == QModbusDevice::ProtocolError) {
+                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
+                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                    //5000);
+                } else if (reply->error() != QModbusDevice::NoError) {
+                    //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
+                    //                        arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
+                    qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                }
+                reply->deleteLater();
+            });
+        } else {
+            // broadcast replies return immediately
+            reply->deleteLater();
+        }
+    } else {
+        // statusBar()->showMessage(tr("Write error: ") + modbusDevice->errorString(), 5000);
+        qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
+    }
 }
 
-void TCommModbusTcpClient::init_bitMap()
-{
-    readCoils(0,20);
-}
-
-void TCommModbusTcpClient::SlotReadData(int type, int bit, int address)
-{
-    switch (type) {
-    case QModbusDataUnit::RegisterType::Coils:
-    {
-        readCoils(bit,address);
-        break;
-    }
-    case QModbusDataUnit::RegisterType::InputRegisters:
-    {
-        readRegisters(bit,address);
-        break;
-    }
-    default:
-        break;
-    }
-
-}
-
-void TCommModbusTcpClient::SlotWriteValue(int type, int bit, int value, int address)
-{
-    switch (type) {
-    case QModbusDataUnit::RegisterType::Coils:
-    {
-        write(bit,value,address);
-        break;
-    }
-    default:
-        break;
-    }
-
-}
-void TCommModbusTcpClient::readDatarequest(int type,int startAddress,int numberOfEntries)
+void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberOfEntries)
 {
     if (!modbusDevice)
         return;
-   // ui->readValue->clear();
+    // ui->readValue->clear();
     //statusBar()->clearMessage();
 
     if (auto *reply = modbusDevice->sendReadRequest(readRequest(type,startAddress,numberOfEntries), m_configstru.ID)) {
         if (!reply->isFinished())
-            connect(reply, &QModbusReply::finished, this, &MainWindow::readReady);
+            connect(reply, &QModbusReply::finished, this, &TCommModbusTcpClient::readReady);
         else
             delete reply; // broadcast replies return immediately
     } else {
-          qDebug()<< tr("Read error: ") + modbusDevice->errorString(), 5000;
+        qDebug()<< tr("Read error: ") + modbusDevice->errorString(), 5000;
     }
 }
 QModbusDataUnit TCommModbusTcpClient::readRequest(int type,int startAddress,int numberOfEntries) const
 {
     const auto table =
-        static_cast<QModbusDataUnit::RegisterType> (type);
+            static_cast<QModbusDataUnit::RegisterType> (type);
 
     //int startAddress = ui->readAddress->value();
     //Q_ASSERT(startAddress >= 0 && startAddress < 10);
 
     // do not go beyond 10 entries
-   // int numberOfEntries = qMin(ui->readSize->currentText().toInt(), 10 - startAddress);
+    // int numberOfEntries = qMin(ui->readSize->currentText().toInt(), 10 - startAddress);
     return QModbusDataUnit(table, startAddress, numberOfEntries);
 }
 
 QModbusDataUnit TCommModbusTcpClient::writeRequest(int type,int startAddress,int numberOfEntries) const
 {
     const auto table =
-        static_cast<QModbusDataUnit::RegisterType> (type);
+            static_cast<QModbusDataUnit::RegisterType> (type);
 
-   // int startAddress = ui->writeAddress->value();
-  //  Q_ASSERT(startAddress >= 0 && startAddress < 10);
+    // int startAddress = ui->writeAddress->value();
+    //  Q_ASSERT(startAddress >= 0 && startAddress < 10);
 
     // do not go beyond 10 entries
-  //  int numberOfEntries = qMin(ui->writeSize->currentText().toInt(), 10 - startAddress);
+    //  int numberOfEntries = qMin(ui->writeSize->currentText().toInt(), 10 - startAddress);
     return QModbusDataUnit(table, startAddress, numberOfEntries);
 }

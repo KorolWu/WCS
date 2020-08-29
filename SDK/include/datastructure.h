@@ -100,6 +100,11 @@ typedef struct _OrderStru
     int16_t childtype = 5 ;
     Order order;
     double value;
+   //新增数据结构2020 08 29
+    int startaddress = 0;
+    int numberOfEntries = 1;
+    int Datatype = 1;//io /线圈 寄存器等
+    QVector<int> values;//需要写的值
 }OrderStru;
 typedef struct _CarInfoStru
 {

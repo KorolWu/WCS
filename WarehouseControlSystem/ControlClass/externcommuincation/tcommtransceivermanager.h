@@ -52,6 +52,7 @@ signals:
     void SignalCarStatusUpdate();
 public slots:
     void ReceDataFromHWob(int ID,int hwtype,QByteArray data);//数据接收内容
+    void ReceModbusDataFromHWob(int ID,int hwtype,int datatype,QMap<int,int> Data);
 private:
     void sendDataToHWob(QByteArray data ,int id);
     void AnalysisDataFrame(QByteArray dataframe);//解析帧内容
@@ -107,6 +108,7 @@ private://模板函数
                     memcpy(buffer,&it.value(),len);
                     ModbusTcpClientstru *tstru =(ModbusTcpClientstru*)(buffer);
                     stru.hwmodbustcpclistru =*tstru;
+                    connect(ob,&HWdeviceabstractInterface::signalReceModbusHWdeviceData,this,&TCommtransceivermanager::ReceModbusDataFromHWob);
                     break;
                 }
                 default:

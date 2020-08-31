@@ -189,7 +189,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
         std::sort(list.begin(), list.end());
         int16_t endvalue = list[list.size()-1];
         endvalue++;
-        if(endvalue > 65530)//不能超过65535
+        if(endvalue > 32000)//不能超过65535
         {
             endvalue = 0;
         }
@@ -214,7 +214,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
             }
         }
         m_Wcstocarframeindex[hwId] = list;
-        index = endvalue;
+        index = endvalue;        
     }
     return index;
 }

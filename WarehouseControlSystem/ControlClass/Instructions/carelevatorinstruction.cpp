@@ -9,23 +9,27 @@ void CarElevatorInstruction::setParameter(OrderStru o, int device_id)
 {
     m_id = device_id;
     m_order = o;
+    QVector<int> value;
+    value.append(o.z);
     m_z = o.z;
+    m_order.values= value;
+
 }
 
 void CarElevatorInstruction::runInstruction()
 {
 
     //to check car status status 0--->1
-    if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock == false && Myconfig::GetInstance()->m_elevatorMap[m_id].status.isOnline == true)
-    {
+//    if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock == false && Myconfig::GetInstance()->m_elevatorMap[m_id].status.isOnline == true)
+//    {
         Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
         //emit order to interface
         TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
         m_result = 0;
         return ;
-    }
-    else
-        m_result = 99;
+//    }
+//    else
+//        m_result = 99;
 }
 
 int CarElevatorInstruction::getResult(QString exeMsg)

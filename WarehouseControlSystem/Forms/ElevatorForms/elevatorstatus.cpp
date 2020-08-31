@@ -54,6 +54,8 @@ void ElevatorStatusWidget::onMove()
     o.z = m_pOrder_layer->value();
     o.order = Call;
     o.startaddress = 1;
+    o.Datatype = 4;
+    o.childtype = 2;
     AbstructInstruction *e = new CarElevatorInstruction();
     e->setParameter(o,21);
     e->runInstruction();

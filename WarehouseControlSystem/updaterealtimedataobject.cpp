@@ -83,7 +83,7 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
     for(auto it = Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.begin(); \
         it !=Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.end(); ++it  )
     {
-        if(it.value().hwtype == RUNNER && it.value().protype == KModbusTcpClient)
+        if( it.value().protype == KModbusTcpClient)
         {
             OrderStru runnerstru;
             runnerstru.childtype = 5;

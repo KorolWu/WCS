@@ -50,5 +50,14 @@ void ElevatorStatusWidget::initUI()
 
 void ElevatorStatusWidget::onMove()
 {
-
+    OrderStru o;
+    o.z = m_pOrder_layer->value();
+    o.order = Call;
+    o.startaddress = 1;
+    AbstructInstruction *e = new CarElevatorInstruction();
+    e->setParameter(o,21);
+    e->runInstruction();
+    QString resultMsg ="";
+    e->getResult(resultMsg);
+    qDebug()<<resultMsg;
 }

@@ -9,6 +9,7 @@
 #include <ctime>
 #include <time.h>
 #include <sys/time.h>
+#include "../externcommuincation/tcommtransceivermanager.h"
 /**
  * @brief The CarElevatorInstruction class
  *
@@ -29,6 +30,7 @@ public:
     void runInstruction();
 private:
     int m_id;
+    int m_z;
     OrderStru   m_order;
     int     m_result;
 };

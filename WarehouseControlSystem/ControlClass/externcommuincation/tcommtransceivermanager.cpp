@@ -45,7 +45,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             QByteArray frameData;
             int16_t childtype = 0;
             childtype = cmd.childtype;
-            qDebug()<<"wcsindex:"<<wcsindex;
+            // qDebug()<<"wcsindex:"<<wcsindex;
             switch (childtype) {
             case 5: // 请求详细数据类型
             {
@@ -106,6 +106,9 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             }
             break;
         }
+        case HWDEVICETYPE::ELEVATOR_OUT:
+        case HWDEVICETYPE::ELEVATOR_IN:
+        case HWDEVICETYPE::ELEVATOR_CAR://小车电梯
         case HWDEVICETYPE::RUNNER://流道指令调用
         {
             if(m_HWdeviceMap[hwId]->GetHWprotype() == KModbusTcpClient)
@@ -114,6 +117,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                 // if(cmd.order.call_Runner_Putbox)
                 if(cmd.childtype == 5) //请求读数据
                 {
+                    //qDebug()<<"请求读数据" << cmd.Datatype<<cmd.startaddress<<cmd.numberOfEntries;
                     emit  modbusob->signalReadData(cmd.Datatype,cmd.startaddress,cmd.numberOfEntries);
                 }
                 else{ //请求写数据
@@ -421,7 +425,7 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         {
             for(auto it = Data.begin(); it!= Data.end();++it )
             {
-                qDebug()<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
+               // qDebug()<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
             }
             break;
         }

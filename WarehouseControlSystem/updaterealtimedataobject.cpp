@@ -55,6 +55,7 @@ void UpdateRealtimeDataObject::SaveStoreinfotoDatabase()
 void UpdateRealtimeDataObject::RequestTimingupdateHWinfo()
 {
     UpdateCarDataRequest();
+    UpdateRunnerDataRequest();
 }
 ///
 /// \brief UpdateRealtimeDataObject::UpdateCarDataRequest
@@ -88,10 +89,14 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
             runnerstru.childtype = 5;
             runnerstru.Datatype = 4; //寄存器 读写
             runnerstru.startaddress = 0;
-            runnerstru.numberOfEntries = 11;
+            runnerstru.numberOfEntries = 10;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d0-d10
-            runnerstru.startaddress = 9;
-            TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d11-d20
+            runnerstru.startaddress = 11;
+            runnerstru.numberOfEntries = 12;
+            TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d11-d22
+            runnerstru.startaddress = 60;
+            runnerstru.numberOfEntries = 15;
+            TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d60-d74
         }
     }
 }

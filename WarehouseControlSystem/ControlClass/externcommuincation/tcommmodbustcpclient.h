@@ -21,7 +21,6 @@ public:
     int GetHWtype();
     int GetHWprotype();
     void CloseComm();
-    void init_bitMap();
 private:
     bool GetConnect(const QString url_str); //创建连接
     void readReady();//接收到从站发过来的数据

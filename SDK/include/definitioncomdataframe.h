@@ -42,6 +42,7 @@ struct SerialPortstru:public hwcomBasestru{
 };
 struct ModbusTcpClientstru:public hwcomBasestru{
     QString url_str;
+    int serveraddress = 1;
 };
 struct HttpServerStru:public hwcomBasestru{
 

@@ -73,20 +73,19 @@ SOURCES += main.cpp\
     ControlClass/WarehousingIn/generateinputwarehousingorders.cpp \
     ControlClass/WarehousingIn/getouttrajectory.cpp \
     SimulationgenerationtaskUI/testcreateorderspath.cpp \
-<<<<<<< HEAD
-    ControlClass/externcommuincation/hwdeviceabstractinterface.cpp \
-    ControlClass/Instructions/abstructinstruction.cpp \
-    ControlClass/Instructions/carinstruction.cpp \
-    ControlClass/Instructions/carelevatorinstruction.cpp
-=======
     ControlClass/externcommuincation/tcommtcpserver.cpp \
     ControlClass/externcommuincation/tcommtcpclient.cpp \
     ControlClass/externcommuincation/hwcommfactoryob.cpp \
     ControlClass/externcommuincation/tcommtransceivermanager.cpp \
-    ControlClass/externcommuincation/tcommmodbustcpclient.cpp
->>>>>>> 9135c37b744923bea14a7433071da76b003b918b
-
-
+    ControlClass/externcommuincation/tcommmodbustcpclient.cpp\
+    ControlClass/Instructions/abstructinstruction.cpp \
+    ControlClass/Instructions/carinstruction.cpp \
+    ControlClass/Instructions/carelevatorinstruction.cpp \
+<<<<<<< HEAD
+    Forms/ElevatorForms/elevatorstatus.cpp
+=======
+    updaterealtimedataobject.cpp
+>>>>>>> 39dc45843269ad13c3ecceaccadb34119a7000a5
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -138,18 +137,21 @@ HEADERS  += mainwindow.h \
     ControlClass/WarehousingIn/getouttrajectory.h \
     SimulationgenerationtaskUI/testcreateorderspath.h \
     ControlClass/externcommuincation/hwdeviceabstractinterface.h \
-<<<<<<< HEAD
-    ControlClass/externcommuincation/definitioncomdataframe.h \
-    ControlClass/Instructions/abstructinstruction.h \
-    ControlClass/Instructions/carinstruction.h \
-    ControlClass/Instructions/carelevatorinstruction.h
-=======
     ControlClass/externcommuincation/tcommtcpserver.h \
     ControlClass/externcommuincation/tcommtcpclient.h \
     ControlClass/externcommuincation/hwcommfactoryob.h \
     ControlClass/externcommuincation/tcommtransceivermanager.h \
-    ControlClass/externcommuincation/tcommmodbustcpclient.h
->>>>>>> 9135c37b744923bea14a7433071da76b003b918b
+    ControlClass/externcommuincation/tcommmodbustcpclient.h \
+    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
+    ControlClass/externcommuincation/definitioncomdataframe.h \
+    ControlClass/Instructions/abstructinstruction.h \
+    ControlClass/Instructions/carinstruction.h \
+    ControlClass/Instructions/carelevatorinstruction.h \
+<<<<<<< HEAD
+    Forms/ElevatorForms/elevatorstatus.h
+=======
+    updaterealtimedataobject.h
+>>>>>>> 39dc45843269ad13c3ecceaccadb34119a7000a5
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

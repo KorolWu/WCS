@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString sql_open_err;
     CRUDBaseOperation::getInstance()->openDB(sql_open_err);
     if(sql_open_err != "")
-       GetSystemLogObj()->writeLog(sql_open_err,2);
+        GetSystemLogObj()->writeLog(sql_open_err,2);
     getParameterFromDB();
     GetSystemLogObj()->writeLog("WCS initialization ...",0);
     initUI();
@@ -34,32 +34,46 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         session->replyText(QString("Whatever you ask, I'll only respond to hello"));
     } );
-   if(m_pHttpServer->listen( QHostAddress::Any, 23412 ))
-       GetSystemLogObj()->writeLog("HttpServer 启动成功",0);
-   else
-   {
-       GetSystemLogObj()->writeLog("HttpServer 启动失败",3);
-       qDebug()<<"httpserver open fail";
-   }
-   // init devece Client
-   //initDeviceClient();
+    if(m_pHttpServer->listen( QHostAddress::Any, 23412 ))
+        GetSystemLogObj()->writeLog("HttpServer 启动成功",0);
+    else
+    {
+        GetSystemLogObj()->writeLog("HttpServer 启动失败",3);
+        qDebug()<<"httpserver open fail";
+    }
+    // init devece Client
+    //initDeviceClient();
 
-   p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
-   p_mCarList->move(1200,3);
-   p_mCarList->show();
-   m_listIsShow = true;
-   connect(p_mCarList,&CarListForm::minimize,this,&MainWindow::showCarList);
-   p_mDispatchThread = new QThread();
-   DispatchCenter *m_dispatchCenter = new DispatchCenter;
-   m_dispatchCenter->moveToThread(p_mDispatchThread);
-   connect(this,&MainWindow::dispatched,m_dispatchCenter,&DispatchCenter::dispatchTaskThread);
-   p_mDispatchThread->start();
-   emit dispatched();
+    p_mCarList = new CarListForm(desk_rect.width()*0.2,desk_rect.height()*0.8,p_main_widget);
+    p_mCarList->move(1200,3);
+    p_mCarList->show();
+    m_listIsShow = true;
+    connect(p_mCarList,&CarListForm::minimize,this,&MainWindow::showCarList);
+    p_mDispatchThread = new QThread();
+    DispatchCenter *m_dispatchCenter = new DispatchCenter;
+    m_dispatchCenter->moveToThread(p_mDispatchThread);
+    connect(this,&MainWindow::dispatched,m_dispatchCenter,&DispatchCenter::dispatchTaskThread);
+    p_mDispatchThread->start();
+    emit dispatched();
+    m_updatestoretimer = new QTimer(this);
+    connect(m_updatestoretimer,&QTimer::timeout,&m_updateRealData,&UpdateRealtimeDataObject::SaveStoreinfotoDatabase);
+    m_updateComTimer = new QTimer(this);
+    connect(m_updateComTimer,&QTimer::timeout,&m_updateRealData,&UpdateRealtimeDataObject::RequestTimingupdateHWinfo);
+    if(sql_open_err == "")
+    {
+        m_updatestoretimer->start(1000);
+        m_updateComTimer->start(200);
+    }
 }
 
 MainWindow::~MainWindow()
 {
+    m_updatestoretimer->stop();
+    delete m_updatestoretimer;
+    m_updateComTimer->stop();
+    delete m_updateComTimer;
     delete ui;
+
 }
 
 void MainWindow::closeWcs()
@@ -133,15 +147,15 @@ void MainWindow::initUI()
     p_mRunerForm->setParameter(Myconfig::GetInstance()->m_runer);
     p_treeView = new QTreeView(treewidget);
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
-                                                                     "QTreeView::item {height: 40px;border-radius: 2px;"
-                                                                     "border: 1px solid transparent;background: transparent;color: black;}"
-                                                                     "QTreeView::item:has-children {border: none;border-bottom: 1px solid lightgray;}"
-                                                                     "QTreeView::item:hover {border: 1px solid rgb(170, 190, 230);"
-                                                                     "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
-                                                                     "stop: 0.5 rgb(220, 235, 255), stop: 1.0 rgb(210, 230, 255));}"
-                                                                     "QTreeView::item:selected {border: 1px solid rgb(230, 240, 250);"
-                                                                     "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
-                                                                     "stop: 0.5 rgb(220, 235, 255), stop: 1.0 rgb(210, 230, 255));});)");
+                              "QTreeView::item {height: 40px;border-radius: 2px;"
+                              "border: 1px solid transparent;background: transparent;color: black;}"
+                              "QTreeView::item:has-children {border: none;border-bottom: 1px solid lightgray;}"
+                              "QTreeView::item:hover {border: 1px solid rgb(170, 190, 230);"
+                              "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
+                              "stop: 0.5 rgb(220, 235, 255), stop: 1.0 rgb(210, 230, 255));}"
+                              "QTreeView::item:selected {border: 1px solid rgb(230, 240, 250);"
+                              "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,stop: 0 rgb(230, 240, 250),"
+                              "stop: 0.5 rgb(220, 235, 255), stop: 1.0 rgb(210, 230, 255));});)");
     connect(p_treeView,&QTreeView::clicked,this,&MainWindow::onTreeviewClicked);
     p_treeView->setFixedSize(desk_rect.width()/7-5,desk_rect.height()/10*9-5);
     p_treeStandarModel = new QStandardItemModel(p_treeView);
@@ -155,7 +169,7 @@ void MainWindow::initUI()
     p_ordersItem = new QStandardItem("生成任务");
 
     p_standarItem->appendRow(p_userItem);
-     p_standarItem->appendRow(p_ordersItem);
+    p_standarItem->appendRow(p_ordersItem);
     p_treeStandarModel->appendRow(p_standarItem);
     p_standarItem = new QStandardItem("设备管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/devices.png"));
@@ -198,7 +212,7 @@ void MainWindow::initUI()
     user_btn = new QPushButton("用户",this);
     user_btn->setIcon(QIcon(":/resouse/Image/user.png"));
     user_btn->move(desk_rect.width()*0.85,desk_rect.height()/20);
-   connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
+    connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
     exit_btn = new QPushButton("安全退出",this);
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
@@ -212,34 +226,34 @@ void MainWindow::initDeviceClient()
     Myconfig::GetInstance()->m_appointMap.clear();
     for(auto it = Myconfig::GetInstance()->m_CarMap.begin();it != Myconfig::GetInstance()->m_CarMap.end();it++)
     {
-         BaseDevice *b = new BaseDevice(it.value().deviceIp,it.value().port,this);
-         KDeviceSingleton::getInstance()->m_DeviceMap.insert(it.value().deviceIp,b);
-         if(b->init())
-         {
-             GetSystemLogObj()->writeLog(it.value().deviceIp+" connect successful!",0);
-             qDebug()<<it.value().deviceIp+" connect successful!";
-         }
-         else
-         {
-             qDebug()<<it.value().deviceIp+" connect failed!";
-             GetSystemLogObj()->writeLog(it.value().deviceIp+" connect failed!",2);
-         }
-         QQueue<TaskInfoStru>q;
-         q.clear();
-         Myconfig::GetInstance()->m_appointMap.insert(it.value().carId,q);
+        BaseDevice *b = new BaseDevice(it.value().deviceIp,it.value().port,this);
+        KDeviceSingleton::getInstance()->m_DeviceMap.insert(it.value().deviceIp,b);
+        if(b->init())
+        {
+            GetSystemLogObj()->writeLog(it.value().deviceIp+" connect successful!",0);
+            qDebug()<<it.value().deviceIp+" connect successful!";
+        }
+        else
+        {
+            qDebug()<<it.value().deviceIp+" connect failed!";
+            GetSystemLogObj()->writeLog(it.value().deviceIp+" connect failed!",2);
+        }
+        QQueue<TaskInfoStru>q;
+        q.clear();
+        Myconfig::GetInstance()->m_appointMap.insert(it.value().carId,q);
 
     }
 }
 
 void MainWindow::deleteChildrenList()
 {
-//    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
-//    if(list.size() == 0)
-//        return;
-//    foreach (BaseFrom* w, list) {
-//        w->hide();
-//        w->deleteLater();
-//    }
+    //    QList<BaseFrom *> list = p_main_widget->findChildren<BaseFrom*>();
+    //    if(list.size() == 0)
+    //        return;
+    //    foreach (BaseFrom* w, list) {
+    //        w->hide();
+    //        w->deleteLater();
+    //    }
     t->hide();
     m_pLog->hide();
     car_from->hide();

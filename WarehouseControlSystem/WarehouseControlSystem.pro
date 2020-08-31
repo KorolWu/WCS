@@ -81,7 +81,8 @@ SOURCES += main.cpp\
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
     ControlClass/Instructions/carelevatorinstruction.cpp \
-    Forms/ElevatorForms/elevatorstatus.cpp
+    Forms/ElevatorForms/elevatorstatus.cpp \
+    updaterealtimedataobject.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -143,7 +144,8 @@ HEADERS  += mainwindow.h \
     ControlClass/Instructions/abstructinstruction.h \
     ControlClass/Instructions/carinstruction.h \
     ControlClass/Instructions/carelevatorinstruction.h \
-    Forms/ElevatorForms/elevatorstatus.h
+    Forms/ElevatorForms/elevatorstatus.h \
+    updaterealtimedataobject.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

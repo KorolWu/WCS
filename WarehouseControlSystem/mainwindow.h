@@ -38,6 +38,7 @@
 #include "MointorUI/monitorui.h"
 #include"SimulationgenerationtaskUI/testcreateorderspath.h"
 #include <QMessageBox>
+#include "updaterealtimedataobject.h"
 
 namespace Ui {
 class MainWindow;
@@ -102,6 +103,9 @@ private:
     MonitorUI *m_pmonitorui;
     //test
     TestcreateOrdersPath *m_testorders;
+    UpdateRealtimeDataObject m_updateRealData;
+    QTimer *m_updatestoretimer;
+    QTimer *m_updateComTimer;
 signals:
     void httpRedReady(QString str);
     void dispatched();

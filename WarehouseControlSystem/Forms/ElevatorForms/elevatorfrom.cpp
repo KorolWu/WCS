@@ -38,15 +38,15 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->verticalHeader()->hide();
     p_table_view->resize(width,height);
     int row_count = Myconfig::GetInstance()->m_elevatorMap.size();
-    model = new QStandardItemModel(row_count,11);
+    model = new QStandardItemModel(row_count,8);
     p_table_view->setModel(model);
 
     p_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     p_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegate *delegate = new LabelDelegate();
-    p_table_view->setItemDelegateForColumn(8,delegate);
+    p_table_view->setItemDelegateForColumn(7,delegate);
     QStringList header;
-    header<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"当前层"<<"目标层"<<"状态"<<"编辑"<<"操作按钮";
+    header<<"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"状态"<<"编辑"<<"操作按钮";//<<"当前层"<<"目标层"
     for(int i = 0 ;i <header.size();i++)
     {
         model->setHeaderData(i, Qt::Horizontal, header.at(i));
@@ -96,7 +96,7 @@ void ElevatorFrom::setTableViewValue()
             if(j == 111)
                 model->setItem(i,j,new QStandardItem(QString("%1").arg(i)));
             else if(j == 0)
-                model->setItem(i,j,new QStandardItem(it.value().elevatorNum));
+                model->setItem(i,j,new QStandardItem(QString("%1").arg(it.value().elevatorId)));
             else if(j == 1)
                 model->setItem(i,j,new QStandardItem(it.value().elevatorType));
             else if(j == 2)
@@ -107,8 +107,8 @@ void ElevatorFrom::setTableViewValue()
                 model->setItem(i,j,new QStandardItem(it.value().elevatorNearPos));
             else if(j == 5)
                 model->setItem(i,j,new QStandardItem(it.value().elevatorPos));
-            else if(j == 8)
-                model->setItem(i,j,new QStandardItem("在线"));
+//            else if(j == 8)
+//                model->setItem(i,j,new QStandardItem("在线"));
             it ++;
         }
     }
@@ -128,7 +128,14 @@ void ElevatorFrom::onAddClicked()
 
 void ElevatorFrom::onOperationClicked()
 {
-
+     QPushButton *btn =(QPushButton*)sender();
+    int row_index = QString(btn->objectName().split("_")[1]).toInt();
+    QModelIndex index = model->index(row_index,0);//选中行第一列的内容
+    QVariant data = model->data(index);
+    int elevator_id = data.toInt();
+    ElevatorStatusWidget *s = new ElevatorStatusWidget(elevator_id);
+    s->show();
+    qDebug()<< elevator_id;
 
 }
 
@@ -190,24 +197,24 @@ void ElevatorFrom::addControlForTableView()
     //table row count is up to elevator count
     for (int j = 0; j < row_count; j++)
     {
-        QSpinBox *spinBox = new QSpinBox();
-        spinBox->setMinimum(0);
-        spinBox->setMaximum(12);
-        spinBox->setValue(0);
-        p_table_view->setIndexWidget(model->index(j,7), spinBox);
+//        QSpinBox *spinBox = new QSpinBox();
+//        spinBox->setMinimum(0);
+//        spinBox->setMaximum(12);
+//        spinBox->setValue(0);
+//        p_table_view->setIndexWidget(model->index(j,4), spinBox);
         p_operation_btn = new QPushButton();
         p_operation_btn->setText("移动");
         p_operation_btn->setFont(QFont("宋体",11));
         p_operation_btn->setIcon(QIcon(":/resouse/Image/up_down_move.png"));
         p_operation_btn->setObjectName(QString("move_%1").arg(j));
         connect(p_operation_btn,&QPushButton::clicked,this,&ElevatorFrom::onOperationClicked);
-        p_table_view->setIndexWidget(model->index(j,10), p_operation_btn);
+        p_table_view->setIndexWidget(model->index(j,6), p_operation_btn);
         p_edit_btn = new QPushButton();
         p_edit_btn->setFont(QFont("宋体",11));
         p_edit_btn->setIcon(QIcon(":/resouse/Image/Edit.png"));
         p_edit_btn->setText("修改");
         p_edit_btn->setObjectName(QString("edit_%1").arg(j));
         connect(p_edit_btn,&QPushButton::clicked,this,&ElevatorFrom::onEditClicked);
-        p_table_view->setIndexWidget(model->index(j,9),p_edit_btn);
+        p_table_view->setIndexWidget(model->index(j,7),p_edit_btn);
     }
 }

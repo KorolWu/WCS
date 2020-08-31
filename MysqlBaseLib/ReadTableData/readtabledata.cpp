@@ -31,7 +31,7 @@ void ReadTableData::readt_elevator()
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     while (query.next()) {
         ElevatorInfoStru elevator_stru;
-        elevator_stru.elevatorNum = query.value(1).toString();
+        elevator_stru.elevatorId = query.value(1).toInt();
         elevator_stru.elevatorType = query.value(2).toString();
         elevator_stru.elevatorIp = query.value(3).toString();
         elevator_stru.elevatorPort = query.value(4).toInt();
@@ -43,7 +43,7 @@ void ReadTableData::readt_elevator()
         elevator_stru.elevator_x = query.value(10).toDouble();
         elevator_stru.elevator_y = query.value(11).toDouble();
         elevator_stru.elevatorPos = QString("%1,%2").arg(elevator_stru.elevator_x).arg(elevator_stru.elevator_y);
-        //Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorNum,elevator_stru);
+        Myconfig::GetInstance()->m_elevatorMap.insert(elevator_stru.elevatorId,elevator_stru);
     }
 }
 
@@ -195,7 +195,7 @@ bool ReadTableData::WriteUpdateInfoDataBase(QMap<QString, StorePosInfoStru> stor
         values.append(list);
     }
     QString idname = "idNbr";
-    QVector<QVariantList> valueVec = values.toVector() ;
+    QVector<QVariantList> valueVec = values.toVector();
     QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
     if(CRUDBaseOperation::getInstance()->ExcBatchUpdateDB(tablename,names,valueVec,idname,keyvalue,errorinfo))
     {

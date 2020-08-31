@@ -184,10 +184,12 @@ typedef struct _ElevatorStatus
     //是否可以呼叫
     bool usable;
     bool hasCar;
+    bool isOnline;
 }ElevatorStatus;
 typedef struct _ElevatorInfoStru
 {
     //"编号"<<"类型"<<"通讯地址"<<"端口"<<"靠近点位置"<<"位置"<<"remarks"
+    int elevatorId;
     ElevatorStatus status;
     QString elevatorNum;
     QString elevatorType;

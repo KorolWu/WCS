@@ -16,6 +16,7 @@
 #include "Myconfig.h"
 #include "datastructure.h"
 #include "MysqlDataBase/crudbaseoperation.h"
+#include "Forms/ElevatorForms/elevatorstatus.h"
 /**
  *
  * @author korol

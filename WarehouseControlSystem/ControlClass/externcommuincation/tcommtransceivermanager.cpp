@@ -45,7 +45,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             QByteArray frameData;
             int16_t childtype = 0;
             childtype = cmd.childtype;
-            qDebug()<<"wcsindex:"<<wcsindex;
+            // qDebug()<<"wcsindex:"<<wcsindex;
             switch (childtype) {
             case 5: // 请求详细数据类型
             {
@@ -93,7 +93,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                 simplestru.carnbr = hwId;
                 simplestru.cmdnbr = wcsindex;
                 simplestru.cmdname = cmd.value; // 请求指令数据 5 或者 6
-                 frameData.append(reinterpret_cast<char*>(&simplestru),sizeof(SendCarCmdReqestFrame));
+                frameData.append(reinterpret_cast<char*>(&simplestru),sizeof(SendCarCmdReqestFrame));
                 break;
             }
             default:
@@ -103,6 +103,26 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             if(frameData.size() > 0 && protype == KTcpClient)
             {
                 emit m_HWdeviceMap[hwId]->signalSendHWdeviceData(frameData);//发送报文
+            }
+            break;
+        }
+        case HWDEVICETYPE::ELEVATOR_OUT:
+        case HWDEVICETYPE::ELEVATOR_IN:
+        case HWDEVICETYPE::ELEVATOR_CAR://小车电梯
+        case HWDEVICETYPE::RUNNER://流道指令调用
+        {
+            if(m_HWdeviceMap[hwId]->GetHWprotype() == KModbusTcpClient)
+            {
+                TCommModbusTcpClient *modbusob = dynamic_cast<TCommModbusTcpClient *>(m_HWdeviceMap[hwId]);
+                // if(cmd.order.call_Runner_Putbox)
+                if(cmd.childtype == 5) //请求读数据
+                {
+                    //qDebug()<<"请求读数据" << cmd.Datatype<<cmd.startaddress<<cmd.numberOfEntries;
+                    emit  modbusob->signalReadData(cmd.Datatype,cmd.startaddress,cmd.numberOfEntries);
+                }
+                else{ //请求写数据
+                    emit  modbusob->signaWrite(cmd.Datatype,cmd.startaddress,cmd.values);
+                }
             }
             break;
         }
@@ -245,7 +265,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                     }
                     else if(tempData[4] == 'S' && tempData[5] == 'D'&&(tempData.size() >= 74))//详细报文数据
                     {
-                       // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                        // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
                             //解析详细数据内容
                             ReceCarDetailFrame detailstru;//详细数据报文
@@ -261,14 +281,14 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         //简易数据报文
                         ReceCarcmdsimFrame simstru;
                         memcpy((char*)&simstru,tempData.data(),10);
-                       // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                        // if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
                             UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
                             UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
                         }
-                       // else
+                        // else
                         {
-                           // if(nbr == 1000)
+                            // if(nbr == 1000)
                             {
                                 //不是回应指令动作
                                 qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
@@ -280,7 +300,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                     }
                     else
                     {
-                       // if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
+                        // if(ModifyCarReceFrameIndex(ID,nbr)) //回应发出去编号内容
                         {
                             ReceCarcmdActionFrame actionstru;//动作指令报文
                             memcpy((char*)&actionstru,tempData.data(),10);
@@ -363,8 +383,8 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     //根据各个对象进行包解析 更新数据内容
     QByteArray  tempData;
     tempData.append(data);
-   // memcpy(tempData.data(),data.data(),data.size());//临时字节
-  //  qDebug()<<"temdata"<<tempData.toHex() << data.toHex();
+    // memcpy(tempData.data(),data.data(),data.size());//临时字节
+    //  qDebug()<<"temdata"<<tempData.toHex() << data.toHex();
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
@@ -372,6 +392,51 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
         AnalysisCarFrame(tempData,ID);
         break;
     }
+    default:
+        break;
+    }
+}
+///
+/// \brief TCommtransceivermanager::ReceModbusDataFromHWob
+/// \param ID 硬件唯一编号
+/// \param hwtype 流道 电梯 等硬件
+/// \param datatype
+/// \param Data
+///modbus 协议接收的内容
+void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int datatype, QMap<int, int> Data)
+{
+    if(!m_HWdeviceMap.contains(ID))
+        return ;
+    switch (hwtype) {
+    case HWDEVICETYPE::RUNNER: //流道
+    {
+        switch (datatype) {
+        case 1: //DiscreteInputs
+        {
+            break;
+        }
+        case 2://Coils
+
+            break;
+        case 3://InputRegisters
+
+            break;
+        case 4://HoldingRegisters
+        {
+            for(auto it = Data.begin(); it!= Data.end();++it )
+            {
+               // qDebug()<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
+            }
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    case HWDEVICETYPE::ELEVATOR_CAR:
+
+        break;
     default:
         break;
     }
@@ -400,8 +465,14 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWprotype() == KTcpClient)
         {
-           Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
+            Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
         }
+        break;
+    }
+    case HWDEVICETYPE::RUNNER:
+    {
+
+
         break;
     }
     default:

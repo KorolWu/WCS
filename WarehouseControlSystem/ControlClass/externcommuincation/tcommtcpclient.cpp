@@ -57,19 +57,19 @@ bool TCommTCPclient::creadTcpClient()
             [=]()
     {
         m_connectStatus = true;
-         qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
+        qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
 
     } );
     connect(socket,&QTcpSocket::readyRead,
             [=]()
     {
         QByteArray array=socket->readAll();
-         qDebug()<<"ip "<< m_config.name << m_config.port << array.toHex() << sizeof(array) ;
+        qDebug()<<"ip "<< m_config.name << m_config.port << array.toHex() << sizeof(array) ;
         emit signalReadHWdeviceData(m_config.ID,m_config.hwtype,array);
     });
     bool connect =  connectServer(m_ip,m_port);
 
-     emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
+    emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
     return connect;
 }
 
@@ -100,6 +100,8 @@ bool TCommTCPclient::reConnection()
 
 int TCommTCPclient::write(QByteArray array)
 {
+    if(!m_connectStatus)//连接成功发出成功状态
+        return 1;
     if(socket == nullptr)
         return 1;
     return socket->write(array);

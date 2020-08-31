@@ -364,6 +364,7 @@ void ReadTableData::Readt_hwcomm_infotable()
             stru.childtype = childtype;
             stru.unused = unused;
             stru.url_str = name;
+            stru.serveraddress =  query.value("port").toInt();;
             Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.insert(Id,stru);
             break;
         }

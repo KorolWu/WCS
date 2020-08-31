@@ -22,6 +22,7 @@ signals:
      void signalReadHWdeviceData(int ID,int hwtype,QByteArray dataValue);
      void signalSendHWdeviceData(QByteArray  sendData);
      void signalHWDisconnect(int ID,int hwtype,bool state);
+     void signalReceModbusHWdeviceData(int ID,int hwtype,int datatype,QMap<int,int> Data);
 
 };
 

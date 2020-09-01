@@ -185,6 +185,7 @@ typedef struct _LogInfoStru
 typedef struct _ElevatorStatus
 {
     int curruntLayer;
+    int curachelayer;
     bool isLock;
     //是否可以呼叫
     bool usable;

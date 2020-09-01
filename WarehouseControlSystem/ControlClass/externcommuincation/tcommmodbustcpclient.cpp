@@ -62,11 +62,13 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
         if (!modbusDevice->connectDevice()) {
             qDebug()<<(tr("Connect failed: ") + modbusDevice->errorString(), 5000) << m_configstru.ID ;
             emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,false);
+            //m_connectstate = 0;
             return false;
         } else {
             qDebug()<<(tr("Connect successful"))<<m_configstru.ID <<m_configstru.url_str<<m_configstru.serveraddress;
             //emit connect_success_signal();
             emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,true);
+            m_connectstate = 1;
             return true;
         }
     }
@@ -77,6 +79,7 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
 ///
 /// \brief TCommModbusTcpClient::readReady
 ///请求之后接收到的数据的
+bool state = true;
 void TCommModbusTcpClient::readReady()
 {
     auto reply = qobject_cast<QModbusReply *>(sender());
@@ -85,13 +88,13 @@ void TCommModbusTcpClient::readReady()
     if (reply->error() == QModbusDevice::NoError)
     {
         const QModbusDataUnit unit = reply->result();
-       // qDebug()<<"收到数据类型结果"<<  unit.registerType();
+        // qDebug()<<"收到数据类型结果"<<  unit.registerType();
         QMap<int,int> address_value_map;
         for (uint i = 0; i < unit.valueCount(); i++)
         {
             const QString entry = tr("Address: %1, Value: %2").arg(unit.startAddress() + i).arg(QString::number(unit.value(i),
                                                                                                                 unit.registerType() <= QModbusDataUnit::Coils ? 10 : 16));
-           // qDebug()<<"datatype:"<<unit.registerType()<< entry;
+            // qDebug()<<"datatype:"<<unit.registerType()<< entry;
             if(!address_value_map.contains(unit.startAddress()))
             {
                 address_value_map.insert(unit.startAddress()+i,unit.value(i));
@@ -100,16 +103,27 @@ void TCommModbusTcpClient::readReady()
                 address_value_map[unit.startAddress()+i] = unit.value(i);
             emit signalReceModbusHWdeviceData(m_configstru.ID,m_configstru.hwtype,unit.registerType(),address_value_map);
         }
-        qDebug()<<"type:"<<unit.registerType()<<"values:"<<unit.values();
+     //   qDebug()<<"type:"<<unit.registerType()<<"values:"<<unit.values();
+        state = true;
     }
     else if (reply->error() == QModbusDevice::ProtocolError)
     {
-        qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
-                   arg(reply->rawResult().exceptionCode(), -1, 16));
+        if(state)
+        {
+            qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
+                       arg(reply->rawResult().exceptionCode(), -1, 16));
+            state = false;
+            m_connectstate = -1;
+        }
     } else
     {
-        qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
+        if(state)
+      {
+            qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
                    arg(reply->error(), -1, 16));
+          state = false;
+          m_connectstate = -2;
+        }
     }
     reply->deleteLater();
 }
@@ -117,9 +131,15 @@ void TCommModbusTcpClient::readReady()
 
 void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVector<int> values)
 {
+
     int numberOfEntries = values.size();
     if (!modbusDevice)
         return;
+    if(modbusDevice->state()!=QModbusDevice::ConnectedState)
+    {
+        qDebug()<<"未连接状态，请检查"<<modbusDevice->ConnectedState << m_configstru.ID;
+        return;
+    }
     QModbusDataUnit writeUnit = writeRequest(type,startAddress,numberOfEntries);
     QModbusDataUnit::RegisterType table = writeUnit.registerType();
     for (uint i = 0; i < writeUnit.valueCount(); i++) {
@@ -134,6 +154,7 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
                 if (reply->error() == QModbusDevice::ProtocolError) {
                     qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
                                 .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                    m_connectstate = -3;
                     //5000);
                 } else if (reply->error() != QModbusDevice::NoError) {
                     //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
@@ -158,7 +179,7 @@ void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberO
         return;
     if(modbusDevice->state()!=QModbusDevice::ConnectedState)
     {
-       // qDebug()<<"未连接状态，请检查"<<modbusDevice->ConnectedState;
+        qDebug()<<"未连接状态，请检查"<<modbusDevice->ConnectedState << m_configstru.ID;
         return;
     }
     if (auto *reply = modbusDevice->sendReadRequest(readRequest(type,startAddress,numberOfEntries), m_configstru.serveraddress))
@@ -168,6 +189,7 @@ void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberO
         else
             delete reply; // broadcast replies return immediately
     } else {
+        m_connectstate =-4;
         qDebug()<< tr("Read error: ") + (modbusDevice->errorString(), 5000) << m_configstru.ID<<m_configstru.url_str;
     }
 }

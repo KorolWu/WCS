@@ -50,7 +50,7 @@ bool TCommTCPclient::creadTcpClient()
 {
     this->m_ip = m_config.name;
     this->m_port = m_config.port;
-    qDebug()<<"ip "<< m_config.name << m_config.port;
+   // qDebug()<<"ip "<< m_config.name << m_config.port;
     socket = new QTcpSocket(this);
     connect(socket,&QTcpSocket::disconnected,this,&TCommTCPclient::onDisconnected);
     connect(socket,&QTcpSocket::connected,
@@ -58,6 +58,7 @@ bool TCommTCPclient::creadTcpClient()
     {
         m_connectStatus = true;
         qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
+        m_connectstate = 1;
 
     } );
     connect(socket,&QTcpSocket::readyRead,
@@ -94,6 +95,10 @@ bool TCommTCPclient::reConnection()
     if(m_connectStatus)//连接成功发出成功状态
     {
         emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);
+         m_connectstate  = 1;
+    }
+    else{
+          m_connectstate  = 0;
     }
     return m_connectStatus;
 }
@@ -109,6 +114,7 @@ int TCommTCPclient::write(QByteArray array)
 
 void TCommTCPclient::onDisconnected()
 {
+    m_connectstate = 0;
     m_connectStatus = false;
     emit clientDisconnect(m_config.ID,m_config.hwtype);
     emit signalHWDisconnect(m_config.ID,m_config.hwtype,m_connectStatus);

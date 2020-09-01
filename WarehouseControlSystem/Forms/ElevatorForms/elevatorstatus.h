@@ -9,6 +9,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSpinBox>
+#include "../../ControlClass/Instructions/abstructinstruction.h"
+#include "../../ControlClass/Instructions/carelevatorinstruction.h"
 
 class ElevatorStatusWidget : public QWidget
 {

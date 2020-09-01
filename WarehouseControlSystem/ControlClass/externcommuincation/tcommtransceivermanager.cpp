@@ -223,7 +223,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
             }
         }
         m_Wcstocarframeindex[hwId] = list;
-        index = endvalue;
+        index = endvalue;        
     }
     return index;
 }

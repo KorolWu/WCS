@@ -9,10 +9,38 @@ void CarElevatorInstruction::setParameter(OrderStru o, int device_id)
 {
     m_id = device_id;
     m_order = o;
+    QVector<int> value;
+    value.append(o.z);
+    m_z = o.z;
+    m_order.values= value;
+
 }
 
 void CarElevatorInstruction::runInstruction()
 {
+
+    //to check car status status 0--->1
+//    if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock == false && Myconfig::GetInstance()->m_elevatorMap[m_id].status.isOnline == true)
+//    {
+        Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
+        //emit order to interface
+        TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
+        m_result = 0;
+        return ;
+//    }
+//    else
+//        m_result = 99;
+}
+
+int CarElevatorInstruction::getResult(QString exeMsg)
+{
+
+    if(m_result != 0)
+    {
+        exeMsg = " exec faild";
+        Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
+        return m_result;
+    }
     struct timeval tpStart,tpEnd;
     float timeUse = 0;
     gettimeofday(&tpStart,NULL);
@@ -21,15 +49,12 @@ void CarElevatorInstruction::runInstruction()
         if(isTerminate)
         {
             m_result = -99;
-            return ;
+            break ;
         }
-        //to check car status status 0--->1
-        if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock == false)
+        if(Myconfig::GetInstance()->m_elevatorMap[m_id].status.curruntLayer == m_z)
         {
-            Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
-            //emit order to interface
             m_result = 0;
-            return;
+            break;
         }
 
         gettimeofday(&tpEnd,NULL);
@@ -39,10 +64,7 @@ void CarElevatorInstruction::runInstruction()
         QThread::msleep(5);
         QApplication::processEvents();
     }
-}
 
-int CarElevatorInstruction::getResult(QString exeMsg)
-{
     if(m_result == -99)
     {
         exeMsg = QString("%1  Terminate!").arg(m_order.type);
@@ -51,6 +73,7 @@ int CarElevatorInstruction::getResult(QString exeMsg)
     {
         exeMsg = " exec instruction Timeout!";
     }
+    Myconfig::GetInstance()->m_elevatorMap[m_id].status.isLock = true;
     return m_result;
 }
 

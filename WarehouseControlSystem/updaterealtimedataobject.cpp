@@ -85,7 +85,7 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
     for(auto it = Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.begin(); \
         it !=Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap.end(); ++it  )
     {
-        if( it.value().protype == KModbusTcpClient)
+        if( it.value().protype == KModbusTcpClient&& it.value().hwtype == RUNNER)
         {
             OrderStru runnerstru;
             runnerstru.childtype = 5;
@@ -110,7 +110,7 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
             carelestru.startaddress = 0;
             carelestru.numberOfEntries = 3;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(carelestru,it.key());//d50-d52
-            carelestru.startaddress = 7;
+            carelestru.startaddress = 6;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(carelestru,it.key());//d100-d102
         }
     }

@@ -64,5 +64,6 @@ public:
     HWComallconfigStru m_hwcommstru;
     //run mode =0 is autoMode
     int m_run_mode = 1;
+
 };
 #endif

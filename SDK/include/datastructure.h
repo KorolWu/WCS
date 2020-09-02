@@ -219,6 +219,13 @@ typedef struct _ElevatorInfoStru
         remarks = "";
     }
 }ElevatorInfoStru;
+//新增流道信息结构体 2020 09 02
+typedef struct _RunnerInfoStru
+{
+    QMap<int,int> holdresMap; //地址 后面地址对应的值 输出寄存器
+    QMap<int,int> coilMap; //地址 后面地址对应的值 bit 物理线圈
+    int connectresult = 0;
+}RunnerInfoStru;
 
 //由WCS发过来的任务数据
 typedef struct _TaskInfoStru : public KBaseStruct
@@ -275,6 +282,7 @@ typedef struct _RunerStru
     QString response_in = "";
     QString request_out = "";
     QString response_out = "";
+    RunnerInfoStru runneratastru;
     _RunerStru& operator = (const _RunerStru &other)
     {
         deviceNum = other.deviceNum;

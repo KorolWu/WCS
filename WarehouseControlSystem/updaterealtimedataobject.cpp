@@ -32,10 +32,9 @@ void UpdateRealtimeDataObject::SaveStoreinfotoDatabase()
         QString msg;
         if(!m_databaseopob.WriteUpdateInfoDataBase(updatemap,keyvalue,msg,false))
         {
-            qDebug()<<"货架信息数据写入失败"<<msg;
+            qDebug()<<"货架信息数据写入失败:"<<msg;
         }
         else{ //更新成功
-            //把状态更新的数据进行复位
             QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
             for(int i = 0; i < keyvalue.size(); ++i)
             {
@@ -62,6 +61,7 @@ void UpdateRealtimeDataObject::RequestTimingupdateHWinfo()
 ///小车数据请求方式
 void UpdateRealtimeDataObject::UpdateCarDataRequest()
 {
+      QMutexLocker locker(&Myconfig::GetInstance()->m_rmutex);
     for(auto it = Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.begin(); it !=Myconfig::GetInstance()->m_hwcommstru.hwTcpMap.end(); ++it  )
     {
         OrderStru carstru;
@@ -69,6 +69,8 @@ void UpdateRealtimeDataObject::UpdateCarDataRequest()
         carstru.value = 5;//请求的数据指令，为详细类型
         if(it.value().hwtype == RGVCAR && it.value().protype == KTcpClient)
         {
+            if(!Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isOnline)
+                continue;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(carstru,it.key());
             carstru.value = 6;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(carstru,it.key());
@@ -97,6 +99,19 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
             runnerstru.startaddress = 60;
             runnerstru.numberOfEntries = 15;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d60-d74
+        }
+        if(it.value().hwtype == ELEVATOR_CAR && it.value().protype == KModbusTcpClient)
+        {
+            if(!Myconfig::GetInstance()->m_elevatorMap[it.key()].status.isOnline)
+                continue;
+            OrderStru carelestru;
+            carelestru.childtype = 5;
+            carelestru.Datatype = 4; //寄存器 读写
+            carelestru.startaddress = 0;
+            carelestru.numberOfEntries = 3;
+            TCommtransceivermanager::GetInstance()->SendcommandByExtern(carelestru,it.key());//d50-d52
+            carelestru.startaddress = 7;
+            TCommtransceivermanager::GetInstance()->SendcommandByExtern(carelestru,it.key());//d100-d102
         }
     }
 }

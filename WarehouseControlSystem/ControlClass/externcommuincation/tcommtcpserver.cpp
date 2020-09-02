@@ -73,6 +73,7 @@ bool TCommTCPserver::creatTcpserver()
         int port = socket->peerPort();
         QString ip=socket->peerAddress().toString();
         QString str = QString("[%1 %2]Connet Successful").arg(port).arg(ip);
+          m_connectstate  = 1;
         qDebug()<<str;
         connect(socket,&QTcpSocket::readyRead,
                 [=]()

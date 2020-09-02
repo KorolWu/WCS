@@ -32,10 +32,16 @@ void TCommtransceivermanager::InitHWcommob()
 ///外部传入参数进行处理 小车 流道 电梯指令 等
 void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
 {
+
     QMutexLocker locker(&m_TCommMutex);
     //先解析小车部分数据 发送帧格式内容
     if(m_HWdeviceMap.contains(hwId))
     {
+        if(m_HWdeviceMap[hwId]->m_connectstate <= 0)
+        {
+            qDebug()<<"通讯异常:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
+            return;
+        }
         int hwtype = m_HWdeviceMap[hwId]->GetHWtype();
         int protype = m_HWdeviceMap[hwId]->GetHWprotype();
         switch (hwtype) {
@@ -186,12 +192,14 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
     }
     else{
         QList<int16_t> list = m_Wcstocarframeindex[hwId];
-        std::sort(list.begin(), list.end());
+        // std::sort(list.begin(), list.end());
         int16_t endvalue = list[list.size()-1];
         endvalue++;
         if(endvalue > 32000)//不能超过65535
         {
             endvalue = 0;
+            list.removeAt(0);// 自行删除 最前面的一条数据
+            qDebug()<<"endvalue :>32000以上了...";
         }
         if(endvalue == 1000) //特殊索引号不要使用
         {
@@ -205,8 +213,9 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
         {
             list.append(endvalue);
         }
-        else{
-            qDebug()<<"找不到对应的值了";
+        else
+        {
+            qDebug()<<"请求数据发送的数量已经达到32000条以上了";
             endvalue = -999;
             if(!list.contains(endvalue))
             {
@@ -321,6 +330,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
 ///
 void TCommtransceivermanager::UpdateCarStatus(int carID, int role, int value)
 {
+    QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
     if(Myconfig::GetInstance()->m_CarMap.contains(carID))
     {
         switch (role) {
@@ -405,6 +415,8 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
 ///modbus 协议接收的内容
 void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int datatype, QMap<int, int> Data)
 {
+    QMutexLocker locker(&m_TCommMutex);
+    QMutexLocker lockermyconfig(&Myconfig::GetInstance()->m_mutex);
     if(!m_HWdeviceMap.contains(ID))
         return ;
     switch (hwtype) {
@@ -416,7 +428,6 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
             break;
         }
         case 2://Coils
-
             break;
         case 3://InputRegisters
 
@@ -425,7 +436,7 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         {
             for(auto it = Data.begin(); it!= Data.end();++it )
             {
-               // qDebug()<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
+                qDebug()<<"runner:recedata"<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
             }
             break;
         }
@@ -434,9 +445,31 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         }
         break;
     }
-    case HWDEVICETYPE::ELEVATOR_CAR:
+    case HWDEVICETYPE::ELEVATOR_CAR: // 小车电梯的值
+    {   for(auto it = Data.begin(); it!= Data.end();++it )
+        {
+            if(Myconfig::GetInstance()->m_elevatorMap.contains(ID))
+            {
+                if(it.key() == 100) //读取楼层
+                {
 
+                    if(Myconfig::GetInstance()->m_elevatorMap[ID].status.curruntLayer != it.value())
+                    {
+                        Myconfig::GetInstance()->m_elevatorMap[ID].status.curruntLayer = it.value();
+                    }
+                }
+                else if(it.key() ==102 )//读取缓存
+                {
+                    if(Myconfig::GetInstance()->m_elevatorMap[ID].status.curachelayer != it.value())
+                    {
+                        Myconfig::GetInstance()->m_elevatorMap[ID].status.curachelayer = it.value();
+                    }
+                }
+                //qDebug()<<"ELEVATOR_CAR:recedata"<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
+            }
+        }
         break;
+    }
     default:
         break;
     }
@@ -465,14 +498,27 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
         TCommTCPclient *tob = dynamic_cast<TCommTCPclient *>(m_HWdeviceMap[ID]);
         if(tob->GetHWprotype() == KTcpClient)
         {
-            Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
+            if(Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline != state)
+            {
+                Myconfig::GetInstance()->m_CarMap[ID].deveceStatus.isOnline = state;
+            }
         }
         break;
     }
     case HWDEVICETYPE::RUNNER:
     {
-
-
+        break;
+    }
+    case HWDEVICETYPE::ELEVATOR_CAR:
+    {
+        //小车电梯的连接状态
+        if(m_HWdeviceMap.contains(ID)&& Myconfig::GetInstance()->m_elevatorMap.contains(ID))
+        {
+            if(Myconfig::GetInstance()->m_elevatorMap[ID].status.isOnline != state)
+            {
+                Myconfig::GetInstance()->m_elevatorMap[ID].status.isOnline = state;
+            }
+        }
         break;
     }
     default:

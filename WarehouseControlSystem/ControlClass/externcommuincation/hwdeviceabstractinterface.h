@@ -18,6 +18,7 @@ public:
     virtual int GetHWtype(){return 0;}
     virtual int GetHWprotype(){ return 0 ;}
     virtual void CloseComm() = 0;
+    int m_connectstate = 0;
 signals:
      void signalReadHWdeviceData(int ID,int hwtype,QByteArray dataValue);
      void signalSendHWdeviceData(QByteArray  sendData);

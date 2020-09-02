@@ -127,6 +127,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                     emit  modbusob->signalReadData(cmd.Datatype,cmd.startaddress,cmd.numberOfEntries);
                 }
                 else{ //请求写数据
+                    qDebug()<<"请求write数据" << cmd.Datatype<<cmd.startaddress<<cmd.values;
                     emit  modbusob->signaWrite(cmd.Datatype,cmd.startaddress,cmd.values);
                 }
             }
@@ -223,7 +224,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
             }
         }
         m_Wcstocarframeindex[hwId] = list;
-        index = endvalue;        
+        index = endvalue;
     }
     return index;
 }
@@ -436,6 +437,13 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         {
             for(auto it = Data.begin(); it!= Data.end();++it )
             {
+                if(Myconfig::GetInstance()->m_runer.runneratastru.holdresMap.contains(it.key()))
+                {
+                    Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[it.key()] = it.value();
+                }
+                else{
+                    Myconfig::GetInstance()->m_runer.runneratastru.holdresMap.insert(it.key(),it.value());
+                }
                 qDebug()<<"runner:recedata"<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
             }
             break;
@@ -507,6 +515,18 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
     }
     case HWDEVICETYPE::RUNNER:
     {
+        if(m_HWdeviceMap.contains(ID))
+        {
+            int iresult = 0;
+            if(state)
+            {
+                iresult = 1;
+            }
+            if(Myconfig::GetInstance()->m_runer.runneratastru.connectresult != iresult)
+            {
+                Myconfig::GetInstance()->m_runer.runneratastru.connectresult = iresult;
+            }
+        }
         break;
     }
     case HWDEVICETYPE::ELEVATOR_CAR:

@@ -9,6 +9,9 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QSpinBox>
+#include <QRadioButton>
+#include <QTimer>
+#include <Myconfig.h>
 #include "../../ControlClass/Instructions/abstructinstruction.h"
 #include "../../ControlClass/Instructions/carelevatorinstruction.h"
 
@@ -21,6 +24,7 @@ public:
 signals:
 
 public slots:
+    void updateStatus();
 private:
     int m_elevatorId;
     void initUI();
@@ -31,6 +35,11 @@ private:
     QLabel *m_pOnline_lab;
     QLabel *m_pOnline_image;
     QVBoxLayout *v;
+    QRadioButton *m_pSelectRadioButton;
+    QTimer *m_ptimer;
+
+
+    QSpinBox *m_pcurachelayer;
 
 };
 

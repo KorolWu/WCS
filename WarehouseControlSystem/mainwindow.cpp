@@ -12,6 +12,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setWindowFlags(Qt::FramelessWindowHint);
 
+
+
+    QFile file(":/resouse/warehouse.qss");
+    file.open(QFile::ReadOnly);
+    QTextStream filetext(&file);
+    QString stylesheet = filetext.readAll();
+    this->setStyleSheet(stylesheet);
+    file.close();
+
     getConfigParameter();
     QString sql_open_err;
     CRUDBaseOperation::getInstance()->openDB(sql_open_err);

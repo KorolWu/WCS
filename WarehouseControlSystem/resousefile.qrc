@@ -48,5 +48,8 @@
         <file>Image/player_pause.ico</file>
         <file>Image/hand.ico</file>
         <file>Image/auto.ico</file>
+        <file>warehouse.qss</file>
+        <file>Image/checkBox_on.png</file>
+        <file>Image/checkBox_off.png</file>
     </qresource>
 </RCC>

@@ -69,6 +69,9 @@ private:
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;
+    QPushButton   *m_pmode_btn;
+    QPushButton   *m_psuspend; //zan ting
+   // QLabel        *m_pmode_info_label;
     QLabel        *m_list_lab;
     QWidget       *p_main_widget;
     CurrentTask   *t;
@@ -96,6 +99,7 @@ private slots:
     void slotlogin();
     void onReplyReady(QString str);
     void showCarList();
+    void changeMode();
 
 
 private:

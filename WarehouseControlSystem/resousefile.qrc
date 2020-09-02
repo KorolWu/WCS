@@ -44,5 +44,9 @@
         <file>Image/right.png</file>
         <file>Image/Refresh.png</file>
         <file>Image/search.png</file>
+        <file>Image/player_play.ico</file>
+        <file>Image/player_pause.ico</file>
+        <file>Image/hand.ico</file>
+        <file>Image/auto.ico</file>
     </qresource>
 </RCC>

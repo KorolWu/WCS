@@ -208,15 +208,32 @@ void MainWindow::initUI()
     p_standarItem->appendRow(p_sub_tasks);
     p_treeStandarModel->appendRow(p_standarItem);
 
+//    m_pmode_info_label = new QLabel(this);
+//    m_pmode_info_label->setText("now is auto model");
+//    m_pmode_info_label->move(desk_rect.width()*0.6,desk_rect.height()/22);
+
+    m_pmode_btn = new QPushButton("手动",this);
+    connect(m_pmode_btn,&QPushButton::clicked,this,&MainWindow::changeMode);
+    m_pmode_btn->setIcon(QIcon(":/resouse/Image/hand.ico"));
+    m_pmode_btn->resize(80,50);
+    m_pmode_btn->move(desk_rect.width()*0.75-40,desk_rect.height()/22);
+
+
+    m_psuspend = new QPushButton("暂停",this);
+    m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
+    m_psuspend->resize(80,50);
+    m_psuspend->move(desk_rect.width()*0.8-20,desk_rect.height()/22);
 
     user_btn = new QPushButton("用户",this);
     user_btn->setIcon(QIcon(":/resouse/Image/user.png"));
-    user_btn->move(desk_rect.width()*0.85,desk_rect.height()/20);
+    user_btn->move(desk_rect.width()*0.85,desk_rect.height()/22);
+    user_btn->resize(80,50);
     connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
     exit_btn = new QPushButton("安全退出",this);
+    exit_btn->resize(80,50);
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
-    exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/20);
+    exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/22);
 
 
 }
@@ -381,6 +398,22 @@ void MainWindow::showCarList()
 {
     m_list_lab->show();
     m_listIsShow = !m_listIsShow;
+}
+
+void MainWindow::changeMode()
+{
+    if(m_pmode_btn->text() == "手动")
+    {
+        m_pmode_btn->setText("自动");
+        m_pmode_btn->setIcon(QIcon(":/resouse/Image/auto.ico"));
+        Myconfig::GetInstance()->m_run_mode = 1;
+    }
+    else
+    {
+        m_pmode_btn->setText("手动");
+        m_pmode_btn->setIcon(QIcon(":/resouse/Image/hand.ico"));
+        Myconfig::GetInstance()->m_run_mode = 0;
+    }
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)

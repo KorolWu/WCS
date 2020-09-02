@@ -128,7 +128,7 @@ QString KDispatch::transformationOrder(int i)
     return "unknow Order";
 }
 
-bool KDispatch::runInstrucation(OrderStru o, int &id)
+bool KDispatch::runInstrucation(OrderStru o, int &id)//id can`t write here
 {
     o.box_num = m_task.boxNum;
     o.shelves = m_task.shelves;

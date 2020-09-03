@@ -20,7 +20,7 @@ void ReadTableData::readt_device_info()
         car_info_stru.deveceStatus.carCurrentPosion.x = query.value(7).toDouble();
         car_info_stru.deveceStatus.carCurrentPosion.y = query.value(8).toDouble();
         car_info_stru.deveceStatus.carCurrentPosion.z = query.value(9).toDouble();
-      //  Myconfig::GetInstance()->m_CarMap.insert(car_info_stru.deviceIp,car_info_stru);
+        //  Myconfig::GetInstance()->m_CarMap.insert(car_info_stru.deviceIp,car_info_stru);
     }
 }
 
@@ -397,7 +397,12 @@ void ReadTableData::Readt_hwcomm_infotable()
                 Myconfig::GetInstance()->m_CarMap.insert(Id,stru);
             }
         }
-
+        if(type == HWDEVICETYPE::RUNNER)
+        {
+            Myconfig::GetInstance()->m_runer.port = query.value("port").toInt();
+            Myconfig::GetInstance()->m_runer.deviceIp = name;
+            Myconfig::GetInstance()->m_runer.deviceNum = QString::number(Id);
+        }
     }
 }
 

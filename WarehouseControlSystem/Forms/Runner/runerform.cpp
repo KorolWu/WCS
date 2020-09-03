@@ -51,6 +51,7 @@ void RunerForm::updateUI()
     Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[6]  == 99? m_pscanImage1->setStyleSheet("border-image:url(:/resouse/Image/green.png)"):m_pscanImage1->setStyleSheet("border-image:url(:/resouse/Image/grey.png)");
     Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[8]  == 99? m_pscanImage2->setStyleSheet("border-image:url(:/resouse/Image/green.png)"):m_pscanImage2->setStyleSheet("border-image:url(:/resouse/Image/grey.png)");
     Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[18] == 99? m_pbackupImage->setStyleSheet("border-image:url(:/resouse/Image/green.png)"):m_pbackupImage->setStyleSheet("border-image:url(:/resouse/Image/grey.png)");
+    Myconfig::GetInstance()->m_runer.runneratastru.connectresult == 1?   m_pisOnlineImage->setStyleSheet("border-image:url(:/resouse/Image/green.png)"):m_pisOnlineImage->setStyleSheet("border-image:url(:/resouse/Image/grey.png)");
 }
 
 void RunerForm::onClicked()
@@ -111,6 +112,12 @@ void RunerForm::initUi()
     hboxSokcet->addWidget(q);
     hboxSokcet->addWidget(m_pbackupImage);
     hboxSokcet->addStretch();
+
+    QLabel *f = new QLabel("在线");
+    m_pisOnlineImage = new QLabel();
+    hboxSokcet->addWidget(f);
+    hboxSokcet->addWidget(m_pisOnlineImage);
+     hboxSokcet->addStretch();
     check_status_groupbox->setLayout(hboxSokcet);
     m_pvBox->addWidget(check_status_groupbox);
 

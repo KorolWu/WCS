@@ -52,6 +52,7 @@ private:
     QLabel *m_pscanImage1;
     QLabel *m_pscanImage2;
     QLabel *m_pbackupImage;
+    QLabel *m_pisOnlineImage;
     QTimer *m_timer;
     QSpinBox *m_paddress;
     QPushButton *m_psendBtn;

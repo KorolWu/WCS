@@ -26,7 +26,7 @@ int RunnerInstruction::getResult(QString exeMsg)
 void RunnerInstruction::runInstruction()
 {
 
-    if(Myconfig::GetInstance()->m_runer.isOnline)
+    if(Myconfig::GetInstance()->m_runer.runneratastru.connectresult == 1)
     {
         int start_address = 0;
         if(m_order.order == 5)

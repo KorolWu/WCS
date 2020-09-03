@@ -16,13 +16,14 @@ ElevatorStatusWidget::ElevatorStatusWidget(int elevatorId, QWidget *parent) : QW
     m_ptimer = new QTimer(this);
     connect(m_ptimer,&QTimer::timeout,this,&ElevatorStatusWidget::updateStatus);
     initUI();
+    m_ptimer->start(500);
 }
 
 void ElevatorStatusWidget::updateStatus()
 {
-    Myconfig::GetInstance()->m_elevatorMap[m_elevatorId].status.isOnline? m_pOnline_image->setStyleSheet("border-image:url(:/resouse/Image/grey.png)"):m_pOnline_image->setStyleSheet("border-image:url(:/resouse/Image/green.png)");
+    Myconfig::GetInstance()->m_elevatorMap[m_elevatorId].status.isOnline? m_pOnline_image->setStyleSheet("border-image:url(:/resouse/Image/green.png)"):m_pOnline_image->setStyleSheet("border-image:url(:/resouse/Image/grey.png)");
     m_pCurrent_layer->setValue(Myconfig::GetInstance()->m_elevatorMap[m_elevatorId].status.curruntLayer);
-    m_pCurrent_layer->setValue(Myconfig::GetInstance()->m_elevatorMap[m_elevatorId].status.curachelayer);
+    m_pcurachelayer->setValue(Myconfig::GetInstance()->m_elevatorMap[m_elevatorId].status.curachelayer);
 
 }
 
@@ -80,9 +81,9 @@ void ElevatorStatusWidget::onMove()
     o.z = m_pOrder_layer->value();
     o.order = Call;
     if(m_pSelectRadioButton->isChecked())
-        o.startaddress = 50;
+        o.startaddress = 1;
     else
-        o.startaddress = 52;
+        o.startaddress = 2;
     o.Datatype = 4;
     o.childtype = 2;
     AbstructInstruction *e = new CarElevatorInstruction();

@@ -71,8 +71,8 @@ AgvForm::AgvForm(int width, int height, QWidget *parent) : BaseFrom(parent)
     p_table_view->setColumnWidth(5,width/20*3);
     p_table_view->setColumnWidth(6,width/20*2);
     p_table_view->horizontalHeader()->setMinimumHeight(40);
-    p_table_view->setFont(QFont("宋体",12)); //设置字体
-    this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}QProgressBar{color:red}");
+    p_table_view->setFont(QFont("宋体",12)); //设置字体   QPushButton:enabled:hover{background: rgb(220, 220, 220);}
+    this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}");
     setTableViewValue();
 }
 

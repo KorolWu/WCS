@@ -1,13 +1,13 @@
-/**********子界面背景**********/
+/**********子界面背景*********
 QWidget#customWidget {
         background: rgb(173, 202, 232);
 }
-
-/**********子界面中央背景**********/
+*/
+/**********子界面中央背景*********
 QWidget#centerWidget {
         background: rgb(232, 241, 252);
 }
-
+*/
 /**********主界面样式**********/
 QWidget#mainWindow {
         border: 1px solid rgb(111, 156, 207);
@@ -758,9 +758,10 @@ QPushButton:enabled:pressed{
         background: rgb(0, 78, 161);
 }
 
-QPushButton#blueButton {
+/*QPushButton#blueButton {
         color: white;
 }
+
 QPushButton#blueButton:enabled {
         background: rgb(0, 78, 161);
         color: white;
@@ -807,8 +808,8 @@ QPushButton#linkButton:pressed {
 QPushButton#transparentButton {
         background: transparent;
 }
-
-/*****************标题栏按钮*******************/
+*/
+/*****************标题栏按钮******************
 QPushButton#minimizeButton {
         border-radius: none;
         border-bottom-left-radius: 4px;
@@ -973,3 +974,4 @@ QPushButton#menuButton::menu-indicator{
         image: url(:/White/arrowBottom);
         padding-right: 3px;
 }
+*/

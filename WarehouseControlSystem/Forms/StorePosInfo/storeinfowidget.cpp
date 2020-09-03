@@ -14,10 +14,10 @@
 #include "UnitClass/ImportExportFile/localfileoperate.h"
 #include "editstorenbrinfodialog.h"
 #include  "pagewg/tablepagebyabstractwg.h"
-const QString stylestr =  "QPushButton{font:12px;}"
+const QString stylestr =  "QPushButton{font:12px;background-color:rgb(150,150,150)}"
                           "QLabel{font:12px;}"
-                          "QPushButton:hover{background-color:rgba(255,255,255,110);}"
-                          "QPushButton:pressed{background-color:rgba(255,255,255,150);}"
+                          "QPushButton:hover{background-color:rgba(220,220,220,110);}"
+                          "QPushButton:pressed{background-color:rgba(85,170,255,150);}"
                           "QTableView{font:12px;selection-background-color:rgba(68,69,71,100);alternate-background-color: rgb(220, 220, 220);}"
                           "QMenu::item:selected {background-color:rgba(0,190,230,100);}";
 #include <QTextCodec>

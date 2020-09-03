@@ -68,7 +68,7 @@ ElevatorFrom::ElevatorFrom(int width, int height,QWidget *parent) : BaseFrom(par
     p_table_view->setFont(QFont("宋体",12)); //设置字体
     setTableViewValue();
    //p_table_view->setFont(QFont("宋体",26)); //设置字体
-    this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;}QLabel{font: 16px}");
+    this->setStyleSheet("QPushButton{font: 14px;width:70px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}");
 
 }
 

@@ -25,11 +25,11 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
     m_query_btn = new QPushButton("查询",this);
     connect(m_query_btn,&QPushButton::clicked,this,&SubTask::selectTask);
     m_query_btn->move(m_width/2.11,height_fristLine);
-    m_query_btn->setStyleSheet("background-color:rgb(0,170,255)");
 
 //    m_refresh_btn = new QPushButton("Refresh",this);
 //    connect(m_refresh_btn,&QPushButton::clicked,this,&SubTask::onRefresh);
-    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;}QLabel{font: 16px}QDateEdit{width:100px;height:25px}");
+    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}");
+
     initTableView();
 }
 

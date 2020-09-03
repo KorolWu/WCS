@@ -9,7 +9,12 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QFont>
+#include <QTimer>
+#include <QSpinBox>
 #include "datastructure.h"
+#include "MysqlDataBase/crudbaseoperation.h"
+#include "../../ControlClass/Instructions/abstructinstruction.h"
+#include "../../ControlClass/Instructions/carelevatorinstruction.h"
 class RunerForm : public QWidget
 {
     Q_OBJECT
@@ -21,11 +26,14 @@ signals:
 
 public slots:
     void yesBtnClicked();
+    void updateUI();
+    void onClicked();
 private:
     QGroupBox *m_pgboxSocketInfo;
     QLineEdit *m_pIp;
-    QLineEdit *m_pPort;
-    QLineEdit *m_prunerName;
+    QSpinBox *m_pPort;
+    QSpinBox *m_prunerName;
+    QSpinBox *m_pvalue;
     QGroupBox *m_prunerInfo;
     QLineEdit *m_pinCache;
     QLineEdit *m_poutCache;
@@ -39,6 +47,15 @@ private:
     QPushButton *m_pNoBtn;
     int m_width;
     int m_height;
+    QLabel *m_pickupImage;
+    QLabel *m_putupImage;
+    QLabel *m_pscanImage1;
+    QLabel *m_pscanImage2;
+    QLabel *m_pbackupImage;
+    QTimer *m_timer;
+    QSpinBox *m_paddress;
+    QPushButton *m_psendBtn;
+    QPushButton *m_pStartBtn;
     void initUi();
 };
 

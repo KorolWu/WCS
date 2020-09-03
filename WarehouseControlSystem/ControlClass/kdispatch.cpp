@@ -72,6 +72,7 @@ bool KDispatch::runSubTask()
     qDebug()<<QThread::currentThreadId();
     int sequnce = 1;
     QString msg = "";
+    QString sqlerr = "";
     while(false == m_taskQueue.isEmpty())
     {
         OrderStru o = m_taskQueue.dequeue();
@@ -80,10 +81,10 @@ bool KDispatch::runSubTask()
             msg = "执行成功";
         else
             msg = "执行失败";
-        CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,"commamd",sequnce,sqlErr);
+        CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,"commamd",sequnce,sqlerr);
         //qDebug()<<"subtask"<<sqlErr;
-        if(sqlErr != "")
-            GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlErr,2);
+        if(sqlerr != "")
+            GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
         break;
 
         sequnce++;
@@ -129,7 +130,6 @@ bool KDispatch::runInstrucation(OrderStru o)//id can`t write here
     else if(o.order == 5)
     {
         m_pAbstructInstruction = new CarElevatorInstruction();
-
         id = 21;
     }
     if(m_pAbstructInstruction != nullptr)

@@ -11,7 +11,6 @@ void RunnerInstruction::setParameter(OrderStru o, int device_id)
     m_order = o;
     QVector<int> value;
     value.append(o.value);
-    m_z = o.z;
     m_order.values= value;
 }
 
@@ -26,14 +25,15 @@ int RunnerInstruction::getResult(QString exeMsg)
 
 void RunnerInstruction::runInstruction()
 {
-    int start_address = 0;
+
     if(Myconfig::GetInstance()->m_runer.isOnline)
     {
+        int start_address = 0;
         if(m_order.order == 5)
         {
             start_address = 50;
         }
-        else if(m_order == 21)
+        else if(m_order.order == 21)
         {
             start_address = 52;
         }

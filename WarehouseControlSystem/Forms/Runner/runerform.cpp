@@ -60,13 +60,13 @@ void RunerForm::onClicked()
     if(btn->objectName() == "send")
     {
         OrderStru o;
-        o.z = m_pvalue->value();
+        o.value = m_pvalue->value();
         o.order = call_Runner_Putbox;
         o.startaddress = m_paddress->value();
-        o.Datatype = 5;
+        o.Datatype = 4;
         o.childtype = 2;
-        AbstructInstruction *e = new CarElevatorInstruction();
-        e->setParameter(o,m_pPort->value());
+        AbstructInstruction *e = new RunnerInstruction();
+        e->setParameter(o,m_prunerName->value());
         e->runInstruction();
         QString resultMsg ="";
         e->getResult(resultMsg);
@@ -156,6 +156,8 @@ void RunerForm::initUi()
     QLabel *name = new QLabel("编号 :");
     hboxSokcet->addWidget(name);
     m_prunerName = new QSpinBox();
+    qDebug()<<"deviceNum:"<<Myconfig::GetInstance()->m_runer.deviceNum;
+    m_prunerName->setMaximum(10000);
     m_prunerName->setValue(Myconfig::GetInstance()->m_runer.deviceNum.toInt());
     hboxSokcet->addWidget(m_prunerName);
     QLabel *ip = new QLabel("Ip:port");

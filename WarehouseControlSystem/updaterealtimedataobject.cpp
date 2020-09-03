@@ -95,10 +95,10 @@ void UpdateRealtimeDataObject::UpdateRunnerDataRequest()
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d0-d10
             runnerstru.startaddress = 11;
             runnerstru.numberOfEntries = 12;
-            TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d11-d22
+           // TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d11-d22
             runnerstru.startaddress = 60;
             runnerstru.numberOfEntries = 15;
-            TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d60-d74
+           // TCommtransceivermanager::GetInstance()->SendcommandByExtern(runnerstru,it.key());//d60-d74
         }
         if(it.value().hwtype == ELEVATOR_CAR && it.value().protype == KModbusTcpClient)
         {

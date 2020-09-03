@@ -229,6 +229,7 @@ void MainWindow::initUI()
 
 
     m_psuspend = new QPushButton("暂停",this);
+    connect(m_psuspend,&QPushButton::clicked,this,&MainWindow::onSuspend);
     m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
     m_psuspend->resize(80,50);
     m_psuspend->move(desk_rect.width()*0.8-20,desk_rect.height()/22);
@@ -422,6 +423,21 @@ void MainWindow::changeMode()
         m_pmode_btn->setText("手动");
         m_pmode_btn->setIcon(QIcon(":/resouse/Image/hand.ico"));
         Myconfig::GetInstance()->m_run_mode = 0;
+    }
+}
+
+void MainWindow::onSuspend()
+{
+    Myconfig::GetInstance()->m_flag = !Myconfig::GetInstance()->m_flag;
+    if(m_psuspend->text() == "暂停")
+    {
+        m_psuspend->setText("启动");
+        m_psuspend->setIcon(QIcon(":/resouse/Image/player_play.ico"));
+    }
+    else
+    {
+        m_psuspend->setText("暂停");
+        m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
     }
 }
 

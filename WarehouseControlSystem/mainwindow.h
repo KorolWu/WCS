@@ -100,6 +100,7 @@ private slots:
     void onReplyReady(QString str);
     void showCarList();
     void changeMode();
+    void onSuspend();
 
 
 private:

@@ -129,7 +129,6 @@ bool KDispatch::runInstrucation(OrderStru o)//id can`t write here
     else if(o.order == 5)
     {
         m_pAbstructInstruction = new CarElevatorInstruction();
-
         id = 21;
     }
     if(m_pAbstructInstruction != nullptr)

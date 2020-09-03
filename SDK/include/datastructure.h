@@ -274,6 +274,7 @@ typedef struct _RunerStru
     QString deviceNum = "";
     QString deviceIp = "";
     int port = 0;
+    bool isOnline = false;
     int cache_in_current = 0;
     int cache_in_max = 0;
     int cache_out_max = 0;

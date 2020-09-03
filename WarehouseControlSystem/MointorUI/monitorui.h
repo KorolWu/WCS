@@ -28,6 +28,9 @@ private:
     double m_sizeH;
     double m_X;
     double m_Y;
+    double m_minX;
+     double m_minY;
+    int k ;
     QTimer *m_timer;
 public slots:
     void SetCurLayUI(int index);

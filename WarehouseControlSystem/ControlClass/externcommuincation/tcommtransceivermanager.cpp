@@ -431,7 +431,6 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         case 2://Coils
             break;
         case 3://InputRegisters
-
             break;
         case 4://HoldingRegisters
         {
@@ -458,7 +457,7 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
         {
             if(Myconfig::GetInstance()->m_elevatorMap.contains(ID))
             {
-                if(it.key() == 100) //读取楼层
+                if(it.key() == 1) //读取楼层
                 {
 
                     if(Myconfig::GetInstance()->m_elevatorMap[ID].status.curruntLayer != it.value())
@@ -466,7 +465,7 @@ void TCommtransceivermanager::ReceModbusDataFromHWob(int ID, int hwtype, int dat
                         Myconfig::GetInstance()->m_elevatorMap[ID].status.curruntLayer = it.value();
                     }
                 }
-                else if(it.key() ==102 )//读取缓存
+                else if(it.key() == 2 )//读取缓存
                 {
                     if(Myconfig::GetInstance()->m_elevatorMap[ID].status.curachelayer != it.value())
                     {

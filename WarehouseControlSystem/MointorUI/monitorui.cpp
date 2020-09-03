@@ -88,7 +88,8 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     //  vboxlay->addLayout(hlabel);
     //显示当前的界面数据信息
     m_pview = new MonitorView(this);
-    m_pview->setFixedSize(parent->width()-40,parent->height()-60);
+    m_pview->setFixedSize(this->width()-60,this->height()-40);
+    //-5000,-60000,5000,60000
     m_curscene = new QGraphicsScene;
     SetUIDataItem();
     m_laycombox->setCurrentIndex(0);
@@ -269,10 +270,12 @@ void MonitorUI::SetUIDataItem()
 
     GetAllLayers();//得到所有的层数
     m_cursceneMap.clear();//数据删除 重新更
-    int roadwidth = ROADWIDTH; //预留过道的高度
+    int roadwidth = 640/k; //预留过道的高度 实际距离640 缩小30系数之后尺寸
     GetstoreposSize();
     double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
     layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
+    m_sizeW = 600/k;
+    m_sizeH = 450/k;
     for(int i =0; i < m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
@@ -282,26 +285,45 @@ void MonitorUI::SetUIDataItem()
         QMap<QString, StorePosInfoStru>  laymap = BaseDataInfoOperate::GetStorePosInfoMapByLayer\
                 (z,Myconfig::GetInstance()->m_storeinfoMap);
         QGraphicsScene *curlay = new QGraphicsScene;
-        curlay->setSceneRect(-30,-60,this->width()-40,this->height()-60);
-
+        // curlay->setSceneRect(-30,-60,this->width()-40,this->height()-60);
+        //curlay->setSceneRect(-100,-500,800,1000);
+        curlay->setSceneRect(m_minX/k-50,m_minY/k-50,(m_X-m_minX)/k+100,(m_Y-m_minY)/k+100);
         curlay->setItemIndexMethod(QGraphicsScene::NoIndex);
 
         for(auto it = laymap.begin(); it != laymap.end();++it)
         {
-            double startx= it.value().coordx*m_sizeW;
-            double starty = layh-(it.value().coordy*m_sizeH*2+roadwidth*it.value().coordy);
-            double stopx =it.value().coordx*m_sizeW+m_sizeW;
-            double stopy = starty-m_sizeH;
-            if(it.value().directionstate == 1)
+
+            //            double startx= it.value().coordx*m_sizeW;
+            //            double starty = layh-(it.value().coordy*m_sizeH*2+roadwidth*it.value().coordy);
+            //            double stopx =it.value().coordx*m_sizeW+m_sizeW;
+            //            double stopy = starty-m_sizeH;
+            double startx = it.value().coordx/k-0.5*roadwidth-m_sizeW;
+            double starty = it.value().coordy/k;
+            double stopx = startx+m_sizeW;
+            double stopy = starty+m_sizeH;
+
+
+            QStringList keylist = it.key().split("-");
+            if(keylist.size() == 5)
             {
-                starty = stopy-roadwidth;
-                stopy =  stopy-roadwidth-m_sizeH;
+                QString dirstateinfo = keylist[2];
+                dirstateinfo  =   dirstateinfo.right(dirstateinfo.size()-1);
+                // qDebug()<<"str:"<<dirstateinfo<<dirstateinfo.toInt() << dirstateinfo.toInt()%2;
+                if(dirstateinfo.toInt()%2 == 0)
+                {
+                    startx = stopx+roadwidth;
+                    stopx =  stopx+roadwidth+m_sizeW;
+                    // if(it.value().coordz == 1)
+                    {
+                        //qDebug()<<"坐标位置02"<<startx<< starty  << stopx<< stopy <<laymap.size();  ;
+                    }
+                }
             }
-            StoreItem *item = new StoreItem(startx,stopy ,stopx,starty);
+            StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
 
             item->SetIndexID(QString(it.value().idnbr));
             QString text = QString::fromUtf8(it.value().boxnbr);
-            //qDebug()<<"坐标位置"<<stopy<< starty  << startx<< stopx <<text ;
+            // qDebug()<<"坐标位置"<<startx<< starty  << stopx<< stopy <<text <<laymap.size();
             item->SetText(text);
             item->SetStoreSate(it.value().storestat);
             curlay->addItem(item);
@@ -351,23 +373,23 @@ void MonitorUI::GetstoreposSize()
 {
     double x= BaseDataInfoOperate::GetXMaxValue();
     double y = BaseDataInfoOperate::GetYMaxValue();
-    if(x >= 0 && y >= 0)
+    double xmin = BaseDataInfoOperate::GetXMinValue();
+    double ymin = BaseDataInfoOperate::GetYMinValue();
+    // qDebug()<<"maxbavalue:"<<x<<y<<ymin<<xmin << this->size().width() -40<<this->size();
+    int k1  = 0;
+    int k2 = 0;
+    k1 = (x-xmin)/(this->size().width() -40);
+    k2 = (y-ymin)/(this->size().height() -60);
+    if(k1 > k2)
     {
-        double w  =(this->size().width() -40)/(x+1)/2;//同一个坐标对应两个仓位编号
-        double h = (this->size().width() -60)/(y+1)/3;//同一个坐标对应两个仓位编号 小车过道的位置预留出
-        m_X = x;
-        m_Y = y;
-        m_sizeW = w;
-        m_sizeH = h;
+        k = k1;
     }
-    if(m_sizeW <= 4)
-    {
-        m_sizeW = 5; //设置最小尺寸5
+    else{
+        k = k2;
     }
-    if(m_sizeH <= 4)
-    {
-        m_sizeH = 5;//设置最小尺寸5
-    }
-    m_sizeH = 20;
-    m_sizeW = 30;
+    m_X = x;
+    m_Y = y;
+    m_minY = ymin;
+    m_minX = xmin;
+
 }

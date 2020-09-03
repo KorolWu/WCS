@@ -47,16 +47,12 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
 
     modbusDevice = new QModbusTcpClient(this);
     connect(modbusDevice, &QModbusClient::errorOccurred, [this](QModbusDevice::Error) {
-        qDebug()<<(modbusDevice->errorString()) << "通讯发生了故障" << m_configstru.ID;
-        m_connectstate = 0;
-         emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,false);
-        return false;
-
+        qDebug()<<(modbusDevice->errorString(), 5000) << "发生了故障";
     });
     if(modbusDevice->state() != QModbusDevice::ConnectedState)
     {
         QUrl url = QUrl::fromUserInput(url_str);
-        //qDebug()<<"url"<<url.port() << url.host();
+        qDebug()<<"url"<<url.port() << url.host();
         modbusDevice->setConnectionParameter(QModbusDevice::NetworkPortParameter, url.port());
         modbusDevice->setConnectionParameter(QModbusDevice::NetworkAddressParameter, url.host());
         //客户端使用超时来确定等待服务器响应的时间。如果在所需超时内未收到响应，则设置TimeoutError
@@ -112,6 +108,7 @@ void TCommModbusTcpClient::readReady()
     }
     else if (reply->error() == QModbusDevice::ProtocolError)
     {
+<<<<<<< HEAD
         if(state)
         {
             qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
@@ -119,6 +116,10 @@ void TCommModbusTcpClient::readReady()
             state = false;
             m_connectstate = -1;
         }
+=======
+       // qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
+                   arg(reply->rawResult().exceptionCode(), -1, 16));
+>>>>>>> master
     } else
     {
         if(state)
@@ -141,7 +142,6 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
         return;
     if(modbusDevice->state()!=QModbusDevice::ConnectedState)
     {
-        m_connectstate = 0;
         qDebug()<<"未连接状态，请检查"<<modbusDevice->ConnectedState << m_configstru.ID;
         return;
     }

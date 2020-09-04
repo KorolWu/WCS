@@ -153,6 +153,7 @@ void MainWindow::initUI()
     m_pLog = new LogForms(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mElevator = new ElevatorFrom(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mRunerForm = new RunerForm(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    m_pDispatchForm = new DispatchWidget(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mRunerForm->setParameter(Myconfig::GetInstance()->m_runer);
     p_treeView = new QTreeView(treewidget);
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
@@ -216,6 +217,10 @@ void MainWindow::initUI()
     p_sub_tasks->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
     p_standarItem->appendRow(p_sub_tasks);
     p_treeStandarModel->appendRow(p_standarItem);
+
+    p_dispatch = new QStandardItem("手动调度");
+    p_dispatch->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
+    p_treeStandarModel->appendRow(p_dispatch);
 
 //    m_pmode_info_label = new QLabel(this);
 //    m_pmode_info_label->setText("now is auto model");
@@ -292,7 +297,7 @@ void MainWindow::deleteChildrenList()
     m_pmonitorui->hide();
     p_mRunerForm->hide();
     m_testorders->hide();
-
+    m_pDispatchForm->hide();
 }
 
 void MainWindow::getParameterFromDB()
@@ -301,7 +306,7 @@ void MainWindow::getParameterFromDB()
     r.readt_device_info();
     r.readt_elevator();
     r.readt_crrunt_task();
-    r.readt_runerInfo();
+   // r.readt_runerInfo();
     r.Readt_hwcomm_infotable();
     //qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
@@ -383,6 +388,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "日志管理")
     {
         m_pLog->show();
+    }
+    else if(row_name == "手动调度")
+    {
+        m_pDispatchForm->show();
     }
 }
 

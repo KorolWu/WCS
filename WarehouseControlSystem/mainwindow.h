@@ -15,6 +15,7 @@
 #include "Forms/TaskForms/currenttask.h"
 #include "Forms/TaskForms/alltask.h"
 #include "Forms/TaskForms/subtask.h"
+#include "Forms/Dispatch/dispatchwidget.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
 #include "Forms/LogForms/logforms.h"
@@ -66,6 +67,7 @@ private:
     QStandardItem *p_all_tasks;
     QStandardItem *p_current_tasks;
     QStandardItem *p_sub_tasks;
+    QStandardItem *p_dispatch;
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;
@@ -85,6 +87,7 @@ private:
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
     JQHttpServer::TcpServerManage *m_pHttpServer;
+    DispatchWidget *m_pDispatchForm;
     bool           m_listIsShow;
 
     void closeWcs();

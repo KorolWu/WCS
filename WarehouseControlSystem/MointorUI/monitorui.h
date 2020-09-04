@@ -30,7 +30,7 @@ private:
     double m_Y;
     double m_minX;
      double m_minY;
-    int k ;
+    double k ;
     QTimer *m_timer;
 public slots:
     void SetCurLayUI(int index);

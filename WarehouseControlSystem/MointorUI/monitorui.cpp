@@ -241,7 +241,11 @@ void MonitorUI::SetSceneMapData()
                 StoreItem *item = new StoreItem(startx,starty ,stopx,stopy);
                 //qDebug()<<"0pos坐标位置"<<z<<startx<< starty<<stopx<<stopy;
                 item->SetIndexID(id);
-                // text =
+                if(text.size()>3)
+                {
+
+                    text = text.right(text.size()-3);
+                }
                 item->SetText(text);
                 item->SetStoreSate(state);
                 curlay->addItem(item);
@@ -270,12 +274,14 @@ void MonitorUI::SetUIDataItem()
 
     GetAllLayers();//得到所有的层数
     m_cursceneMap.clear();//数据删除 重新更
-    int roadwidth = 640/k; //预留过道的高度 实际距离640 缩小30系数之后尺寸
     GetstoreposSize();
+    double roadwidth = 640/k; //预留过道的高度 实际距离640 缩小30系数之后尺寸
     double layh = (this->height()-60-40-(2*m_Y*m_sizeH+ m_Y*roadwidth))/2 ;
     layh = layh+(2*m_Y*m_sizeH+ m_Y*roadwidth)/2;
-    m_sizeW = 600/k;
+    m_sizeW = 640/k;
     m_sizeH = 450/k;
+    qDebug()<<"value:"<<roadwidth<<m_sizeW<<m_sizeH <<k;
+   // roadwidth = 30;
     for(int i =0; i < m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
@@ -315,7 +321,7 @@ void MonitorUI::SetUIDataItem()
                     stopx =  stopx+roadwidth+m_sizeW;
                     // if(it.value().coordz == 1)
                     {
-                        //qDebug()<<"坐标位置02"<<startx<< starty  << stopx<< stopy <<laymap.size();  ;
+                       // qDebug()<<"坐标位置:"<<startx<< starty  << stopx<< stopy <<laymap.size() << dirstateinfo<<it.key();
                     }
                 }
             }
@@ -323,6 +329,11 @@ void MonitorUI::SetUIDataItem()
 
             item->SetIndexID(QString(it.value().idnbr));
             QString text = QString::fromUtf8(it.value().boxnbr);
+            if(text.size()>3)
+            {
+
+                text = text.right(text.size()-3);
+            }
             // qDebug()<<"坐标位置"<<startx<< starty  << stopx<< stopy <<text <<laymap.size();
             item->SetText(text);
             item->SetStoreSate(it.value().storestat);

@@ -19,7 +19,7 @@ void AbstructInstruction::setParameter(OrderStru o, int device_id)
 /// \brief AbstructInstruction::getResult
 /// \return 0 success 1 fail
 ///
-int AbstructInstruction::getResult(QString exeMsg)
+int AbstructInstruction::getResult(QString &exeMsg)
 {
     exeMsg = "";
    return 0;

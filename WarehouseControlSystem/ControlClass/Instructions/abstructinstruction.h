@@ -11,7 +11,7 @@ public:
     AbstructInstruction();
     virtual ~AbstructInstruction();
     virtual void setParameter(OrderStru o, int device_id);
-    virtual int getResult(QString exeMsg);
+    virtual int getResult(QString &exeMsg);
     virtual void runInstruction();
 
 public:

@@ -149,7 +149,8 @@ HEADERS  += mainwindow.h \
     Forms/ElevatorForms/elevatorstatus.h \
     updaterealtimedataobject.h \
     ControlClass/Instructions/runnerinstruction.h \
-    Forms/Dispatch/dispatchwidget.h
+    Forms/Dispatch/dispatchwidget.h \
+    ControlClass/WarehousingIn/unchangevalue.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

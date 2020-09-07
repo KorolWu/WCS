@@ -17,7 +17,7 @@ void CarInstruction::runInstruction()
     if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.carstatusinfo == 4)
     {
         // get box on elevator,moust be wait elevator ready
-        if(m_order.order == 9 || m_order.order == 10)
+        if(m_order.order == 7 || m_order.order == 8 || m_order.order == 9 || m_order.order == 10)
         {
             struct timeval tpStart,tpEnd;
             float timeUse = 0;
@@ -30,11 +30,31 @@ void CarInstruction::runInstruction()
                     return ;
                 }
                 //判断电梯是否到位
-                if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.status == 1)
+                if(m_order.order == 7 || m_order.order == 8)
                 {
-                    //发送指令
-                    TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
-                    break;
+                    if(Myconfig::GetInstance()->m_elevatorMap[888888].status.curruntLayer == m_order.z)
+                    {
+                        //发送指令
+                        TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
+                        break;
+                    }
+                }
+                else
+                {
+                    int layer = 31;
+                    if(m_order.order == 9)
+                    {
+                        layer = 1;
+                    }
+                    else
+                        layer = 2;
+                    if(Myconfig::GetInstance()->m_elevatorMap[888888].status.curachelayer == layer)
+                    {
+                        //发送指令
+                        TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
+                        break;
+                    }
+
                 }
 
                 gettimeofday(&tpEnd,NULL);
@@ -59,7 +79,7 @@ void CarInstruction::runInstruction()
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"y",m_tempValue,m_instructMsg))
                 m_result = 3;
         }
-        else if(m_order.order == 8) //car out of elevator
+        else if(m_order.order == 8 || m_order.order == 7) //car out of elevator
         {
             m_tempValue = m_order.z;
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
@@ -72,7 +92,7 @@ void CarInstruction::runInstruction()
         m_result = 1;
 }
 
-int CarInstruction::getResult(QString exeMsg)
+int CarInstruction::getResult(QString &exeMsg)
 {
     if(m_result != 0)
     {
@@ -118,6 +138,7 @@ int CarInstruction::getResult(QString exeMsg)
                 Myconfig::GetInstance()->m_storeinfoMap[m_order.shelves].update = true;
             }
             m_result = 0;
+            exeMsg = QString("%1  Exec successful!").arg(m_order.type);
             break;
         }
 

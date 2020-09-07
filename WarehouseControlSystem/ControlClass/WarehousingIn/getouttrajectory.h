@@ -4,6 +4,7 @@
 #include <QObject>
 #include "datastructure.h"
 #include "Myconfig.h"
+#include "unchangevalue.h"
 /**
  * @brief The GetOutTrajectory class
  * @date
@@ -16,6 +17,7 @@ public:
 private:
 
      void getTrajectory_out();
+     void getTrajectory_out_v1();
      void inElevator();
      void outElevator();
      void pickUp();

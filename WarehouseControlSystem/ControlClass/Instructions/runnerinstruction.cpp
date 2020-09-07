@@ -11,7 +11,7 @@ void RunnerInstruction::setParameter(OrderStru o, int device_id)
     m_order = o;
     QVector<int> value;
     value.append(o.value);
-    m_order.values= value;
+    m_order.values = value;
 }
 
 int RunnerInstruction::getResult(QString exeMsg)

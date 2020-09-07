@@ -10,6 +10,8 @@
 #include "basedatainfooperate.h"
 #include "MysqlDataBase/crudbaseoperation.h"
 #include "MysqlDataBase/readtabledata.h"
+#include "../ControlClass/Instructions/abstructinstruction.h"
+#include "../ControlClass/Instructions/runnerinstruction.h"
 /**
  * @brief The DispatchCenter class
  * @date 2020/07/17
@@ -40,6 +42,9 @@ private:
     void handle_in_task(TaskInfoStru &t, QString frist_in_boxNum);
     void remove_out_task();
     void remove_in_task(const QString &frist_in_boxNum);
+    void box_getCache();
+    int getfreeCache();
+    void scanCode();
 };
 
 #endif // DISPATCHCENTER_H

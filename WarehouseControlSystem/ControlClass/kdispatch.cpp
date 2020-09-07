@@ -85,8 +85,6 @@ bool KDispatch::runSubTask()
         //qDebug()<<"subtask"<<sqlErr;
         if(sqlerr != "")
             GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
-        break;
-
         sequnce++;
     }
     QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
@@ -109,10 +107,16 @@ QString KDispatch::transformationOrder(int i)
         return " 右取货";
     else if(i == 5)
         return "呼叫电梯";
-    else if(i == 6)
-        return "进电梯";
     else if(i == 7)
+        return "进电梯";
+    else if(i == 8)
         return "出电梯";
+    else if(i == 9)
+        return "把料箱放在出货口电梯";
+    else if(i == 10)
+        return "把料箱从入库口电梯取出";
+    else if(i == 16)
+        return "将小车锁定的层解锁";
     return "unknow Order";
 }
 
@@ -155,7 +159,7 @@ void KDispatch::saveErrMassage(const QString &message )
     arm.carcoordx = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.x;
     arm.carcoordy = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.y;
     arm.carcoordz = Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.carCurrentPosion.z;
-    arm.deviceid = m_ip;
+    arm.deviceid = QString("%1").arg(m_carId);
     arm.errorcode = 006;
     arm.errortype = 1;
     arm.Operatestate = 1;
@@ -167,7 +171,7 @@ void KDispatch::saveErrMassage(const QString &message )
 
 void KDispatch::run()
 {
-    if(m_task.taskNum.contains("O"))// 入库
+    if(m_task.taskNum.contains("H"))// 入库
     {
         GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_carId,m_task);
         m_taskQueue = t->getTrajectory();

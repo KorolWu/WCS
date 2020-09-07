@@ -7,6 +7,7 @@ DispatchWidget::DispatchWidget(int width, int height, QWidget *parent) : QWidget
     initUI();
 }
 
+//料箱子进入仓库的唯一入口，从这个地方记录当前等待入库的数量
 void DispatchWidget::onBoxClicked()
 {
     QPushButton *b = (QPushButton*)sender();
@@ -14,7 +15,19 @@ void DispatchWidget::onBoxClicked()
 
 void DispatchWidget::onGetBoxClicked()
 {
-
+   if(Myconfig::GetInstance()->m_storeinfoMap.contains(m_plineBoxNum->text()))
+   {
+      QString box_num = Myconfig::GetInstance()->m_storeinfoMap[m_plineBoxNum->text()].boxnbr;
+      TaskInfoStru t;
+      t.boxNum = box_num;
+      t.taskNum = QString("HK_%1").arg(QDateTime::currentDateTime().toTime_t());
+      t.creatTime = QDateTime::currentDateTime();//.toString("yyyy-MM-dd:hh:ss:mm");
+      t.from = "Manual";
+      t.pripty= 1;
+      Myconfig::GetInstance()->m_taskQueue.enqueue(t);
+   }
+   else
+      m_ptextLine_log->append(QString("%1  :We can't find this bin").arg(QDateTime::currentDateTime().toString("hh:mm:ss")));
 }
 
 void DispatchWidget::initUI()
@@ -25,18 +38,31 @@ void DispatchWidget::initUI()
     m_poutWidget->setStyleSheet("QWidget{background-color:rgb(190,190,190);border-radius: 6px;}");
     m_poutWidget->resize(1300,m_height-10);
     m_poutWidget->move(10,10);
+
+    QLabel *b = new QLabel(m_poutWidget);
+    b->setText("In_Cache:");
+    m_plineCacheIn = new QLineEdit(m_poutWidget);
+    b->move(20,50);
+    m_plineCacheIn->move(90,50);
+    QLabel *a = new QLabel(m_poutWidget);
+    a->setText("Out_Cache:");
+    a->move(230,50);
+    m_plineCacheOut = new QLineEdit(m_poutWidget);
+    m_plineCacheOut->move(330,50);
     QLabel *e = new QLabel(m_poutWidget);
     e->setText("BoxNumber:");
-    e->move(20,50);
+    e->move(20,100);
     m_poutButton = new QPushButton(m_poutWidget);
     m_poutButton->setText("GetBox");
     connect(m_poutButton,&QPushButton::clicked,this,&DispatchWidget::onGetBoxClicked);
     m_plineBoxNum = new QLineEdit(m_poutWidget);
     m_plineBoxNum->resize(200,30);
-    m_plineBoxNum->move(100,50);
-    m_poutButton->move(320,50);
+    m_plineBoxNum->move(100,100);
+    m_poutButton->move(320,100);
     m_poutButton->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
-
+    m_ptextLine_log = new QTextEdit(m_poutWidget);
+    m_ptextLine_log->move(20,200);
+    m_ptextLine_log->resize(400,110);
 }
 
 void DispatchWidget::initRightW()

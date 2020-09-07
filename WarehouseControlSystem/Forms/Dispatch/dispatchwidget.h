@@ -8,6 +8,9 @@
 #include <QList>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QTextEdit>
+#include "Myconfig.h"
+#include <QDateTime>
 
 class DispatchWidget : public QWidget
 {
@@ -31,6 +34,9 @@ private:
     QWidget *m_poutWidget;
     QPushButton *m_poutButton;
     QLineEdit *m_plineBoxNum;
+    QLineEdit *m_plineCacheIn;
+    QLineEdit *m_plineCacheOut;
+    QTextEdit *m_ptextLine_log;
 };
 
 #endif // DISPATCHWIDGET_H

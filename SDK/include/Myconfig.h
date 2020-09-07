@@ -28,6 +28,7 @@ public:
         l.info = info;
         m_logQue.append(l);
     }
+
 public:
     //carinfo < 小车编号,car_info>
     QMap<int, CarInfoStru> m_CarMap;
@@ -64,6 +65,7 @@ public:
     HWComallconfigStru m_hwcommstru;
     //run mode =0 is autoMode
     int m_run_mode = 1;
-
+    //流道的缓存位1-8，是否有料箱 有true  无false；
+    QMap<int ,bool> m_cacheRunerMap;
 };
 #endif

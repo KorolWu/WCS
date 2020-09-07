@@ -184,6 +184,11 @@ void MonitorUI::updateCurSceneData()
                     char state = 3;
                     state = Myconfig::GetInstance()->m_storeinfoMap[id].storestat;
                     text =  QString::fromUtf8(Myconfig::GetInstance()->m_storeinfoMap[id].boxnbr);
+                    if(text.size()>3)
+                    {
+
+                        text = text.right(text.size()-3);
+                    }
                     if(FindItem->GetText()!= text)//料箱信息更新
                     {
                         FindItem->SetText(text);

@@ -409,8 +409,6 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
         orderstru.z = m_trapos.z;
         m_taskQueue.append(orderstru);
         m_carPos.y = m_trapos.y;
-
-
     }
     else{
         // 巷道方式

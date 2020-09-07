@@ -33,7 +33,7 @@ StoreItem::StoreItem(double StartX, double StartY, double StopX, double StopY, c
     setAcceptHoverEvents(true);
     m_Timer = new QTimer();
     connect(m_Timer,&QTimer::timeout,this,&StoreItem::UpdateState);
-    //m_Timer->start(200);
+    m_Timer->start(200);
    // setToolTip(m_text);
     setCursor(Qt::OpenHandCursor);    //改变光标形状,光标变为了手型
 }
@@ -170,6 +170,7 @@ void StoreItem::UpdateState()
     //    }
     //    //*************测试
    // update();
+   // setPos();
 }
 
 QColor StoreItem::GetNewColor(const QColor &Source, int Value)

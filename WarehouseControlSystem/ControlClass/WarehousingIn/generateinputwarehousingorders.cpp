@@ -33,7 +33,8 @@ void GenerateInputWarehousingOrders::SetPathParam(KPosition task_P, KPosition ca
 ///得到小车轨迹
 QQueue<OrderStru> GenerateInputWarehousingOrders::GetInputWarehousingOrders(){
     m_taskQueue.clear();
-    Generationinstruction();
+    // Generationinstruction();
+    GetPathcmdlist(); //测试使用的
     for(int i = 0; i < m_taskQueue.size();++i)
     {
         qDebug()<<"入库指令名字:"<<GetorderNameByValue(m_taskQueue.at(i).order)<< "指令参数:"<<m_taskQueue.at(i).value;
@@ -51,6 +52,22 @@ void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pick
     m_carwaitElevatorstru.y = carwaitElevatory;
     m_carElevatorstru.x = carElevatorx;//小车进电梯位置信息
     m_carElevatorstru.y = carElevatory;
+    //test内容
+    m_roady = 0.0;
+    m_testpickuppos.x = 0.0;
+    m_testpickuppos.y = 1943;
+    m_testelevatorpos.x = 0.0;
+    m_testelevatorpos.y = 2343;
+    m_testCarChargingpos.x = 0.0;
+    m_testCarChargingpos.y = 1943;
+    //设置参数内容
+    m_roady =  changeover;
+    m_testpickuppos.x = pickupx;
+    m_testpickuppos.y = pickupy;
+    m_testelevatorpos.x = carElevatorx;
+    m_testelevatorpos.y = carElevatory;
+    m_testCarChargingpos.x = carwaitElevatorx;
+    m_testCarChargingpos.y = carwaitElevatory;
 }
 ///
 /// \brief GenerateInputWarehousingOrders::Generationinstruction
@@ -313,5 +330,128 @@ QString GenerateInputWarehousingOrders::GetorderNameByValue(Order value)
         break;
     }
     return name;
+}
+///
+/// \brief GenerateInputWarehousingOrders::GetPathcmdlist
+///
+void GenerateInputWarehousingOrders::GetPathcmdlist()
+{
+    // 小车先随小车电梯到达流道层位置点
+    OrderStru orderstru;
+    if(m_testpickuppos.y != m_carPos.y || m_testpickuppos.x != m_carPos.x)  //小车正好在 小车电梯里面
+    {
+        if(m_testCarChargingpos.x == m_carPos.x) //x坐标一样那么直接可以到达等待电梯
+        {
+            orderstru.order = Y;
+            orderstru.value =  m_testCarChargingpos.y - m_carPos.y;
+            m_taskQueue.append(orderstru);
+            m_carPos.y = m_testCarChargingpos.y;
+            //呼叫电梯到达小车层数
+            orderstru.order = Call;
+            orderstru.value = m_carPos.z;//电梯的当前层数
+            m_taskQueue.append(orderstru);
+            //进入电梯
+            orderstru.order = Elevator_In;
+            orderstru.value = m_testelevatorpos.y-m_testCarChargingpos.y; // 值是Y方向的移动
+            m_carPos.y = m_testelevatorpos.y;
+            m_taskQueue.append(orderstru);
+            //呼叫电梯到达流道2层
+            orderstru.order = Call;
+            orderstru.value = m_testpickuppos.z;
+            m_taskQueue.append(orderstru);
+            m_carPos.z = m_testpickuppos.z;
+        }
+        else{
+            //进入巷道的计算方式
+            orderstru.order = Y;
+            orderstru.value = m_roady-m_carPos.y;
+            m_taskQueue.append(orderstru);
+            m_carPos.y = m_roady;
+            //到达电梯等待点
+            orderstru.order = X;
+            orderstru.value = m_testCarChargingpos.x-m_carPos.x;
+            if(orderstru.value != 0)
+            {
+                m_taskQueue.append(orderstru);
+            }
+            m_carPos.x = m_testCarChargingpos.x;
+            //y方向位置到达电梯等待位置
+            orderstru.order = Y;
+            orderstru.value = m_testCarChargingpos.y-m_carPos.y;
+            m_taskQueue.append(orderstru);
+            m_carPos.y = m_testCarChargingpos.y;
+
+            //呼叫电梯到达小车所在层数
+            orderstru.order = Call;
+            orderstru.value = m_carPos.z;
+            m_taskQueue.append(orderstru);
+            //进入电梯
+            orderstru.order = Elevator_In;
+            orderstru.value = m_testelevatorpos.y-m_testCarChargingpos.y; // 值是Y方向的移动
+            m_carPos.y = m_testelevatorpos.y;
+            m_taskQueue.append(orderstru);
+            //呼叫电梯到达流道2层
+            orderstru.order = Call;
+            orderstru.value = m_testpickuppos.z;
+            m_taskQueue.append(orderstru);
+            m_carPos.z = m_testpickuppos.z;
+        }
+    }
+    else{
+        //同一个位置不同的层数方式
+        if(m_testpickuppos.z  != m_carPos.z)
+        {
+            //呼叫电梯到达流道二层
+            orderstru.order = Call;
+            orderstru.value = m_testpickuppos.z;
+            m_taskQueue.append(orderstru);
+            m_carPos.z = m_testpickuppos.z;
+        }
+    }
+    //执行取货指令
+    orderstru.order = Right_WorkBin; //取入库箱子指令
+    m_taskQueue.append(orderstru);
+    //到达目标位置层数
+    orderstru.order = Call;
+    orderstru.value = m_trapos.z;
+    m_taskQueue.append(orderstru);
+    m_carPos.z = m_trapos.z;
+    //出电梯到达目标位置
+    if(m_trapos.x == m_testelevatorpos.x )
+    {
+        //直接过去
+        orderstru.order = Elevator_Out;
+        orderstru.value =m_trapos.y - m_testelevatorpos.y;
+        orderstru.z = m_trapos.z;
+        m_taskQueue.append(orderstru);
+        m_carPos.y = m_trapos.y;
+    }
+    else{
+        // 巷道方式
+        orderstru.order = Elevator_Out;
+        orderstru.value =m_roady - m_testelevatorpos.y;
+        orderstru.z = m_trapos.z;
+        m_taskQueue.append(orderstru);
+        m_carPos.y = m_roady;
+
+        orderstru.order = X;
+        orderstru.value = m_trapos.x - m_testelevatorpos.y;
+        m_taskQueue.append(orderstru);
+        m_carPos.x= m_trapos.x;
+        orderstru.order = Y;
+        orderstru.value =m_trapos.y - m_roady;
+        m_taskQueue.append(orderstru);
+        m_carPos.y = m_trapos.y;
+    }
+    //执行放货动作
+    if(m_trapos.state == 0)
+    {
+        orderstru.order = Left_Putinto;//左放货
+        m_taskQueue.append(orderstru);
+    }
+    else{
+        orderstru.order = Right_Putinto;//右放货
+        m_taskQueue.append(orderstru);
+    }
 }
 

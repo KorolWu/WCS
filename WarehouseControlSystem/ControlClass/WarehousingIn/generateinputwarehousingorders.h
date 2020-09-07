@@ -53,8 +53,13 @@ private:
     void GetCarfromCarElevatortopickupBoxElevatorders();
     void GetfrompickupBoxElevatortoTraposorders();
     void GetfromCarElevatochangeroadorders();
-
     QString GetorderNameByValue(Order value);
+    //指令入库轨迹测试生成部分
+    void GetPathcmdlist();
+    InputCurConfig m_testpickuppos; //流道取货位置点 层数上的差别 与小车电梯位置点
+    InputCurConfig m_testelevatorpos;//小车电梯位置点 Z x y
+    InputCurConfig m_testCarChargingpos;//小车充电位置 在电梯旁位置
+    double m_roady; //巷道位置的坐标
 };
 
 #endif // GENERATEINPUTWAREHOUSINGORDERS_H

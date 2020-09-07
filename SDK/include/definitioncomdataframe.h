@@ -9,7 +9,8 @@ enum HWDEVICETYPE{
     ELEVATOR_OUT= 3,
     ELEVATOR_CAR = 4,
     RUNNER = 5,
-    WMS = 6
+    WMS = 6 ,
+    BARCODE = 7
 };
 //通讯协议的类型定义 TCP 服务器 客户端 串口 modbustcp等
 enum HWDEVICEPROTYPE{
@@ -38,7 +39,8 @@ struct SerialPortstru:public hwcomBasestru{
     int BaudRate = 0;
     int DataBits = 0;
     int Parity = 0;
-    int StopBits =0;
+    int StopBits = 0;
+    int bytesize = 0;
 };
 struct ModbusTcpClientstru:public hwcomBasestru{
     QString url_str;

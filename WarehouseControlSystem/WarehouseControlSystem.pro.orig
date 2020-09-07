@@ -81,11 +81,11 @@ SOURCES += main.cpp\
     ControlClass/Instructions/abstructinstruction.cpp \
     ControlClass/Instructions/carinstruction.cpp \
     ControlClass/Instructions/carelevatorinstruction.cpp \
-<<<<<<< HEAD
-    Forms/ElevatorForms/elevatorstatus.cpp
-=======
-    updaterealtimedataobject.cpp
->>>>>>> 39dc45843269ad13c3ecceaccadb34119a7000a5
+    Forms/ElevatorForms/elevatorstatus.cpp \
+    updaterealtimedataobject.cpp \
+    ControlClass/Instructions/runnerinstruction.cpp \
+    Forms/Dispatch/dispatchwidget.cpp \
+    ControlClass/externcommuincation/tcommserialport.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -147,11 +147,15 @@ HEADERS  += mainwindow.h \
     ControlClass/Instructions/abstructinstruction.h \
     ControlClass/Instructions/carinstruction.h \
     ControlClass/Instructions/carelevatorinstruction.h \
+    Forms/ElevatorForms/elevatorstatus.h \
+    updaterealtimedataobject.h \
+    ControlClass/Instructions/runnerinstruction.h \
+    Forms/Dispatch/dispatchwidget.h \
 <<<<<<< HEAD
-    Forms/ElevatorForms/elevatorstatus.h
+    ControlClass/WarehousingIn/unchangevalue.h
 =======
-    updaterealtimedataobject.h
->>>>>>> 39dc45843269ad13c3ecceaccadb34119a7000a5
+    ControlClass/externcommuincation/tcommserialport.h
+>>>>>>> 84b21fff0c7305fb7dbd14de2e3aba1318fbef5a
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

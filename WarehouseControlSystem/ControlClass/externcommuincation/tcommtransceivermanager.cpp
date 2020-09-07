@@ -403,6 +403,10 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
         AnalysisCarFrame(tempData,ID);
         break;
     }
+    case HWDEVICETYPE::BARCODE://扫码枪
+    {
+        break;
+    }
     default:
         break;
     }

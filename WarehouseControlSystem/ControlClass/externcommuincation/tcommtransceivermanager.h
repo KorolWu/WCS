@@ -98,7 +98,6 @@ private://模板函数
                     memcpy(buffer,&it.value(),len);
                     SerialPortstru *tstru =(SerialPortstru*)(buffer);
                     stru.hwserialstru =  *tstru;
-
                     break;
                 }
                 case KModbusTcpClient:

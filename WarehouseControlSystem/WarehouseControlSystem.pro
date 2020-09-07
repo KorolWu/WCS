@@ -84,7 +84,8 @@ SOURCES += main.cpp\
     Forms/ElevatorForms/elevatorstatus.cpp \
     updaterealtimedataobject.cpp \
     ControlClass/Instructions/runnerinstruction.cpp \
-    Forms/Dispatch/dispatchwidget.cpp
+    Forms/Dispatch/dispatchwidget.cpp \
+    ControlClass/externcommuincation/tcommserialport.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -149,7 +150,8 @@ HEADERS  += mainwindow.h \
     Forms/ElevatorForms/elevatorstatus.h \
     updaterealtimedataobject.h \
     ControlClass/Instructions/runnerinstruction.h \
-    Forms/Dispatch/dispatchwidget.h
+    Forms/Dispatch/dispatchwidget.h \
+    ControlClass/externcommuincation/tcommserialport.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

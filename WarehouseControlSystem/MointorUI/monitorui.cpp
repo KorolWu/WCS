@@ -103,7 +103,17 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     //增加刷新当前数据的timer
     m_timer = new QTimer();
     connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
-    //m_timer->start(200);
+    //test car pos
+    m_timer->start(100);
+    m_caritem = new StoreItem(-10,30,12,50);
+    m_caritem->SetText("car");
+    m_caritem->SetIndexID("cartest");
+    if(m_cursceneMap.size()> 0 &&m_cursceneMap.contains(1) )
+    {
+        m_cursceneMap[1]->addItem(m_caritem);
+    }
+    m_caritem->SetStoreSate(1);
+
 }
 
 MonitorUI::~MonitorUI()
@@ -146,6 +156,9 @@ void MonitorUI::updateUIbyData()
 ///
 /// \brief MonitorUI::updateCurSceneData
 ///得到当前的场景，对场景中的数据进行更新
+double movvalue = 0;
+bool maxflag = false;
+bool minflag = false;
 void MonitorUI::updateCurSceneData()
 {
     //当前层数显示
@@ -183,6 +196,31 @@ void MonitorUI::updateCurSceneData()
             }
         }
     }
+    if(z != 1)
+        return;
+    if(!minflag && !maxflag)
+    {
+        movvalue--;
+    }
+    if(movvalue < m_minY/k )
+    {
+        minflag = true;
+        maxflag = false;
+    }
+    if(minflag&& !maxflag)
+    {
+       movvalue ++;
+    }
+    if(movvalue > (m_Y-m_minY)/k )
+    {
+        maxflag = true;
+        minflag = false;
+    }
+    if(maxflag&& !minflag)
+    {
+       movvalue--;
+    }
+    m_caritem->setPos(0,movvalue);
 }
 ///
 /// \brief MonitorUI::GetAllLayers
@@ -281,7 +319,7 @@ void MonitorUI::SetUIDataItem()
     m_sizeW = 640/k;
     m_sizeH = 450/k;
     qDebug()<<"value:"<<roadwidth<<m_sizeW<<m_sizeH <<k;
-   // roadwidth = 30;
+    // roadwidth = 30;
     for(int i =0; i < m_laylist.size(); ++i )
     {
         QString str = m_laylist[i].mid(1,m_laylist[i].size()-6);
@@ -309,6 +347,7 @@ void MonitorUI::SetUIDataItem()
             double stopy = starty+m_sizeH;
 
 
+
             QStringList keylist = it.key().split("-");
             if(keylist.size() == 5)
             {
@@ -321,7 +360,7 @@ void MonitorUI::SetUIDataItem()
                     stopx =  stopx+roadwidth+m_sizeW;
                     // if(it.value().coordz == 1)
                     {
-                       // qDebug()<<"坐标位置:"<<startx<< starty  << stopx<< stopy <<laymap.size() << dirstateinfo<<it.key();
+                        // qDebug()<<"坐标位置:"<<startx<< starty  << stopx<< stopy <<laymap.size() << dirstateinfo<<it.key();
                     }
                 }
             }
@@ -386,9 +425,9 @@ void MonitorUI::GetstoreposSize()
     double y = BaseDataInfoOperate::GetYMaxValue();
     double xmin = BaseDataInfoOperate::GetXMinValue();
     double ymin = BaseDataInfoOperate::GetYMinValue();
-    // qDebug()<<"maxbavalue:"<<x<<y<<ymin<<xmin << this->size().width() -40<<this->size();
-    int k1  = 0;
-    int k2 = 0;
+    //qDebug()<<"maxbavalue:"<<x<<y<<ymin<<xmin << this->size().width() -40<<this->size();
+    double k1  = 0;
+    double k2 = 0;
     k1 = (x-xmin)/(this->size().width() -40);
     k2 = (y-ymin)/(this->size().height() -60);
     if(k1 > k2)
@@ -396,6 +435,7 @@ void MonitorUI::GetstoreposSize()
         k = k1;
     }
     else{
+
         k = k2;
     }
     m_X = x;

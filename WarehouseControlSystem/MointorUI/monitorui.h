@@ -29,9 +29,10 @@ private:
     double m_X;
     double m_Y;
     double m_minX;
-     double m_minY;
+    double m_minY;
     double k ;
     QTimer *m_timer;
+    StoreItem *m_caritem;
 public slots:
     void SetCurLayUI(int index);
     void updateUIbyData();

@@ -264,7 +264,20 @@ public:
                 posstru.x = it.value().coordx;
                 posstru.y = it.value().coordy;
                 posstru.z = it.value().coordz;
-                posstru.state = it.value().directionstate;
+
+                QStringList keylist = it.key().split("-");
+                if(keylist.size() == 5)
+                {
+                    QString dirstateinfo = keylist[2];
+                    dirstateinfo  =   dirstateinfo.right(dirstateinfo.size()-1);
+                    if(dirstateinfo.toInt()%2 == 0) //左边是x值小的
+                    {
+                       posstru.state = 1;
+                    }
+                    else{
+                        posstru.state = 0; //A1 x坐标系左边
+                    }
+                }
                 id = it.key();
                 return true;
             }

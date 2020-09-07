@@ -60,9 +60,6 @@ private:
     InputCurConfig m_testelevatorpos;//小车电梯位置点 Z x y
     InputCurConfig m_testCarChargingpos;//小车充电位置 在电梯旁位置
     double m_roady; //巷道位置的坐标
-
-
-
 };
 
 #endif // GENERATEINPUTWAREHOUSINGORDERS_H

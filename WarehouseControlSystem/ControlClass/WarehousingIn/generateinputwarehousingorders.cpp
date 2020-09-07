@@ -52,6 +52,22 @@ void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pick
     m_carwaitElevatorstru.y = carwaitElevatory;
     m_carElevatorstru.x = carElevatorx;//小车进电梯位置信息
     m_carElevatorstru.y = carElevatory;
+    //test内容
+    m_roady = 0.0;
+    m_testpickuppos.x = 0.0;
+    m_testpickuppos.y = 1943;
+    m_testelevatorpos.x = 0.0;
+    m_testelevatorpos.y = 2343;
+    m_testCarChargingpos.x = 0.0;
+    m_testCarChargingpos.y = 1943;
+    //设置参数内容
+    m_roady =  changeover;
+    m_testpickuppos.x = pickupx;
+    m_testpickuppos.y = pickupy;
+    m_testelevatorpos.x = carElevatorx;
+    m_testelevatorpos.y = carElevatory;
+    m_testCarChargingpos.x = carwaitElevatorx;
+    m_testCarChargingpos.y = carwaitElevatory;
 }
 ///
 /// \brief GenerateInputWarehousingOrders::Generationinstruction
@@ -324,7 +340,7 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
     OrderStru orderstru;
     if(m_testpickuppos.y != m_carPos.y || m_testpickuppos.x != m_carPos.x)  //小车正好在 小车电梯里面
     {
-        if(m_testpickuppos.x == m_carPos.x) //x坐标一样那么直接可以到达等待电梯
+        if(m_testCarChargingpos.x == m_carPos.x) //x坐标一样那么直接可以到达等待电梯
         {
             orderstru.order = Y;
             orderstru.value =  m_testCarChargingpos.y - m_carPos.y;
@@ -332,7 +348,7 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
             m_carPos.y = m_testCarChargingpos.y;
             //呼叫电梯到达小车层数
             orderstru.order = Call;
-            orderstru.value = m_carPos.z;
+            orderstru.value = m_carPos.z;//电梯的当前层数
             m_taskQueue.append(orderstru);
             //进入电梯
             orderstru.order = Elevator_In;
@@ -409,8 +425,6 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
         orderstru.z = m_trapos.z;
         m_taskQueue.append(orderstru);
         m_carPos.y = m_trapos.y;
-
-
     }
     else{
         // 巷道方式
@@ -434,7 +448,6 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
     {
         orderstru.order = Left_Putinto;//左放货
         m_taskQueue.append(orderstru);
-
     }
     else{
         orderstru.order = Right_Putinto;//右放货

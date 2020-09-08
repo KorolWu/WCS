@@ -15,7 +15,7 @@ public:
     virtual void runInstruction();
 
 public:
-    bool isTerminate;
+    bool isTerminate = false;
 
 };
 

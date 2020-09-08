@@ -2,7 +2,7 @@
 #define TIMEOUT 10000
 CarInstruction::CarInstruction()
 {  
-    m_result = 0;
+    m_result = -4;
 }
 
 void CarInstruction::setParameter(OrderStru o, int device_id)
@@ -48,7 +48,7 @@ void CarInstruction::runInstruction()
                     }
                     else
                         layer = 2;
-                    if(Myconfig::GetInstance()->m_elevatorMap[888888].status.curachelayer == layer)
+                    if(Myconfig::GetInstance()->m_elevatorMap[888888].status.curachelayer == layer)//and signal about runner can get box signal
                     {
                         //发送指令
                         TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
@@ -60,7 +60,7 @@ void CarInstruction::runInstruction()
                 gettimeofday(&tpEnd,NULL);
                 timeUse = 1000 *(tpEnd.tv_sec - tpStart.tv_sec) + 0.001*(tpEnd.tv_usec - tpStart.tv_usec);
                 if(timeUse >= TIMEOUT)
-                    break;
+                    return ;
                 QThread::msleep(5);
                 QApplication::processEvents();
             }
@@ -79,7 +79,7 @@ void CarInstruction::runInstruction()
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"y",m_tempValue,m_instructMsg))
                 m_result = 3;
         }
-        else if(m_order.order == 8 || m_order.order == 7) //car out of elevator
+        else if(m_order.order == 8) //car out of elevator
         {
             m_tempValue = m_order.z;
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
@@ -89,20 +89,25 @@ void CarInstruction::runInstruction()
        TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
     }
     else
-        m_result = 1;
+        m_result = -1;
 }
 
 int CarInstruction::getResult(QString &exeMsg)
 {
-    if(m_result != 0)
+    if(m_result == -4)
     {
         exeMsg = QString("%1  Terminate!").arg(m_order.type);
+        return m_result;
+    }
+    else if(m_result == -1)
+    {
+        exeMsg = QString("%1  小车没有满足运动状态!").arg(m_order.type);
         return m_result;
     }
     struct timeval tpStart,tpEnd;
     float timeUse = 0;
     gettimeofday(&tpStart,NULL);
-    while (timeUse < TIMEOUT)
+    while (timeUse > TIMEOUT)
     {
         if(isTerminate)
         {

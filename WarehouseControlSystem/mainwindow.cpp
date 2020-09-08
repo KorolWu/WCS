@@ -303,11 +303,11 @@ void MainWindow::deleteChildrenList()
 void MainWindow::getParameterFromDB()
 {
     ReadTableData r;
-    r.readt_device_info();
     r.readt_elevator();
     r.readt_crrunt_task();
    // r.readt_runerInfo();
     r.Readt_hwcomm_infotable();
+    r.readt_device_info();
     //qDebug()<<Myconfig::GetInstance()->m_CarMap.size();
 }
 

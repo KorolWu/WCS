@@ -11,6 +11,15 @@ DispatchWidget::DispatchWidget(int width, int height, QWidget *parent) : QWidget
 void DispatchWidget::onBoxClicked()
 {
     QPushButton *b = (QPushButton*)sender();
+    if(b != nullptr)
+    {
+        int i = b->objectName().toInt();
+        if(Myconfig::GetInstance()->m_cacheRunerMap[i] == true)
+        {
+            Myconfig::GetInstance()->m_runer.cache_in_current++;
+            Myconfig::GetInstance()->m_cacheRunerMap[i] == false;
+        }
+    }
 }
 
 void DispatchWidget::onGetBoxClicked()
@@ -25,9 +34,10 @@ void DispatchWidget::onGetBoxClicked()
       t.from = "Manual";
       t.pripty= 1;
       Myconfig::GetInstance()->m_taskQueue.enqueue(t);
+      appendInfo("已插入出库队列");
    }
    else
-      m_ptextLine_log->append(QString("%1  :We can't find this bin").arg(QDateTime::currentDateTime().toString("hh:mm:ss")));
+       appendInfo("We can't find this bin");
 }
 
 void DispatchWidget::initUI()
@@ -74,7 +84,7 @@ void DispatchWidget::initRightW()
     for(int i = 0; i < 8; i++)
     {
         m_box_list[i] = new QPushButton();
-        m_box_list[i]->setObjectName(QString("box_%1").arg(i));
+        m_box_list[i]->setObjectName(QString("%1").arg(i));
         m_box_list[i]->setText(QString("A%1").arg(i));
         m_box_list[i]->setFont(font);
         connect(m_box_list[i],&QPushButton::clicked,this,&DispatchWidget::onBoxClicked);
@@ -87,4 +97,9 @@ void DispatchWidget::initRightW()
                              "QPushButton{width:70px;height:70;}"
                              "QWidget{background-color:rgb(190,190,190);border-radius: 5px;}");
 
+}
+
+void DispatchWidget::appendInfo(QString str)
+{
+    m_ptextLine_log->append(QString(">%1  :"+str).arg(QDateTime::currentDateTime().toString("hh:mm:ss")));
 }

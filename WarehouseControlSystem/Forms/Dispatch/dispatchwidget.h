@@ -37,6 +37,7 @@ private:
     QLineEdit *m_plineCacheIn;
     QLineEdit *m_plineCacheOut;
     QTextEdit *m_ptextLine_log;
+    void appendInfo(QString str);
 };
 
 #endif // DISPATCHWIDGET_H

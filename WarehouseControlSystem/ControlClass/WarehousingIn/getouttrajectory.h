@@ -5,6 +5,7 @@
 #include "datastructure.h"
 #include "Myconfig.h"
 #include "unchangevalue.h"
+#include <math.h>
 /**
  * @brief The GetOutTrajectory class
  * @date
@@ -26,6 +27,7 @@ private:
      KPosition m_task_p;
      int   m_id;
      TaskInfoStru m_task;
+     bool isLeftPickup(QString &str);
      const double m_isYTrack = 1000;
      const double m_elevatorX = 1000;
      const double m_elevatorY = 2000;

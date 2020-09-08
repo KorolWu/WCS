@@ -33,7 +33,7 @@ public:
     QQueue<OrderStru> GetInputWarehousingOrders();
     //test
     void SetHWConfigData(double pickupx,double pickupy,double changeover,double carwaitElevatorx,\
-                         double carwaitElevatory,double carElevatorx,double carElevatory );
+                         double carwaitElevatory,double carElevatorx,double carElevatory,double pickupz );
 private:
     QQueue<OrderStru> m_taskQueue;
     KPosition m_trapos;

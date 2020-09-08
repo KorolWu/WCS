@@ -43,7 +43,7 @@ QQueue<OrderStru> GenerateInputWarehousingOrders::GetInputWarehousingOrders(){
     return m_taskQueue;
 }
 
-void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pickupy, double changeover, double carwaitElevatorx, double carwaitElevatory, double carElevatorx, double carElevatory)
+void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pickupy, double changeover, double carwaitElevatorx, double carwaitElevatory, double carElevatorx, double carElevatory,double pickupz)
 {
     m_pickupBoxElevatorstru.x = pickupx;
     m_pickupBoxElevatorstru.y = pickupy;
@@ -64,6 +64,7 @@ void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pick
     m_roady =  changeover;
     m_testpickuppos.x = pickupx;
     m_testpickuppos.y = pickupy;
+    m_testpickuppos.z = pickupz;
     m_testelevatorpos.x = carElevatorx;
     m_testelevatorpos.y = carElevatory;
     m_testCarChargingpos.x = carwaitElevatorx;
@@ -338,6 +339,7 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
 {
     // 小车先随小车电梯到达流道层位置点
     OrderStru orderstru;
+    qDebug()<<"carpos"<<m_carPos.x<<m_carPos.y << m_trapos.x << m_trapos.y <<m_trapos.z << m_trapos.state;
     if(m_testpickuppos.y != m_carPos.y || m_testpickuppos.x != m_carPos.x)  //小车正好在 小车电梯里面
     {
         if(m_testCarChargingpos.x == m_carPos.x) //x坐标一样那么直接可以到达等待电梯
@@ -435,7 +437,7 @@ void GenerateInputWarehousingOrders::GetPathcmdlist()
         m_carPos.y = m_roady;
 
         orderstru.order = X;
-        orderstru.value = m_trapos.x - m_testelevatorpos.y;
+        orderstru.value = m_trapos.x - m_testelevatorpos.x;
         m_taskQueue.append(orderstru);
         m_carPos.x= m_trapos.x;
         orderstru.order = Y;

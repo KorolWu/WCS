@@ -18,6 +18,7 @@ enum HWDEVICEPROTYPE{
     KTcpClient = 2,
     KSerialPort = 3,
     KModbusTcpClient = 4 ,
+    KModbusSerialport = 5 ,
     KHttpServer
 };
 //通讯参数配置部分结构体
@@ -41,6 +42,7 @@ struct SerialPortstru:public hwcomBasestru{
     int Parity = 0;
     int StopBits = 0;
     int bytesize = 0;
+    int serveraddress = 1;
 };
 struct ModbusTcpClientstru:public hwcomBasestru{
     QString url_str;
@@ -49,8 +51,6 @@ struct ModbusTcpClientstru:public hwcomBasestru{
 struct HttpServerStru:public hwcomBasestru{
 
 };
-
-
 struct ComConfigStru{
     TcpStru hwTcpstru;
     SerialPortstru hwserialstru;
@@ -122,7 +122,7 @@ typedef union
 {
     struct {
         int16_t
-            berror:1, // bit0 值“1”穿梭车在自动状态下发生故障
+        berror:1, // bit0 值“1”穿梭车在自动状态下发生故障
             belectricity:1, // bit1 值“1”穿梭车电量低
             bready:1,//bit2 值“1”穿梭车就绪,可以接收指令
             bruning:1, //bit3 值“1”穿梭车正在执行指令中
@@ -137,7 +137,7 @@ typedef union
 {
     struct {
         int8_t
-            bLhavegoods:1, // bit0 0位 = 值“1”穿梭车左侧有货
+        bLhavegoods:1, // bit0 0位 = 值“1”穿梭车左侧有货
             bRhavegoods:1, // bit1   穿梭车右侧有货
             bloaplathavegoods:1;//bit2 值“ 1穿梭车载货台内有货
     };
@@ -172,11 +172,11 @@ struct ReceCarDetailFrame{
 
 //wcs主动接收小车发送帧格式部分数据 简易数据报文 10个字节信息
 struct ReceCarcmdsimFrame{
-     int16_t cmdnbr;// 指令编号， 分为主动为1000 或者 为WCS编号
-     int16_t carnbr;//小车编号穿梭车的唯一编号。
-     char cmdname[2];//命令ST(唯一)
-     int16_t carstate; // 小车状态显示穿梭车当前是处于手动状态还是自动状态 1 = 手动 2 = 自动
-     ReceCarinfostru info;// 信息 0位 = 值“1”穿梭车在自动状态下发生故障 1位 = 值“1”穿梭车电量低
+    int16_t cmdnbr;// 指令编号， 分为主动为1000 或者 为WCS编号
+    int16_t carnbr;//小车编号穿梭车的唯一编号。
+    char cmdname[2];//命令ST(唯一)
+    int16_t carstate; // 小车状态显示穿梭车当前是处于手动状态还是自动状态 1 = 手动 2 = 自动
+    ReceCarinfostru info;// 信息 0位 = 值“1”穿梭车在自动状态下发生故障 1位 = 值“1”穿梭车电量低
 };
 //动作指令执行报文穿梭车对应的指令状态如下 报文指令长度
 /// 1. 正在执行

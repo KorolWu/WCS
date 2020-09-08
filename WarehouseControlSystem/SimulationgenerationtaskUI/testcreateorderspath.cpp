@@ -60,16 +60,16 @@ TestcreateOrdersPath::TestcreateOrdersPath(QWidget *parent):QWidget(parent)
     m_configTable->item(3,0)->setText("小车进电梯点信息");
     m_configTable->item(4,0)->setText("流道配置信息");
     m_configTable->item(5,0)->setText("换向坐标配置信息");
-    m_configTable->item(0,1)->setText("26");
-    m_configTable->item(0,2)->setText("2");
+    m_configTable->item(0,1)->setText("0.0");
+    m_configTable->item(0,2)->setText("2430");
     m_configTable->item(1,1)->setText("26");
     m_configTable->item(1,2)->setText("2");
-    m_configTable->item(2,1)->setText("24");
-    m_configTable->item(2,2)->setText("1");
-    m_configTable->item(3,1)->setText("20");
-    m_configTable->item(3,2)->setText("1");
+    m_configTable->item(2,1)->setText("0");
+    m_configTable->item(2,2)->setText("1423");
+    m_configTable->item(3,1)->setText("0");
+    m_configTable->item(3,2)->setText("3330");
     m_configTable->item(4,1)->setText("4");
-    m_configTable->item(5,1)->setText("26");
+    m_configTable->item(5,1)->setText("0.0");
     //流道缓存区域设置
     QGroupBox *rungroup = new QGroupBox;
     QHBoxLayout *runbox = new  QHBoxLayout();
@@ -158,7 +158,7 @@ void TestcreateOrdersPath::Createorderslot()
         inob.SetHWConfigData(m_configTable->item(0,1)->text().toDouble(),m_configTable->item(0,2)->text().toDouble(),\
                              m_configTable->item(5,1)->text().toDouble(),m_configTable->item(2,1)->text().toDouble(),\
                              m_configTable->item(2,2)->text().toDouble(),m_configTable->item(3,1)->text().toDouble(),\
-                             m_configTable->item(3,2)->text().toDouble());
+                             m_configTable->item(3,2)->text().toDouble(),m_configTable->item(0,3)->text().toDouble());
         taskQueue = inob.GetInputWarehousingOrders();
     }
     else{

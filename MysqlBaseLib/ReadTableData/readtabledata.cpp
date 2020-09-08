@@ -339,6 +339,7 @@ void ReadTableData::Readt_hwcomm_infotable()
             break;
         }
         case HWDEVICEPROTYPE::KSerialPort:
+        case HWDEVICEPROTYPE::KModbusSerialport:
         {
             SerialPortstru stru;
             stru.hwtype = type;
@@ -351,6 +352,7 @@ void ReadTableData::Readt_hwcomm_infotable()
             stru.DataBits = query.value("DataBits").toInt();
             stru.Parity = query.value("Parity").toInt();
             stru.StopBits = query.value("StopBits").toInt();
+            stru.serveraddress = query.value("port").toInt();
             Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap.insert(Id,stru);
             break;
         }

@@ -11,7 +11,7 @@ QTPLUGIN += qgif
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = WarehouseControlSystem
-TEMPLATE = app
+TEMPLATE =  app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -85,7 +85,8 @@ SOURCES += main.cpp\
     updaterealtimedataobject.cpp \
     ControlClass/Instructions/runnerinstruction.cpp \
     Forms/Dispatch/dispatchwidget.cpp \
-    ControlClass/externcommuincation/tcommserialport.cpp
+    ControlClass/externcommuincation/tcommserialport.cpp \
+    ControlClass/externcommuincation/tcommmodbusserial.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -151,7 +152,8 @@ HEADERS  += mainwindow.h \
     updaterealtimedataobject.h \
     ControlClass/Instructions/runnerinstruction.h \
     Forms/Dispatch/dispatchwidget.h \
-    ControlClass/externcommuincation/tcommserialport.h
+    ControlClass/externcommuincation/tcommserialport.h \
+    ControlClass/externcommuincation/tcommmodbusserial.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

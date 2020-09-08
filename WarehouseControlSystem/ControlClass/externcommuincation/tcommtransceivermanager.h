@@ -9,6 +9,7 @@
 #include "tcommtcpclient.h"
 #include "tcommtcpserver.h"
 #include "tcommmodbustcpclient.h"
+#include "tcommmodbusserial.h"
 #include <QMutexLocker>
 #include <QMutex>
 #include <QMap>
@@ -60,6 +61,8 @@ private:
     bool ModifyCarReceFrameIndex(int ID,int wcsnbr);
     void  AnalysisCarFrame(QByteArray dataframe ,int ID);
     void  UpdateCarStatus(int carID,int role,int value);
+    void UpdateRunnerData(int datatype, QMap<int, int> Data);
+    void UpdateCarelevatorData(int ID ,QMap<int, int> Data);
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);
@@ -68,6 +71,7 @@ private:
     QMap<int,HWdeviceabstractInterface *> m_HWdeviceMap;
     QMutex m_TCommMutex; //通讯对象部分数据读写锁
     QMap<int16_t,QList<int16_t>> m_Wcstocarframeindex; // 小车的id 和对应的报文的索引值
+
 private://模板函数
     template<typename T1>
     void CreatObbyHWconfigData(QMap<int,T1> datamap ,HWDEVICEPROTYPE type)
@@ -98,6 +102,10 @@ private://模板函数
                     memcpy(buffer,&it.value(),len);
                     SerialPortstru *tstru =(SerialPortstru*)(buffer);
                     stru.hwserialstru =  *tstru;
+                    if(tstru->protype == KModbusSerialport)
+                    {
+                        connect(ob,&HWdeviceabstractInterface::signalReceModbusHWdeviceData,this,&TCommtransceivermanager::ReceModbusDataFromHWob);
+                    }
                     break;
                 }
                 case KModbusTcpClient:

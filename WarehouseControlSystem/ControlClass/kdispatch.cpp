@@ -50,7 +50,7 @@ bool KDispatch::saveSubTaskInfo()
     {
         OrderStru o = sub_task.dequeue();
         QVariantList value;
-        value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"Created"<<m_task.boxNum<<m_ip<<"commandDate";
+        value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"Created"<<m_task.boxNum<<QString("%1").arg(m_carId)<<"commandDate";
         values.append(value);
         sequence ++;
     }
@@ -81,7 +81,7 @@ bool KDispatch::runSubTask()
             msg = "执行成功";
         else
             msg = "执行失败";
-        CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,"commamd",sequnce,sqlerr);
+        CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr);
         //qDebug()<<"subtask"<<sqlErr;
         if(sqlerr != "")
             GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
@@ -136,6 +136,16 @@ bool KDispatch::runInstrucation(OrderStru o)//id can`t write here
         m_pAbstructInstruction = new CarElevatorInstruction();
         id = 21;
     }
+    else if(o.order == 7) //car in elevator
+    {
+        m_pAbstructInstruction = new CarInstruction();
+        id = m_carId;
+    }
+    else if(o.order == 8) //car out elevator
+    {
+        m_pAbstructInstruction = new CarInstruction();
+        id = m_carId;
+    }
     if(m_pAbstructInstruction != nullptr)
     {
         m_pAbstructInstruction->setParameter(o,id);
@@ -184,7 +194,6 @@ void KDispatch::run()
         m_taskQueue = t->GetInputWarehousingOrders();
         qDebug()<<"正在执行入库任务";
     }
-//    getTrajectory_out();
     saveSubTaskInfo();
     runSubTask();
     //保存当前任务完成的状态，完成 未完成，或者报警日志

@@ -159,10 +159,9 @@ void GetOutTrajectory::inElevator()
     o.order = Order::Y;
     o.value =  903 + 520;
     m_taskQueue.enqueue(o);
-    o.order = Elevator_In;
-    m_taskQueue.enqueue(o);
 
-    o.order = Order::Y;
+    o.order = Elevator_In;
+    o.z = m_task_p.z;
     o.value =  1258;
     m_taskQueue.enqueue(o);
 
@@ -179,6 +178,7 @@ void GetOutTrajectory::outElevator()
 {
     OrderStru o;
     o.order = Order::Elevator_Out;
+    o.z = m_task_p.z;
 //    m_taskQueue.enqueue(o);
 //    o.order = Order::X;
     o.value = 1258+520+903;
@@ -194,7 +194,7 @@ void GetOutTrajectory::pickUp()
     o.order = Order::Y;
     o.value = m_task_p.y - 0 ;
     m_taskQueue.enqueue(o);
-    if(m_task.taskNum == "L")
+    if(isLeftPickup(o.shelves))
     {
         o.order = Order::Left_Pickup;
     }
@@ -228,4 +228,18 @@ void GetOutTrajectory::pickUp()
     m_taskQueue.enqueue(o);
     //发送缓存去库位号给流道
     //function
+}
+
+bool GetOutTrajectory::isLeftPickup(QString &str)
+{
+    QStringList list = str.split("-");
+    if(list.size() == 5)
+    {
+        int i = QString (list[2]).mid(1).toInt();
+        if(fmod(i,2) == 0)
+        {
+            return true;
+        }
+    }
+  return false;
 }

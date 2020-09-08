@@ -32,7 +32,7 @@ void CarElevatorInstruction::runInstruction()
 //        m_result = 99;
 }
 
-int CarElevatorInstruction::getResult(QString exeMsg)
+int CarElevatorInstruction::getResult(QString &exeMsg)
 {
 
     if(m_result != 0)

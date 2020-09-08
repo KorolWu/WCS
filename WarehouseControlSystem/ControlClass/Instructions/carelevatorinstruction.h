@@ -26,7 +26,7 @@ public:
     // AbstructInstruction interface
 public:
     void setParameter(OrderStru o, int device_id);
-    int getResult(QString exeMsg);
+    int getResult(QString &exeMsg);
     void runInstruction();
 private:
     int m_id;

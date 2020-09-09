@@ -23,6 +23,7 @@ signals:
 public slots:
     void onBoxClicked();
     void onGetBoxClicked();
+    void onScanCode();
 private:
     void initUI();
     int m_width;
@@ -30,6 +31,8 @@ private:
     void initRightW();
     QWidget *m_prightW;
     QPushButton* m_box_list[8];
+    QPushButton *m_pScan_1;
+    QPushButton *m_pScan_2;
     QVBoxLayout *m_pvbox_rightw;
     QWidget *m_poutWidget;
     QPushButton *m_poutButton;

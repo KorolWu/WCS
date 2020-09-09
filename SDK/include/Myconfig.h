@@ -67,5 +67,6 @@ public:
     int m_run_mode = 1;
     //流道的缓存位1-8，是否有料箱 有true  无false；
     QMap<int ,bool> m_cacheRunerMap;
+    QMap<int ,ScanInfoStru> m_ScanMap;
 };
 #endif

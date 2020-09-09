@@ -90,7 +90,8 @@ enum Order{
     call_Runner_Putbox = 13, //呼叫流道放货到入库电梯
     Left_Putinto = 14,       //左放货
     Right_Putinto = 15,      //右放货
-    Unlock_layer = 16        //将小车锁定的层解锁（小车进电梯时）
+    Unlock_layer = 16,       //将小车锁定的层解锁（小车进电梯时）
+    Scan_Code    = 17
 };
 //子任务的结构 任务类型，值
 typedef struct _OrderStru
@@ -226,6 +227,22 @@ typedef struct _RunnerInfoStru
     QMap<int,int> coilMap; //地址 后面地址对应的值 bit 物理线圈
     int connectresult = 0;
 }RunnerInfoStru;
+typedef struct _SerialportInfo
+{
+    QString SerialName;
+    int     SerialPort;
+    int     BaudRate;
+    int     DataBit;
+    int     Parity;
+    int     StopBit;
+}SerialportInfo;
+typedef struct _ScanInfoStru
+{
+    int            deviceId;
+    SerialportInfo hwInfo;
+    bool           isOnline=false;
+
+}ScanInfoStru;
 
 //由WCS发过来的任务数据
 typedef struct _TaskInfoStru : public KBaseStruct

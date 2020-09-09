@@ -40,12 +40,28 @@ void DispatchWidget::onGetBoxClicked()
        appendInfo("We can't find this bin");
 }
 
+void DispatchWidget::onScanCode()
+{
+    QPushButton *b = (QPushButton*)sender();
+    if(b->objectName() == "Scan_1")
+    {
+
+    }
+    else if(b->objectName() == "Scan_2")
+    {
+
+    }
+    else
+        return;
+
+}
+
 void DispatchWidget::initUI()
 {
     initRightW();
     m_prightW->move(m_width - 250,10);
     m_poutWidget = new QWidget(this);
-    m_poutWidget->setStyleSheet("QWidget{background-color:rgb(190,190,190);border-radius: 6px;}");
+    m_poutWidget->setStyleSheet("QWidget{background-color:rgb(190,190,190);border-radius: 6px;}QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_poutWidget->resize(1300,m_height-10);
     m_poutWidget->move(10,10);
 
@@ -69,7 +85,17 @@ void DispatchWidget::initUI()
     m_plineBoxNum->resize(200,30);
     m_plineBoxNum->move(100,100);
     m_poutButton->move(320,100);
-    m_poutButton->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+   // m_poutButton->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+    m_pScan_1 = new QPushButton(m_poutWidget);
+    m_pScan_1->setText("Scan_1");
+    m_pScan_1->setObjectName("Scan_1");
+    m_pScan_2 = new QPushButton(m_poutWidget);
+    m_pScan_2->setText("Scan_2");
+    m_pScan_2->setObjectName("Scan_2");
+    m_pScan_1->move(20,160);
+    m_pScan_2->move(320,160);
+    connect(m_pScan_1,&QPushButton::clicked,this,&DispatchWidget::onScanCode);
+    connect(m_pScan_2,&QPushButton::clicked,this,&DispatchWidget::onScanCode);
     m_ptextLine_log = new QTextEdit(m_poutWidget);
     m_ptextLine_log->move(20,200);
     m_ptextLine_log->resize(400,110);

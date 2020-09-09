@@ -23,7 +23,7 @@ void TCommtransceivermanager::InitHWcommob()
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwTcpMap,KTcpClient);
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwmodbustcpcliMap,KModbusTcpClient);
     CreatObbyHWconfigData(Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap,KSerialPort);
-    //m_heartTimer->start(500);
+    m_heartTimer->start(500);
 }
 ///
 /// \brief TCommtransceivermanager::SendcommandByExtern
@@ -146,7 +146,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             }
             break;
         }
-      case HWDEVICETYPE::BARCODE:
+        case HWDEVICETYPE::BARCODE://串口协议
         {
             //扫码协议需要发送数据内容
             break;
@@ -427,7 +427,7 @@ void TCommtransceivermanager::UpdateRunnerData(int datatype, QMap<int, int> Data
                     {
                         if(!Myconfig::GetInstance()->m_cacheRunerMap[it.value()])
                         {
-                           Myconfig::GetInstance()->m_cacheRunerMap[it.value()] = true;
+                            Myconfig::GetInstance()->m_cacheRunerMap[it.value()] = true;
                         }
                     }
                     else{
@@ -435,7 +435,7 @@ void TCommtransceivermanager::UpdateRunnerData(int datatype, QMap<int, int> Data
                     }
                 }
             }
-            qDebug()<<"runner:recedata"<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
+            //qDebug()<<"runner:recedata"<<QString("adress:%1;value:%2").arg(QString::number(it.key())).arg(QString::number(it.value()));
         }
         break;
     }
@@ -473,6 +473,19 @@ void TCommtransceivermanager::UpdateCarelevatorData(int ID ,QMap<int, int> Data)
     }
 }
 ///
+/// \brief TCommtransceivermanager::UpdateScanData
+/// \param dataframe
+/// \param ID
+///更新扫码枪的信息数据
+void TCommtransceivermanager::UpdateScanData(QByteArray dataframe, int ID)
+{
+    if( Myconfig::GetInstance()->m_ScanMap.contains(ID))
+    {
+        qDebug()<<"收到了扫码信息："<< QString::fromUtf8(dataframe);
+        Myconfig::GetInstance()->m_boxNum_in = QString::fromUtf8(dataframe);
+    }
+}
+///
 /// \brief TCommtransceivermanager::UpdateCarStatus
 /// \param carID
 
@@ -500,6 +513,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     }
     case HWDEVICETYPE::BARCODE://自动扫码枪数据更新
     {
+        UpdateScanData(tempData,ID);
         break;
     }
     default:
@@ -595,7 +609,14 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
     }
     case HWDEVICETYPE::BARCODE:
     {
-
+        //扫码枪连接创建 串口部分
+        if(m_HWdeviceMap.contains(ID)&& Myconfig::GetInstance()->m_ScanMap.contains(ID))
+        {
+            if(Myconfig::GetInstance()->m_ScanMap[ID].isOnline  != state)
+            {
+                Myconfig::GetInstance()->m_ScanMap[ID].isOnline = state;
+            }
+        }
         break;
     }
     default:

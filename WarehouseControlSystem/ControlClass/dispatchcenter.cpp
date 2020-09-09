@@ -44,39 +44,46 @@ void DispatchCenter::dispatchTaskThread()
         m_car_ip = -999;
         if(Myconfig::GetInstance()->m_runer.cache_in_current < 3  && Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)//&& Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max
         {
-                if(m_pSelectCar->hasUseCar())
-                {
-                    QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
-                    m_task =  Myconfig::GetInstance()->m_taskQueue.at(0);
-                    remove_task_from(m_task.taskNum);
-                    handle_out_task(m_task);
-                }
-                else // no car use
-                {
-                    QThread::msleep(10);
-                }
+            if(m_pSelectCar->hasUseCar())
+            {
+                QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
+                m_task =  Myconfig::GetInstance()->m_taskQueue.at(0);
+                remove_task_from(m_task.taskNum);
+                handle_out_task(m_task);
+            }
+            else // no car use
+            {
+                QThread::msleep(10);
+            }
 
-                QEventLoop loop;
-                QTimer::singleShot(100,&loop,SLOT(quit()));
-                loop.exec();
+            QEventLoop loop;
+            QTimer::singleShot(100,&loop,SLOT(quit()));
+            loop.exec();
 
         }
         else // 分配入库
         {
-            if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
+
+            if(m_pSelectCar->hasUseCar()&& Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[8] == 99)
             {
-                if(m_pSelectCar->hasUseCar()&& Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[8] == 99)
+                scanCode();
+
+                if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
                 {
-                    scanCode();
                     QString frist_in_boxNum = Myconfig::GetInstance()->m_boxNum_in;
-                    qDebug()<<"box_num"<<frist_in_boxNum;
+                    //qDebug()<<"box_num"<<frist_in_boxNum;
                     if(Myconfig::GetInstance()->m_in_taskMap.contains(frist_in_boxNum))
                     {
                         TaskInfoStru t = Myconfig::GetInstance()->m_in_taskMap[frist_in_boxNum];
                         handle_in_task(t,frist_in_boxNum);
+                        Myconfig::GetInstance()->m_boxNum_in = "";
                     }
                     else
+                    {
+                        QThread::msleep(40);
                         continue;
+
+                    }
                 }
             }
         }
@@ -150,7 +157,7 @@ void DispatchCenter::handle_in_task(TaskInfoStru &t, QString frist_in_boxNum)
 {
     KPosition task_p;//根据料箱号返回料箱所在坐标
     QString shelves_name;
-    bool result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForIn(frist_in_boxNum,task_p,shelves_name);
+    bool result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForIn_V1(frist_in_boxNum,task_p,shelves_name);
     if(result && Myconfig::GetInstance()->m_storeinfoMap.contains(shelves_name))
     {
         Myconfig::GetInstance()->m_storeinfoMap[shelves_name].storestat = 1; //lock shelves
@@ -186,7 +193,7 @@ void DispatchCenter::handle_in_task(TaskInfoStru &t, QString frist_in_boxNum)
         qDebug()<<"in size "<<Myconfig::GetInstance()->m_in_taskMap.size();
     }
     else
-       Task_execution_failed(t);
+        Task_execution_failed(t);
 
 }
 
@@ -231,7 +238,7 @@ void DispatchCenter::handle_out_task(TaskInfoStru &t)
         m_count_text++;
     }
     else
-       Task_execution_failed(t);
+        Task_execution_failed(t);
 
 }
 //移除相机拍到的最新的那个料箱对应的任务
@@ -286,8 +293,18 @@ void DispatchCenter::scanCode()
     QString execStr = "";
     if(c->getResult(execStr) != 1)
     {
-
+        //return;
     }
+    if(Myconfig::GetInstance()->m_boxNum_in == "")
+        return;
+    TaskInfoStru t;
+    t.boxNum = Myconfig::GetInstance()->m_boxNum_in;
+    t.creatTime = QDateTime::currentDateTime();
+    t.from = "Scan";
+    t.pripty =1;
+    t.taskNum = "DebugTask";
+    Myconfig::GetInstance()->m_in_taskMap.insert(t.boxNum,t);
+
 }
 
 

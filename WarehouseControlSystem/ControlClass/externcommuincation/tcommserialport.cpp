@@ -58,9 +58,11 @@ bool TcommSerialport::InitSerialport()
         m_serialob.setReadBufferSize(4096);
         connect(&m_serialob, SIGNAL(readyRead()), this, SLOT(RevSerialDataFromHW()));
         emit signalHWDisconnect(m_serialconfig.ID,m_serialconfig.hwtype,true);
+        m_connectstate = 1;
         return true;
     }else
     {
+        m_connectstate = -1;
         qDebug()<<"串口打开失败...."<<m_serialconfig.ID<<endl;
          emit signalHWDisconnect(m_serialconfig.ID,m_serialconfig.hwtype,false);
         return false;

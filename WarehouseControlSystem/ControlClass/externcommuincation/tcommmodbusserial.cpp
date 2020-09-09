@@ -61,7 +61,7 @@ void Tcommmodbusserial::InitConnect()
                                              m_configstru.DataBits);
         modbusDevice->setConnectionParameter(QModbusDevice::SerialStopBitsParameter,
                                              m_configstru.StopBits);
-        modbusDevice->setTimeout(500);
+        modbusDevice->setTimeout(1000);
         modbusDevice->setNumberOfRetries(3);
         if (!modbusDevice->connectDevice()) {
             //statusBar()->showMessage(tr("Connect failed: ") + modbusDevice->errorString(), 5000);
@@ -102,10 +102,12 @@ void Tcommmodbusserial::readReady()
         qDebug()<<"error:"<<m_configstru.ID<<(tr("Read response error: %1 (Mobus exception: 0x%2)").
                                               arg(reply->errorString()).
                                               arg(reply->rawResult().exceptionCode(), -1, 16));
+        m_connectstate = -5;
         //        statusBar()->showMessage(tr("Read response error: %1 (Mobus exception: 0x%2)").
         //                                 arg(reply->errorString()).
         //                                 arg(reply->rawResult().exceptionCode(), -1, 16), 5000);
     } else {
+         m_connectstate = -7;
         qDebug()<<"error:"<<m_configstru.ID<<(tr("Read response error: %1 (code: 0x%2)").
                                               arg(reply->errorString()).
                                               arg(reply->error(), -1, 16));
@@ -209,6 +211,7 @@ void Tcommmodbusserial::on_writeData_request(int type, int startAddress, QVector
 
 void Tcommmodbusserial::onStateChanged(int state)
 {
+    qDebug()<<"connectstate:"<<state;
     bool connected = (state != QModbusDevice::UnconnectedState);
     emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,connected);
     if (state == QModbusDevice::UnconnectedState)
@@ -219,5 +222,7 @@ void Tcommmodbusserial::onStateChanged(int state)
     else if (state == QModbusDevice::ConnectedState)
     {
         // ui->connectButton->setText(tr("Disconnect"));
+      emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,connected);
     }
+    m_connectstate = state;
 }

@@ -7,6 +7,7 @@
 #include <QSerialPort>
 class TcommSerialport:public HWdeviceabstractInterface
 {
+    Q_OBJECT
 public:
     TcommSerialport();
 

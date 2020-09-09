@@ -359,6 +359,18 @@ void ReadTableData::Readt_hwcomm_infotable()
             stru.StopBits = query.value("StopBits").toInt();
             stru.serveraddress = query.value("port").toInt();
             Myconfig::GetInstance()->m_hwcommstru.hwSerialPortMap.insert(Id,stru);
+            if(type == HWDEVICETYPE::BARCODE)
+            {
+                ScanInfoStru scanstru;
+                scanstru.hwInfo.BaudRate = stru.BaudRate;
+                scanstru.hwInfo.DataBit = stru.DataBits;
+                scanstru.hwInfo.Parity = stru.Parity;
+                scanstru.hwInfo.SerialName = name;
+                scanstru.hwInfo.SerialPort = stru.serveraddress;
+                scanstru.hwInfo.StopBit =  stru.StopBits;
+                scanstru.deviceId = Id;
+                Myconfig::GetInstance()->m_ScanMap.insert(Id,scanstru);
+            }
             break;
         }
         case HWDEVICEPROTYPE::KModbusTcpClient:

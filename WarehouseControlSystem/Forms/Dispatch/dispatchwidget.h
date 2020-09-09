@@ -11,6 +11,10 @@
 #include <QTextEdit>
 #include "Myconfig.h"
 #include <QDateTime>
+#include <ControlClass/Instructions/scancodeinstruction.h>
+#include <ControlClass/Instructions/abstructinstruction.h>
+#include <QTimer>
+
 
 class DispatchWidget : public QWidget
 {
@@ -24,12 +28,14 @@ public slots:
     void onBoxClicked();
     void onGetBoxClicked();
     void onScanCode();
+    void updateUi();
 private:
     void initUI();
     int m_width;
     int m_height;
     void initRightW();
     QWidget *m_prightW;
+    QTimer *m_ptimer;
     QPushButton* m_box_list[8];
     QPushButton *m_pScan_1;
     QPushButton *m_pScan_2;

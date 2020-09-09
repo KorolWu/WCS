@@ -12,6 +12,7 @@
 #include "MysqlDataBase/readtabledata.h"
 #include "../ControlClass/Instructions/abstructinstruction.h"
 #include "../ControlClass/Instructions/runnerinstruction.h"
+#include "../ControlClass/Instructions/scancodeinstruction.h"
 /**
  * @brief The DispatchCenter class
  * @date 2020/07/17

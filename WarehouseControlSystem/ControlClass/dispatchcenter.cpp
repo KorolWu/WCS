@@ -35,7 +35,7 @@ void DispatchCenter::dispatchTaskThread()
                     lock_car(carId);
                     set_car_task_position(task_p,carId);
                     KDispatch *k = new KDispatch(task_p,ip,carId,t);//完成的状态，完成的结果，写入数据库的时间??
-                    m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+ip);
+                    m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +QString(" 分配给:%1").arg(carId));
                     QThreadPool::globalInstance()->start(k);
                     qDebug()<<"正在执行预约任务";
                 }
@@ -278,6 +278,16 @@ int DispatchCenter::getfreeCache()
 void DispatchCenter::scanCode()
 {
     //scan and go
+    AbstructInstruction *c = new ScanCodeInstruction();
+    OrderStru o;
+    o.strData = "scan_2";
+    o.order = Scan_Code;
+    c->setParameter(o,62);
+    QString execStr = "";
+    if(c->getResult(execStr) != 1)
+    {
+
+    }
 }
 
 

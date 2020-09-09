@@ -98,6 +98,7 @@ typedef struct _OrderStru
 {
     //order type car elevator runer
     QString type = "";
+    QString strData = "";
     int16_t childtype = 5 ;
     Order order;
     double value;

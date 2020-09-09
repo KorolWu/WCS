@@ -5,6 +5,9 @@ DispatchWidget::DispatchWidget(int width, int height, QWidget *parent) : QWidget
     this->m_height = height;
     this->m_width = width;
     initUI();
+    m_ptimer = new QTimer(this);
+    connect(m_ptimer,&QTimer::timeout,this,&DispatchWidget::updateUi);
+    m_ptimer->start(600);
 }
 
 //料箱子进入仓库的唯一入口，从这个地方记录当前等待入库的数量
@@ -14,7 +17,7 @@ void DispatchWidget::onBoxClicked()
     if(b != nullptr)
     {
         int i = b->objectName().toInt();
-        if(Myconfig::GetInstance()->m_cacheRunerMap[i] == true)
+        if(Myconfig::GetInstance()->m_cacheRunerMap[i+1] == true)
         {
             Myconfig::GetInstance()->m_runer.cache_in_current++;
             Myconfig::GetInstance()->m_cacheRunerMap[i] == false;
@@ -43,17 +46,44 @@ void DispatchWidget::onGetBoxClicked()
 void DispatchWidget::onScanCode()
 {
     QPushButton *b = (QPushButton*)sender();
+    QString data;
+    int device_id;
     if(b->objectName() == "Scan_1")
     {
-
+        data = "scan_1";
+        device_id = 61;
     }
     else if(b->objectName() == "Scan_2")
     {
-
+        data = "scan_2";
+        device_id = 62;
     }
     else
         return;
+    AbstructInstruction *c = new ScanCodeInstruction();
+    OrderStru o;
+    o.strData = data;
+    o.order = Scan_Code;
+    c->setParameter(o,device_id);
+    QString execStr = "";
+    if(c->getResult(execStr) != 1)
+        appendInfo(execStr);
+    else
+        appendInfo("Code scanning message sent successfully");
 
+}
+
+void DispatchWidget::updateUi()
+{
+    for(int i = 0; i < 8; i++)
+    {
+        if(m_box_list[i] != nullptr)
+        {
+             Myconfig::GetInstance()->m_cacheRunerMap[i+1] ? m_box_list[i]->setStyleSheet("background-image: url(:/resouse/Image/have_box.png);"): m_box_list[i]->setStyleSheet("background-image: url(:/resouse/Image/no_box.png);");
+        }
+    }
+     m_plineCacheIn->setText(QString("%1").arg(Myconfig::GetInstance()->m_runer.cache_in_current));
+     m_plineCacheOut->setText(QString("%1").arg(Myconfig::GetInstance()->m_taskMap.size()));
 }
 
 void DispatchWidget::initUI()
@@ -85,7 +115,6 @@ void DispatchWidget::initUI()
     m_plineBoxNum->resize(200,30);
     m_plineBoxNum->move(100,100);
     m_poutButton->move(320,100);
-   // m_poutButton->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_pScan_1 = new QPushButton(m_poutWidget);
     m_pScan_1->setText("Scan_1");
     m_pScan_1->setObjectName("Scan_1");
@@ -98,7 +127,7 @@ void DispatchWidget::initUI()
     connect(m_pScan_2,&QPushButton::clicked,this,&DispatchWidget::onScanCode);
     m_ptextLine_log = new QTextEdit(m_poutWidget);
     m_ptextLine_log->move(20,200);
-    m_ptextLine_log->resize(400,110);
+    m_ptextLine_log->resize(400,210);
 }
 
 void DispatchWidget::initRightW()

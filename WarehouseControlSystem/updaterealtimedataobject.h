@@ -21,6 +21,7 @@ private:
     ReadTableData m_databaseopob;
     void UpdateCarDataRequest();
     void UpdateRunnerDataRequest();
+    void UpdateElevatorDataRequest();
 };
 
 #endif // UPDATEREALTIMEDATAOBJECT_H

@@ -51,7 +51,7 @@ void DispatchWidget::onScanCode()
     if(b->objectName() == "Scan_1")
     {
         data = "scan_1";
-        device_id = 61;
+        device_id = 10000;
     }
     else if(b->objectName() == "Scan_2")
     {

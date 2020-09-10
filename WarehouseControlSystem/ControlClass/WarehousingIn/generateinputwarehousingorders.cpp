@@ -11,6 +11,14 @@ GenerateInputWarehousingOrders::GenerateInputWarehousingOrders()
     m_carwaitElevatorstru.y = 1;
     m_carElevatorstru.x = 30;//小车进电梯位置信息
     m_carElevatorstru.y = 1;
+    //test内容
+    m_roady = 0.0;
+    m_testpickuppos.x = 0.0;
+    m_testpickuppos.y = 1943;
+    m_testelevatorpos.x = 0.0;
+    m_testelevatorpos.y = 2343;
+    m_testCarChargingpos.x = 0.0;
+    m_testCarChargingpos.y = 1943;
 }
 
 GenerateInputWarehousingOrders::~GenerateInputWarehousingOrders()

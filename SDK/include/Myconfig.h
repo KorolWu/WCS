@@ -47,7 +47,7 @@ public:
     //in_task map<box_num,task>
     QMap<QString,TaskInfoStru> m_in_taskMap;
     //用来记录最新的入库扫码信息
-    QString m_boxNum_in;
+    QString m_boxNum_in = "BOX0001";
     QMutex m_in_task_mutex;
     DataBaseInfoStru m_databaseInfo;
     bool m_flag = true;

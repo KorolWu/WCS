@@ -11,7 +11,7 @@ QTPLUGIN += qgif
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = WarehouseControlSystem
-TEMPLATE =  app
+TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -145,7 +145,6 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/tcommtransceivermanager.h \
     ControlClass/externcommuincation/tcommmodbustcpclient.h \
     ControlClass/externcommuincation/hwdeviceabstractinterface.h \
-    ControlClass/externcommuincation/definitioncomdataframe.h \
     ControlClass/Instructions/abstructinstruction.h \
     ControlClass/Instructions/carinstruction.h \
     ControlClass/Instructions/carelevatorinstruction.h \

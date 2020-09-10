@@ -97,9 +97,9 @@ enum Order{
 typedef struct _OrderStru
 {
     //order type car elevator runer
-    QString type = "";
+    QString type = "";//硬件类型
     QString strData = "";
-    int16_t childtype = 5 ;
+    int16_t childtype = 5 ;//同一个对象不同的数据帧类型
     Order order;
     double value;
     int layer_y;
@@ -109,7 +109,7 @@ typedef struct _OrderStru
    //新增数据结构2020 08 29
     int startaddress = 0;
     int numberOfEntries = 1;
-    int Datatype = 1;//io /线圈 寄存器等
+    int Datatype = 1;//io /线圈 寄存器 modbus
     QVector<int> values;//需要写的值
 }OrderStru;
 typedef struct _CarInfoStru

@@ -14,9 +14,9 @@ class HWdeviceabstractInterface:public QObject
      Q_OBJECT
 public:
     virtual void SetCommParam(ComConfigStru paramstru) = 0;
-    virtual int GetNameID(){return -1;}
-    virtual int GetHWtype(){return 0;}
-    virtual int GetHWprotype(){ return 0 ;}
+    virtual int GetNameID() = 0  /*{return -1;}*/;
+    virtual int GetHWtype() = 0 /*{return 0;}*/;
+    virtual int GetHWprotype() = 0/*{ return 0 ;}*/;
     virtual void CloseComm() = 0;
     int m_connectstate = 0;
 signals:

@@ -59,10 +59,11 @@ private:
     void AnalysisDataFrame(QByteArray dataframe);//解析帧内容
     int16_t GetWCStocarFrameIndex(int hwId);
     bool ModifyCarReceFrameIndex(int ID,int wcsnbr);
-    void  AnalysisCarFrame(QByteArray dataframe ,int ID);
-    void  UpdateCarStatus(int carID,int role,int value);
+    void AnalysisCarFrame(QByteArray dataframe ,int ID);
+    void UpdateCarStatus(int carID,int role,int value);
     void UpdateRunnerData(int datatype, QMap<int, int> Data);
     void UpdateCarelevatorData(int ID ,QMap<int, int> Data);
+    void UpdateScanData(QByteArray dataframe ,int ID);
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);

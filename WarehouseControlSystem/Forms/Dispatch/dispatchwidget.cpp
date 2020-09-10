@@ -91,8 +91,8 @@ void DispatchWidget::initUI()
     initRightW();
     m_prightW->move(m_width - 250,10);
     m_poutWidget = new QWidget(this);
-    m_poutWidget->setStyleSheet("QWidget{background-color:rgb(190,190,190);border-radius: 6px;}QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
-    m_poutWidget->resize(1300,m_height-10);
+    m_poutWidget->setStyleSheet("QWidget{background-color:rgb(190,190,190);border-radius: 6px;}QPushButton{font: 16px;width:140px;height:35;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
+    m_poutWidget->resize(m_width - m_prightW->width()-150,m_height-10);
     m_poutWidget->move(10,10);
 
     QLabel *b = new QLabel(m_poutWidget);

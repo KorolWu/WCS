@@ -129,7 +129,7 @@ void MainWindow::initUI()
     QLabel *info_lab =new QLabel(this);
     info_lab->setText("Warehouse Control System");
     info_lab->setFont(QFont("宋体",20));
-    info_lab->move(160,70);
+    info_lab->move(55+desk_rect.height()/10+20,70);
     info_lab->resize(600,30);
     m_list_lab = new QLabel(this);
     m_list_lab->resize(300,7);

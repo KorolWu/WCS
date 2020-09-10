@@ -50,7 +50,7 @@ bool KDispatch::saveSubTaskInfo()
     {
         OrderStru o = sub_task.dequeue();
         QVariantList value;
-        value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"Created"<<m_task.boxNum<<QString("%1").arg(m_carId)<<"commandDate";
+        value<<m_task.taskNum<<taskType<<transformationOrder(o.order)<<QString::number(sequence, 10)<<"未执行"<<m_task.boxNum<<QString("%1").arg(m_carId)<<"commandDate";
         values.append(value);
         sequence ++;
     }
@@ -77,22 +77,21 @@ bool KDispatch::runSubTask()
     {
         OrderStru o = m_taskQueue.dequeue();
         bool result = runInstrucation(o);
-        if(result)
-            msg = "执行成功";
-        else
-            msg = "执行失败";
+        result?msg = "执行成功":msg = "执行失败";
         CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr);
         //qDebug()<<"subtask"<<sqlErr;
         if(sqlerr != "")
             GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
         sequnce++;
+        if(result == false)
+            return false;
     }
     QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
     Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.isLocking = false;
     Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.status = 1;
     //delete crrunt task
 
-    return false;
+    return true;
 }
 
 QString KDispatch::transformationOrder(int i)
@@ -151,7 +150,7 @@ bool KDispatch::runInstrucation(OrderStru o)//id can`t write here
         m_pAbstructInstruction->setParameter(o,id);
         m_pAbstructInstruction->runInstruction();
         QString exeResult = "";
-        if(m_pAbstructInstruction->getResult(exeResult) != 0)
+        if(m_pAbstructInstruction->getResult(exeResult) < 0)
         {
             saveErrMassage(exeResult);
             return false;
@@ -195,9 +194,9 @@ void KDispatch::run()
         qDebug()<<"正在执行入库任务";
     }
     saveSubTaskInfo();
-    runSubTask();
+    runSubTask()? m_task.status = "已完成":m_task.status = "执行失败";
     //保存当前任务完成的状态，完成 未完成，或者报警日志
-    m_task.status = "已完成";
+
     QString err = "";
     if(!CRUDBaseOperation::getInstance()->saveCompletedTask(m_task,err))
         GetSystemLogObj()->writeLog("完成任务保存失败!-->"+err,2);

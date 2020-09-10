@@ -56,6 +56,7 @@ StoreInfoWidget::StoreInfoWidget(QWidget *parent):QWidget(parent)
 
     m_pquenbrBtn = new QPushButton(tr("查询仓位编号"),this);
     m_pquenbrBtn->setIcon(QIcon(":/resouse/Image/Search.png"));
+    m_pquenbrBtn->setMinimumWidth(100);
     pbtnLayout->addWidget(m_pquenbrBtn);
     connect(m_pquenbrBtn,&QPushButton::clicked,this,&StoreInfoWidget::slotquenbrinfo);
     //m_pquenbrBtn->setShortcut(Qt::Key_Enter);//将字母区回车键查询按钮绑定在一起

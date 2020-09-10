@@ -28,7 +28,7 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
 
 //    m_refresh_btn = new QPushButton("Refresh",this);
 //    connect(m_refresh_btn,&QPushButton::clicked,this,&SubTask::onRefresh);
-    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}");
+    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:33;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}");
 
     initTableView();
 }

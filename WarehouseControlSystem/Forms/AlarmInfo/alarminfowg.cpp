@@ -59,10 +59,13 @@ AlarmInfoWg::AlarmInfoWg(QWidget *parent):BaseFrom(parent)
 
 
     m_slectbtn = new QPushButton("查询");
+    m_slectbtn->setMinimumWidth(80);
+    m_slectbtn->setMinimumSize(80,40);
     m_slectbtn->setIcon(QIcon(":/resouse/Image/search.png"));
     connect(m_slectbtn,&QPushButton::clicked,this,&AlarmInfoWg::slotSlectTableInfo);
     btnlay->addWidget(m_slectbtn);
     m_refreshbtn = new QPushButton("刷新");
+     m_refreshbtn->setMinimumSize(80,40);
     m_refreshbtn->setIcon(QIcon(":/resouse/Image/Refresh.png"));
     connect(m_refreshbtn,&QPushButton::clicked,this,&AlarmInfoWg::slotRefreshTableInfo);
 
@@ -74,6 +77,7 @@ AlarmInfoWg::AlarmInfoWg(QWidget *parent):BaseFrom(parent)
     mainlay->addWidget(m_sqltableview);
     mainlay->addWidget(m_pagewg);
     this->setLayout(mainlay);
+    this->setStyleSheet("QPushButton{font: 14px;width:100px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(220, 220, 220);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 14px}");
 }
 
 void AlarmInfoWg::InitTableViewUI()

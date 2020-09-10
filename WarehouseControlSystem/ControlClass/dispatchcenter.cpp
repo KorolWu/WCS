@@ -179,7 +179,7 @@ void DispatchCenter::handle_in_task(TaskInfoStru &t, QString frist_in_boxNum)
         // carP   boxP   elevatorP  in or out?
         t.shelves = shelves_name;
         KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
-        m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
+        m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +QString(" 分配给%1").arg(m_car_ip));
         QThreadPool::globalInstance()->start(k);
         qDebug()<<m_car_ip<<" runing in Task Number: "+QString::number(m_count_text);
         remove_in_task(frist_in_boxNum);

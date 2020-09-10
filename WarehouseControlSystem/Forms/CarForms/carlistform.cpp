@@ -37,7 +37,8 @@ void CarListForm::initUi()
     connect(m_pMinBtn,&QPushButton::clicked,this,&CarListForm::onMinimize);
     QStringList list;
     list<<"全部"<<"在线"<<"离线"<<"异常"<<"维修";
-    int interval = 65;
+    int interval = m_width/6;//65;
+
     QFont m_font_l ("Times", 12);
     for(int i = 0;i< 5;i++)
     {
@@ -61,20 +62,20 @@ void CarListForm::initUi()
     }
     QStringList list_h;
     list_h<<"设备编号"<<"状态"<<"设备任务"<<"执行状态"<<"电量";
-    interval = 70;
+    interval = m_width/6;//70;
     QFont m_font_s ("Times", 10);
     for(int i = 0;i <5;i++)
     {
         QLabel *e = new QLabel(m_pMainWidget);
         e->setAttribute(Qt::WA_TranslucentBackground, true);
         if(i == 0)
-            e->move(10,m_height/7*1.1);
+            e->move(interval*(i+1)-20,m_height/7*1.1);
         else if(i == 2)
-            e->move(interval*i+10,m_height/7*1.1);
+            e->move(interval*(i+1)-20,m_height/7*1.1);
         else if(i == 4)
-            e->move(interval*i+40,m_height/7*1.1);
+            e->move(interval*(i+1)-20,m_height/7*1.1);
         else
-            e->move(interval*i+30,m_height/7*1.1);
+            e->move(interval*(i+1)-20,m_height/7*1.1);
         e->setStyleSheet("color:black");
         e->setFont(m_font_s);
         e->setText(list_h[i]);
@@ -175,7 +176,7 @@ CarStatusWidget::CarStatusWidget(int width, int carId, QWidget *parent) :QWidget
     //m_ip = carId.deviceIp;
     w = new QWidget(this);
     this->m_carNum = carId;
-    interval = 50;
+    interval = width/6;//50;
     y = 10;
     w->resize(width-10,40);
     initUI();
@@ -212,19 +213,25 @@ void CarStatusWidget::initUI()
 {
     numLab = new QLabel(w);
     numLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    numLab->move(10,10);
+    numLab->move(interval,10);
 
     staLab = new QLabel(w);
     staLab->setAttribute(Qt::WA_TranslucentBackground, true);
+    staLab->move(interval*2-20,10);
+    staLab->resize(50,20);
 
     taskLab = new QLabel("---",w);
     taskLab->setAttribute(Qt::WA_TranslucentBackground, true);
-    taskLab->move(interval*3+10,y);
+    taskLab->move(interval*3-20,y);
     workLab = new QLabel(w);
     workLab->setAttribute(Qt::WA_TranslucentBackground, true);
+    workLab->move(interval*4-20,y);
+    workLab->resize(50,20);
     // workLab->move(interval*5-10,y);
     batterLab = new QLabel(w);
     batterLab->setAttribute(Qt::WA_TranslucentBackground, true);
+    batterLab->move(interval*5-20,y);
+    batterLab->resize(50,20);
 
     w->setStyleSheet("QWidget:hover{background-color:white; color: black;}QWidget:pressed{background-color:rgb(85, 170, 255)};}");
     m_ptimer = new QTimer(this);
@@ -238,11 +245,9 @@ void CarStatusWidget::onTimeoutUpdateUI()
     QFont font("Times", 9 ,QFont::Bold);
     numLab->setText(QString("%1").arg(m_carNum));
     numLab->setFont(font);
-    numLab->move(10,10);
+    //numLab->move(10,10);
 
     staLab->setText(c.deveceStatus.isOnline? "在线":"离线");
-    staLab->move(interval*2,10);
-    staLab->resize(50,20);
     QString status = "";
     if(c.deveceStatus.status == 1)
         status = " 待命中";
@@ -251,12 +256,8 @@ void CarStatusWidget::onTimeoutUpdateUI()
     else
         status  = " 故障";
     workLab->setText(status);
-    workLab->move(interval*5-10,y);
-    workLab->resize(50,20);
     QString batter = QString("%1%").arg(c.deveceStatus.batter);
     batterLab->setText(batter);
-    batterLab->move(interval*6+20,y);
-    batterLab->resize(50,20);
 }
 
 void CarStatusWidget::mouseDoubleClickEvent(QMouseEvent *event)

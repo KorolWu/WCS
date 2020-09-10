@@ -225,27 +225,28 @@ void MainWindow::initUI()
 //    m_pmode_info_label = new QLabel(this);
 //    m_pmode_info_label->setText("now is auto model");
 //    m_pmode_info_label->move(desk_rect.width()*0.6,desk_rect.height()/22);
-
+    int butn_height = desk_rect.height()/10*0.5;
+    int butn_width = desk_rect.width()/11*0.5;
     m_pmode_btn = new QPushButton("手动",this);
     connect(m_pmode_btn,&QPushButton::clicked,this,&MainWindow::changeMode);
     m_pmode_btn->setIcon(QIcon(":/resouse/Image/hand.ico"));
-    m_pmode_btn->resize(80,50);
+    m_pmode_btn->resize(butn_width,butn_height);
     m_pmode_btn->move(desk_rect.width()*0.75-40,desk_rect.height()/22);
 
 
     m_psuspend = new QPushButton("暂停",this);
     connect(m_psuspend,&QPushButton::clicked,this,&MainWindow::onSuspend);
     m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
-    m_psuspend->resize(80,50);
+    m_psuspend->resize(butn_width,butn_height);
     m_psuspend->move(desk_rect.width()*0.8-20,desk_rect.height()/22);
 
     user_btn = new QPushButton("用户",this);
     user_btn->setIcon(QIcon(":/resouse/Image/user.png"));
     user_btn->move(desk_rect.width()*0.85,desk_rect.height()/22);
-    user_btn->resize(80,50);
+    user_btn->resize(butn_width,butn_height);
     connect(user_btn,&QPushButton::clicked,this,&MainWindow::slotlogin);
     exit_btn = new QPushButton("安全退出",this);
-    exit_btn->resize(80,50);
+    exit_btn->resize(butn_width,butn_height);
     connect(exit_btn,&QPushButton::clicked,this,&MainWindow::closeWcs);
     exit_btn->setIcon(QIcon(":/resouse/Image/shutdown.png"));
     exit_btn->move(desk_rect.width()*0.9+20,desk_rect.height()/22);

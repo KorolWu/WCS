@@ -14,11 +14,12 @@ GenerateInputWarehousingOrders::GenerateInputWarehousingOrders()
     //test内容
     m_roady = 0.0;
     m_testpickuppos.x = 0.0;
-    m_testpickuppos.y = 1943;
+    m_testpickuppos.y = 2681;
+    m_testpickuppos.z = 1;
     m_testelevatorpos.x = 0.0;
-    m_testelevatorpos.y = 2343;
+    m_testelevatorpos.y = 2681;
     m_testCarChargingpos.x = 0.0;
-    m_testCarChargingpos.y = 1943;
+    m_testCarChargingpos.y = 1423;
 }
 
 GenerateInputWarehousingOrders::~GenerateInputWarehousingOrders()
@@ -63,20 +64,21 @@ void GenerateInputWarehousingOrders::SetHWConfigData(double pickupx, double pick
     //test内容
     m_roady = 0.0;
     m_testpickuppos.x = 0.0;
-    m_testpickuppos.y = 1943;
+    m_testpickuppos.y = 2681;
+    m_testpickuppos.z = 1;
     m_testelevatorpos.x = 0.0;
     m_testelevatorpos.y = 2343;
     m_testCarChargingpos.x = 0.0;
     m_testCarChargingpos.y = 1943;
     //设置参数内容
-    m_roady =  changeover;
-    m_testpickuppos.x = pickupx;
-    m_testpickuppos.y = pickupy;
-    m_testpickuppos.z = pickupz;
-    m_testelevatorpos.x = carElevatorx;
-    m_testelevatorpos.y = carElevatory;
-    m_testCarChargingpos.x = carwaitElevatorx;
-    m_testCarChargingpos.y = carwaitElevatory;
+//    m_roady =  changeover;
+//    m_testpickuppos.x = pickupx;
+//    m_testpickuppos.y = pickupy;
+//    m_testpickuppos.z = pickupz;
+//    m_testelevatorpos.x = carElevatorx;
+//    m_testelevatorpos.y = carElevatory;
+//    m_testCarChargingpos.x = carwaitElevatorx;
+//    m_testCarChargingpos.y = carwaitElevatory;
 }
 ///
 /// \brief GenerateInputWarehousingOrders::Generationinstruction

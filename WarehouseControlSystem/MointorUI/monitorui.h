@@ -43,6 +43,20 @@ private:
     void SetSceneMapData();
     void SetUIDataItem();
     QString FindStorePos(char &state,QString &text, QMap<QString, StorePosInfoStru> laymap,char direction ,double x,double y);
+private://地图轨迹规划部分
+    void UpdateCarPosPathVec();
+    KPosition m_carpos;
+    QVector<double> m_xpathppos;
+    QVector<double> m_ypathppos;
+    KPosition GetCarPos(int index);
+    double m_coefficient;
+    bool m_running;
+    QTimer *m_scanPathtimer;
+private slots:
+    void slotCarPathsimulation();
+
+
+
 };
 
 #endif // MONITORUI_H

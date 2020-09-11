@@ -87,7 +87,8 @@ SOURCES += main.cpp\
     Forms/Dispatch/dispatchwidget.cpp \
     ControlClass/externcommuincation/tcommserialport.cpp \
     ControlClass/externcommuincation/tcommmodbusserial.cpp \
-    ControlClass/Instructions/scancodeinstruction.cpp
+    ControlClass/Instructions/scancodeinstruction.cpp \
+    Forms/mainwidget.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -154,7 +155,8 @@ HEADERS  += mainwindow.h \
     Forms/Dispatch/dispatchwidget.h \
     ControlClass/externcommuincation/tcommserialport.h \
     ControlClass/externcommuincation/tcommmodbusserial.h \
-    ControlClass/Instructions/scancodeinstruction.h
+    ControlClass/Instructions/scancodeinstruction.h \
+    Forms/mainwidget.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

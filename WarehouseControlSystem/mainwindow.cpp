@@ -156,6 +156,8 @@ void MainWindow::initUI()
     m_pDispatchForm = new DispatchWidget(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
     p_mRunerForm->setParameter(Myconfig::GetInstance()->m_runer);
     p_treeView = new QTreeView(treewidget);
+    m_pMainWidget = new MainWidget(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
+    m_pMainWidget->show();
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
                               "QTreeView::item {height: 40px;border-radius: 2px;"
                               "border: 1px solid transparent;background: transparent;color: black;}"
@@ -299,6 +301,7 @@ void MainWindow::deleteChildrenList()
     p_mRunerForm->hide();
     m_testorders->hide();
     m_pDispatchForm->hide();
+   // m_pMainWidget->hide();
 }
 
 void MainWindow::getParameterFromDB()

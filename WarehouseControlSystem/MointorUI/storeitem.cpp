@@ -96,6 +96,9 @@ void StoreItem::SetStoreSate(char state)//
     case 3://未定义
         m_BackGroundColor = QColor(34,180,180);
         break;
+    case 9://未定义
+        m_BackGroundColor = QColor(220,220,0);
+        break;
     default:
         break;
     }

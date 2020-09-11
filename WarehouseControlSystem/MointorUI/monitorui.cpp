@@ -100,20 +100,30 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     // m_pview->setScene(m_curscene);
     vboxlay->addWidget(m_pview);
     this->setLayout(vboxlay);
+    m_carpos.state = 0;
+    m_carpos.x = 0;
+    m_carpos.y = 0;
+    m_carpos.z = 1;
     //增加刷新当前数据的timer
     m_timer = new QTimer();
     connect(m_timer,&QTimer::timeout,this,&MonitorUI::updateCurSceneData);
+    m_scanPathtimer = new QTimer();
+    connect(m_scanPathtimer,&QTimer::timeout,this,&MonitorUI::slotCarPathsimulation);
     //test car pos
-    m_timer->start(100);
-    m_caritem = new StoreItem(-10,30,12,50);
+    m_carpos = GetCarPos(99); //默认ID等于99
+    m_caritem = new StoreItem(m_carpos.x/k,m_carpos.y/k,m_carpos.x/k+20,m_carpos.y/k+20);
     m_caritem->SetText("car");
-    m_caritem->SetIndexID("cartest");
+    m_caritem->SetIndexID("99");
     if(m_cursceneMap.size()> 0 &&m_cursceneMap.contains(1) )
     {
         m_cursceneMap[1]->addItem(m_caritem);
     }
-    m_caritem->SetStoreSate(1);
-
+    m_caritem->SetStoreSate(9);
+    m_xpathppos.clear();
+    m_ypathppos.clear();
+    m_coefficient = 4;
+    m_running = false;
+    m_timer->start(100);
 }
 
 MonitorUI::~MonitorUI()
@@ -123,6 +133,7 @@ MonitorUI::~MonitorUI()
         m_timer->stop();
         delete m_timer;
     }
+    m_scanPathtimer->stop();
     m_cursceneMap.clear();
     if(m_pview)
     {
@@ -186,7 +197,6 @@ void MonitorUI::updateCurSceneData()
                     text =  QString::fromUtf8(Myconfig::GetInstance()->m_storeinfoMap[id].boxnbr);
                     if(text.size()>3)
                     {
-
                         text = text.right(text.size()-3);
                     }
                     if(FindItem->GetText()!= text)//料箱信息更新
@@ -203,29 +213,30 @@ void MonitorUI::updateCurSceneData()
     }
     if(z != 1)
         return;
-    if(!minflag && !maxflag)
-    {
-        movvalue--;
-    }
-    if(movvalue < m_minY/k )
-    {
-        minflag = true;
-        maxflag = false;
-    }
-    if(minflag&& !maxflag)
-    {
-       movvalue ++;
-    }
-    if(movvalue > (m_Y-m_minY)/k )
-    {
-        maxflag = true;
-        minflag = false;
-    }
-    if(maxflag&& !minflag)
-    {
-       movvalue--;
-    }
-    m_caritem->setPos(0,movvalue);
+    UpdateCarPosPathVec(); //添加了刷新的内容
+//    if(!minflag && !maxflag)
+//    {
+//        movvalue--;
+//    }
+//    if(movvalue < m_minY/k )
+//    {
+//        minflag = true;
+//        maxflag = false;
+//    }
+//    if(minflag&& !maxflag)
+//    {
+//        movvalue ++;
+//    }
+//    if(movvalue > (m_Y-m_minY)/k )
+//    {
+//        maxflag = true;
+//        minflag = false;
+//    }
+//    if(maxflag&& !minflag)
+//    {
+//        movvalue--;
+//    }
+//    m_caritem->setPos(0,movvalue);
 }
 ///
 /// \brief MonitorUI::GetAllLayers
@@ -386,6 +397,112 @@ void MonitorUI::SetUIDataItem()
         m_cursceneMap.insert(z,curlay);
     }
 }
+///
+/// \brief MonitorUI::UpdateCarPos
+///
+void MonitorUI::UpdateCarPosPathVec()
+{
+    if(m_running)
+        return;
+    //小车结构体更新
+    auto it =  Myconfig::GetInstance()->m_CarMap.begin();
+    for(;it!= Myconfig::GetInstance()->m_CarMap.end();++it)
+    {
+        if(m_caritem->GetIndexID() == QString::number(it.key()))
+        {
+            double xdiffvalue = it.value().task_position.x-m_carpos.x;
+            if(xdiffvalue != 0 )
+            {
+                //生成x计算轨迹
+                m_xpathppos.clear();
+                int sizecnt =  qAbs(xdiffvalue/k/m_coefficient);
+                for(int i = 0; i < sizecnt; ++i)
+                {
+                    double value = i*m_coefficient + m_carpos.x/k;
+                    m_xpathppos.append(value);
+                }
+                m_carpos.x = it.value().task_position.x;
+
+                break;
+            }
+            double ydiffvalue = it.value().task_position.y-m_carpos.y;
+            if(ydiffvalue != 0 )
+            {
+                //生成y计算轨迹
+                m_ypathppos.clear();
+                int sizecnt =  qAbs(ydiffvalue/k/m_coefficient);
+                for(int i = 0; i < sizecnt; ++i)
+                {
+                    double value = i*m_coefficient + m_carpos.y/k;
+                    m_ypathppos.append(value);
+                }
+                m_carpos.y = it.value().task_position.y;
+                break;
+            }
+        }
+    }
+    if(m_ypathppos.size() > 0 || m_xpathppos.size() > 0 )
+    {
+        if(!m_scanPathtimer->isActive())
+        {
+            m_scanPathtimer->start(100);
+        }
+    }
+}
+
+KPosition MonitorUI::GetCarPos(int index)
+{
+    KPosition pos;
+
+    //小车结构体更新
+    auto it =  Myconfig::GetInstance()->m_CarMap.begin();
+    for(;it!= Myconfig::GetInstance()->m_CarMap.end();++it)
+    {
+        if(index == it.key())
+        {
+            pos.state = it.value().task_position.state;
+            pos.x = it.value().task_position.x;
+            pos.y = it.value().task_position.y;
+            pos.z = it.value().task_position.z;
+        }
+    }
+    return pos;
+}
+///
+/// \brief MonitorUI::slotCarPathsimulation
+///小车轨迹模拟运行
+int cnt = 0;
+void MonitorUI::slotCarPathsimulation()
+{
+    if(m_xpathppos.size() > cnt)
+    {
+        m_running  = true;
+        m_caritem->setPos(m_xpathppos[cnt],m_carpos.x/k);
+        cnt++;
+    }
+    else{
+        if(m_running)
+        {
+            m_running = false;
+            cnt = 0;
+            m_scanPathtimer->stop();
+        }
+    }
+    if(m_ypathppos.size() > cnt)
+    {
+        m_running  = true;
+        m_caritem->setPos(m_xpathppos[cnt],m_carpos.y/k);
+        cnt++;
+    }
+    else{
+        if(m_running)
+        {
+            m_running = false;
+            cnt = 0;
+        }
+    }
+}
+
 ///
 /// \brief MonitorUI::FindStorePos
 /// \param state

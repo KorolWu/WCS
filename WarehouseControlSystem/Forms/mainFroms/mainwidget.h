@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QPushButton>
+#include <QGridLayout>
+#include "cpiewidget.h"
 /**
  * @brief The MainWidget class
  * show main info widget
@@ -17,8 +19,10 @@ signals:
 private:
     int m_width;
     int m_height;
+    QGridLayout *m_pgridlayout;
     QPushButton *m_ptest;
     QWidget     *m_pmain;
+    CPieWidget  *m_piew;
     void initUI();
 
 public slots:

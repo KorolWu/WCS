@@ -5,7 +5,7 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
 {
     CarInfoStru c = Myconfig::GetInstance()->m_CarMap[carId];
     desktop =  QApplication::desktop()->availableGeometry();
-    this->setWindowFlags(Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
     this->setStyleSheet("QLabel{background:transparent;; color:white}QPushButton{border:1px gray;background-color:gray;color:white;border-radius:3px;width:70px;height:25;} QPushButton:hover{background-color:white; color: black;}QPushButton:pressed{background-color:rgb(85, 170, 255);}");
     m_carNum = c.carId;
     m_id = carId;
@@ -127,11 +127,12 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     m_pMove_x->move(10+interval*3,242);
 
     m_pLineEdit_x = new QSpinBox(this);
+    m_pLineEdit_x->setMaximum(20000);
     m_pLineEdit_x->resize(80,27);
     m_pLineEdit_x->move(10+interval*2,242);
 
     m_pLineEdit_y = new QSpinBox(this);
-
+    m_pLineEdit_y->setMaximum(10000);
     m_pLineEdit_y->resize(80,27);
     m_pLineEdit_y->move(10+interval*4,242);
     m_pMove_y = new QPushButton("移动Y",this);
@@ -232,6 +233,8 @@ void CarStatusFrom::relative_move_x()
     o.value = value;
     c->setParameter(o,m_id);
     c->runInstruction();
+    QString result = "";
+    c->getResult(result);
 }
 
 void CarStatusFrom::relative_move_y()
@@ -243,6 +246,8 @@ void CarStatusFrom::relative_move_y()
     o.value = value;
     c->setParameter(o,m_id);
     c->runInstruction();
+    QString result = "";
+    c->getResult(result);
 }
 
 void CarStatusFrom::left_pickup()

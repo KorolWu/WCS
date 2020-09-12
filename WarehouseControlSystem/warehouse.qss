@@ -582,7 +582,7 @@ QWidget#transparentWidget {
         background: transparent;
 }
 
-/**********微调器**********/
+/**********微调器*********
 QSpinBox {
         border-radius: 4px;
         height: 24px;
@@ -619,7 +619,7 @@ QSpinBox::down-button {
         height: 12px;
         border-bottom-right-radius: 4px;
  	color: rgb(70, 71, 73);
-        /*image: url(:/White/downButton);*/
+        /*image: url(:/White/downButton);
 }
 QSpinBox::down-button:!enabled {
         background: transparent;
@@ -627,7 +627,7 @@ QSpinBox::down-button:!enabled {
 QSpinBox::down-button:hover {
         background: rgb(155, 155, 155, 30);
 }
-
+*/
 /**********标签**********/
 QLabel#grayLabel {
         color: rgb(70, 71, 73);

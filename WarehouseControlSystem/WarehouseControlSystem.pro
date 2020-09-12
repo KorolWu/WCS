@@ -88,7 +88,8 @@ SOURCES += main.cpp\
     ControlClass/externcommuincation/tcommserialport.cpp \
     ControlClass/externcommuincation/tcommmodbusserial.cpp \
     ControlClass/Instructions/scancodeinstruction.cpp \
-    Forms/mainwidget.cpp
+    Forms/mainFroms/mainwidget.cpp \
+    Forms/mainFroms/cpiewidget.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -156,7 +157,8 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/tcommserialport.h \
     ControlClass/externcommuincation/tcommmodbusserial.h \
     ControlClass/Instructions/scancodeinstruction.h \
-    Forms/mainwidget.h
+    Forms/mainFroms/mainwidget.h \
+    Forms/mainFroms/cpiewidget.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

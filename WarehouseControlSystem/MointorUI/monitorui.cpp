@@ -112,6 +112,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     //test car pos
     m_carpos = GetCarPos(99); //默认ID等于99
     m_caritem = new StoreItem(m_carpos.x/k,m_carpos.y/k,m_carpos.x/k+20,m_carpos.y/k+20);
+    qDebug()<<"x:"<<m_carpos.x/k<<" y:"<<m_carpos.y/k;
     m_caritem->SetText("car");
     m_caritem->SetIndexID("99");
     if(m_cursceneMap.size()> 0 &&m_cursceneMap.contains(1) )
@@ -121,9 +122,13 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     m_caritem->SetStoreSate(9);
     m_xpathppos.clear();
     m_ypathppos.clear();
-    m_coefficient = 4;
+    qDebug()<<"befor"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
+    //m_caritem->setPos(100,100);
+    qDebug()<<"after"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
+    m_coefficient = 5;
     m_running = false;
     m_timer->start(100);
+
 }
 
 MonitorUI::~MonitorUI()
@@ -410,7 +415,8 @@ void MonitorUI::UpdateCarPosPathVec()
     {
         if(m_caritem->GetIndexID() == QString::number(it.key()))
         {
-            double xdiffvalue = it.value().task_position.x-m_carpos.x;
+            double xdiffvalue = it.value().deveceStatus.carCurrentPosion.x-m_carpos.x;
+
             if(xdiffvalue != 0 )
             {
                 //生成x计算轨迹
@@ -418,14 +424,21 @@ void MonitorUI::UpdateCarPosPathVec()
                 int sizecnt =  qAbs(xdiffvalue/k/m_coefficient);
                 for(int i = 0; i < sizecnt; ++i)
                 {
-                    double value = i*m_coefficient + m_carpos.x/k;
+                    double value;
+                    if(xdiffvalue < 0)
+                    {
+                         value = -1*i*m_coefficient + m_caritem->x();
+                    }
+                    else
+                        value = i*m_coefficient + m_caritem->x();
                     m_xpathppos.append(value);
                 }
-                m_carpos.x = it.value().task_position.x;
-
+                m_carpos.x = it.value().deveceStatus.carCurrentPosion.x;
+                qDebug()<<xdiffvalue<<"-"<<m_xpathppos;
                 break;
             }
-            double ydiffvalue = it.value().task_position.y-m_carpos.y;
+            double ydiffvalue = it.value().deveceStatus.carCurrentPosion.y-m_carpos.y;
+            //qDebug()<<"update pos y" <<it.value().deveceStatus.carCurrentPosion.y;
             if(ydiffvalue != 0 )
             {
                 //生成y计算轨迹
@@ -433,19 +446,26 @@ void MonitorUI::UpdateCarPosPathVec()
                 int sizecnt =  qAbs(ydiffvalue/k/m_coefficient);
                 for(int i = 0; i < sizecnt; ++i)
                 {
-                    double value = i*m_coefficient + m_carpos.y/k;
+                    double value;
+                    if(ydiffvalue < 0)
+                     value = -1*i*m_coefficient + m_caritem->y();
+                    else
+                        value = i*m_coefficient + m_caritem->y();
+
                     m_ypathppos.append(value);
                 }
-                m_carpos.y = it.value().task_position.y;
+                m_carpos.y = it.value().deveceStatus.carCurrentPosion.y;
+                qDebug()<<"-"<<ydiffvalue<<m_ypathppos <<m_carpos.x/k ;
                 break;
             }
         }
     }
     if(m_ypathppos.size() > 0 || m_xpathppos.size() > 0 )
     {
+          m_running = true;
         if(!m_scanPathtimer->isActive())
         {
-            m_scanPathtimer->start(100);
+            m_scanPathtimer->start(10);
         }
     }
 }
@@ -461,9 +481,9 @@ KPosition MonitorUI::GetCarPos(int index)
         if(index == it.key())
         {
             pos.state = it.value().task_position.state;
-            pos.x = it.value().task_position.x;
-            pos.y = it.value().task_position.y;
-            pos.z = it.value().task_position.z;
+            pos.x = it.value().deveceStatus.carCurrentPosion.x;
+            pos.y = it.value().deveceStatus.carCurrentPosion.y;
+            pos.z = it.value().deveceStatus.carCurrentPosion.z;
         }
     }
     return pos;
@@ -474,32 +494,39 @@ KPosition MonitorUI::GetCarPos(int index)
 int cnt = 0;
 void MonitorUI::slotCarPathsimulation()
 {
-    if(m_xpathppos.size() > cnt)
+    if(m_xpathppos.size() > cnt )
     {
         m_running  = true;
-        m_caritem->setPos(m_xpathppos[cnt],m_carpos.x/k);
+        m_caritem->setPos(m_xpathppos[cnt],m_caritem->y());
+        qDebug()<<"x:movvalue"<<m_carpos.x/k<<m_carpos.x/k<<m_xpathppos[cnt];
         cnt++;
     }
     else{
-        if(m_running)
+        if(m_running && m_ypathppos.size() <= 0)
         {
             m_running = false;
-            cnt = 0;
             m_scanPathtimer->stop();
+            cnt = 0;
+            m_xpathppos.clear();
         }
     }
     if(m_ypathppos.size() > cnt)
     {
         m_running  = true;
-        m_caritem->setPos(m_xpathppos[cnt],m_carpos.y/k);
+       // m_caritem->setPos(0,m_ypathppos[cnt]);
+        m_caritem->setPos(m_caritem->x(),m_ypathppos[cnt]);
+        qDebug()<<"y:movvalue"<<m_carpos.x/k<<m_carpos.y/k<<m_ypathppos[cnt];
         cnt++;
     }
     else{
-        if(m_running)
+        if(m_running && m_xpathppos.size() <= 0)
         {
             m_running = false;
-            cnt = 0;
+            m_scanPathtimer->stop();
+             cnt = 0;
+             m_ypathppos.clear();
         }
+         return;
     }
 }
 

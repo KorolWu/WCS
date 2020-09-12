@@ -77,14 +77,14 @@ bool KDispatch::runSubTask()
     {
         OrderStru o = m_taskQueue.dequeue();
         bool result = runInstrucation(o);
+        QThread::msleep(4000);
         result?msg = "执行成功":msg = "执行失败";
         CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr);
-        //qDebug()<<"subtask"<<sqlErr;
         if(sqlerr != "")
             GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
         sequnce++;
-        if(result == false)
-            return false;
+//        if(result == false)
+//            return false;
     }
     QMutexLocker locker(&Myconfig::GetInstance()->m_carMap_mutex);
     Myconfig::GetInstance()->m_CarMap[m_carId].deveceStatus.isLocking = false;

@@ -35,7 +35,7 @@
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
 #include "Forms/Runner/runerform.h"
-#include "Forms/mainwidget.h"
+#include "Forms/mainFroms/mainwidget.h"
 #include "ControlClass/dispatchcenter.h"
 #include "MointorUI/monitorui.h"
 #include"SimulationgenerationtaskUI/testcreateorderspath.h"
@@ -87,7 +87,7 @@ private:
     RunerForm     *p_mRunerForm;
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
-    MainWidget    *m_pMainWidget;
+    //MainWidget    *m_pMainWidget;
     JQHttpServer::TcpServerManage *m_pHttpServer;
     DispatchWidget *m_pDispatchForm;
     bool           m_listIsShow;

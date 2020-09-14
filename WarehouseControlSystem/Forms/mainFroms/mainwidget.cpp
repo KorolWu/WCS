@@ -26,6 +26,12 @@ void MainWidget::initUI()
     m_perrwidget->setPieStyleSheet((PieStyle)3);
     m_perrwidget->update();
     m_pgridlayout->addWidget(m_perrwidget,1,1,1,1);
+
+    m_profileWidget = new WarehouseprofileInfoShowWg(m_width/2,m_height/2);
+    m_pgridlayout->addWidget(m_profileWidget,1,0,1,1);
+
+
+
     m_pmain->setLayout(m_pgridlayout);
     m_pmain->setStyleSheet("background-color: rgb(18, 62, 111, 40);");
 }

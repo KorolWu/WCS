@@ -9,6 +9,7 @@
 #include "torquechart.h"
 #include <QList>
 #include <QColor>
+#include "warehouseprofileinfoshowwg.h"
 /**
  * @brief The MainWidget class
  * show main info widget
@@ -29,6 +30,7 @@ private:
     CPieWidget  *m_piew;
     TorqueChart *m_tchar;
      CPieWidget  *m_perrwidget;
+     WarehouseprofileInfoShowWg *m_profileWidget;
     void initUI();
     QList<QColor> m_colorlist;
     void SetErrwidgetInfo();

@@ -93,10 +93,10 @@ void CPieWidget::init()
     m_datamap.insert("Err:",2);
 
 
-    int interval = w/10;int i = 0;
+    int interval = w/8;int i = 0;
     for(auto it = m_datamap.begin();it != m_datamap.end();it++)
     {
-        QFont font("??",14);
+        QFont font("Times",11);
         QLabel *l = new QLabel(this);
         l->setText(it.key());
         l->setFont(font);

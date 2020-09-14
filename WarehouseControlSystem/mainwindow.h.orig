@@ -15,6 +15,7 @@
 #include "Forms/TaskForms/currenttask.h"
 #include "Forms/TaskForms/alltask.h"
 #include "Forms/TaskForms/subtask.h"
+#include "Forms/Dispatch/dispatchwidget.h"
 #include <Forms/basefrom.h>
 #include "Forms/StorePosInfo/storeinfowidget.h"
 #include "Forms/LogForms/logforms.h"
@@ -33,12 +34,13 @@
 #include "datastructure.h"
 #include "Forms/CarForms/carlistform.h"
 #include "Forms/AlarmInfo/alarminfowg.h"
+#include "Forms/Runner/runerform.h"
+#include "Forms/mainFroms/mainwidget.h"
 #include "ControlClass/dispatchcenter.h"
-<<<<<<< HEAD
-#include <QMessageBox>
-=======
 #include "MointorUI/monitorui.h"
->>>>>>> 7ba36f2c03848d5cc5c577514b97f613eb10f48b
+#include"SimulationgenerationtaskUI/testcreateorderspath.h"
+#include <QMessageBox>
+#include "updaterealtimedataobject.h"
 
 namespace Ui {
 class MainWindow;
@@ -59,14 +61,28 @@ private:
     QStandardItemModel *p_treeStandarModel;
     QStandardItem *p_standarItem;
     QStandardItem *p_userItem;
+    QStandardItem *p_ordersItem;
     QStandardItem *p_agvItem;
     QStandardItem *p_elevator;
+    QStandardItem *p_runer;
     QStandardItem *p_all_tasks;
     QStandardItem *p_current_tasks;
     QStandardItem *p_sub_tasks;
+    QStandardItem *p_dispatch;
+<<<<<<< HEAD
+    QStandardItem *p_loginroleItem;
+
+=======
+    QStandardItem *p_main_from;
+    QStandardItem *p_map;
+>>>>>>> 75ea39e9a750ffd9d158e63eddd107c6663e8c18
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;
+    QPushButton   *m_pmode_btn;
+    QPushButton   *m_psuspend; //zan ting
+   // QLabel        *m_pmode_info_label;
+    QLabel        *m_list_lab;
     QWidget       *p_main_widget;
     CurrentTask   *t;
     AlarmInfoWg *m_palarmWg;
@@ -75,9 +91,13 @@ private:
     AllTask       *m_pTaskAll;
     SubTask       *m_pSubTask;
     ElevatorFrom  *p_mElevator;
+    RunerForm     *p_mRunerForm;
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
+    MainWidget    *m_pMainWidget;
     JQHttpServer::TcpServerManage *m_pHttpServer;
+    DispatchWidget *m_pDispatchForm;
+    bool           m_listIsShow;
 
     void closeWcs();
     void initUI();
@@ -90,14 +110,26 @@ private slots:
     void onTreeviewClicked(const QModelIndex &index);
     void slotlogin();
     void onReplyReady(QString str);
+    void showCarList();
+    void changeMode();
+    void onSuspend();
 
 
 private:
     StoreInfoWidget *m_pstoreWg;
     MonitorUI *m_pmonitorui;
+    //test
+    TestcreateOrdersPath *m_testorders;
+    UpdateRealtimeDataObject m_updateRealData;
+    QTimer *m_updatestoretimer;
+    QTimer *m_updateComTimer;
 signals:
     void httpRedReady(QString str);
     void dispatched();
+
+    // QWidget interface
+protected:
+    void mouseMoveEvent(QMouseEvent *event);
 };
 
 #endif // MAINWINDOW_H

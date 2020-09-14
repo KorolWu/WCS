@@ -31,7 +31,7 @@ void WarehouseprofileInfoShowWg::paintEvent(QPaintEvent *e)
     //绘制标题文字
     painter.setPen(QColor(0, 70, 200));
     QFont font;
-    font.setFamily("Microsoft YaHei");
+    font.setFamily("宋体");
     // 大小
     font.setPointSize(18);
     // 斜体
@@ -60,13 +60,13 @@ void WarehouseprofileInfoShowWg::paintEvent(QPaintEvent *e)
     painter.drawText(this->width()/5,  this->height()/5*4 , QStringLiteral("仓库状态"));
     //仓位配置数据的显示
     painter.setPen(QColor(77,82,175));
-    font.setPointSize(23);
+    font.setPointSize(18);
     painter.setFont(font);
     painter.drawText(this->width()*2/3,  this->height()/5 , QStringLiteral("13490"));
     painter.drawText(this->width()*2/3,  this->height()/5*2 , QStringLiteral("昆山市恒盛路1299号"));
     painter.drawText(this->width()*2/3-30,  this->height()/5*3 , QStringLiteral("电控件仓"));
     painter.setPen(QColor(0, 200, 0));
-    font.setPointSize(23);
+    font.setPointSize(18);
     painter.setFont(font);
     painter.drawText(this->width()*2/3,  this->height()/5*4 , QStringLiteral("正常"));
 

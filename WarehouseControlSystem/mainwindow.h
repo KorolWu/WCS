@@ -69,6 +69,8 @@ private:
     QStandardItem *p_current_tasks;
     QStandardItem *p_sub_tasks;
     QStandardItem *p_dispatch;
+    QStandardItem *p_main_from;
+    QStandardItem *p_map;
     QTreeView     *p_treeView;
     QPushButton   *exit_btn;
     QPushButton   *user_btn;

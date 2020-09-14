@@ -4,7 +4,11 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QGridLayout>
+#include <QVBoxLayout>
 #include "cpiewidget.h"
+#include "torquechart.h"
+#include <QList>
+#include <QColor>
 /**
  * @brief The MainWidget class
  * show main info widget
@@ -23,7 +27,12 @@ private:
     QPushButton *m_ptest;
     QWidget     *m_pmain;
     CPieWidget  *m_piew;
+    TorqueChart *m_tchar;
+     CPieWidget  *m_perrwidget;
     void initUI();
+    QList<QColor> m_colorlist;
+    void SetErrwidgetInfo();
+
 
 public slots:
 };

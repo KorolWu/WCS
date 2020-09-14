@@ -87,7 +87,7 @@ private:
     RunerForm     *p_mRunerForm;
     CarListForm   *p_mCarList;
     QThread       *p_mDispatchThread;
-    //MainWidget    *m_pMainWidget;
+    MainWidget    *m_pMainWidget;
     JQHttpServer::TcpServerManage *m_pHttpServer;
     DispatchWidget *m_pDispatchForm;
     bool           m_listIsShow;

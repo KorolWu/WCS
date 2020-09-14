@@ -29,7 +29,7 @@ class CPieWidget : public QWidget
 	Q_OBJECT
 
 public:
-	CPieWidget(QWidget *parent = 0);
+    CPieWidget(int w, int h, QWidget *parent = 0);
 	~CPieWidget();
 
 	//ÉèÖÃÊı¾İ
@@ -71,6 +71,8 @@ private:
 	PieStyle m_piestyle;
 	bool m_isexploded;
 	int m_explodedindex;
+    int w;
+    int h;
 	
 };
 

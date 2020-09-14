@@ -1,10 +1,13 @@
 #include "cpiewidget.h"
+#include <QDebug>
 
-CPieWidget::CPieWidget(QWidget *parent)
+CPieWidget::CPieWidget(int w, int h, QWidget *parent)
 	: QWidget(parent)
 {
 	
-	resize(600,500);
+    //resize(600,500);
+   this->w = w;
+    this->h = h;
 	init();
 }
 
@@ -71,30 +74,30 @@ void CPieWidget::init()
 	m_explodedindex = -1;
 	m_isexploded = false;
 	
-	m_colorlist << QColor(238,187,34);
-	m_colorlist << QColor(102,170,238);
-	m_colorlist << QColor(136,68,255);
+    m_colorlist << QColor(168,209,207);
+    //m_colorlist << QColor(238,187,34);
+//	m_colorlist << QColor(102,170,238);
+//	m_colorlist << QColor(136,68,255);
 	m_colorlist << QColor(116,169,26);
 	m_colorlist << QColor(201,64,73);
-	m_colorlist << QColor(210,151,153);
-	m_colorlist << QColor(77,82,175);
-	m_colorlist << QColor(158,102,155);
-	m_colorlist << QColor(168,209,207);
-	m_colorlist << QColor(172,126,126);
-	m_colorlist << QColor(90,179,86);
+    m_colorlist << QColor(210,151,153);
+    m_colorlist << QColor(77,82,175);
+    m_colorlist << QColor(158,102,155);
+    m_colorlist << QColor(172,126,126);
+    m_colorlist << QColor(90,179,86);
 
 
 	m_datamap.insert("test1",3);
-	m_datamap.insert("test2",5);
+    m_datamap.insert("test2",8);
  	m_datamap.insert("test3",2);
- 	m_datamap.insert("test4",4);
- 	m_datamap.insert("test5",6);
- 	m_datamap.insert("test6",8);
- 	m_datamap.insert("test7",5);
- 	m_datamap.insert("test8",2);
- 	m_datamap.insert("test9",1);
-	m_datamap.insert("test10",1);
-	m_datamap.insert("test11",1);
+// 	m_datamap.insert("test4",4);
+// 	m_datamap.insert("test5",6);
+// 	m_datamap.insert("test6",8);
+// 	m_datamap.insert("test7",5);
+// 	m_datamap.insert("test8",2);
+// 	m_datamap.insert("test9",1);
+//	m_datamap.insert("test10",1);
+//	m_datamap.insert("test11",1);
 
 }
 
@@ -121,15 +124,16 @@ void CPieWidget::drawEllipse( QPainter *painter )
 		case RingShadingDount: drawRingShadingDount(painter);break;
 		case ConcaveShadingDount: drawConcaveShadingDount(painter);break;
 		//case ExplodedDount: drawExplodedDount(painter);break;
-		default:drawDefaultPie(painter);break;
+        default:drawDefaultPie(painter);break;
 	}
 }
 
 void CPieWidget::drawDefaultPie( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&1&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -175,8 +179,9 @@ void CPieWidget::drawDefaultPie( QPainter *painter )
 void CPieWidget::drawConcaveShading( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&2&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -222,8 +227,9 @@ void CPieWidget::drawConcaveShading( QPainter *painter )
 void CPieWidget::drawRadialGradient( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&3&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -270,8 +276,9 @@ void CPieWidget::drawRadialGradient( QPainter *painter )
 void CPieWidget::drawDountDefault( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&4&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -318,8 +325,9 @@ void CPieWidget::drawDountDefault( QPainter *painter )
 void CPieWidget::drawRingShadingDount( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&5&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -366,8 +374,9 @@ void CPieWidget::drawRingShadingDount( QPainter *painter )
 void CPieWidget::drawConcaveShadingDount( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&6&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
@@ -414,8 +423,9 @@ void CPieWidget::drawConcaveShadingDount( QPainter *painter )
 void CPieWidget::drawExplodedDount( QPainter *painter )
 {
 	qreal sum = getSumValue();
-	int w = width();
-	int h = height();
+//	int w = width();
+//	int h = height();
+    qDebug()<<w<<"&7&"<<h;
 	int radius = qMin(w,h)*0.8; //直径
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 

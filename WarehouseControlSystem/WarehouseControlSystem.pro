@@ -5,7 +5,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui sql network concurrent serialport serialbus
+QT       += core gui sql network concurrent serialport serialbus charts
 QTPLUGIN += qgif
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -89,7 +89,8 @@ SOURCES += main.cpp\
     ControlClass/externcommuincation/tcommmodbusserial.cpp \
     ControlClass/Instructions/scancodeinstruction.cpp \
     Forms/mainFroms/mainwidget.cpp \
-    Forms/mainFroms/cpiewidget.cpp
+    Forms/mainFroms/cpiewidget.cpp \
+    Forms/mainFroms/torquechart.cpp
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -158,7 +159,8 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/tcommmodbusserial.h \
     ControlClass/Instructions/scancodeinstruction.h \
     Forms/mainFroms/mainwidget.h \
-    Forms/mainFroms/cpiewidget.h
+    Forms/mainFroms/cpiewidget.h \
+    Forms/mainFroms/torquechart.h
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

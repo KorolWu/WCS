@@ -30,11 +30,21 @@ void MainWidget::initUI()
     SetErrwidgetInfo();
     m_perrwidget->setPieStyleSheet((PieStyle)3);
     m_perrwidget->update();
+<<<<<<< HEAD
     m_pgridlayout->addWidget(m_perrwidget,11,1,10,1);
     // 设置水平间距
     m_pgridlayout->setHorizontalSpacing(5);
     // 设置垂直间距
     m_pgridlayout->setVerticalSpacing(5);
+=======
+    m_pgridlayout->addWidget(m_perrwidget,1,1,1,1);
+
+    m_profileWidget = new WarehouseprofileInfoShowWg(m_width/2,m_height/2);
+    m_pgridlayout->addWidget(m_profileWidget,1,0,1,1);
+
+
+
+>>>>>>> 17a9541668acce48d541f7dc33d42d47a42f6c28
     m_pmain->setLayout(m_pgridlayout);
     m_pmain->setStyleSheet("background-color: rgb(18, 62, 111, 40);");
 }

@@ -92,7 +92,7 @@ void CPieWidget::init()
     m_datamap.insert("Err:",2);
 
 
-    int interval = w/13;int i = 0;
+    int interval = w/10;int i = 0;
     for(auto it = m_datamap.begin();it != m_datamap.end();it++)
     {
         QFont font("??",14);

@@ -87,6 +87,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeWcs()
 {
+    Myconfig::GetInstance()->m_flag = false;
     //check the task isn`t over,get user dialog
     if(Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)
     {
@@ -177,11 +178,14 @@ void MainWindow::initUI()
     p_treeView->setEditTriggers(0);
     p_standarItem = new QStandardItem("用户管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/user.png"));
-    p_userItem = new QStandardItem("权限管理");
+    p_userItem = new QStandardItem("地图管理");
     p_ordersItem = new QStandardItem("生成任务");
+    p_loginroleItem = new  QStandardItem("登录管理");
 
     p_standarItem->appendRow(p_userItem);
     p_standarItem->appendRow(p_ordersItem);
+    p_standarItem->appendRow(p_loginroleItem);
+
     p_treeStandarModel->appendRow(p_standarItem);
     p_standarItem = new QStandardItem("设备管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/devices.png"));
@@ -344,7 +348,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
     deleteChildrenList();
     QString row_name = index.data().toString();
-    if(row_name == "权限管理")
+    if(row_name == "地图管理")
     {
         //qDebug()<<"handle 权限管理...";
         m_pmonitorui->show();

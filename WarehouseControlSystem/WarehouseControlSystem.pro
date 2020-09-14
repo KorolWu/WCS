@@ -91,7 +91,9 @@ SOURCES += main.cpp\
     Forms/mainFroms/mainwidget.cpp \
     Forms/mainFroms/cpiewidget.cpp \
     Forms/mainFroms/torquechart.cpp \
-    Forms/mainFroms/warehouseprofileinfoshowwg.cpp
+    Forms/mainFroms/warehouseprofileinfoshowwg.cpp \
+    Forms/UserInfo/userinfowg.cpp
+
 
 HEADERS  += mainwindow.h \
     UnitClass/jeson2object.h \
@@ -162,7 +164,9 @@ HEADERS  += mainwindow.h \
     Forms/mainFroms/mainwidget.h \
     Forms/mainFroms/cpiewidget.h \
     Forms/mainFroms/torquechart.h \
-    Forms/mainFroms/warehouseprofileinfoshowwg.h
+    Forms/mainFroms/warehouseprofileinfoshowwg.h \
+    Forms/UserInfo/userinfowg.h
+
 
 INCLUDEPATH += ../SDK/include/
 include( $$PWD/../SDK/include/library/JQLibrary/JQLibrary.pri )

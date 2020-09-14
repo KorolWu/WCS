@@ -33,13 +33,8 @@ void MainWidget::initUI()
     m_pgridlayout->addWidget(m_perrwidget,11,1,10,1);
 
     m_profileWidget = new WarehouseprofileInfoShowWg(m_width/5,m_height/5);
-    m_pgridlayout->addWidget(m_profileWidget,12,0,10,1);
+    m_pgridlayout->addWidget(m_profileWidget,11,0,10,1);
 
-
-    // 设置水平间距
-    m_pgridlayout->setHorizontalSpacing(5);
-    // 设置垂直间距
-    m_pgridlayout->setVerticalSpacing(5);
     m_pmain->setLayout(m_pgridlayout);
     m_pmain->setStyleSheet("background-color: rgb(18, 62, 111, 40);");
 }

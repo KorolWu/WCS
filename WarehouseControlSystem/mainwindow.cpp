@@ -1,3 +1,4 @@
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDesktopWidget>
@@ -36,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_pmonitorui = new MonitorUI(p_main_widget);
     m_testorders = new TestcreateOrdersPath(p_main_widget);
     deleteChildrenList();
+    m_pMainWidget->show();
     TCommtransceivermanager::GetInstance()->InitHWcommob(); //所有数据通讯对象创建
     m_pHttpServer = new  JQHttpServer::TcpServerManage(2);
     connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
@@ -158,7 +160,6 @@ void MainWindow::initUI()
     p_mRunerForm->setParameter(Myconfig::GetInstance()->m_runer);
     p_treeView = new QTreeView(treewidget);
     m_pMainWidget = new MainWidget(desk_rect.width()/7*6-5,desk_rect.height()/10*9-5,p_main_widget);
-   m_pMainWidget->show();
     p_treeView->setStyleSheet("QTreeView{border: 1px solid lightgray;}"
                               "QTreeView::item {height: 40px;border-radius: 2px;"
                               "border: 1px solid transparent;background: transparent;color: black;}"
@@ -227,6 +228,14 @@ void MainWindow::initUI()
     p_dispatch = new QStandardItem("手动调度");
     p_dispatch->setIcon(QIcon(":/resouse/Image/current_tasks.png"));
     p_treeStandarModel->appendRow(p_dispatch);
+
+    p_main_from = new QStandardItem("信息统计");
+    p_main_from->setIcon(QIcon(":/resouse/Image/log.png"));
+    p_treeStandarModel->appendRow(p_main_from);
+
+    p_map = new QStandardItem("地图构建");
+    p_map->setIcon(QIcon(":/resouse/Image/log.png"));
+    p_treeStandarModel->appendRow(p_map);
 
 //    m_pmode_info_label = new QLabel(this);
 //    m_pmode_info_label->setText("now is auto model");
@@ -305,7 +314,7 @@ void MainWindow::deleteChildrenList()
     p_mRunerForm->hide();
     m_testorders->hide();
     m_pDispatchForm->hide();
-   // m_pMainWidget->hide();
+    m_pMainWidget->hide();
 }
 
 void MainWindow::getParameterFromDB()
@@ -400,6 +409,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "手动调度")
     {
         m_pDispatchForm->show();
+    }
+    else if(row_name == "信息统计")
+    {
+        m_pMainWidget->show();
     }
 }
 

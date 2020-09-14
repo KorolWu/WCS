@@ -111,7 +111,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     connect(m_scanPathtimer,&QTimer::timeout,this,&MonitorUI::slotCarPathsimulation);
     //test car pos
     m_carpos = GetCarPos(99); //默认ID等于99
-    m_caritem = new StoreItem(m_carpos.x/k,m_carpos.y/k,m_carpos.x/k+20,m_carpos.y/k+20);
+    m_caritem = new StoreItem(m_carpos.x/k-10,m_carpos.y/k-10,m_carpos.x/k+10,m_carpos.y/k+10);
     qDebug()<<"x:"<<m_carpos.x/k<<" y:"<<m_carpos.y/k;
     m_caritem->SetText("car");
     m_caritem->SetIndexID("99");
@@ -125,7 +125,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     qDebug()<<"befor"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
     //m_caritem->setPos(100,100);
     qDebug()<<"after"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
-    m_coefficient = 5;
+    m_coefficient = 1;
     m_running = false;
     m_timer->start(100);
 
@@ -451,11 +451,10 @@ void MonitorUI::UpdateCarPosPathVec()
                      value = -1*i*m_coefficient + m_caritem->y();
                     else
                         value = i*m_coefficient + m_caritem->y();
-
                     m_ypathppos.append(value);
                 }
                 m_carpos.y = it.value().deveceStatus.carCurrentPosion.y;
-                qDebug()<<"-"<<ydiffvalue<<m_ypathppos <<m_carpos.x/k ;
+                qDebug()<<"-"<<ydiffvalue<<m_ypathppos <<m_carpos.x/k << m_coefficient<< k ;
                 break;
             }
         }

@@ -9,8 +9,11 @@
 #include "torquechart.h"
 #include <QList>
 #include <QColor>
+<<<<<<< HEAD
 #include <math.h>
+=======
 #include "warehouseprofileinfoshowwg.h"
+>>>>>>> 17a9541668acce48d541f7dc33d42d47a42f6c28
 /**
  * @brief The MainWidget class
  * show main info widget

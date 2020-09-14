@@ -9,6 +9,7 @@
 #include "torquechart.h"
 #include <QList>
 #include <QColor>
+#include <math.h>
 /**
  * @brief The MainWidget class
  * show main info widget
@@ -32,6 +33,7 @@ private:
     void initUI();
     QList<QColor> m_colorlist;
     void SetErrwidgetInfo();
+    void addTestPonit();
 
 
 public slots:

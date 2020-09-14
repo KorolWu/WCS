@@ -7,7 +7,8 @@ TorqueChart::TorqueChart(int w, int h, QWidget *parent)
   m_plinseries = new QSplineSeries();
   //图表
   m_pchart = new QChart();
-  m_pchart->setTheme(QChart::ChartThemeDark);
+ // m_pchart->setTheme(QChart::ChartThemeBlueNcs);
+  m_pchart->setBackgroundBrush(QBrush(QColor(18, 62, 111, 40)));
   //chart容器
   m_pmainWidget = new QWidget(this);
   m_pHbox = new QHBoxLayout();
@@ -24,11 +25,11 @@ TorqueChart::TorqueChart(int w, int h, QWidget *parent)
   m_pchart->addSeries(m_plinseries);
   //niaoyonmgmeiyou
   m_pchart->createDefaultAxes();
-  m_pchart->setTitle("<h>实时扭矩图</h>");
+  m_pchart->setTitle("<h3>任务时间分配图</h3>");
   m_pchart->axisX()->setRange(0,6);
   m_pchart->axisY()->setRange(0,3);
   m_pchart->setAxisY(m_pyaxis,m_plinseries);
-  m_pchart->axisY()->setTitleText("Torque(N/M)");
+  m_pchart->axisY()->setTitleText("任务数量(个)");
   m_pyaxis->setTickCount(10);
   m_pchart->setAxisX(m_paxis,m_plinseries);
   m_pchart->axisX()->setTitleText("Time(sec)");

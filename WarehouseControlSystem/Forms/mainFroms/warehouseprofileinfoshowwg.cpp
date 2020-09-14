@@ -51,7 +51,7 @@ void WarehouseprofileInfoShowWg::paintEvent(QPaintEvent *e)
     //绘制库位配置数据显示
     font.setPointSize(20);
     font.setUnderline(false);
-    painter.setPen(QColor(210,151,153,255));
+    painter.setPen(QColor(0,0,0,255));
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter.setFont(font);
     painter.drawText(this->width()/5+10, this->height()/5 , QStringLiteral("总库位"));

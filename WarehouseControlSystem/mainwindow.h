@@ -60,7 +60,6 @@ private:
     QWidget *treewidget;
     QStandardItemModel *p_treeStandarModel;
     QStandardItem *p_standarItem;
-    QStandardItem *p_userItem;
     QStandardItem *p_ordersItem;
     QStandardItem *p_agvItem;
     QStandardItem *p_elevator;

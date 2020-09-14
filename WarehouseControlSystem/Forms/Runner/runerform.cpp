@@ -89,36 +89,43 @@ void RunerForm::initUi()
     QHBoxLayout *hboxSokcet = new QHBoxLayout();
     QLabel *e = new QLabel("可取");
     m_pickupImage = new QLabel();
+    m_pickupImage->setFixedSize(10,10);
     hboxSokcet->addWidget(e);
     hboxSokcet->addWidget(m_pickupImage);
     hboxSokcet->addStretch();
     QLabel *l = new QLabel("可放");
     m_putupImage = new QLabel();
+     m_putupImage->setFixedSize(10,10);
     hboxSokcet->addWidget(l);
     hboxSokcet->addWidget(m_putupImage);
     hboxSokcet->addStretch();
     QLabel *b = new QLabel("扫码_1");
     m_pscanImage1 = new QLabel();
+     m_pscanImage1->setFixedSize(10,10);
     hboxSokcet->addWidget(b);
     hboxSokcet->addWidget(m_pscanImage1);
     hboxSokcet->addStretch();
     QLabel *a = new QLabel("扫码_2");
     m_pscanImage2 = new QLabel();
+     m_pscanImage2->setFixedSize(10,10);
     hboxSokcet->addWidget(a);
     hboxSokcet->addWidget(m_pscanImage2);
     hboxSokcet->addStretch();
     QLabel *q = new QLabel("超重");
     m_pbackupImage = new QLabel();
+     m_pbackupImage->setFixedSize(10,10);
     hboxSokcet->addWidget(q);
     hboxSokcet->addWidget(m_pbackupImage);
     hboxSokcet->addStretch();
 
     QLabel *f = new QLabel("在线");
     m_pisOnlineImage = new QLabel();
+     m_pisOnlineImage->setFixedSize(10,10);
     hboxSokcet->addWidget(f);
     hboxSokcet->addWidget(m_pisOnlineImage);
      hboxSokcet->addStretch();
     check_status_groupbox->setLayout(hboxSokcet);
+    //hboxSokcet->setContentsMargins(5, 0, 5, 0);
     m_pvBox->addWidget(check_status_groupbox);
 
     QGroupBox *check_send = new QGroupBox("通讯测试",this);
@@ -234,8 +241,8 @@ void RunerForm::initUi()
     m_pvBox->addLayout(h);
     m_pvBox->setSpacing(60);
     m_pvBox->addStretch();
-
-    this->setStyleSheet("QLineEdit{font: 14px;width:70px;height:25;}QPushButton{font: 14px;width:70px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(80, 80, 80);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QLabel{font: 16px}QGroupBox{border: 1px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}");
+    //QLabel{font: 16px;min-width:8px;min-height:8px;}
+    this->setStyleSheet("QLineEdit{font: 14px;width:70px;height:25;}QPushButton{font: 14px;width:70px;height:25;background-color:rgb(150,150,150);}QPushButton:hover{background: rgb(80, 80, 80);}QPushButton:pressed{background-color:rgb(85, 170, 255);}QGroupBox{border: 1px solid white;border-radius:8px;margin-top:6px;}QGroupBox:title{color:rgb(24,24,58);subcontrol-origin: margin;left: 10px;}");
     this->setLayout(m_pvBox);
 
 }

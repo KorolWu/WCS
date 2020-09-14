@@ -179,11 +179,9 @@ void MainWindow::initUI()
     p_treeView->setEditTriggers(0);
     p_standarItem = new QStandardItem("用户管理");
     p_standarItem->setIcon(QIcon(":/resouse/Image/user.png"));
-    p_userItem = new QStandardItem("地图管理");
     p_ordersItem = new QStandardItem("生成任务");
     p_loginroleItem = new  QStandardItem("登录管理");
 
-    p_standarItem->appendRow(p_userItem);
     p_standarItem->appendRow(p_ordersItem);
     p_standarItem->appendRow(p_loginroleItem);
 
@@ -413,6 +411,10 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     else if(row_name == "信息统计")
     {
         m_pMainWidget->show();
+    }
+    else if(row_name == "地图构建")
+    {
+        m_pmonitorui->show();
     }
 }
 

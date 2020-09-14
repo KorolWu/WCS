@@ -31,6 +31,11 @@ void MainWidget::initUI()
     m_perrwidget->setPieStyleSheet((PieStyle)3);
     m_perrwidget->update();
     m_pgridlayout->addWidget(m_perrwidget,11,1,10,1);
+
+    m_profileWidget = new WarehouseprofileInfoShowWg(m_width/5,m_height/5);
+    m_pgridlayout->addWidget(m_profileWidget,12,0,10,1);
+
+
     // 设置水平间距
     m_pgridlayout->setHorizontalSpacing(5);
     // 设置垂直间距

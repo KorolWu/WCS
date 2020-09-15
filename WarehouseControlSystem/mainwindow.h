@@ -41,6 +41,7 @@
 #include"SimulationgenerationtaskUI/testcreateorderspath.h"
 #include <QMessageBox>
 #include "updaterealtimedataobject.h"
+#include "Forms/UserInfo/userinfowg.h"
 
 namespace Ui {
 class MainWindow;
@@ -88,6 +89,7 @@ private:
     ElevatorFrom  *p_mElevator;
     RunerForm     *p_mRunerForm;
     CarListForm   *p_mCarList;
+    UserInfoWg  *p_mUserManagerWg;
     QThread       *p_mDispatchThread;
     MainWidget    *m_pMainWidget;
     JQHttpServer::TcpServerManage *m_pHttpServer;

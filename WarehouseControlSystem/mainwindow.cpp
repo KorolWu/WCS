@@ -36,6 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_palarmWg = new AlarmInfoWg(p_main_widget);
     m_pmonitorui = new MonitorUI(p_main_widget);
     m_testorders = new TestcreateOrdersPath(p_main_widget);
+    p_mUserManagerWg = new UserInfoWg(p_main_widget);
     deleteChildrenList();
     m_pMainWidget->show();
     TCommtransceivermanager::GetInstance()->InitHWcommob(); //所有数据通讯对象创建
@@ -313,6 +314,7 @@ void MainWindow::deleteChildrenList()
     m_testorders->hide();
     m_pDispatchForm->hide();
     m_pMainWidget->hide();
+    p_mUserManagerWg->hide();
 }
 
 void MainWindow::getParameterFromDB()
@@ -355,11 +357,11 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
     deleteChildrenList();
     QString row_name = index.data().toString();
-    if(row_name == "地图管理")
+    if(row_name == "登录管理")
     {
-        //qDebug()<<"handle 权限管理...";
-        m_pmonitorui->show();
-
+//        //qDebug()<<"handle 权限管理...";
+//        m_pmonitorui->show();
+        p_mUserManagerWg->show();
     }
     else if(row_name == "生成任务")
     {

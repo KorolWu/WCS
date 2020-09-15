@@ -111,7 +111,7 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     connect(m_scanPathtimer,&QTimer::timeout,this,&MonitorUI::slotCarPathsimulation);
     //test car pos
     m_carpos = GetCarPos(99); //默认ID等于99
-    m_caritem = new StoreItem(m_carpos.x/k-10,m_carpos.y/k+10,m_carpos.x/k+10,m_carpos.y/k+30);
+    m_caritem = new StoreItem(m_carpos.x/k-10,m_carpos.y/k,m_carpos.x/k+10,m_carpos.y/k+20);
     qDebug()<<"x:"<<m_carpos.x/k<<" y:"<<m_carpos.y/k;
     m_caritem->SetText("car");
     m_caritem->SetIndexID("99");

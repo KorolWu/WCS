@@ -1,5 +1,8 @@
 #include "userinfowg.h"
 #include <QGroupBox>
+#include <QMessageBox>
+#include <QSqlError>
+#include <QSqlRecord>
 
 UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
 {
@@ -72,7 +75,7 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     pmainlayout->addWidget(m_sqltableview);
 
 }
-
+//model->revertAll();
 UserInfoWg::~UserInfoWg()
 {
 
@@ -83,25 +86,52 @@ UserInfoWg::~UserInfoWg()
 void UserInfoWg::slotaddnbrinfo()
 {
     m_sqltablemodel->insertRow(m_sqltablemodel->rowCount());
+    //    QSqlRecord record = m_sqltablemodel->record();
+    //    m_sqltablemodel->insertRecord(m_sqltablemodel->rowCount(),record);
 }
 ///
 /// \brief UserInfoWg::slotDelnbrinfo
 ///
 void UserInfoWg::slotDelnbrinfo()
 {
-
+    int row = m_sqltableview->currentIndex().row();//记录当前选择行
+    if(QMessageBox::Yes == QMessageBox::question(this,"Make Sure","确定删除第"+QString::number(row+1)+"行吗？",QMessageBox::Yes | QMessageBox::No , QMessageBox::Yes))
+    {
+        //提示框，防止误操作，是/否，按下是的操作后
+        m_sqltablemodel->removeRow(row);//删除当前行
+        m_sqltablemodel->submitAll();//提交修改的数据
+        m_sqltablemodel->select();//显示修改后的数据
+    }
 }
 ///
 /// \brief UserInfoWg::slotRefreshDataBase
 ///
 void UserInfoWg::slotRefreshDataBase()
 {
-
+    m_sqltablemodel->select();
 }
 ///
 /// \brief UserInfoWg::slotSavenbrinfo
 ///
 void UserInfoWg::slotSavenbrinfo()
 {
-
+    m_sqltablemodel->database().transaction();//开始事务操作
+    if(m_sqltablemodel->submitAll())
+    {
+        if(m_sqltablemodel->database().commit())//提交
+        {
+            QMessageBox::information(this,tr("tableModel"),tr("数据库修改成功！"));
+             m_sqltablemodel->select();
+        }
+        else
+        {
+            m_sqltablemodel->database().rollback();//回滚
+            m_sqltablemodel->select();//显示修改后的数据
+            QMessageBox::warning(this,tr("tableModel"),tr("数据库错误：%1").arg(m_sqltablemodel->lastError().text()),QMessageBox::Ok);
+        }
+    }
+    else{
+        QMessageBox::warning(this,tr("tableModel"),tr("数据库错误：%1，请检查等级取值范围，用户名和密码不超过11位").arg(m_sqltablemodel->lastError().text()),QMessageBox::Ok);
+        //QMessageBox::about(this,"Warning","请确认数据不可以为空");
+    }
 }

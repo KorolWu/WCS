@@ -11,7 +11,7 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     //Init UI
     QVBoxLayout *pmainlayout = new QVBoxLayout;
     setLayout(pmainlayout);
-    QLabel *pshowlabeltitle = new QLabel(tr("当前位置：WCS系统<<用户管理..."));
+    QLabel *pshowlabeltitle = new QLabel(tr("当前位置：WCS系统<<登录管理"));
     pmainlayout->addWidget(pshowlabeltitle);
     // pmainlayout->setSpacing(10);
     QHBoxLayout *pbtnLayout = new QHBoxLayout();
@@ -30,6 +30,11 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     m_pSaveBtn->setIcon(QIcon(":/resouse/Image/save.png"));
     pbtnLayout->addWidget(m_pSaveBtn);
     connect(m_pSaveBtn,&QPushButton::clicked,this,&UserInfoWg::slotSavenbrinfo);
+
+    m_pRevokeBtn = new QPushButton(tr("撤销"),this);
+    m_pRevokeBtn->setIcon(QIcon(":/resouse/Image/save.png"));
+    pbtnLayout->addWidget(m_pRevokeBtn);
+    connect(m_pRevokeBtn,&QPushButton::clicked,this,&UserInfoWg::slotRevokeInfo);
 
     m_pRefreshBtn = new QPushButton(tr("刷新"),this);
     m_pRefreshBtn->setIcon(QIcon(":/resouse/Image/Refresh.png"));
@@ -115,23 +120,31 @@ void UserInfoWg::slotRefreshDataBase()
 ///
 void UserInfoWg::slotSavenbrinfo()
 {
-    m_sqltablemodel->database().transaction();//开始事务操作
+  //  m_sqltablemodel->database().transaction();//开始事务操作
     if(m_sqltablemodel->submitAll())
     {
-        if(m_sqltablemodel->database().commit())//提交
-        {
+//        if(m_sqltablemodel->database().commit())//提交
+//        {
             QMessageBox::information(this,tr("tableModel"),tr("数据库修改成功！"));
-             m_sqltablemodel->select();
-        }
-        else
-        {
-            m_sqltablemodel->database().rollback();//回滚
-            m_sqltablemodel->select();//显示修改后的数据
-            QMessageBox::warning(this,tr("tableModel"),tr("数据库错误：%1").arg(m_sqltablemodel->lastError().text()),QMessageBox::Ok);
-        }
+            m_sqltablemodel->select();
+      //  }
+//        else
+//        {
+//            m_sqltablemodel->database().rollback();//回滚
+//            m_sqltablemodel->select();//显示修改后的数据
+//            QMessageBox::warning(this,tr("tableModel"),tr("数据库错误：%1").arg(m_sqltablemodel->lastError().text()),QMessageBox::Ok);
+//        }
     }
     else{
         QMessageBox::warning(this,tr("tableModel"),tr("数据库错误：%1，请检查等级取值范围，用户名和密码不超过11位").arg(m_sqltablemodel->lastError().text()),QMessageBox::Ok);
         //QMessageBox::about(this,"Warning","请确认数据不可以为空");
     }
+}
+///
+/// \brief UserInfoWg::slotRevokeInfo
+///撤销按钮
+void UserInfoWg::slotRevokeInfo()
+{
+    m_sqltablemodel->revertAll();
+    m_sqltablemodel->select();
 }

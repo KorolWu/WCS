@@ -29,6 +29,7 @@ private:
     QPushButton *m_PdelBtn;
     QPushButton *m_pRefreshBtn;
     QPushButton *m_pSaveBtn;
+     QPushButton *m_pRevokeBtn;
     QTableView  *m_sqltableview;
     QSqlTableModel *  m_sqltablemodel;
 private slots:
@@ -36,6 +37,7 @@ private slots:
     void  slotDelnbrinfo();
     void slotRefreshDataBase();
     void slotSavenbrinfo();
+    void slotRevokeInfo();
 };
 
 #endif // USERINFOWG_H

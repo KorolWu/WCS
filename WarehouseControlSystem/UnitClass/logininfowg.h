@@ -15,6 +15,11 @@ public:
    explicit  LoginInfoWg(QWidget *parent = 0);
     ~LoginInfoWg();
     //当前用户信息
+    QString GetUserName()
+    {
+        return m_username;
+    }
+
 public slots:
     void login();//点击登录按钮是执行的槽函数
 protected:

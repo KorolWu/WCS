@@ -426,7 +426,7 @@ void MainWindow::slotlogin()
     if (login.exec() == QDialog::Accepted)//调用login.exec()，阻塞主控制流，直到完成返回，继续执行主控制流
     {
         //获取当前用户信息和级别
-        user_btn->setText(tr("admin"));
+        user_btn->setText(login.GetUserName());
     }
 }
 

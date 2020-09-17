@@ -68,5 +68,8 @@ public:
     //流道的缓存位1-8，是否有料箱 有true  无false；
     QMap<int ,bool> m_cacheRunerMap;
     QMap<int ,ScanInfoStru> m_ScanMap;
+    //用户权限的等级
+    char m_curLoginlevel = 4;
+
 };
 #endif

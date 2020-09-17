@@ -5,6 +5,7 @@
 #include "datastructure.h"
 #include <QBitmap>
 #include <QPainter>
+#include <MysqlDataBase/readtabledata.h>
 
 LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
 {
@@ -55,6 +56,7 @@ LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
     m_exitBtn = new QPushButton(this);
     m_exitBtn->move(180,200);
     m_exitBtn->setText(tr("Exit"));
+    m_username = "user";
     //m_exitBtn->setFlat(true);
     //单击登录按钮时 执行 LoginForm::login 槽函数(自定义)；单击退出按钮时 执行 LoginForm::close 槽函数(窗体的关闭函数)
     connect(m_loginBtn,&QPushButton::clicked,this,&LoginInfoWg::login);
@@ -78,23 +80,34 @@ void LoginInfoWg::login()
     //tr()函数，防止设置中文时乱码
     QString username = m_puserNameLEd->text().trimmed() ;
     QString passwd =  m_pwdLEd->text();
-    MapLoginInfoStru userinfoMap;
-    bool usercheck = false;
-    for(auto it = userinfoMap.loginInfoMap.begin(); it !=  userinfoMap.loginInfoMap.end(); ++it)
+  //  MapLoginInfoStru userinfoMap;
+   // bool usercheck = false;
+    //直接查询数据库内容
+//    for(auto it = userinfoMap.loginInfoMap.begin(); it !=  userinfoMap.loginInfoMap.end(); ++it)
+//    {
+//        if(username == it.key() )
+//        {
+//            QString passstr ;
+//            passstr = QString(it.value().passwd) ;
+//            if(passwd == passstr )
+//            {
+//                usercheck = true;
+//               // if()
+
+//                accept();//关闭窗体，并设置返回值为Accepted
+//            }
+//            break;
+//        }
+//    }
+    ReadTableData databaseopob;
+    char level = -1;
+    if(databaseopob.CheckUserInfo(level,username,passwd))
     {
-        if(username == it.key() )
-        {
-            QString passstr ;
-            passstr = QString(it.value().passwd) ;
-            if(passwd == passstr )
-            {
-                usercheck = true;
-                accept();//关闭窗体，并设置返回值为Accepted
-            }
-            break;
-        }
+        Myconfig::GetInstance()->m_curLoginlevel = level;
+        m_username = username;
+        accept();//关闭窗体，并设置返回值为Accepted
     }
-    if(!usercheck)
+    else
     {
         QMessageBox::warning(this, tr("警告！"),tr("用户名或密码错误！"),QMessageBox::Yes);
         // 清空输入框内容

@@ -32,13 +32,30 @@
         <file>Image/tasks.png</file>
         <file>Image/all_tasks.png</file>
         <file>Image/current_tasks.png</file>
-<<<<<<< HEAD
         <file>Image/exportfile.png</file>
-=======
         <file>Image/up_down_move.png</file>
         <file>Image/out.png</file>
         <file>Image/in.png</file>
         <file>Image/all.png</file>
->>>>>>> d29a448ca5ec210ddbb09655e176701da1be06d4
+        <file>Image/deleterow.png</file>
+        <file>Image/Listbackground.png</file>
+        <file>Image/left.png</file>
+        <file>Image/go.png</file>
+        <file>Image/right.png</file>
+        <file>Image/Refresh.png</file>
+        <file>Image/search.png</file>
+        <file>Image/player_play.ico</file>
+        <file>Image/player_pause.ico</file>
+        <file>Image/hand.ico</file>
+        <file>Image/auto.ico</file>
+        <file>warehouse.qss</file>
+        <file>Image/no_box.png</file>
+        <file>Image/have_box.png</file>
+<<<<<<< HEAD
+        <file>Image/checkBox_off1.png</file>
+        <file>Image/checkBox_on1.png</file>
+=======
+        <file>Image/save.png</file>
+>>>>>>> ec1d2495621b770b4e9f2c5af753286419860528
     </qresource>
 </RCC>

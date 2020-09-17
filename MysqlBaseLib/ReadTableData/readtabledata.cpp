@@ -424,6 +424,24 @@ void ReadTableData::Readt_hwcomm_infotable()
         }
     }
 }
+///
+/// \brief ReadTableData::CheckUserInfo
+/// \param loginlevel
+/// \param username
+/// \return
+///
+bool ReadTableData::CheckUserInfo(char &loginlevel, QString username,QString passwd)
+{
+    bool isok = false;
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QString sql = QString("select * from t_userinfo where username = '%1' AND passwd = '%2' ").arg(username).arg(passwd);
+    QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
+    while (query.next()) {
+      loginlevel = query.value("prilevel").toInt();
+      isok = true;
+    }
+    return isok;
+}
 
 void ReadTableData::Readt_wmsrequest()
 {

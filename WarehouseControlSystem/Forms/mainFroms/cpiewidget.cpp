@@ -122,6 +122,20 @@ void CPieWidget::init()
     r->resize(interval,interval);
     g->resize(interval,interval);
     b->resize(interval,interval);
+
+    m_pcheckbox = new QCheckBox(this);
+    m_pcheckbox->move(w-100,10);
+    connect(m_pcheckbox,&QCheckBox::clicked,this,&CPieWidget::onCheckClicked);
+    m_pcheckbox->setText("Bomb");
+}
+
+void CPieWidget::setCharTitle(QString title)
+{
+    QFont font("Times",16);
+    QLabel *l = new QLabel(title,this);
+    l->setFont(font);
+    l->setAttribute(Qt::WA_TranslucentBackground, true);
+    l->move(w/2-l->width()/2,h/2);
 }
 
 
@@ -159,17 +173,15 @@ void CPieWidget::drawEllipse( QPainter *painter )
 
 void CPieWidget::drawDefaultPie( QPainter *painter )
 {
-	qreal sum = getSumValue();
-//	int w = width();
-//	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+    qreal sum = getSumValue();
+	int radius = qMin(w,h)*0.8; //Ö±ï¿½ï¿½
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 	
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+	qreal index = 30;  //ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -209,14 +221,14 @@ void CPieWidget::drawConcaveShading( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+	int radius = qMin(w,h)*0.8; //Ö±ï¿½ï¿½
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+	qreal index = 30;  //ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -256,14 +268,14 @@ void CPieWidget::drawRadialGradient( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+	int radius = qMin(w,h)*0.8; //Ö±ï¿½ï¿½
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+	qreal index = 30;  //ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -304,14 +316,14 @@ void CPieWidget::drawDountDefault( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+	int radius = qMin(w,h)*0.8; //Ö±ï¿½ï¿½
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+	qreal index = 30;  //ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -352,14 +364,14 @@ void CPieWidget::drawRingShadingDount( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+	int radius = qMin(w,h)*0.8; //Ö±ï¿½ï¿½
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+	qreal index = 30;  //ï¿½ï¿½Ê¼Î»ï¿½ï¿½
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -400,14 +412,14 @@ void CPieWidget::drawConcaveShadingDount( QPainter *painter )
 	qreal sum = getSumValue();
 //	int w = width();
 //	int h = height();
-	int radius = qMin(w,h)*0.8; //Ö±¾¶
+    int radius = qMin(w,h)*0.8;
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 
-	qreal index = 30;  //ÆôÊ¼Î»ÖÃ
+    qreal index = 30;
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -491,7 +503,16 @@ void CPieWidget::drawExplodedDount( QPainter *painter )
 		}
 	}
 
-	painter->restore();
+    painter->restore();
+}
+
+void CPieWidget::onCheckClicked()
+{
+    if(m_pcheckbox->isChecked())
+       setExplodedAll(true);
+    else
+        setExplodedAll(false);
+    update();
 }
 
 qreal CPieWidget::getSumValue()

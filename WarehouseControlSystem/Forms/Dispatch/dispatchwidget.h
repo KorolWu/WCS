@@ -13,6 +13,7 @@
 #include <QDateTime>
 #include <ControlClass/Instructions/scancodeinstruction.h>
 #include <ControlClass/Instructions/abstructinstruction.h>
+#include <ControlClass/Instructions/httpclien_k.h>
 #include <QTimer>
 
 
@@ -29,6 +30,7 @@ public slots:
     void onGetBoxClicked();
     void onScanCode();
     void updateUi();
+    void onPost();
 private:
     void initUI();
     int m_width;
@@ -46,6 +48,8 @@ private:
     QLineEdit *m_plineCacheIn;
     QLineEdit *m_plineCacheOut;
     QTextEdit *m_ptextLine_log;
+    QLineEdit *m_phttpUrl;
+    QPushButton *m_http_btn;
     void appendInfo(QString str);
 };
 

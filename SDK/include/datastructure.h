@@ -93,12 +93,17 @@ enum Order{
     Unlock_layer = 16,       //将小车锁定的层解锁（小车进电梯时）
     Scan_Code    = 17
 };
+typedef struct _HttpParameter
+{
+    QString url;
+    QByteArray body;
+}HttpParameter;
 //子任务的结构 任务类型，值
 typedef struct _OrderStru
 {
     //order type car elevator runer
     QString type = "";//硬件类型
-    QString strData = "";
+    QString strData = ""; //字符型参数  比如扫码抢
     int16_t childtype = 5 ;//同一个对象不同的数据帧类型
     Order order;
     double value;
@@ -111,6 +116,7 @@ typedef struct _OrderStru
     int numberOfEntries = 1;
     int Datatype = 1;//io /线圈 寄存器 modbus
     QVector<int> values;//需要写的值
+    HttpParameter http;
 }OrderStru;
 typedef struct _CarInfoStru
 {

@@ -92,7 +92,8 @@ SOURCES += main.cpp\
     Forms/mainFroms/cpiewidget.cpp \
     Forms/mainFroms/torquechart.cpp \
     Forms/mainFroms/warehouseprofileinfoshowwg.cpp \
-    Forms/UserInfo/userinfowg.cpp
+    Forms/UserInfo/userinfowg.cpp \
+    ControlClass/Instructions/httpclien_k.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -165,7 +166,8 @@ HEADERS  += mainwindow.h \
     Forms/mainFroms/cpiewidget.h \
     Forms/mainFroms/torquechart.h \
     Forms/mainFroms/warehouseprofileinfoshowwg.h \
-    Forms/UserInfo/userinfowg.h
+    Forms/UserInfo/userinfowg.h \
+    ControlClass/Instructions/httpclien_k.h
 
 
 INCLUDEPATH += ../SDK/include/

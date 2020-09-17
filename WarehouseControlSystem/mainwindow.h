@@ -95,6 +95,7 @@ private:
     bool           m_listIsShow;
 
     void closeWcs();
+    void closeObject();
     void initUI();
     void initDeviceClient();
     void deleteChildrenList();

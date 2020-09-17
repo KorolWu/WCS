@@ -128,11 +128,13 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
 
     m_pLineEdit_x = new QSpinBox(this);
     m_pLineEdit_x->setMaximum(20000);
+    m_pLineEdit_x->setMinimum(-20000);
     m_pLineEdit_x->resize(80,27);
     m_pLineEdit_x->move(10+interval*2,242);
 
     m_pLineEdit_y = new QSpinBox(this);
     m_pLineEdit_y->setMaximum(10000);
+    m_pLineEdit_y->setMinimum(-20000);
     m_pLineEdit_y->resize(80,27);
     m_pLineEdit_y->move(10+interval*4,242);
     m_pMove_y = new QPushButton("移动Y",this);
@@ -283,6 +285,30 @@ void CarStatusFrom::updateStatusOnBase()
          m_pTop_haveBox->setStyleSheet(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.senorgoodsstru.bloadhavegoods?"border-image:url(:/resouse/Image/green.png)":"border-image:url(:/resouse/Image/grey.png)");
 
     }
+}
+
+void CarStatusFrom::mousePressEvent(QMouseEvent *event)
+{
+    m_pressflag = true;
+    m_beginP = event->globalPos();
+    m_windowP = this->frameGeometry().topLeft();
+    QWidget::mousePressEvent(event);
+}
+
+void CarStatusFrom::mouseReleaseEvent(QMouseEvent *event)
+{
+    m_pressflag = true;
+    QWidget::mouseReleaseEvent(event);
+}
+
+void CarStatusFrom::mouseMoveEvent(QMouseEvent *event)
+{
+    if(m_pressflag)
+    {
+        QPoint relativePos = event->globalPos() - m_beginP;
+        this->move(m_windowP + relativePos );
+    }
+    QWidget::mouseMoveEvent(event);
 }
 
 

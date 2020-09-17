@@ -425,3 +425,19 @@ void ReadTableData::Readt_hwcomm_infotable()
     }
 }
 
+void ReadTableData::Readt_wmsrequest()
+{
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex);
+    QString sql = "SELECT * FROM t_wmsRequest;";
+    QSqlQuery query = CRUDBaseOperation::getInstance()->queryDb(sql);
+    while (query.next()) {
+        HttpParameter httpStru;
+        if( query.value(1).toString() == "out" || query.value(1).toString() == "in" || query.value(1).toString() == "err")
+        {
+            httpStru.url = query.value(2).toString();
+            httpStru.body = query.value(3).toString().toLatin1();
+            Myconfig::GetInstance()->m_requestParameter.insert(query.value(1).toString(),httpStru);
+        }
+    }
+}
+

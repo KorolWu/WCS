@@ -86,6 +86,24 @@ void DispatchWidget::updateUi()
      m_plineCacheOut->setText(QString("%1").arg(Myconfig::GetInstance()->m_taskMap.size()));
 }
 
+void DispatchWidget::onPost()
+{
+    HttpClien_k *h = new HttpClien_k();
+    QString result = "";
+    OrderStru o;
+    o.http.url = m_phttpUrl->text();
+    o.http.body = "body";
+    h->setParameter(o,0);
+    h->runInstruction();
+    int v = h->getResult(result);
+    if(v < 0)
+    {
+        appendInfo("request failed!");
+    }
+    else
+        appendInfo(result);
+}
+
 void DispatchWidget::initUI()
 {
     initRightW();
@@ -112,6 +130,7 @@ void DispatchWidget::initUI()
     m_poutButton->setText("GetBox");
     connect(m_poutButton,&QPushButton::clicked,this,&DispatchWidget::onGetBoxClicked);
     m_plineBoxNum = new QLineEdit(m_poutWidget);
+    m_plineBoxNum->setText("KS-10-A1-01-01");
     m_plineBoxNum->resize(200,30);
     m_plineBoxNum->move(100,100);
     m_poutButton->move(320,100);
@@ -125,8 +144,14 @@ void DispatchWidget::initUI()
     m_pScan_2->move(320,160);
     connect(m_pScan_1,&QPushButton::clicked,this,&DispatchWidget::onScanCode);
     connect(m_pScan_2,&QPushButton::clicked,this,&DispatchWidget::onScanCode);
+    m_phttpUrl = new QLineEdit(m_poutWidget);
+    m_phttpUrl->move(20,220);
+    m_phttpUrl->resize(260,30);
+    m_http_btn = new QPushButton("Post",m_poutWidget);
+    m_http_btn->move(320,220);
+    connect(m_http_btn,&QPushButton::clicked,this,&DispatchWidget::onPost);
     m_ptextLine_log = new QTextEdit(m_poutWidget);
-    m_ptextLine_log->move(20,200);
+    m_ptextLine_log->move(20,260);
     m_ptextLine_log->resize(400,210);
 }
 

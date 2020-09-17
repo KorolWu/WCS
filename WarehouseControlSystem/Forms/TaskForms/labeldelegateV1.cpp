@@ -18,6 +18,8 @@ void LabelDelegateV1::paint(QPainter *painter, const QStyleOptionViewItem &optio
         painter->setBrush(QColor(170,255,255));
     else if(str == "入库")
          painter->setBrush(QColor(170,255,127));
+    else
+        painter->setBrush(QColor(255,0,0));
     painter->setPen(Qt::white);
     painter->drawRect( option.rect.x()+2, option.rect.y()+2, option.rect.width()-4, option.rect.height()-4 );
     painter->setFont(QFont("Arial", 10));

@@ -29,6 +29,8 @@ void MainWidget::initUI()
     m_perrwidget = new CPieWidget(m_width/2,m_height/2);
     SetErrwidgetInfo();
     m_perrwidget->setPieStyleSheet((PieStyle)3);
+    m_perrwidget->setCharTitle("故障分布图");
+
     m_perrwidget->update();
     m_pgridlayout->addWidget(m_perrwidget,11,1,10,1);
 

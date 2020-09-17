@@ -249,11 +249,11 @@ QCheckBox::indicator {
 }
 /*未选中*/
 QCheckBox::indicator::unchecked {   
-    image: url(:/resouse/Image/Alarm.png);
+    image: url(:/resouse/Image/checkBox_off1.png);
 }
 /*选中*/
 QCheckBox::indicator::checked { 
-    image: url(:/resouse/Image/Alarm.png);
+    image: url(:/resouse/Image/checkBox_on1.png);
 }
 /**********表格**********/
 /*

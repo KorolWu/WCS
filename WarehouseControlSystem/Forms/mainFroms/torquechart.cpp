@@ -6,6 +6,7 @@ TorqueChart::TorqueChart(int w, int h, QWidget *parent)
   //曲线
   m_plinseries = new QSplineSeries();
   m_plinseries->setColor(QColor(255,0,0));
+  m_plinseries->setPen(QPen(Qt::green, 3, Qt::DashDotLine, Qt::RoundCap, Qt::RoundJoin));
   //图表
   m_pchart = new QChart();
  // m_pchart->setTheme(QChart::ChartThemeBlueNcs);

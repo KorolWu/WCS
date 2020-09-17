@@ -90,7 +90,6 @@ MainWindow::~MainWindow()
 void MainWindow::closeWcs()
 {
     Myconfig::GetInstance()->m_flag = false;
-    //check the task isn`t over,get user dialog
     if(Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)
     {
         QMessageBox msgBox;
@@ -101,10 +100,7 @@ void MainWindow::closeWcs()
         int ret = msgBox.exec();
         switch (ret) {
         case QMessageBox::Yes:
-            CRUDBaseOperation::getInstance()->closeDB();
-            Myconfig::GetInstance()->m_flag = false;
-            if(m_pHttpServer != nullptr)
-                m_pHttpServer->deleteLater();
+           closeObject();
             break;
         case QMessageBox::No:
             return;
@@ -114,7 +110,25 @@ void MainWindow::closeWcs()
             break;
         }
     }
+
     this->close();
+
+}
+
+void MainWindow::closeObject()
+{
+    if(QThreadPool::globalInstance()->activeThreadCount() > 0)
+    {
+        QThreadPool::globalInstance()->clear();
+    }
+    QThreadPool::globalInstance()->deleteLater();
+    CRUDBaseOperation::getInstance()->closeDB();
+    Myconfig::GetInstance()->m_flag = false;
+    if(m_pHttpServer != nullptr)
+        m_pHttpServer->deleteLater();
+    p_mDispatchThread->quit();
+    p_mDispatchThread->wait();
+    p_mDispatchThread->deleteLater();
 }
 
 void MainWindow::initUI()
@@ -457,7 +471,10 @@ void MainWindow::changeMode()
         Myconfig::GetInstance()->m_run_mode = 0;
     }
 }
-
+///
+/// \brief MainWindow::onSuspend
+/// 调度线程停止\开始分配任务
+///
 void MainWindow::onSuspend()
 {
     Myconfig::GetInstance()->m_flag = !Myconfig::GetInstance()->m_flag;

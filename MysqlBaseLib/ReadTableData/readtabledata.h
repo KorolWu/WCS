@@ -28,6 +28,7 @@ public:
     bool DelStoreposinfotoDataBaseByLayer(double z,QString &error);
     bool WriteInsertInfoDataBase(QMap<QString,StorePosInfoStru> storeposInfoMap,QString &errorinfo);
     void Readt_hwcomm_infotable();
+    void Readt_wmsrequest();
 private:
     QMutex m_mutex;
 

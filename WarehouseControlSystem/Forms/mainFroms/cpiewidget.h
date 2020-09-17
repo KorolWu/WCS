@@ -7,6 +7,7 @@
 #include <QHash>
 #include <qmath.h>
 #include <QtWidgets>
+#include <QCheckBox>
 enum PieStyle
 {
 	DefaultPie=0,
@@ -32,7 +33,6 @@ public:
     CPieWidget(int w, int h, QWidget *parent = 0);
 	~CPieWidget();
 
-	//设置数据
 	void setData(QHash<QString,float> datamap);
 	void addData(QString title,float value);
 	void removeData(QString title);
@@ -42,7 +42,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	void setPieStyleSheet(PieStyle piestyle = DefaultPie);
 	void setExplodedAll(bool isExploded = true);
-	void setExplodedIndex(int index); //从0开始,默认值也是0
+    void setExplodedIndex(int index);
+    void setCharTitle(QString title);
 	
 
 protected:
@@ -57,6 +58,7 @@ protected:
 	void drawExplodedDount(QPainter *painter);
 
 	void drawLegend(QPainter *painter);
+    void onCheckClicked();
 
 
 	void paintEvent(QPaintEvent *e);
@@ -73,7 +75,7 @@ private:
 	int m_explodedindex;
     int w;
     int h;
-	
+    QCheckBox *m_pcheckbox;
 };
 
 #endif // CPIEWIDGET_H

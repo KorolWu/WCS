@@ -54,10 +54,10 @@ void WarehouseprofileInfoShowWg::paintEvent(QPaintEvent *e)
     painter.setPen(QColor(0,0,0,255));
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter.setFont(font);
-    painter.drawText(this->width()/5+10, this->height()/5 , QStringLiteral("总库位"));
-    painter.drawText(this->width()/5, this->height()/5*2 , QStringLiteral("仓库地点"));
-    painter.drawText(this->width()/5, this->height()/5*3 , QStringLiteral("仓库类型"));
-    painter.drawText(this->width()/5,  this->height()/5*4 , QStringLiteral("仓库状态"));
+    painter.drawText(this->width()/8+10, this->height()/5 , QStringLiteral("总库位"));
+    painter.drawText(this->width()/8, this->height()/5*2 , QStringLiteral("仓库地点"));
+    painter.drawText(this->width()/8, this->height()/5*3 , QStringLiteral("仓库类型"));
+    painter.drawText(this->width()/8,  this->height()/5*4 , QStringLiteral("仓库状态"));
     //仓位配置数据的显示
     painter.setPen(QColor(77,82,175));
     font.setPointSize(18);

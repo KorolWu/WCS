@@ -19,6 +19,7 @@
 #include <QScrollBar>
 #include <QLineEdit>
 #include <QSpinBox>
+#include <QMouseEvent>
 #include "../../ControlClass/observerbase.h"
 #include "KDeviceSingleton.h"
 #include "Myconfig.h"
@@ -72,10 +73,18 @@ private:
     int m_id;
     int     m_carNum;
     QTimer* timer;
-
+    bool m_pressflag;
+    QPoint m_beginP;
+    QPoint m_windowP;
     // ObserverBase interface
 public:
     void updateStatusOnBase();
+
+    // QWidget interface
+protected:
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 };
 
 #endif // CarStatusFrom_H

@@ -233,7 +233,7 @@ void DispatchCenter::handle_out_task(TaskInfoStru &t)
         // carP   boxP   elevatorP  in or out?
         t.shelves = result;
         KDispatch *k = new KDispatch(task_p,ip,m_car_ip,t);//完成的状态，完成的结果，写入数据库的时间??
-        m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +" 分配给"+m_car_ip);
+        m_writeData.WriteLoginfo(0,"Dispatch Info",QString("将任务 %1 分配给 %2").arg(t.taskNum ).arg(m_car_ip));
         QThreadPool::globalInstance()->start(k);
         qDebug()<<m_car_ip<<" Task Number: "+QString::number(m_count_text);
         m_count_text++;

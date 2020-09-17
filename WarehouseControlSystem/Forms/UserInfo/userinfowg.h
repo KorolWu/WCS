@@ -29,9 +29,9 @@ private:
     QPushButton *m_PdelBtn;
     QPushButton *m_pRefreshBtn;
     QPushButton *m_pSaveBtn;
-     QPushButton *m_pRevokeBtn;
+    QPushButton *m_pRevokeBtn;
     QTableView  *m_sqltableview;
-    QSqlTableModel *  m_sqltablemodel;
+    QSqlTableModel *m_sqltablemodel;
 private slots:
     void slotaddnbrinfo();
     void  slotDelnbrinfo();

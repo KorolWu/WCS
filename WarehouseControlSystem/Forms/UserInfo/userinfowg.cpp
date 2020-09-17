@@ -6,6 +6,7 @@
 
 UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
 {
+    m_pRevokeBtn = NULL;
     this->resize(parent->width(),parent->height());
     // 删除 按钮  刷新按钮
     //Init UI
@@ -31,10 +32,10 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     pbtnLayout->addWidget(m_pSaveBtn);
     connect(m_pSaveBtn,&QPushButton::clicked,this,&UserInfoWg::slotSavenbrinfo);
 
-    m_pRevokeBtn = new QPushButton(tr("撤销"),this);
-    m_pRevokeBtn->setIcon(QIcon(":/resouse/Image/save.png"));
-    pbtnLayout->addWidget(m_pRevokeBtn);
-    connect(m_pRevokeBtn,&QPushButton::clicked,this,&UserInfoWg::slotRevokeInfo);
+//    m_pRevokeBtn = new QPushButton(tr("撤销"),this);
+//    m_pRevokeBtn->setIcon(QIcon(":/resouse/Image/save.png"));
+//    pbtnLayout->addWidget(m_pRevokeBtn);
+//    connect(m_pRevokeBtn,&QPushButton::clicked,this,&UserInfoWg::slotRevokeInfo);
 
     m_pRefreshBtn = new QPushButton(tr("刷新"),this);
     m_pRefreshBtn->setIcon(QIcon(":/resouse/Image/Refresh.png"));

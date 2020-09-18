@@ -157,7 +157,7 @@ int CarInstruction::getResult(QString &exeMsg)
     {
         Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x = m_tempValue;
     }
-    else if(m_order.order == 1)
+    else if(m_order.order == 1 ||m_order.order == 7 || m_order.order == 8)//7 8 is test
     {
          Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.y = m_tempValue;
     }

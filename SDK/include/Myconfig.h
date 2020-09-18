@@ -72,6 +72,8 @@ public:
     QMap<QString ,HttpParameter> m_requestParameter;
     //用户权限的等级
     char m_curLoginlevel = 4;
+    //
+    int m_pixel = 4;
 
 };
 #endif

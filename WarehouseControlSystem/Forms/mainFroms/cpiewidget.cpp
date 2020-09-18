@@ -6,7 +6,7 @@ CPieWidget::CPieWidget(int w, int h, QWidget *parent)
 {
 	
     //resize(600,500);
-   this->w = w;
+    this->w = w;
     this->h = h;
     this->setStyleSheet("background-color: rgb(18, 162, 111, 40);");
 	init();
@@ -76,7 +76,7 @@ void CPieWidget::init()
 	m_isexploded = false;
 	
     m_colorlist << QColor(168,209,207);
-    //m_colorlist << QColor(238,187,34);
+//  m_colorlist << QColor(238,187,34);
 //	m_colorlist << QColor(102,170,238);
 //	m_colorlist << QColor(136,68,255);
 	m_colorlist << QColor(116,169,26);
@@ -152,8 +152,6 @@ void CPieWidget::paintEvent( QPaintEvent *e )
     painter->setBrush(QColor(18, 62, 111, 40));
     painter->drawRect(0,0,w - 1,h-1);
 	drawEllipse(painter);
-
-	
 }
 
 void CPieWidget::drawEllipse( QPainter *painter )
@@ -174,14 +172,14 @@ void CPieWidget::drawEllipse( QPainter *painter )
 void CPieWidget::drawDefaultPie( QPainter *painter )
 {
     qreal sum = getSumValue();
-	int radius = qMin(w,h)*0.8; //ֱ��
+    int radius = qMin(w,h)*0.8;
 	QRect rect(w/2-radius/2,h/2-radius/2,radius,radius);
 
 	painter->save();
 	painter->setPen(Qt::NoPen);
 	QHashIterator<QString, float> i(m_datamap);
 	
-	qreal index = 30;  //��ʼλ��
+    qreal index = 30;
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
 	for (int i = 0; i < keylist.count(); ++i)
@@ -231,7 +229,7 @@ void CPieWidget::drawConcaveShading( QPainter *painter )
 	qreal index = 30;  //��ʼλ��
 	int colorindex=0;
 	QStringList keylist = m_datamap.keys();
-	for (int i = 0; i < keylist.count(); ++i)
+    for(int i = 0; i < keylist.count(); ++i)
 	{
 		qreal v = m_datamap.value(keylist.at(i));
 		v =v/sum*(360);
@@ -548,10 +546,4 @@ QPoint CPieWidget::getMovePoint( qreal angel )
 
 	return QPoint(wl,hl);
 }
-
-
-
-
-
-
 

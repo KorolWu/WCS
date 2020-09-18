@@ -77,7 +77,7 @@ bool KDispatch::runSubTask()
     {
         OrderStru o = m_taskQueue.dequeue();
         bool result = runInstrucation(o);
-        QThread::msleep(4000);
+        QThread::msleep(2000);
         result?msg = "执行成功":msg = "执行失败";
         CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr);
         if(sqlerr != "")

@@ -357,7 +357,8 @@ void MainWindow::getConfigParameter()
     Myconfig::GetInstance()->m_databaseInfo.port = f.Get("DataBase","port").toInt();
     Myconfig::GetInstance()->m_databaseInfo.sqlName = f.Get("DataBase","sqlName").toString();
     Myconfig::GetInstance()->m_databaseInfo.userName = f.Get("DataBase","userName").toString();
-    qDebug()<<Myconfig::GetInstance()->m_databaseInfo.ip <<Myconfig::GetInstance()->m_databaseInfo.port;
+    Myconfig::GetInstance()->m_pixel = f.Get("MapConfig","pixel").toInt();
+//    qDebug()<<Myconfig::GetInstance()->m_databaseInfo.ip <<Myconfig::GetInstance()->m_databaseInfo.port;
 }
 
 void MainWindow::delay_msc(int msc)
@@ -371,7 +372,8 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
 {
     deleteChildrenList();
     QString row_name = index.data().toString();
-    if(row_name == "登录管理")
+    int level = Myconfig::GetInstance()->m_curLoginlevel;
+    if(row_name == "登录管理" && level < 1)
     {
 //        //qDebug()<<"handle 权限管理...";
 //        m_pmonitorui->show();
@@ -385,7 +387,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         m_palarmWg->show();
     }
-    else if(row_name == "小车管理"||row_name == "设备管理")
+    else if(row_name == "小车管理"||row_name == "设备管理"&& level < 1)
     {
         car_from->refreshTable();
         car_from->show();
@@ -395,11 +397,11 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         //增加货架管理信息的界面
         m_pstoreWg->show();
     }
-    else if(row_name == "电梯管理")
+    else if(row_name == "电梯管理"&& level < 1)
     {
         p_mElevator->show();
     }
-    else if(row_name == "流道管理")
+    else if(row_name == "流道管理"&& level < 1)
     {
         p_mRunerForm->show();
     }
@@ -420,7 +422,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         m_pLog->show();
     }
-    else if(row_name == "手动调度")
+    else if(row_name == "手动调度"&& level < 1)
     {
         m_pDispatchForm->show();
     }
@@ -484,11 +486,13 @@ void MainWindow::onSuspend()
     {
         m_psuspend->setText("启动");
         m_psuspend->setIcon(QIcon(":/resouse/Image/player_play.ico"));
+        m_psuspend->setStyleSheet("background-color:rgb(160,160,160);color:white");
     }
     else
     {
         m_psuspend->setText("暂停");
         m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
+        m_psuspend->setStyleSheet("background-color:rgb(250,240,230);color:green");
     }
 }
 

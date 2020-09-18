@@ -125,9 +125,16 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     qDebug()<<"befor"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
     //m_caritem->setPos(100,100);
     qDebug()<<"after"<<m_caritem->pos().x()<<","<<m_caritem->pos().y();
-    m_coefficient = 1;
+    m_coefficient = Myconfig::GetInstance()->m_pixel;
     m_running = false;
     m_timer->start(100);
+
+    //elevator
+    StoreItem *elevatorItem = new StoreItem(-50,(520+500+903)/k,50,(520+903+500+500)/k);
+    m_cursceneMap[1]->addItem(elevatorItem);
+    elevatorItem->SetStoreSate(3);
+    elevatorItem->SetText("升降机");
+
 
 }
 
@@ -497,7 +504,7 @@ void MonitorUI::slotCarPathsimulation()
     {
         m_running  = true;
         m_caritem->setPos(m_xpathppos[cnt],m_caritem->y());
-        qDebug()<<"x:movvalue"<<m_carpos.x/k<<m_carpos.x/k<<m_xpathppos[cnt];
+        //qDebug()<<"x:movvalue"<<m_carpos.x/k<<m_carpos.x/k<<m_xpathppos[cnt];
         cnt++;
     }
     else{
@@ -514,7 +521,7 @@ void MonitorUI::slotCarPathsimulation()
         m_running  = true;
        // m_caritem->setPos(0,m_ypathppos[cnt]);
         m_caritem->setPos(m_caritem->x(),m_ypathppos[cnt]);
-        qDebug()<<"y:movvalue"<<m_carpos.x/k<<m_carpos.y/k<<m_ypathppos[cnt];
+        //qDebug()<<"y:movvalue"<<m_carpos.x/k<<m_carpos.y/k<<m_ypathppos[cnt];
         cnt++;
     }
     else{

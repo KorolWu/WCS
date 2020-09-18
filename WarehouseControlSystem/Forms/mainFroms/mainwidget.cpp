@@ -19,9 +19,10 @@ void MainWidget::initUI()
     m_pgridlayout = new QGridLayout();
     m_pgridlayout->addWidget(headLab,0,0,1,2);
     m_piew = new CPieWidget(m_width/2,m_height/2);
+    m_pstatusInfoWidget = new StatusInfoWidget(m_width/2,m_height/2);
     m_piew->setPieStyleSheet((PieStyle)8);
     m_piew->update();
-    m_pgridlayout->addWidget(m_piew,1,0,10,1);
+    m_pgridlayout->addWidget(m_pstatusInfoWidget,1,0,10,1);
     m_tchar = new TorqueChart(m_width/2,m_height/2.5);
     addTestPonit();
     m_pgridlayout->addWidget(m_tchar,1,1,10,1);
@@ -34,11 +35,10 @@ void MainWidget::initUI()
     m_perrwidget->update();
     m_pgridlayout->addWidget(m_perrwidget,11,1,10,1);
 
-    m_profileWidget = new WarehouseprofileInfoShowWg(m_width/5,m_height/5);
-    m_pgridlayout->addWidget(m_profileWidget,11,0,10,1);
+    m_pgridlayout->addWidget(m_piew,11,0,10,1);
 
     m_pmain->setLayout(m_pgridlayout);
-    m_pmain->setStyleSheet("background-color: rgb(18, 62, 111, 40);");
+    m_pmain->setStyleSheet("background-color: rgb(18, 62, 111, 40);border-radius:5px;");
 }
 
 void MainWidget::SetErrwidgetInfo()
@@ -66,4 +66,9 @@ void MainWidget::addTestPonit()
     {
         m_tchar->AddChartPoint(i,qrand()/10);
     }
+}
+
+void MainWidget::appLog(QString str)
+{
+    m_pstatusInfoWidget->appendLog(str);
 }

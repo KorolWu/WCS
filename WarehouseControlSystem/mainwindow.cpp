@@ -25,8 +25,6 @@ MainWindow::MainWindow(QWidget *parent) :
     getConfigParameter();
     QString sql_open_err;
     CRUDBaseOperation::getInstance()->openDB(sql_open_err);
-    if(sql_open_err != "")
-        GetSystemLogObj()->writeLog(sql_open_err,2);
     getParameterFromDB();
     GetSystemLogObj()->writeLog("WCS initialization ...",0);
     initUI();
@@ -47,12 +45,22 @@ MainWindow::MainWindow(QWidget *parent) :
         session->replyText(QString("Whatever you ask, I'll only respond to hello"));
     } );
     if(m_pHttpServer->listen( QHostAddress::Any, 23412 ))
+    {
         GetSystemLogObj()->writeLog("HttpServer 启动成功",0);
+        m_pMainWidget->appLog("HttpServer 启动成功");
+    }
     else
     {
         GetSystemLogObj()->writeLog("HttpServer 启动失败",3);
-        qDebug()<<"httpserver open fail";
+        m_pMainWidget->appLog("HttpServer 启动失败");
     }
+    if(sql_open_err != "")
+    {
+        GetSystemLogObj()->writeLog(sql_open_err,2);
+         m_pMainWidget->appLog("Mysql 启动失败");
+    }
+    else
+        m_pMainWidget->appLog("Mysql 启动成功");
     // init devece Client
     //initDeviceClient();
 
@@ -76,6 +84,7 @@ MainWindow::MainWindow(QWidget *parent) :
         m_updatestoretimer->start(1000);
         m_updateComTimer->start(200);
     }
+    m_pMainWidget->appLog("WMS 初始化成功!");
 }
 
 MainWindow::~MainWindow()
@@ -387,7 +396,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         m_palarmWg->show();
     }
-    else if(row_name == "小车管理"||row_name == "设备管理"&& level < 1)
+    else if((row_name == "小车管理" || row_name == "设备管理")&& level < 1)
     {
         car_from->refreshTable();
         car_from->show();

@@ -564,13 +564,14 @@ QLineEdit:!enabled {
         color: rgb(80, 80, 80);
 }
 
-/**********文本编辑框**********/
+/**********文本编辑框*********
 QTextEdit {
-        border: 1px solid rgb(111, 156, 207);
+        border: 1px solid rgb(18, 162, 111, 40);
         color: rgb(70, 71, 73);
-        background: rgb(187, 212, 238);
+        background: rgb(18, 162, 111, 40);
+        font:14px;
 }
-
+*/
 /**********滚动区域**********/
 QScrollArea {
         border: 1px solid rgb(111, 156, 207);

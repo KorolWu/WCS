@@ -232,7 +232,7 @@ typedef struct _RunnerInfoStru
 {
     QMap<int,int> holdresMap; //地址 后面地址对应的值 输出寄存器
     QMap<int,int> coilMap; //地址 后面地址对应的值 bit 物理线圈
-    int connectresult = 0;
+    int connectresult = 0; //== 1 connected
 }RunnerInfoStru;
 typedef struct _SerialportInfo
 {

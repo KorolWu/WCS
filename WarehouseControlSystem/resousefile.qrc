@@ -54,5 +54,7 @@
         <file>Image/checkBox_off1.png</file>
         <file>Image/checkBox_on1.png</file>
         <file>Image/save.png</file>
+        <file>Image/ok (1).ico</file>
+        <file>Image/err.ico</file>
     </qresource>
 </RCC>

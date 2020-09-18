@@ -130,9 +130,9 @@ MonitorUI::MonitorUI(QWidget *parent):QWidget(parent)
     m_timer->start(100);
 
     //elevator
-    StoreItem *elevatorItem = new StoreItem(-50,(520+500+903)/k,50,(520+903+500+500)/k);
+    StoreItem *elevatorItem = new StoreItem(-30,(520+500+903)/k,30,(520+903+500+500)/k);
     m_cursceneMap[1]->addItem(elevatorItem);
-    elevatorItem->SetStoreSate(3);
+    elevatorItem->SetStoreSate(10);
     elevatorItem->SetText("升降机");
 
 

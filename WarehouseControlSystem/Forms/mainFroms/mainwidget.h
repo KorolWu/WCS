@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include "cpiewidget.h"
 #include "torquechart.h"
+#include "statusinfowidget.h"
 #include <QList>
 #include <QColor>
 #include <math.h>
@@ -31,12 +32,14 @@ private:
     CPieWidget  *m_piew;
     TorqueChart *m_tchar;
      CPieWidget  *m_perrwidget;
-     WarehouseprofileInfoShowWg *m_profileWidget;
+     //WarehouseprofileInfoShowWg *m_profileWidget;
+     StatusInfoWidget *m_pstatusInfoWidget;
     void initUI();
     QList<QColor> m_colorlist;
     void SetErrwidgetInfo();
     void addTestPonit();
-
+public:
+    void appLog(QString str);
 
 public slots:
 };

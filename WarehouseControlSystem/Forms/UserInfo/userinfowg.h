@@ -16,6 +16,8 @@
 #include <QPushButton>
 #include <QHeaderView>
 #include "Forms/basefrom.h"
+#include <QComboBox>
+#include <QLineEdit>
 
 class UserInfoWg:public BaseFrom
 {
@@ -30,14 +32,23 @@ private:
     QPushButton *m_pRefreshBtn;
     QPushButton *m_pSaveBtn;
     QPushButton *m_pRevokeBtn;
+    QPushButton *m_pModifyBtn;
+    QLineEdit *m_usernameEdit;
+    QLineEdit *m_passwdEdit;
+    QComboBox *m_plevelcombox;
+
     QTableView  *m_sqltableview;
     QSqlTableModel *m_sqltablemodel;
+private:
+     QString GetMd5CryptographicHashStr(QString passwd);
 private slots:
     void slotaddnbrinfo();
     void  slotDelnbrinfo();
     void slotRefreshDataBase();
     void slotSavenbrinfo();
     void slotRevokeInfo();
+    void slotModifyInfo();
+    void slotRowDataEdit();
 };
 
 #endif // USERINFOWG_H

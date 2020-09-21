@@ -93,7 +93,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                 break;
 
             }
-            case 6://简易数据类型
+            case 6://请求数据
             {
                 SendCarCmdReqestFrame simplestru;
                 simplestru.carnbr = hwId;
@@ -108,6 +108,11 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             //WCS发送数据报文到小车
             if(frameData.size() > 0 && protype == KTcpClient)
             {
+               //qDebug()<<"send framedata"<<frameData.toHex();
+//   for(int i = 0; i < 40; ++i)
+//  {
+//     qDebug()<<"send framedata"<<(uint8_t)frameData[i]<<endl;
+//   }
                 emit m_HWdeviceMap[hwId]->signalSendHWdeviceData(frameData);//发送报文
             }
             break;
@@ -207,9 +212,16 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
         QList<int16_t> indexlsit;
         indexlsit.append(wcsindex);
         m_Wcstocarframeindex.insert(hwId,indexlsit);
+
     }
     else{
         QList<int16_t> list = m_Wcstocarframeindex[hwId];
+
+        if(list.size() > 0)
+        {
+            index = list[0];
+            return index;
+        }
         // std::sort(list.begin(), list.end());
         int16_t endvalue = list[list.size()-1];
         endvalue++;

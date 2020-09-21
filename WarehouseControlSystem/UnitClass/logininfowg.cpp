@@ -5,6 +5,7 @@
 #include "datastructure.h"
 #include <QBitmap>
 #include <QPainter>
+#include <QCryptographicHash>
 #include <MysqlDataBase/readtabledata.h>
 
 LoginInfoWg::LoginInfoWg(QWidget *parent) :QDialog(parent)
@@ -101,6 +102,16 @@ void LoginInfoWg::login()
 //    }
     ReadTableData databaseopob;
     char level = -1;
+    //加密过程
+    QCryptographicHash hash(QCryptographicHash::Md5);
+    //放入原始数据
+    hash.addData(passwd.toUtf8());
+    //取出加密后的数据
+    QByteArray arr = hash.result();
+    //重新复制给passwd
+    passwd = arr.toHex();
+    //看一下加密后的数据
+   // qDebug()<<"passwd"<<passwd;
     if(databaseopob.CheckUserInfo(level,username,passwd))
     {
         Myconfig::GetInstance()->m_curLoginlevel = level;

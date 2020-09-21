@@ -56,5 +56,6 @@
         <file>Image/save.png</file>
         <file>Image/ok (1).ico</file>
         <file>Image/err.ico</file>
+        <file>Image/updatepasswd.png</file>
     </qresource>
 </RCC>

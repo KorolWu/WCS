@@ -382,7 +382,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     deleteChildrenList();
     QString row_name = index.data().toString();
     int level = Myconfig::GetInstance()->m_curLoginlevel;
-    if(row_name == "登录管理" && level < 1)
+    if(row_name == "登录管理" /*&& level < 1*/)
     {
 //        //qDebug()<<"handle 权限管理...";
 //        m_pmonitorui->show();

@@ -120,7 +120,7 @@ void MainWindow::closeWcs()
             break;
         }
     }
-
+    closeObject();
     this->close();
 
 }
@@ -131,7 +131,7 @@ void MainWindow::closeObject()
     {
         QThreadPool::globalInstance()->clear();
     }
-    QThreadPool::globalInstance()->deleteLater();
+   // QThreadPool::globalInstance()->deleteLater();
     CRUDBaseOperation::getInstance()->closeDB();
     Myconfig::GetInstance()->m_flag = false;
     if(m_pHttpServer != nullptr)

@@ -27,35 +27,35 @@ void StatusInfoWidget::init()
     m_hbox = new QHBoxLayout();
     QLabel *l = new QLabel("WMS:");
     m_wmsLabel = new QLabel();
-    m_wmsLabel->setFixedSize(50,50);
+    m_wmsLabel->setFixedSize(30,30);
     m_hbox->addWidget(l);
     m_hbox->addWidget(m_wmsLabel);
     m_hbox->addStretch();
 
     QLabel *e = new QLabel("Elevator:");
     m_elevatorLabel = new QLabel();
-    m_elevatorLabel->setFixedSize(50,50);
+    m_elevatorLabel->setFixedSize(30,30);
     m_hbox->addWidget(e);
     m_hbox->addWidget(m_elevatorLabel);
     m_hbox->addStretch();
 
     QLabel *b = new QLabel("Runner:");
     m_runner = new QLabel();
-    m_runner->setFixedSize(50,50);
+    m_runner->setFixedSize(30,30);
     m_hbox->addWidget(b);
     m_hbox->addWidget(m_runner);
     m_hbox->addStretch();
 
     QLabel *a = new QLabel("RGV:");
     m_agvLabel = new QLabel();
-    m_agvLabel->setFixedSize(50,50);
+    m_agvLabel->setFixedSize(30,30);
     m_hbox->addWidget(a);
     m_hbox->addWidget(m_agvLabel);
     m_hbox->addStretch();
 
     QLabel *m = new QLabel("Mysql:");
     m_mysqlLabel = new QLabel();
-    m_mysqlLabel->setFixedSize(50,50);
+    m_mysqlLabel->setFixedSize(30,30);
     m_hbox->addWidget(m);
     m_hbox->addWidget(m_mysqlLabel);
     m_hbox->addStretch();

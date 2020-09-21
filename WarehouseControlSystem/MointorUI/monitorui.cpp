@@ -429,7 +429,9 @@ void MonitorUI::UpdateCarPosPathVec()
                 //生成x计算轨迹
                 m_xpathppos.clear();
                 int sizecnt =  qAbs(xdiffvalue/k/m_coefficient);
-                for(int i = 0; i < sizecnt; ++i)
+                double remainderx = qAbs(xdiffvalue / k);
+              //double remainderxcof = remainderx;
+                for(int i = 0; i <= sizecnt; ++i)
                 {
                     double value;
                     if(xdiffvalue < 0)
@@ -439,6 +441,17 @@ void MonitorUI::UpdateCarPosPathVec()
                     else
                         value = i*m_coefficient + m_caritem->x();
                     m_xpathppos.append(value);
+                }
+                if(qAbs(xdiffvalue) >= remainderx*k + k/2 )
+                {
+                    double valueremain = 0;
+                   if(xdiffvalue < 0)
+                   {
+                       valueremain = -1*sizecnt*m_coefficient  +  m_caritem->x() -1 ;
+                   }
+                   else
+                       valueremain = sizecnt*m_coefficient + 1 + m_caritem->x();
+                   m_xpathppos.append(valueremain);
                 }
                 m_carpos.x = it.value().deveceStatus.carCurrentPosion.x;
                 qDebug()<<xdiffvalue<<"-"<<m_xpathppos;
@@ -451,7 +464,8 @@ void MonitorUI::UpdateCarPosPathVec()
                 //生成y计算轨迹
                 m_ypathppos.clear();
                 int sizecnt =  qAbs(ydiffvalue/k/m_coefficient);
-                for(int i = 0; i < sizecnt; ++i)
+                int remaindery = qAbs(ydiffvalue/k);
+                for(int i = 0; i <= sizecnt; ++i)
                 {
                     double value;
                     if(ydiffvalue < 0)
@@ -460,8 +474,19 @@ void MonitorUI::UpdateCarPosPathVec()
                         value = i*m_coefficient + m_caritem->y();
                     m_ypathppos.append(value);
                 }
+                if(qAbs(ydiffvalue) >= remaindery*k + k/2 )
+                {
+                    double valueremain = 0;
+                   if(ydiffvalue < 0)
+                   {
+                       valueremain = -1*sizecnt*m_coefficient  +  m_caritem->y() -1 ;
+                   }
+                   else
+                       valueremain = sizecnt*m_coefficient + 1 + m_caritem->y();
+                   m_ypathppos.append(valueremain);
+                }
                 m_carpos.y = it.value().deveceStatus.carCurrentPosion.y;
-                qDebug()<<"-"<<ydiffvalue<<m_ypathppos <<m_carpos.x/k << m_coefficient<< k ;
+                qDebug()<<"y list data"<<ydiffvalue<<m_ypathppos <<m_carpos.x/k << m_coefficient<< k ;
                 break;
             }
         }

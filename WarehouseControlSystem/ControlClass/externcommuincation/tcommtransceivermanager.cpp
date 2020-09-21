@@ -108,11 +108,11 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             //WCS发送数据报文到小车
             if(frameData.size() > 0 && protype == KTcpClient)
             {
-                qDebug()<<"send framedata"<<frameData.toHex();
-                for(int i = 0; i < 40; ++i)
-                {
-                    qDebug()<<"send framedata"<<(uint8_t)frameData[i]<<endl;
-                }
+               //qDebug()<<"send framedata"<<frameData.toHex();
+//   for(int i = 0; i < 40; ++i)
+//  {
+//     qDebug()<<"send framedata"<<(uint8_t)frameData[i]<<endl;
+//   }
                 emit m_HWdeviceMap[hwId]->signalSendHWdeviceData(frameData);//发送报文
             }
             break;

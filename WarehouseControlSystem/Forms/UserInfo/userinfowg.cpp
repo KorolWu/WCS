@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QSqlError>
 #include <QSqlRecord>
+#include <QCryptographicHash>
 
 UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
 {
@@ -60,6 +61,7 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     m_sqltablemodel->setTable("t_userinfo");
     m_sqltablemodel->insertColumn(0);
     m_sqltablemodel->setSort(0,Qt ::AscendingOrder);
+    m_sqltablemodel->setEditStrategy(QSqlTableModel::OnManualSubmit);// 设置提交修改才有效
     m_sqltableview->setModel(m_sqltablemodel);
 
     m_sqltablemodel->select();
@@ -79,6 +81,24 @@ UserInfoWg::UserInfoWg( QWidget *parent):BaseFrom(parent)
     pmainlayout->addWidget(pbtnMainGroup);
     pmainlayout->setSpacing(10);
     pmainlayout->addWidget(m_sqltableview);
+
+    //加密过程
+    QString passwd = "123456";
+     qDebug()<<"passwd"<<passwd;
+    QCryptographicHash hash(QCryptographicHash::Md5);//
+    //放入原始数据
+    hash.addData(passwd.toUtf8());
+    //取出加密后的数据
+    QByteArray arr = hash.result();
+    //重新复制给passwd
+    passwd = arr.toHex();
+    //看一下加密后的数据
+    qDebug()<<"passwd"<<passwd;
+    //解密
+    hash.reset();
+    passwd = hash.result().toHex();
+    qDebug()<<"passwd"<<passwd;
+
 
 }
 //model->revertAll();

@@ -73,8 +73,8 @@ void UpdateRealtimeDataObject::UpdateCarDataRequest()
             if(!Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isOnline)
                 continue;
             TCommtransceivermanager::GetInstance()->SendcommandByExtern(carstru,it.key());
-            carstru.value = 6;
-            TCommtransceivermanager::GetInstance()->SendcommandByExtern(carstru,it.key());
+          //  carstru.value = 6;
+           // TCommtransceivermanager::GetInstance()->SendcommandByExtern(carstru,it.key());
         }
     }
 }

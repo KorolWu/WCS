@@ -4,6 +4,7 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
 {
     this->m_width = width;
     this->m_height = height;
+    this->resize(m_width,m_height);
     int height_fristLine = height/94;
     m_in_btn = new QPushButton("只看入库",this);
     m_in_btn->setIcon(QIcon(":/resouse/Image/in.png"));
@@ -17,6 +18,10 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
     m_all_btn->move(m_width/5.3,height_fristLine);
     m_all_btn->setIcon(QIcon(":/resouse/Image/all.png"));
 
+    m_refresh_btn = new QPushButton(this);
+    connect(m_refresh_btn,&QPushButton::clicked,this,&SubTask::selectTask);
+    m_refresh_btn->setIcon(QIcon(":/resouse/Image/Refresh.png"));
+    m_refresh_btn->move(m_width/3,height_fristLine);
     m_task_edit = new QLineEdit(this);
     m_task_edit->resize(200,34);
     m_task_edit->setPlaceholderText("请输入任务号");
@@ -25,6 +30,14 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
     m_query_btn = new QPushButton("查询",this);
     connect(m_query_btn,&QPushButton::clicked,this,&SubTask::selectTask);
     m_query_btn->move(m_width/2.11,height_fristLine);
+    m_hbox = new QHBoxLayout();
+    m_hbox->addWidget(m_in_btn);
+    m_hbox->addWidget(m_out_btn);
+    m_hbox->addWidget(m_all_btn);
+    m_hbox->addWidget(m_refresh_btn);
+    m_hbox->addWidget(m_task_edit);
+    m_hbox->addWidget(m_query_btn);
+    m_hbox->addStretch();
 
 //    m_refresh_btn = new QPushButton("Refresh",this);
 //    connect(m_refresh_btn,&QPushButton::clicked,this,&SubTask::onRefresh);
@@ -35,12 +48,14 @@ SubTask::SubTask(int width, int height, QWidget *parent) : BaseFrom(parent)
 
 void SubTask::initTableView()
 {
-    m_table_view = new QTableView(this);
+    m_table_view = new QTableView();
     m_table_view->horizontalHeader()->setStyleSheet(headstlye);
     m_table_view->move(5,60);
     m_table_view->verticalHeader()->hide();
     m_table_view->resize(m_width,m_height);
-
+    m_vbox = new QVBoxLayout();
+    m_vbox->addLayout(m_hbox);
+    m_vbox->addWidget(m_table_view);
     model = new QSqlQueryModel();
     model->setQuery("select * from t_sub_taskInfo;");
     //model->setTable("t_sub_taskInfo");
@@ -48,15 +63,17 @@ void SubTask::initTableView()
     m_table_view->setModel(model);
     //model->select();
     //page ob 功能实现方式
-    m_pagewg = new SpiltPagesByQSqlTableModel(this);
+    m_pagewg = new SpiltPagesByQSqlTableModel();
     m_pagewg->SetParam(model,"t_sub_taskInfo",25);
     m_pagewg->InitpagefunWg();
     m_pagewg->move(m_width/2-2*m_pagewg->width(),m_height-60);
-
+    m_vbox->addWidget(m_pagewg);
+    this->setLayout(m_vbox);
     m_table_view->setSelectionBehavior(QAbstractItemView::SelectRows);
     m_table_view->setEditTriggers(QAbstractItemView::AllEditTriggers);
     LabelDelegateV1 *l1 = new LabelDelegateV1();
     m_table_view->setItemDelegateForColumn(2,l1);
+    m_table_view->setItemDelegateForColumn(5,l1);
 
     QStringList header;
     header<<"ID"<<"任务号"<<"任务类型"<<"子任务类型"<<"顺序"<<"状态"<<"库位号"<<"穿梭车号"<<"发送内容"<<"创建时间";
@@ -78,7 +95,7 @@ void SubTask::SetTableviewsetColumnWidth()
     m_table_view->setColumnWidth(3,m_width/20*2);
 
     m_table_view->setColumnWidth(4,m_width/20*1);
-    m_table_view->setColumnWidth(5,m_width/20*2);
+    m_table_view->setColumnWidth(5,m_width/20*1);
     m_table_view->setColumnWidth(6,m_width/20*2);
     m_table_view->setColumnWidth(7,m_width/20*1);
     m_table_view->setColumnWidth(8,m_width/20*4);
@@ -91,6 +108,7 @@ void SubTask::selectTask()
 {
     QString taskNum = m_task_edit->text();
     QString sql = QString("select * from t_sub_taskInfo where taskNum = %1;").arg(taskNum);
+    QMutexLocker locker(&Myconfig::GetInstance()->m_mutex_sqlwrite);
     model->setQuery(sql);
     model->query();
     //根据条件查询选择

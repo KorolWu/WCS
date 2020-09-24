@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QWidget>
 #include <QPushButton>
+#include <QHBoxLayout>
 #include <QLineEdit>
 #include <QDateEdit>
 #include <QLabel>
@@ -13,8 +14,10 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 #include <QSqlTableModel>
+#include <QMutexLocker>
 #include "labeldelegateV1.h"
 #include "../basefrom.h"
+#include "Myconfig.h"
 #include "UnitClass/TablepageWgClass/spiltpagesbyqsqltablemodel.h"
 /**
  * @brief The SubTask class
@@ -29,7 +32,10 @@ public:
     QPushButton *m_in_btn;
     QPushButton *m_out_btn;
     QPushButton *m_all_btn;
+    QPushButton *m_refresh_btn;
     //QPushButton *m_refresh_btn;
+     QHBoxLayout *m_hbox;
+     QVBoxLayout *m_vbox;
     QLineEdit   *m_task_edit;
     QPushButton *m_query_btn;
     QTableView  *m_table_view;

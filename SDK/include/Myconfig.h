@@ -71,7 +71,7 @@ public:
     //red from db,about requery parameter<pleace(out,or in),parameter>
     QMap<QString ,HttpParameter> m_requestParameter;
     //用户权限的等级
-    char m_curLoginlevel = 4;
+    char m_curLoginlevel = 1;
     //
     int m_pixel = 4;
 

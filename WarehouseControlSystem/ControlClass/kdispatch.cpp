@@ -79,9 +79,8 @@ bool KDispatch::runSubTask()
         bool result = runInstrucation(o);
         QThread::msleep(2000);
         result?msg = "执行成功":msg = "执行失败";
-        CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr);
-        if(sqlerr != "")
-            GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
+        if(!CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr))
+             GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);
         sequnce++;
 //        if(result == false)
 //            return false;
@@ -180,7 +179,7 @@ void KDispatch::saveErrMassage(const QString &message )
 
 void KDispatch::run()
 {
-    if(m_task.taskNum.contains("H"))// 入库
+    if(m_task.taskNum.contains("H"))// out
     {
         GetOutTrajectory *t = new GetOutTrajectory(m_task_p,m_carId,m_task);
         m_taskQueue = t->getTrajectory();

@@ -309,7 +309,7 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                             //解析详细数据内容
                             ReceCarDetailFrame detailstru;//详细数据报文
                             memcpy((char*)&detailstru,tempData.data(),74);
-                            qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
+                            //qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
                             UpdateCarStatus(ID,Opermode,detailstru.state);//自动 / 手动
                             UpdateCarStatus(ID,exestatus,detailstru.info.carinfo);// 电量 校准  就绪 等状态变化
                             UpdateCarStatus(ID,sensorstat,detailstru.statepic.goodsstate.carsensorstat);//货物状态变化情况
@@ -519,7 +519,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
-        qDebug()<<"ID"<<ID << tempData.toHex();
+       // qDebug()<<"ID"<<ID << tempData.toHex();
         AnalysisCarFrame(tempData,ID);
         break;
     }

@@ -1,5 +1,5 @@
 #include "carinstruction.h"
-#define TIMEOUT 10000
+#define TIMEOUT 1000
 CarInstruction::CarInstruction()
 {  
     m_result = -4;
@@ -72,7 +72,7 @@ void CarInstruction::runInstruction()
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"x",m_tempValue,m_instructMsg))
                 m_result = 2;
         }
-        else if(m_order.order == 1)
+        else if(m_order.order == 1 || m_order.order == 7 ||m_order.order == 8)//7 8 is test
         {
             m_tempValue = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.y;
             m_tempValue += m_order.value;

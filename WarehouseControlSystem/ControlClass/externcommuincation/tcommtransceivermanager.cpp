@@ -39,7 +39,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
     {
         if(m_HWdeviceMap[hwId]->m_connectstate <= 0)
         {
-            //  qDebug()<<"通讯异常:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
+              qDebug()<<"通讯异常:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
             return;
         }
         int hwtype = m_HWdeviceMap[hwId]->GetHWtype();

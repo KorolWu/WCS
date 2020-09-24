@@ -113,6 +113,8 @@ QString KDispatch::transformationOrder(int i)
         return "把料箱放在出货口电梯";
     else if(i == 10)
         return "把料箱从入库口电梯取出";
+    else if(i == 15)
+        return "将箱子放到料架上";
     else if(i == 16)
         return "将小车锁定的层解锁";
     return "unknow Order";

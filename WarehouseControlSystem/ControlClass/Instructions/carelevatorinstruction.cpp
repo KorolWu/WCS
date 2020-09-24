@@ -1,5 +1,5 @@
 #include "carelevatorinstruction.h"
-#define TIMEOUT 10000
+#define TIMEOUT 1000
 CarElevatorInstruction::CarElevatorInstruction()
 {
     m_result = 0;

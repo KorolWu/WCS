@@ -17,7 +17,7 @@ void CarInstruction::runInstruction()
     if(Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.isOnline)// && Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.statusinfodstru.carstatusinfo == 4)
     {
         // get box on elevator,moust be wait elevator ready
-        if(m_order.order == 7 || m_order.order == 8 || m_order.order == 9 || m_order.order == 10)
+        if(m_order.order == 122227)//----------m_order.order == 7 || m_order.order == 8 || m_order.order == 9 || m_order.order == 10)
         {
             struct timeval tpStart,tpEnd;
             float timeUse = 0;
@@ -79,12 +79,12 @@ void CarInstruction::runInstruction()
             if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"y",m_tempValue,m_instructMsg))
                 m_result = 3;
         }
-        else if(m_order.order == 8) //car out of elevator
-        {
-            m_tempValue = m_order.z;
-            if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
-                m_result = 3;
-        }
+//        else if(m_order.order == 8) //car out of elevator y change z change too
+//        {
+//            m_tempValue = m_order.z;
+//            if(false == CRUDBaseOperation::getInstance()->updateCarPosition(m_id,"z",m_tempValue,m_instructMsg))
+//                m_result = 3;
+//        }
         //normal move or get box on store
        TCommtransceivermanager::GetInstance()->SendcommandByExtern(m_order,m_id);
     }

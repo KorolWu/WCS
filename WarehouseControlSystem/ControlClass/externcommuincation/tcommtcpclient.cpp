@@ -57,7 +57,7 @@ bool TCommTCPclient::creadTcpClient()
             [=]()
     {
         m_connectStatus = true;
-        qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
+       // qDebug()<<"ip "<< m_config.name << m_config.port << m_connectStatus ;
         m_connectstate = 1;
 
     } );
@@ -65,7 +65,7 @@ bool TCommTCPclient::creadTcpClient()
             [=]()
     {
         QByteArray array=socket->readAll();
-        qDebug()<<"ip "<< m_config.name << m_config.port << array.toHex() << sizeof(array) ;
+        //qDebug()<<"ip "<< m_config.name << m_config.port << array.toHex() << sizeof(array) ;
         emit signalReadHWdeviceData(m_config.ID,m_config.hwtype,array);
     });
     bool connect =  connectServer(m_ip,m_port);

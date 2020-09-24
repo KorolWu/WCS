@@ -18,6 +18,12 @@ void LabelDelegateV1::paint(QPainter *painter, const QStyleOptionViewItem &optio
         painter->setBrush(QColor(170,255,255));
     else if(str == "入库")
          painter->setBrush(QColor(170,255,127));
+    else if(str == "未执行")
+         painter->setBrush(QColor(190,190,190));
+    else if(str == "执行成功")
+        painter->setBrush(QColor(152,251,152));
+    else if(str == "执行失败")
+        painter->setBrush(QColor(205,92,92));
     else
         painter->setBrush(QColor(255,0,0));
     painter->setPen(Qt::white);

@@ -396,7 +396,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         m_palarmWg->show();
     }
-    else if((row_name == "小车管理" || row_name == "设备管理")&& level < 1)
+    else if((row_name == "小车管理" || row_name == "设备管理")&& level < 2)
     {
         car_from->refreshTable();
         car_from->show();
@@ -406,11 +406,11 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
         //增加货架管理信息的界面
         m_pstoreWg->show();
     }
-    else if(row_name == "电梯管理"&& level < 1)
+    else if(row_name == "电梯管理"&& level < 2)
     {
         p_mElevator->show();
     }
-    else if(row_name == "流道管理"&& level < 1)
+    else if(row_name == "流道管理"&& level < 2)
     {
         p_mRunerForm->show();
     }
@@ -431,7 +431,7 @@ void MainWindow::onTreeviewClicked(const QModelIndex &index)
     {
         m_pLog->show();
     }
-    else if(row_name == "手动调度"&& level < 1)
+    else if(row_name == "手动调度"&& level < 2)
     {
         m_pDispatchForm->show();
     }

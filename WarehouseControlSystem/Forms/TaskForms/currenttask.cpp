@@ -109,7 +109,7 @@ void CurrentTask::handelHttpTask(QString reply)
     t.carNum = list[6];
     t.creatTime = QDateTime::currentDateTime();
     //saveTaskToDB(t);
-    if(t.taskNum.contains("O"))
+    if(t.taskNum.contains("H"))
     {
         QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
         Myconfig::GetInstance()->m_taskQueue.enqueue(t);

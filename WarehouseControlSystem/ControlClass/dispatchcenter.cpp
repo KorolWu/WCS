@@ -194,7 +194,10 @@ void DispatchCenter::handle_in_task(TaskInfoStru &t, QString frist_in_boxNum)
         qDebug()<<"in size "<<Myconfig::GetInstance()->m_in_taskMap.size();
     }
     else
-        Task_execution_failed(t);
+    {
+        Task_execution_failed(t);//出现没有找到料箱，但是队列里面任务一直没有删掉，出现死循环
+        remove_task_from(t.taskNum);
+    }
 
 }
 
@@ -239,8 +242,10 @@ void DispatchCenter::handle_out_task(TaskInfoStru &t)
         m_count_text++;
     }
     else
+    {
         Task_execution_failed(t);
-
+        Myconfig::GetInstance()->m_taskQueue.dequeue();
+    }
 }
 //移除相机拍到的最新的那个料箱对应的任务
 void DispatchCenter::remove_in_task(const QString &frist_in_boxNum)

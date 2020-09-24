@@ -76,7 +76,7 @@ void DispatchCenter::dispatchTaskThread()
                     {
                         TaskInfoStru t = Myconfig::GetInstance()->m_in_taskMap[frist_in_boxNum];
                         handle_in_task(t,frist_in_boxNum);
-                        Myconfig::GetInstance()->m_boxNum_in = "";
+                        //------Myconfig::GetInstance()->m_boxNum_in = "";
                     }
                     else
                     {

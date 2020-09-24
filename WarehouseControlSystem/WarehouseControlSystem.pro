@@ -152,7 +152,6 @@ HEADERS  += mainwindow.h \
     ControlClass/externcommuincation/hwcommfactoryob.h \
     ControlClass/externcommuincation/tcommtransceivermanager.h \
     ControlClass/externcommuincation/tcommmodbustcpclient.h \
-    ControlClass/externcommuincation/hwdeviceabstractinterface.h \
     ControlClass/Instructions/abstructinstruction.h \
     ControlClass/Instructions/carinstruction.h \
     ControlClass/Instructions/carelevatorinstruction.h \

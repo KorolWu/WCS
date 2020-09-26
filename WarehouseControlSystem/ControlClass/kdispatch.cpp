@@ -41,7 +41,7 @@ bool KDispatch::saveSubTaskInfo()
     field<<"taskNum"<<"taskType"<<"subTaskNum"<<"sequence" << "state"<<"storeNum"<<"deviceIp"<<"commandData";
     QString taskType = "";
     int sequence = 1;
-    if(m_task.taskNum.contains("L"))
+    if(m_task.taskNum.contains("H"))
         taskType = "出库";
     else
         taskType = "入库";

@@ -20,7 +20,7 @@ void DispatchWidget::onBoxClicked()
         if(Myconfig::GetInstance()->m_cacheRunerMap[i+1] == true)
         {
             Myconfig::GetInstance()->m_runer.cache_in_current++;
-            Myconfig::GetInstance()->m_cacheRunerMap[i] == false;
+            Myconfig::GetInstance()->m_cacheRunerMap[i] = false;
         }
     }
 }

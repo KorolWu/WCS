@@ -13,83 +13,87 @@ void DispatchCenter::dispatchTaskThread()
 {
     while(Myconfig::GetInstance()->m_flag == true)
     {
-        //扫描预定队列，如果里面有小车空闲，则安排她完成接下来的任务
-        for(auto it = Myconfig::GetInstance()->m_appointMap.begin();it != Myconfig::GetInstance()->m_appointMap.end();it++)
+        if(Myconfig::GetInstance()->m_flag == true)
         {
-            if(it.value().isEmpty() == true)
+            //qDebug()<<"dispathch thread runing!";
+            //扫描预定队列，如果里面有小车空闲，则安排她完成接下来的任务
+            for(auto it = Myconfig::GetInstance()->m_appointMap.begin();it != Myconfig::GetInstance()->m_appointMap.end();it++)
             {
-                Myconfig::GetInstance()->m_CarMap[it.key()].isLockByTask = false;
-                continue;
-            }
-            //QString ip = it.key();
-            QString ip = "it.key()";
-            int carId = it.key();
-            if(Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isLocking == false)
-            {
-                TaskInfoStru t = it.value().dequeue();
-                KPosition task_p;//根据料箱号返回料箱所在坐标
-                QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
-                if(result != "")
+                if(it.value().isEmpty() == true)
                 {
-                    t.shelves = result;
-                    lock_car(carId);
-                    set_car_task_position(task_p,carId);
-                    KDispatch *k = new KDispatch(task_p,ip,carId,t);//完成的状态，完成的结果，写入数据库的时间??
-                    m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +QString(" 分配给:%1").arg(carId));
-                    QThreadPool::globalInstance()->start(k);
-                    qDebug()<<"正在执行预约任务";
+                    Myconfig::GetInstance()->m_CarMap[it.key()].isLockByTask = false;
+                    continue;
                 }
-            }
-        }
-        m_car_ip = -999;
-        if(Myconfig::GetInstance()->m_runer.cache_in_current < 3  && Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)//&& Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max
-        {
-            if(m_pSelectCar->hasUseCar())
-            {
-                QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
-                m_task =  Myconfig::GetInstance()->m_taskQueue.at(0);
-                remove_task_from(m_task.taskNum);
-                handle_out_task(m_task);
-            }
-            else // no car use
-            {
-                QThread::msleep(10);
-            }
-
-            QEventLoop loop;
-            QTimer::singleShot(100,&loop,SLOT(quit()));
-            loop.exec();
-
-        }
-        else // 分配入库
-        {
-
-            if(m_pSelectCar->hasUseCar()&& Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[8] == 99 && Myconfig::GetInstance()->m_runer.cache_in_current > 0)
-            {
-                scanCode();
-
-                if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
+                //QString ip = it.key();
+                QString ip = "it.key()";
+                int carId = it.key();
+                if(Myconfig::GetInstance()->m_CarMap[it.key()].deveceStatus.isLocking == false)
                 {
-                    QString frist_in_boxNum = Myconfig::GetInstance()->m_boxNum_in;
-                    //qDebug()<<"box_num"<<frist_in_boxNum;
-                    if(Myconfig::GetInstance()->m_in_taskMap.contains(frist_in_boxNum))
+                    TaskInfoStru t = it.value().dequeue();
+                    KPosition task_p;//根据料箱号返回料箱所在坐标
+                    QString result = StoreInfo::BaseDataInfoOperate::GetWarehouselocationInfoForOut(t.boxNum,task_p);
+                    if(result != "")
                     {
-                        TaskInfoStru t = Myconfig::GetInstance()->m_in_taskMap[frist_in_boxNum];
-                        handle_in_task(t,frist_in_boxNum);
-                        //------Myconfig::GetInstance()->m_boxNum_in = "";
-                    }
-                    else
-                    {
-                        QThread::msleep(40);
-                        continue;
-
+                        t.shelves = result;
+                        lock_car(carId);
+                        set_car_task_position(task_p,carId);
+                        KDispatch *k = new KDispatch(task_p,ip,carId,t);//完成的状态，完成的结果，写入数据库的时间??
+                        m_writeData.WriteLoginfo(0,"Dispatch Info","将任务 "+t.taskNum +QString(" 分配给:%1").arg(carId));
+                        QThreadPool::globalInstance()->start(k);
+                        qDebug()<<"正在执行预约任务";
                     }
                 }
             }
-        }
-        QThread::msleep(40);
+            m_car_ip = -999;
+            if(Myconfig::GetInstance()->m_runer.cache_in_current < 3  && Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)//&& Myconfig::GetInstance()->m_runer.cache_out_current < m_out_cahce_max
+            {
+                if(m_pSelectCar->hasUseCar())
+                {
+                    QMutexLocker locker(&Myconfig::GetInstance()->m_task_mutex);
+                    m_task =  Myconfig::GetInstance()->m_taskQueue.at(0);
+                    remove_task_from(m_task.taskNum);
+                    handle_out_task(m_task);
+                }
+                else // no car use
+                {
+                    QThread::msleep(10);
+                }
 
-        box_getCache();
+                QEventLoop loop;
+                QTimer::singleShot(100,&loop,SLOT(quit()));
+                loop.exec();
+
+            }
+            else // 分配入库
+            {
+
+                if(m_pSelectCar->hasUseCar()&& Myconfig::GetInstance()->m_runer.runneratastru.holdresMap[8] == 99 && Myconfig::GetInstance()->m_runer.cache_in_current > 0)
+                {
+                    scanCode();
+
+                    if(false == Myconfig::GetInstance()->m_in_taskMap.isEmpty())
+                    {
+                        QString frist_in_boxNum = Myconfig::GetInstance()->m_boxNum_in;
+                        //qDebug()<<"box_num"<<frist_in_boxNum;
+                        if(Myconfig::GetInstance()->m_in_taskMap.contains(frist_in_boxNum))
+                        {
+                            TaskInfoStru t = Myconfig::GetInstance()->m_in_taskMap[frist_in_boxNum];
+                            handle_in_task(t,frist_in_boxNum);
+                            //------Myconfig::GetInstance()->m_boxNum_in = "";
+                        }
+                        else
+                        {
+                            QThread::msleep(40);
+                            continue;
+
+                        }
+                    }
+                }
+            }
+            QThread::msleep(40);
+
+            box_getCache();
+        }
     }
 }
 

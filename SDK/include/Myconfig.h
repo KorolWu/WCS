@@ -50,7 +50,7 @@ public:
     QString m_boxNum_in = "BOX0001";
     QMutex m_in_task_mutex;
     DataBaseInfoStru m_databaseInfo;
-    bool m_flag = true;
+    bool m_flag = false;
     QQueue<LogInfoStru> m_logQue;
     //
     QMutex m_mutex_sqlwrite;

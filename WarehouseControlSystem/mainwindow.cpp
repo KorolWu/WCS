@@ -74,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_dispatchCenter->moveToThread(p_mDispatchThread);
     connect(this,&MainWindow::dispatched,m_dispatchCenter,&DispatchCenter::dispatchTaskThread);
     p_mDispatchThread->start();
-    emit dispatched();
+    //emit dispatched();
     m_updatestoretimer = new QTimer(this);
     connect(m_updatestoretimer,&QTimer::timeout,&m_updateRealData,&UpdateRealtimeDataObject::SaveStoreinfotoDatabase);
     m_updateComTimer = new QTimer(this);
@@ -271,7 +271,7 @@ void MainWindow::initUI()
     m_pmode_btn->move(desk_rect.width()*0.75-40,desk_rect.height()/22);
 
 
-    m_psuspend = new QPushButton("暂停",this);
+    m_psuspend = new QPushButton("暂停ing",this);
     connect(m_psuspend,&QPushButton::clicked,this,&MainWindow::onSuspend);
     m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
     m_psuspend->resize(butn_width,butn_height);
@@ -491,17 +491,18 @@ void MainWindow::changeMode()
 void MainWindow::onSuspend()
 {
     Myconfig::GetInstance()->m_flag = !Myconfig::GetInstance()->m_flag;
-    if(m_psuspend->text() == "暂停")
+    if(m_psuspend->text() == "暂停ing")
     {
-        m_psuspend->setText("启动");
+        m_psuspend->setText("启动ing");
         m_psuspend->setIcon(QIcon(":/resouse/Image/player_play.ico"));
-        m_psuspend->setStyleSheet("background-color:rgb(160,160,160);color:white");
+        m_psuspend->setStyleSheet("background-color:rgb(250,240,230);color:white");
+        emit dispatched();
     }
     else
     {
-        m_psuspend->setText("暂停");
+        m_psuspend->setText("暂停ing");
         m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
-        m_psuspend->setStyleSheet("background-color:rgb(250,240,230);color:green");
+        m_psuspend->setStyleSheet("background-color:rgb(160,160,160);color:green");
     }
 }
 

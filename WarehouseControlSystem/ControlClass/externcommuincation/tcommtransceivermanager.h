@@ -51,6 +51,7 @@ public:
     }
 signals:
     void SignalCarStatusUpdate();
+    void signalError(QString info);
 public slots:
     void ReceDataFromHWob(int ID,int hwtype,QByteArray data);//数据接收内容
     void ReceModbusDataFromHWob(int ID,int hwtype,int datatype,QMap<int,int> Data);
@@ -67,6 +68,7 @@ private:
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);
+    void SlotErrinfo(int ID,int type,QString info);
 private:
     QTimer *m_heartTimer;
     QMap<int,HWdeviceabstractInterface *> m_HWdeviceMap;
@@ -116,7 +118,7 @@ private://模板函数
                     memcpy(buffer,&it.value(),len);
                     ModbusTcpClientstru *tstru =(ModbusTcpClientstru*)(buffer);
                     stru.hwmodbustcpclistru =*tstru;
-                    connect(ob,&HWdeviceabstractInterface::signalReceModbusHWdeviceData,this,&TCommtransceivermanager::ReceModbusDataFromHWob);
+                    connect(ob,&HWdeviceabstractInterface::signalReceModbusHWdeviceData,this,&TCommtransceivermanager::ReceModbusDataFromHWob);                                       
                     break;
                 }
                 default:
@@ -126,6 +128,7 @@ private://模板函数
                 connect(ob,&HWdeviceabstractInterface::signalHWDisconnect,this,&TCommtransceivermanager::Slotconnectstate);
                 ob->SetCommParam(stru);
                 connect(ob,&HWdeviceabstractInterface::signalReadHWdeviceData,this,&TCommtransceivermanager::ReceDataFromHWob);
+                connect(ob,&HWdeviceabstractInterface::signalErrorInfo,this,&TCommtransceivermanager::SlotErrinfo);
 
             }
         }

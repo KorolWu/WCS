@@ -33,6 +33,7 @@ private:
 private slots:
     void readDataRequest(int type, int startAddress, int numberOfEntries);
     void on_writeData_request(int type, int startAddress, QVector<int> values);
+    void onStateChanged(int state);
 signals:
     void signalReadData(int type,int startAddress,int numberOfEntries);//读各种类型数据的状态 IO 寄存器 Vlaue  外部去写数据变化调用指令
   //void signalRecRead(int ID,int hwtype,int datatype,QMap<int,int> Data); // 读数据类型 data,第一个是参数是地址 第二个参数是 值

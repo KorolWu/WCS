@@ -53,6 +53,7 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
         return false;
 
     });
+     connect(modbusDevice, &QModbusClient::stateChanged,this, &TCommModbusTcpClient::onStateChanged);
     if(modbusDevice->state() != QModbusDevice::ConnectedState)
     {
         QUrl url = QUrl::fromUserInput(url_str);
@@ -76,7 +77,6 @@ bool TCommModbusTcpClient::GetConnect(const QString url_str)
             return true;
         }
     }
-
     return true;
 }
 
@@ -117,7 +117,8 @@ void TCommModbusTcpClient::readReady()
             qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
                        arg(reply->rawResult().exceptionCode(), -1, 16));
             state = false;
-            m_connectstate = -1;
+
+           // m_connectstate = -1;
         }
     } else
     {
@@ -126,7 +127,7 @@ void TCommModbusTcpClient::readReady()
             qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
                    arg(reply->error(), -1, 16));
           state = false;
-          m_connectstate = -2;
+         // m_connectstate = -2;
         }
     }
     reply->deleteLater();
@@ -159,7 +160,7 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
                 if (reply->error() == QModbusDevice::ProtocolError) {
                     qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
                                 .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
-                    m_connectstate = -3;
+                    //m_connectstate = -3;
                     //5000);
                 } else if (reply->error() != QModbusDevice::NoError) {
                     //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
@@ -178,6 +179,24 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
     }
 }
 
+void TCommModbusTcpClient::onStateChanged(int state)
+{
+    qDebug()<<"connectstate:"<<state;
+    bool connected = (state != QModbusDevice::UnconnectedState);
+    emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,connected);
+    if (state == QModbusDevice::UnconnectedState)
+    {
+        //emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,state);
+        // ui->connectButton->setText(tr("Connect"));
+    }
+    else if (state == QModbusDevice::ConnectedState)
+    {
+        // ui->connectButton->setText(tr("Disconnect"));
+      emit signalHWDisconnect(m_configstru.ID,m_configstru.hwtype,connected);
+    }
+    m_connectstate = state;
+}
+
 void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberOfEntries)
 {
     if (!modbusDevice)
@@ -194,7 +213,7 @@ void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberO
         else
             delete reply; // broadcast replies return immediately
     } else {
-        m_connectstate =-4;
+       // m_connectstate =-4;
         qDebug()<< tr("Read error: ") + (modbusDevice->errorString(), 5000) << m_configstru.ID<<m_configstru.url_str;
     }
 }

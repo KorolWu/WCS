@@ -46,7 +46,7 @@ int CarElevatorInstruction::getResult(QString &exeMsg)
     gettimeofday(&tpStart,NULL);
     while (timeUse < TIMEOUT)
     {
-        if(isTerminate)
+        if(!Myconfig::GetInstance()->m_flag)
         {
             m_result = -99;
             break ;

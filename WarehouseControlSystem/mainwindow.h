@@ -111,6 +111,7 @@ private slots:
     void showCarList();
     void changeMode();
     void onSuspend();
+    void slotCommError(QString info);
 
 
 private:

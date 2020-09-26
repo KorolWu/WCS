@@ -24,7 +24,7 @@ void CarInstruction::runInstruction()
             gettimeofday(&tpStart,NULL);
             while (timeUse < TIMEOUT)
             {
-                if(isTerminate)
+                if(!Myconfig::GetInstance()->m_flag)
                 {
                     m_result = -99;
                     return ;

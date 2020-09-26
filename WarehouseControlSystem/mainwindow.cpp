@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     deleteChildrenList();
     m_pMainWidget->show();
     TCommtransceivermanager::GetInstance()->InitHWcommob(); //所有数据通讯对象创建
+    connect(TCommtransceivermanager::GetInstance(),&TCommtransceivermanager::signalError,this,&MainWindow::slotCommError);
     m_pHttpServer = new  JQHttpServer::TcpServerManage(2);
     connect(m_pHttpServer,&JQHttpServer::TcpServerManage::onRedReady,this,&MainWindow::onReplyReady);
     m_pHttpServer->setHttpAcceptedCallback( []( const QPointer< JQHttpServer::Session > &session )
@@ -100,6 +101,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeWcs()
 {
     Myconfig::GetInstance()->m_flag = false;
+    QThread::msleep(1000);
     if(Myconfig::GetInstance()->m_taskQueue.isEmpty() == false)
     {
         QMessageBox msgBox;
@@ -127,18 +129,22 @@ void MainWindow::closeWcs()
 
 void MainWindow::closeObject()
 {
+
+   // QThreadPool::globalInstance()->deleteLater();
+    Myconfig::GetInstance()->m_flag = false;
+
+    QThreadPool::globalInstance()->waitForDone();
     if(QThreadPool::globalInstance()->activeThreadCount() > 0)
     {
         QThreadPool::globalInstance()->clear();
     }
-   // QThreadPool::globalInstance()->deleteLater();
     CRUDBaseOperation::getInstance()->closeDB();
-    Myconfig::GetInstance()->m_flag = false;
     if(m_pHttpServer != nullptr)
         m_pHttpServer->deleteLater();
     p_mDispatchThread->quit();
     p_mDispatchThread->wait();
     p_mDispatchThread->deleteLater();
+
 }
 
 void MainWindow::initUI()
@@ -504,6 +510,11 @@ void MainWindow::onSuspend()
         m_psuspend->setIcon(QIcon(":/resouse/Image/player_pause.ico"));
         m_psuspend->setStyleSheet("background-color:rgb(160,160,160);color:green");
     }
+}
+
+void MainWindow::slotCommError(QString info) // 把信息打印到界面中
+{
+  m_pMainWidget->appLog(info);
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)

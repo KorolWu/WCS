@@ -37,9 +37,9 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
     //先解析小车部分数据 发送帧格式内容
     if(m_HWdeviceMap.contains(hwId))
     {
-        if(m_HWdeviceMap[hwId]->m_connectstate <= 0)
+        if(m_HWdeviceMap[hwId]->m_connectstate  != 1)
         {
-              qDebug()<<"通讯异常:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
+            //qDebug()<<"通讯异常中断:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
             return;
         }
         int hwtype = m_HWdeviceMap[hwId]->GetHWtype();
@@ -100,27 +100,30 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
                 simplestru.cmdnbr = wcsindex;
                 simplestru.cmdname = cmd.value; // 请求指令数据 5 或者 6
                 frameData.append(reinterpret_cast<char*>(&simplestru),sizeof(SendCarCmdReqestFrame));
-//                //解析详细数据内容 //给班测试用的2020 09 22
-//                ReceCarDetailFrame detailstru;//详细数据报文
-//                detailstru.cmdnbr = wcsindex;
-//                detailstru.cmd[0] = 'S';
-//                detailstru.cmd[1] = 'D';
-//                detailstru.carnbr = hwId;
-//                detailstru.state = 2;
-//                frameData.append(reinterpret_cast<char*>(&detailstru),sizeof(ReceCarDetailFrame));
+                //                //解析详细数据内容 //给班测试用的2020 09 22
+                //                ReceCarDetailFrame detailstru;//详细数据报文
+                //                detailstru.cmdnbr = wcsindex;
+                //                detailstru.cmd[0] = 'S';
+                //                detailstru.cmd[1] = 'D';
+                //                detailstru.carnbr = hwId;
+                //                detailstru.state = 2;
+                //                frameData.append(reinterpret_cast<char*>(&detailstru),sizeof(ReceCarDetailFrame));
                 break;
             }
             default:
                 break;
             }
             //WCS发送数据报文到小车
-            if(frameData.size() > 0 && protype == KTcpClient)
+            if(frameData.size() > 0 && protype == KTcpClient )
             {
-               //qDebug()<<"send framedata"<<frameData.toHex();
-//   for(int i = 0; i < 40; ++i)
-//  {
-//     qDebug()<<"send framedata"<<(uint8_t)frameData[i]<<endl;
-//   }
+//                if(childtype == 5)
+//                {
+//                    qDebug()<<"send framedata"<<frameData.toHex();
+//                    for(int i = 0; i < 40 ; ++i)
+//                    {
+//                        qDebug()<<"send framedata value"<<(uint8_t)frameData[i]<<endl;
+//                    }
+//                }
                 emit m_HWdeviceMap[hwId]->signalSendHWdeviceData(frameData);//发送报文
             }
             break;
@@ -283,7 +286,7 @@ bool TCommtransceivermanager::ModifyCarReceFrameIndex(int ID, int wcsnbr)
                 wcsnbr = 1001;
             }
             else if(wcsnbr >= 32000){
-               wcsnbr = 0;
+                wcsnbr = 0;
             }
             m_Wcstocarframeindex[ID].removeAt(index);
             m_Wcstocarframeindex[ID].append(wcsnbr);
@@ -340,14 +343,14 @@ void TCommtransceivermanager::AnalysisCarFrame(QByteArray tempData, int ID)
                         //简易数据报文
                         ReceCarcmdsimFrame simstru;
                         memcpy((char*)&simstru,tempData.data(),10);
-                         if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
+                        if(ModifyCarReceFrameIndex(ID,nbr))//正确报文 之前请求的数据已经返回了结果了
                         {
                             UpdateCarStatus(ID,Opermode,simstru.carstate);//自动 / 手动
                             UpdateCarStatus(ID,exestatus,simstru.info.carinfo);// 电量 校准  就绪 等状态变化
                         }
-                         else
+                        else
                         {
-                             if(nbr == 1000)
+                            if(nbr == 1000)
                             {
                                 //不是回应指令动作
                                 qDebug()<<" 主动发的简易数据指令报文:"<< simstru.carstate;
@@ -539,7 +542,7 @@ void TCommtransceivermanager::ReceDataFromHWob(int ID, int hwtype, QByteArray da
     switch (hwtype) {
     case HWDEVICETYPE::RGVCAR:
     {
-       // qDebug()<<"ID"<<ID << tempData.toHex();
+        // qDebug()<<"ID"<<ID << tempData.toHex();
         AnalysisCarFrame(tempData,ID);
         break;
     }
@@ -654,4 +657,10 @@ void TCommtransceivermanager::Slotconnectstate(int ID, int type,bool state)
     default:
         break;
     }
+}
+
+void TCommtransceivermanager::SlotErrinfo(int ID, int type, QString info)
+{
+    QString errorinfo = QString("通讯协议错误 硬件ID：%1,硬件类型：%2,info：%3").arg(ID).arg(type).arg(info);
+    emit signalError(errorinfo);
 }

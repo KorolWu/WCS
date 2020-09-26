@@ -17,7 +17,7 @@
  * @author korol
  * @title 负责小车 X Y的运动
  */
-class CarInstruction : public AbstructInstruction
+class  CarInstruction : public AbstructInstruction
 {
 public:
     CarInstruction();

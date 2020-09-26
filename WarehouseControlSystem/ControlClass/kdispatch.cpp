@@ -73,11 +73,19 @@ bool KDispatch::runSubTask()
     int sequnce = 1;
     QString msg = "";
     QString sqlerr = "";
-    while(false == m_taskQueue.isEmpty())
+    while(false == m_taskQueue.isEmpty() )
     {
+        if(!Myconfig::GetInstance()->m_flag)
+        {
+            break;
+        }
         OrderStru o = m_taskQueue.dequeue();
         bool result = runInstrucation(o);
-        QThread::msleep(2000);
+
+        for(int i = 0; i < 10 && Myconfig::GetInstance()->m_flag; ++i)
+        {
+             QThread::msleep(200);
+        }
         result?msg = "执行成功":msg = "执行失败";
         if(!CRUDBaseOperation::getInstance()->changeSubtaskStatus(m_task.taskNum,msg,QString("%1").arg(o.value),sequnce,sqlerr))
              GetSystemLogObj()->writeLog("change substatus to dbbase failed! ->"+sqlerr,2);

@@ -99,18 +99,24 @@ void Tcommmodbusserial::readReady()
         }
     } else if (reply->error() == QModbusDevice::ProtocolError) {
 
-        qDebug()<<"error:"<<m_configstru.ID<<(tr("Read response error: %1 (Mobus exception: 0x%2)").
-                                              arg(reply->errorString()).
-                                              arg(reply->rawResult().exceptionCode(), -1, 16));
-        m_connectstate = -5;
+        QString errinfo = tr("Read response error: %1 (Mobus exception: 0x%2)").
+                arg(reply->errorString()).
+                arg(reply->rawResult().exceptionCode(), -1, 16);
+       // qDebug()<<"error:"<<m_configstru.ID<<errinfo;
+        emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+       // m_connectstate = -5;
         //        statusBar()->showMessage(tr("Read response error: %1 (Mobus exception: 0x%2)").
         //                                 arg(reply->errorString()).
         //                                 arg(reply->rawResult().exceptionCode(), -1, 16), 5000);
     } else {
-         m_connectstate = -7;
-        qDebug()<<"error:"<<m_configstru.ID<<(tr("Read response error: %1 (code: 0x%2)").
-                                              arg(reply->errorString()).
-                                              arg(reply->error(), -1, 16));
+       //  m_connectstate = -7;
+        QString errinfo =tr("Read response error: %1 (code: 0x%2)").
+                arg(reply->errorString()).
+                arg(reply->error(), -1, 16);
+          emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+//        qDebug()<<"error:"<<m_configstru.ID<<(tr("Read response error: %1 (code: 0x%2)").
+//                                              arg(reply->errorString()).
+//                                              arg(reply->error(), -1, 16));
         //        statusBar()->showMessage(tr("Read response error: %1 (code: 0x%2)").
         //                                 arg(reply->errorString()).
         //                                 arg(reply->error(), -1, 16), 5000);
@@ -160,8 +166,10 @@ void Tcommmodbusserial::readDataRequest(int type, int startAddress, int numberOf
         else
             delete reply; // broadcast replies return immediately
     } else {
-        m_connectstate =-4;
-        qDebug()<< tr("Read error: ") + (modbusDevice->errorString(), 5000) << m_configstru.ID<<m_configstru.name;
+        //m_connectstate =-4;
+         QString errinfo =tr("Read error: ") + (modbusDevice->errorString(), 5000);
+           emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+       // qDebug()<< tr("Read error: ") + (modbusDevice->errorString(), 5000) << m_configstru.ID<<m_configstru.name;
     }
 }
 
@@ -188,14 +196,21 @@ void Tcommmodbusserial::on_writeData_request(int type, int startAddress, QVector
         if (!reply->isFinished()) {
             connect(reply, &QModbusReply::finished, this, [this, reply]() {
                 if (reply->error() == QModbusDevice::ProtocolError) {
-                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
-                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
-                    m_connectstate = -3;
+//                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
+//                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                    //m_connectstate = -3;
+                    QString errinfo =tr("Write response error: %1 (Mobus exception: 0x%2)")
+                            .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                      emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+
                     //5000);
                 } else if (reply->error() != QModbusDevice::NoError) {
                     //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
                     //                        arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
                     qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                    QString errinfo =tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                      emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+
                 }
                 reply->deleteLater();
             });
@@ -205,7 +220,9 @@ void Tcommmodbusserial::on_writeData_request(int type, int startAddress, QVector
         }
     } else {
         // statusBar()->showMessage(tr("Write error: ") + modbusDevice->errorString(), 5000);
-        qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
+        QString errinfo =tr("Write error: ") + modbusDevice->errorString();
+          emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+       // qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
     }
 }
 

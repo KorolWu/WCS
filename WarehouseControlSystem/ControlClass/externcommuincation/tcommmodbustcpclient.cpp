@@ -114,9 +114,14 @@ void TCommModbusTcpClient::readReady()
     {
         if(state)
         {
-            qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
-                       arg(reply->rawResult().exceptionCode(), -1, 16));
+//            qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
+//                       arg(reply->rawResult().exceptionCode(), -1, 16));
             state = false;
+            QString errinfo = tr("Read response error: %1 (Mobus exception: 0x%2)").
+                    arg(reply->errorString()).
+                    arg(reply->rawResult().exceptionCode(), -1, 16);
+           // qDebug()<<"error:"<<m_configstru.ID<<errinfo;
+            emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
 
            // m_connectstate = -1;
         }
@@ -124,8 +129,11 @@ void TCommModbusTcpClient::readReady()
     {
         if(state)
       {
-            qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
-                   arg(reply->error(), -1, 16));
+//            qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
+//                   arg(reply->error(), -1, 16));
+             QString errinfo = (tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
+                                arg(reply->error(), -1, 16));
+                emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
           state = false;
          // m_connectstate = -2;
         }
@@ -158,14 +166,20 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
         if (!reply->isFinished()) {
             connect(reply, &QModbusReply::finished, this, [this, reply]() {
                 if (reply->error() == QModbusDevice::ProtocolError) {
-                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
-                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+//                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
+//                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                     QString errinfo = tr("Write response error: %1 (Mobus exception: 0x%2)")
+                             .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                        emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
+
                     //m_connectstate = -3;
                     //5000);
                 } else if (reply->error() != QModbusDevice::NoError) {
                     //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
                     //                        arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
-                    qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                   // qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                     QString errinfo = tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                      emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
                 }
                 reply->deleteLater();
             });
@@ -175,7 +189,9 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
         }
     } else {
         // statusBar()->showMessage(tr("Write error: ") + modbusDevice->errorString(), 5000);
-        qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
+       // qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
+         QString errinfo  = tr("Write error: ") + modbusDevice->errorString();
+          emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
     }
 }
 
@@ -215,6 +231,9 @@ void TCommModbusTcpClient::readDataRequest(int type,int startAddress,int numberO
     } else {
        // m_connectstate =-4;
         qDebug()<< tr("Read error: ") + (modbusDevice->errorString(), 5000) << m_configstru.ID<<m_configstru.url_str;
+
+        QString errinfo  = tr("Read error: ") + (modbusDevice->errorString(), 5000);
+         emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
     }
 }
 QModbusDataUnit TCommModbusTcpClient::readRequest(int type,int startAddress,int numberOfEntries) const

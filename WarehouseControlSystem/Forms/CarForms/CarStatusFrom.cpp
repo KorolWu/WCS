@@ -118,9 +118,13 @@ CarStatusFrom::CarStatusFrom(int carId, QWidget *parent) : QWidget(parent)
     table->setStyleSheet("background:#FFFFFF;border:none;font-size:14px;font-family:Microsoft YaHei;color:#666666;");
     int interval = 90;
     up_btn = new QPushButton("左取货",this);
+    up_btn->setObjectName("left_btn");
     up_btn->move(10,242);//10+interval*2,242
     down_btn = new QPushButton("右取货",this);
     down_btn->move(10+interval*1,242);//10+interval*3,242
+    down_btn->setObjectName("right_btn");
+    connect(up_btn,&QPushButton::clicked,this,&CarStatusFrom::onPickup);
+    connect(down_btn,&QPushButton::clicked,this,&CarStatusFrom::onPickup);
 
     m_pMove_x = new QPushButton("移动X",this);
     connect(m_pMove_x,&QPushButton::clicked,this,&CarStatusFrom::relative_move_x);
@@ -299,6 +303,21 @@ void CarStatusFrom::mouseReleaseEvent(QMouseEvent *event)
 {
     m_pressflag = true;
     QWidget::mouseReleaseEvent(event);
+}
+
+void CarStatusFrom::onPickup()
+{
+    QString resultMsg = "";
+    QPushButton *b = (QPushButton*)sender();
+    OrderStru o;
+    if(b->objectName() == "left_btn")
+        o.order = Order::Left_Pickup;
+    else if(b->objectName() == "right_btn")
+        o.order = Order::Right_Pickup;
+    AbstructInstruction *abstructInstruction = new CarInstruction();
+    abstructInstruction->setParameter(o,m_id);
+    abstructInstruction->runInstruction();
+    abstructInstruction->getResult(resultMsg);
 }
 
 void CarStatusFrom::mouseMoveEvent(QMouseEvent *event)

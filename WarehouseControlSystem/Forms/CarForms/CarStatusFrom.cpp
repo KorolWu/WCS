@@ -265,6 +265,24 @@ void CarStatusFrom::right_pickup()
 {
 
 }
+
+bool CarStatusFrom::ckeck_y(int y)
+{
+    int x = Myconfig::GetInstance()->m_CarMap[m_id].deveceStatus.carCurrentPosion.x;
+    if(x == -2191)
+    {
+        //if(y )
+    }
+    else if(x == 0)
+    {
+
+    }
+    else if(x == 2191)
+    {
+
+    }
+
+}
 // batter status enable online? position
 void CarStatusFrom::updateStatusOnBase()
 {

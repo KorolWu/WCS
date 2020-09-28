@@ -112,25 +112,25 @@ void TCommModbusTcpClient::readReady()
     }
     else if (reply->error() == QModbusDevice::ProtocolError)
     {
-        if(state)
+        //if(state)
         {
-//            qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
-//                       arg(reply->rawResult().exceptionCode(), -1, 16));
+           qDebug()<<(tr("Read response error: %1 (Mobus exception: 0x%2)"). arg(reply->errorString()).\
+                      arg(reply->rawResult().exceptionCode(), -1, 16));
             state = false;
             QString errinfo = tr("Read response error: %1 (Mobus exception: 0x%2)").
                     arg(reply->errorString()).
                     arg(reply->rawResult().exceptionCode(), -1, 16);
-           // qDebug()<<"error:"<<m_configstru.ID<<errinfo;
+           qDebug()<<"error:"<<m_configstru.ID<<errinfo;
             emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
 
            // m_connectstate = -1;
         }
     } else
     {
-        if(state)
+       // if(state)
       {
-//            qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
-//                   arg(reply->error(), -1, 16));
+            qDebug()<<(tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
+                  arg(reply->error(), -1, 16));
              QString errinfo = (tr("Read response error: %1 (code: 0x%2)"). arg(reply->errorString()).
                                 arg(reply->error(), -1, 16));
                 emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
@@ -166,8 +166,8 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
         if (!reply->isFinished()) {
             connect(reply, &QModbusReply::finished, this, [this, reply]() {
                 if (reply->error() == QModbusDevice::ProtocolError) {
-//                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
-//                                .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
+                    qDebug()<<  tr("Write response error: %1 (Mobus exception: 0x%2)")
+                               .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
                      QString errinfo = tr("Write response error: %1 (Mobus exception: 0x%2)")
                              .arg(reply->errorString()).arg(reply->rawResult().exceptionCode(), -1, 16);
                         emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
@@ -177,7 +177,7 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
                 } else if (reply->error() != QModbusDevice::NoError) {
                     //                    statusBar()->showMessage(tr("Write response error: %1 (code: 0x%2)").
                     //                        arg(reply->errorString()).arg(reply->error(), -1, 16), 5000);
-                   // qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
+                   qDebug()<<"通讯硬件ID"<<m_configstru.ID <<tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
                      QString errinfo = tr("Write response error: %1 (code: 0x%2)").arg(reply->errorString()).arg(reply->error(), -1, 16);
                       emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
                 }
@@ -189,7 +189,7 @@ void TCommModbusTcpClient::on_writeData_request(int type,int startAddress,QVecto
         }
     } else {
         // statusBar()->showMessage(tr("Write error: ") + modbusDevice->errorString(), 5000);
-       // qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
+        qDebug()<<"通讯硬件ID："<<m_configstru.ID <<tr("Write error: ") + modbusDevice->errorString();
          QString errinfo  = tr("Write error: ") + modbusDevice->errorString();
           emit signalErrorInfo(m_configstru.ID,m_configstru.hwtype,errinfo);
     }

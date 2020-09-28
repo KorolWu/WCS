@@ -76,6 +76,7 @@ private:
     bool m_pressflag;
     QPoint m_beginP;
     QPoint m_windowP;
+    bool ckeck_y(int y);
     // ObserverBase interface
 public:
     void updateStatusOnBase();

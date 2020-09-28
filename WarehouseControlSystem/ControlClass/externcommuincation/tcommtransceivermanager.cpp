@@ -37,7 +37,7 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
     //先解析小车部分数据 发送帧格式内容
     if(m_HWdeviceMap.contains(hwId))
     {
-        if(m_HWdeviceMap[hwId]->m_connectstate  != 1)
+        if(m_HWdeviceMap[hwId]->m_connectstate  <= 0)
         {
             //qDebug()<<"通讯异常中断:"<< hwId << m_HWdeviceMap[hwId]->m_connectstate;
             return;

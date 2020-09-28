@@ -65,6 +65,7 @@ private:
     void UpdateRunnerData(int datatype, QMap<int, int> Data);
     void UpdateCarelevatorData(int ID ,QMap<int, int> Data);
     void UpdateScanData(QByteArray dataframe ,int ID);
+
 private slots:
     void UpdateState();
     void Slotconnectstate(int ID,int type,bool state);

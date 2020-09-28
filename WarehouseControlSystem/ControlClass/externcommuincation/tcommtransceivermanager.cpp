@@ -116,14 +116,14 @@ void TCommtransceivermanager::SendcommandByExtern(OrderStru cmd, int hwId)
             //WCS发送数据报文到小车
             if(frameData.size() > 0 && protype == KTcpClient )
             {
-//                if(childtype == 5)
-//                {
-//                    qDebug()<<"send framedata"<<frameData.toHex();
-//                    for(int i = 0; i < 40 ; ++i)
-//                    {
-//                        qDebug()<<"send framedata value"<<(uint8_t)frameData[i]<<endl;
-//                    }
-//                }
+                //                if(childtype == 5)
+                //                {
+                //                    qDebug()<<"send framedata"<<frameData.toHex();
+                //                    for(int i = 0; i < 40 ; ++i)
+                //                    {
+                //                        qDebug()<<"send framedata value"<<(uint8_t)frameData[i]<<endl;
+                //                    }
+                //                }
                 emit m_HWdeviceMap[hwId]->signalSendHWdeviceData(frameData);//发送报文
             }
             break;
@@ -211,6 +211,52 @@ void TCommtransceivermanager::sendDataToHWob(QByteArray datavalue,int id)
     }
 }
 ///
+/// \brief TCommtransceivermanager::AnalysisDataFrame
+/// \param dataframe
+///测试使用 在使用
+void TCommtransceivermanager::AnalysisDataFrame(QByteArray dataframe)
+{
+    for(int i = 0; i < dataframe.size();)
+    {
+        if(i+10 >= dataframe.size()) //数据帧长度至少10
+        {
+            return;
+        }
+        if(dataframe[i+4] == 'R' && dataframe[i+5] == 'B')//RB报文
+        {
+            ReceCarRBFrame RBstru;//复位报文
+            memcpy((char*)&RBstru,dataframe.data()+i,10);
+            qDebug()<<"RB报文:"<< RBstru.carnbr << RBstru.posinfo;
+            i = i + 10;
+        }
+        else if(dataframe[i+4] == 'S' && dataframe[i+5] == 'D')
+        {
+            if((i+74 >= dataframe.size()))
+            {
+                ++i;
+                continue;
+            }
+            ReceCarDetailFrame detailstru;//详细数据报文
+            memcpy((char*)&detailstru,dataframe.data()+i,74);
+            qDebug()<<"详细数据报文:"<< detailstru.carnbr << detailstru.state;
+            i = i + 74;
+        }
+        else if(dataframe[i+4] == 'S' && dataframe[i+5] == 'T')
+        {
+            //简易数据报文
+            ReceCarcmdsimFrame simstru;
+            memcpy((char*)&simstru,dataframe.data()+i,10);
+            i = i + 10;
+        }
+        else //默认是动作指令报文
+        {
+            ReceCarcmdActionFrame actionstru;//动作指令报文
+            memcpy((char*)&actionstru,dataframe.data()+i,10);
+            i = i + 10;
+        }
+    }
+}
+///
 /// \brief TCommtransceivermanager::GetWCStocarFrameIndex
 /// \return
 ///报文索引的生成方式
@@ -223,7 +269,6 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
         QList<int16_t> indexlsit;
         indexlsit.append(wcsindex);
         m_Wcstocarframeindex.insert(hwId,indexlsit);
-
     }
     else{
         QList<int16_t> list = m_Wcstocarframeindex[hwId];
@@ -232,7 +277,7 @@ int16_t TCommtransceivermanager::GetWCStocarFrameIndex(int hwId)
             index = list[0];
             return index;
         }
-        // std::sort(list.begin(), list.end());
+        //std::sort(list.begin(), list.end());
         int16_t endvalue = list[list.size()-1];
         endvalue++;
         if(endvalue > 32000)//不能超过65535
